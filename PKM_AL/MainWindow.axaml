@@ -1,0 +1,132 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
+        x:Class="PKM_AL.MainWindow"
+        Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+	<DockPanel>
+		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top">
+			<MenuItem Header="Файл">
+				<MenuItem Header="Смена пользователя..." Click="MenuItem_Click"></MenuItem>
+				<Separator/>
+				<MenuItem Header="Выход" Click="MenuItem_Click"></MenuItem>
+			</MenuItem>
+			<MenuItem Header="Вид">
+				<MenuItem Header="Устройства..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Каналы данных..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Графики..." Click="MenuItem_Click" Name="menuGraph"></MenuItem>
+				<Separator/>
+				<MenuItem Header="Журнал событий..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Журнал тревог..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Журнал сообщений..." Click="MenuItem_Click"></MenuItem>
+				<Separator/>
+				<MenuItem Header="Карта..." Click="MenuItem_Click"/>
+			</MenuItem>
+			<MenuItem Header="Конфигурация" Name="menuConfig">
+				<MenuItem Header="База данных..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Параметры..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Пользователи..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Шаблоны..." Click="MenuItem_Click"></MenuItem>
+			</MenuItem>
+			<MenuItem Header="Сервис" Name="menuService">
+				<MenuItem Header="Создать БД..." Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="GSM модем..." Click="MenuItemGSM_Click"></MenuItem>
+			</MenuItem>
+			<MenuItem Header="Отчеты">
+				<MenuItem Header="Добавить отчет">
+					<MenuItem Header="Форма № ВЭИ-год" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № ЭХЗ-01-год" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № ЭХЗ-04-год" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № ЭХЗ-06-год" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № ЭХЗ-08-квартал" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № 41-год" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № 40-год" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № 52-газ" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № 47-год" Click="MenuItem_Click_Form" IsEnabled="False"/>
+					<MenuItem Header="Форма № 02-год" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Форма № 141-газ" Click="MenuItem_Click_Form"/>
+					<MenuItem Header="Отчет в ОБД"     Click="MenuItem_Click_OBD"/>
+				</MenuItem>
+				<MenuItem Header="Сформировать отчет">
+					<MenuItem Header="Форма № ВЭИ-год" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № ЭХЗ-01-год" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № ЭХЗ-04-год" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № ЭХЗ-06-год" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № ЭХЗ-08-квартал" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № 41-год" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № 40-год" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № 52-газ" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № 47-год" Click="MenuItem_Click_Reports" IsEnabled="False"/>
+					<MenuItem Header="Форма № 02-год" Click="MenuItem_Click_Reports"/>
+					<MenuItem Header="Форма № 141-газ" Click="MenuItem_Click_Reports"/>
+				</MenuItem>
+			</MenuItem>
+			<MenuItem Header="Расчеты">
+				<MenuItem Header="Средства ЭХЗ">
+					<MenuItem Header="СКЗ" ToolTip.Tip="Станция катодной защиты"/>
+					<MenuItem Header="БСЗЭ" IsEnabled="False" ToolTip.Tip="Блок совместной защиты электронный"/>
+				</MenuItem>
+				<MenuItem Header="Изоляция" IsEnabled="False"/>
+				<MenuItem Header="АЗ" ToolTip.Tip="Анодное заземление"/>
+				<MenuItem Header="ПЗ" IsEnabled="False" ToolTip.Tip="Протекторная защиты"/>
+				<MenuItem Header="МСЭС" IsEnabled="False" ToolTip.Tip="Медно-сульфатный электрод сравнения"/>
+				<MenuItem Header="Показатель надежности" IsEnabled="False"/>
+				<MenuItem Header="КПЗ" ToolTip.Tip="Комплексный показатель надежности" IsEnabled="False"/>
+			</MenuItem>
+			<MenuItem Header="Справка">
+				<MenuItem Header="О программе..." Click="MenuItem_Click"></MenuItem>
+			</MenuItem>
+		</Menu>
+			<Grid DockPanel.Dock="Bottom" ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,auto,auto" Background="LightBlue" Height="30">
+			<Grid.Styles>
+				<Style Selector="TextBlock" >
+						<Setter Property="VerticalAlignment" Value="Center"/>
+			    </Style>
+				<Style Selector="Border">
+					<Setter Property="Background" Value="Gray"/>
+					<Setter Property="Width" Value="0.5"/>
+				</Style>
+			</Grid.Styles>			
+			<TextBlock Grid.Column="0" Name="StatusUser" Text="Пользователь" Margin="10 0 0 0" VerticalAlignment="Center"/>
+			<Border Grid.Column="1"/>
+			<Image  Grid.Column="2" Source="Resources\database_blue.png" Name="ImageDB" Height="16" ></Image>
+			<TextBlock Grid.Column="3" Name="StatusItem" Text="GSM" VerticalAlignment="Center"/>
+			<Border Grid.Column="4"/>
+			<StackPanel Grid.Column="5" Orientation="Horizontal" Margin="3">
+				<TextBlock Name="StatusIP" Text="IP"/>
+				<TextBlock Text="/"/>
+				<TextBlock Name="StatusPortServer" Text="Port"/>
+			</StackPanel>
+			<Border Grid.Column="6"/>
+				<TextBlock Grid.Column="7" Name="StatusMode" Text="Система" HorizontalAlignment="Center"/>
+			<Border Grid.Column="8"/>
+				<TextBlock Grid.Column="9" Name="StatusFrames" Text="0/0" HorizontalAlignment="Center"/>
+			<Border Grid.Column="10"/>
+			<Image Grid.Column="11" Source="Resources/bullet-green-32.png" Name="ImageTx" ToolTip.Tip="TxD"></Image>
+			<Image Grid.Column="12" Source="Resources/bullet-green-32.png" Name="ImageRx" ToolTip.Tip="RxD"></Image>
+			<Border Grid.Column="13"/>
+			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
+                           Margin="0 0 10 0" HorizontalAlignment="Right"/>
+
+
+
+		</Grid>		
+	<Grid ColumnDefinitions="200,auto,*">
+		<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
+					  HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+		<ContentControl Grid.Column="2" Name="ContentArea" Background="Bisque"/>
+		<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectionChanged">
+			<!--<TreeView.ItemTemplate>
+				<TreeDataTemplate ItemsSource="{Binding SubGroups}">
+					<StackPanel Orientation="Horizontal" Margin="1">
+						<Image Source="{Binding IconUri}" Height="16"></Image>
+						<TextBlock Text="{Binding Name}" Margin="5,0,0,0"></TextBlock>
+					</StackPanel>
+				</TreeDataTemplate>
+			</TreeView.ItemTemplate>-->
+		</TreeView>
+			</Grid>
+
+	</DockPanel> 
+</Window>
