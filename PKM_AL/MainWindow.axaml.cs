@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Threading;
 namespace PKM_AL
 {
     public partial class MainWindow : Window
@@ -35,21 +36,30 @@ namespace PKM_AL
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
-            ClassMessage.ShowMessage("Завершить работу программы?",this);
+            //ClassMessage.ShowMessage("Завершить работу программы?",this);
             //if(buttonResult== MsBox.Avalonia.Enums.ButtonResult.No)
             //{
             //    e.Cancel = true;
             //    return;
             //}
-            Environment.Exit(0);
-        }        
+
+           // WindowMassage mes = new WindowMassage("Завершить работу программы?",this);
+           // mes.ShowDialog(this);
+            //Environment.Exit(0);
+        }
+
+
+        override protected void OnClosing(WindowClosingEventArgs e)
+        {
+            base.OnClosing(e);
+        }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
             switch (menuItem.Header)
             {
-                case "Выход":
+                case "Выход":               
                 Close();
                 break;
             }

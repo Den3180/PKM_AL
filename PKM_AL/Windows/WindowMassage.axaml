@@ -4,7 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PKM_AL.WindowMassage"
-        WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Loaded="Window_Loaded">
-	<TextBlock Name="Message" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25">		
+        WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Closing="Window_Closing">
+	<TextBlock Name="Message" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25">
+		<TextBlock.Text>
+			Test Test Test
+		</TextBlock.Text>		
 	</TextBlock>
 </Window>

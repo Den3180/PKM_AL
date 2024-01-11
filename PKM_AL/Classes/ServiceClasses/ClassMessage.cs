@@ -24,10 +24,10 @@ namespace AvaloniaTest1.Service
         //     mesageWindow.ShowAsync();
         //    //return buttonResult;
         //}
-        public static void ShowMessage(string text,Window owner)
-        {
-            WindowMassage w = new WindowMassage(text);
-            w.ShowDialog(owner);
-        }
+        //public static void ShowMessage(string text,Window owner)
+        //{
+        //    WindowMassage w = new WindowMassage(text,owner);
+        //    w.ShowDialog(owner);
+        //}
     }
 }
