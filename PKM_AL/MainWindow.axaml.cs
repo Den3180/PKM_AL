@@ -30,7 +30,7 @@ namespace PKM_AL
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            settings = ClassSettings.Load();
+            settings = ClassSettings.Load();//8888
         }
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
