@@ -30,12 +30,12 @@ namespace PKM_AL
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            settings = ClassSettings.Load();//8888
+            settings = ClassSettings.Load();
         }
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
-            ClassMessage.ShowMessage("Завершить работу программы?");
+            ClassMessage.ShowMessage("Завершить работу программы?",this);
             //if(buttonResult== MsBox.Avalonia.Enums.ButtonResult.No)
             //{
             //    e.Cancel = true;

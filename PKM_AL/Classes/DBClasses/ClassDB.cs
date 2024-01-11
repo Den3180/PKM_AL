@@ -162,7 +162,7 @@ namespace PKM
                 "status TEXT, kip TEXT, spark TEXT, bsz TEXT)";
             cmd.ExecuteNonQuery();
             return true;
-        }//fff
+        }
 
         /// <summary>
         /// Открытие базы данных(при каждом запуске программы).
