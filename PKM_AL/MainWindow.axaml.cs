@@ -22,6 +22,17 @@ namespace PKM_AL
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
             this.Closing += MainWindow_Closing;
+            this.Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            //WindowMassage mes = new WindowMassage("Завершить работу программы?", this);
+            //flag = mes.ShowDialog<bool>(this).Result;
+            //if (flag)
+            //{
+            //    Close();
+            //}
         }
 
         /// <summary>
@@ -34,6 +45,7 @@ namespace PKM_AL
             settings = ClassSettings.Load();
         }
 
+        bool flag = false;
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
             //ClassMessage.ShowMessage("Завершить работу программы?",this);
@@ -43,15 +55,13 @@ namespace PKM_AL
             //    return;
             //}
 
-           // WindowMassage mes = new WindowMassage("Завершить работу программы?",this);
-           // mes.ShowDialog(this);
-            //Environment.Exit(0);
-        }
-
-
-        override protected void OnClosing(WindowClosingEventArgs e)
-        {
-            base.OnClosing(e);
+            //WindowMassage mes = new WindowMassage("Завершить работу программы?", this);
+            //mes.ShowDialog<bool>(this);
+            //if (!flag)
+            //{
+            //    e.Cancel = true;
+            //}
+            Environment.Exit(0);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -59,8 +69,10 @@ namespace PKM_AL
             MenuItem menuItem = (MenuItem)sender;
             switch (menuItem.Header)
             {
-                case "Выход":               
-                Close();
+                case "Выход":
+                WindowMassage mes = new WindowMassage("Завершить работу программы?", this);
+                var yy= mes.ShowDialog<bool>(this);
+                //Close();
                 break;
             }
         }
