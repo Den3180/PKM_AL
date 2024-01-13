@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="PKM_AL.WindowIntro"
+        Height="200" Width="450" WindowStartupLocation="CenterScreen" 
+		CanResize="False" ShowInTaskbar="False" SystemDecorations="BorderOnly" >
+	<Grid>
+		<StackPanel VerticalAlignment="Center">
+			<Image HorizontalAlignment="Center" Height="60"  VerticalAlignment="Top"
+                   Width="240" Source="..\Resources\TPLogoM.png"/>
+			<TextBlock Text="Система оперативной телеметрии и комплексного анализа" HorizontalAlignment="Center"/>
+			<TextBlock Text="..." HorizontalAlignment="Center" Name="LabelInfo" Foreground="Blue"/>
+		</StackPanel>
+	</Grid>
+
+</Window>

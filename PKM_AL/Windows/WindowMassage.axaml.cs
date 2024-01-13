@@ -6,8 +6,7 @@ namespace PKM_AL;
 
 public partial class WindowMassage : Window
 {
-    string text;
-    Window owner;
+    private Window owner;
     public WindowMassage()
     {
         InitializeComponent();
@@ -16,7 +15,6 @@ public partial class WindowMassage : Window
     public WindowMassage(string text, Window owner)
     {
         InitializeComponent();
-        this.text = text;
         this.owner = owner;
         this.Message.Text = text;
     }
