@@ -8,34 +8,31 @@ public partial class WindowMassage : Window
 {
     string text;
     Window owner;
+    public WindowMassage()
+    {
+        InitializeComponent();
+    }
+
     public WindowMassage(string text, Window owner)
     {
         InitializeComponent();
         this.text = text;
         this.owner = owner;
         this.Message.Text = text;
-
-        this.Opened += WindowMassage_Opened;
-        this.Closed += WindowMassage_Closed;
     }
 
-    private void WindowMassage_Closed(object sender, System.EventArgs e)
+    private void Button_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        owner.Close();
-    }
+        Button button = (Button)sender;
+        if (button.Content.ToString() == "Да")
+        {
+            owner.Close();
+            Close();
+        }
+        else
+        {
+            Close();
+        }
 
-    private void WindowMassage_Opened(object sender, System.EventArgs e)
-    {
-         //this.Message.Text = text;
-    }
-
-    private void Window_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        //this.Message.Text = text;
-    }
-
-    private void Window_Closing(object sender, Avalonia.Controls.WindowClosingEventArgs e)
-    {
-        //owner.Close();
     }
 }
