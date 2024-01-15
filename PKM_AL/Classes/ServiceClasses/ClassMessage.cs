@@ -14,21 +14,21 @@ namespace AvaloniaTest1.Service
 {
     public class ClassMessage
     {
-        static IMsBox <ButtonResult> mesageWindow;
+        //static IMsBox <ButtonResult> mesageWindow;
 
-        public static void ShowMessage(Window owner, string text = "", string title = "", ButtonEnum buttonEnum = ButtonEnum.Ok,
+        public static Task<ButtonResult> ShowMessage(Window owner, string text = "", string title = "", ButtonEnum buttonEnum = ButtonEnum.Ok,
                                        Icon icon = Icon.Info, WindowStartupLocation location = WindowStartupLocation.CenterScreen )
         {
-            mesageWindow = MessageBoxManager.GetMessageBoxStandard(new MsBox.Avalonia.Dto.MessageBoxStandardParams
+            IMsBox <ButtonResult> messageWindow = MessageBoxManager.GetMessageBoxStandard(new MsBox.Avalonia.Dto.MessageBoxStandardParams
             {
                 ContentTitle = title,
                 ContentMessage = text,
-                WindowStartupLocation=WindowStartupLocation.CenterScreen,
-                ButtonDefinitions=ButtonEnum.OkCancel,
+                WindowStartupLocation=location,
+                ButtonDefinitions=buttonEnum,
                 Icon=icon,
                 SystemDecorations = SystemDecorations.BorderOnly
             }) ;
-            mesageWindow.ShowWindowDialogAsync(owner);
+            return messageWindow.ShowWindowDialogAsync(owner);
         }
 
         public static void ShowMessage(string text, Window owner)

@@ -22,7 +22,7 @@ public partial class WindowMassage : Window
     private void Button_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Button button = (Button)sender;
-        if (button.Content.ToString() == "Да")
+        if (button.Content.ToString() == "Р”Р°")
         {
             owner.Close();
             Close();

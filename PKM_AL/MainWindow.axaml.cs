@@ -10,6 +10,14 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
+using System.IO;
+using System.Windows;
+using Avalonia.Platform.Storage;
+using Microsoft.Extensions.Logging;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Base;
+using Avalonia;
+
 namespace PKM_AL
 {
     public partial class MainWindow : Window
@@ -45,19 +53,72 @@ namespace PKM_AL
             using (var source = new CancellationTokenSource())
             {
                 WindowIntro frmIntro = new WindowIntro();
-            //Task flag= frmIntro.ShowDialog(this);
-                frmIntro.ShowDialog(this).ContinueWith(t=>source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                frmIntro.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());                
                 Dispatcher.UIThread.MainLoop(source.Token);
             }
-            //while (flag.Status==TaskStatus.WaitingForActivation) 
-            //{ 
-            //}
-            ClassMessage.ShowMessage(this, "Смена пользователя...");
+
+            if (!File.Exists(settings.DB))
+            {
+                Task<ButtonResult> buttonResult;
+                using (var source = new CancellationTokenSource())
+                {
+                    buttonResult= ClassMessage.ShowMessage(this, "Файл не доступен.\nСоздать базу данных?"
+                        ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question);
+                    buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                    Dispatcher.UIThread.MainLoop(source.Token);
+                }
+                if (buttonResult.Result == ButtonResult.Yes)
+                {
+                    using (var source = new CancellationTokenSource())
+                    {
+                        var topLevel = TopLevel.GetTopLevel(this);
+                        var files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                        {
+                            Title = "Выбор БД"                            
+                        });
+                        IStorageFile lis = files.Result;
+                        files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());                    
+                        Dispatcher.UIThread.MainLoop(source.Token);
+                    }
+                }
+
+                //    //if (System.Windows.MessageBox.Show("Файл БД не доступен" + Environment.NewLine
+                //    //                    + "Создать БД?", "СУБД", MessageBoxButton.YesNo, MessageBoxImage.Exclamation)
+                //    //                    == MessageBoxResult.Yes)
+
+                //    ClassMessage.ShowMessage(this, "Файл БД не доступен");
+                //    //if(ClassMessage.ShowMessage(this, "Файл БД не доступен"))
+                //    //{
+                //    //    //System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
+                //    //    //dlg.Filter = "Файлы DB (*.db)|*.db|Все файлы (*.*)|*.*";
+                //    //    //dlg.FileName = "pkm.db";
+                //    //    //if ((dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) &&
+                //    //    //    (dlg.FileName != ""))
+                //    //    //{
+                //    //    //    ClassDB.Create(dlg.FileName);
+                //    //    //}
+                //    //}
+            }
+            //ClassMessage.ShowMessage(this, "Смена пользователя...");
         }
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
-            Environment.Exit(0);
+            Task<ButtonResult> buttonResult;
+            using (var source = new CancellationTokenSource())
+            {
+                buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу","",ButtonEnum.YesNo);
+                buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+            }            
+            if (buttonResult.Result == ButtonResult.Yes)
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -66,10 +127,11 @@ namespace PKM_AL
             switch (menuItem.Header)
             {
                 case "Выход":
-                ClassMessage.ShowMessage("Завершить работу?", this);
+                //ClassMessage.ShowMessage("Завершить работу?", this);
+                Close();
                 break;
                 case "Смена пользователя...":
-                ClassMessage.ShowMessage(this,"Смена пользователя...");
+                // ClassMessage.ShowMessage(this,"Смена пользователя...");
                 break;
                 case "Устройства...":
                 break;

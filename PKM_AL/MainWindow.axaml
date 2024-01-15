@@ -6,7 +6,7 @@
         x:Class="PKM_AL.MainWindow"
         Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 	<DockPanel>
-		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top">
+		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="LightGray">
 			<MenuItem Header="Файл">
 				<MenuItem Header="Смена пользователя..." Click="MenuItem_Click"></MenuItem>
 				<Separator/>
@@ -78,7 +78,8 @@
 				<MenuItem Header="О программе..." Click="MenuItem_Click"></MenuItem>
 			</MenuItem>
 		</Menu>
-			<Grid DockPanel.Dock="Bottom" ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,auto,auto" Background="LightBlue" Height="30">
+			<Grid DockPanel.Dock="Bottom" ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,auto,auto" 
+				  Background="LightGray" Height="30">
 			<Grid.Styles>
 				<Style Selector="TextBlock" >
 						<Setter Property="VerticalAlignment" Value="Center"/>
@@ -108,14 +109,11 @@
 			<Border Grid.Column="13"/>
 			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
                            Margin="0 0 10 0" HorizontalAlignment="Right"/>
-
-
-
 		</Grid>		
 	<Grid ColumnDefinitions="200,auto,*">
 		<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
-					  HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-		<ContentControl Grid.Column="2" Name="ContentArea" Background="Bisque"/>
+					  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="LightGray" />
+		<ContentControl Grid.Column="2" Name="ContentArea"/>
 		<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectionChanged">
 			<!--<TreeView.ItemTemplate>
 				<TreeDataTemplate ItemsSource="{Binding SubGroups}">

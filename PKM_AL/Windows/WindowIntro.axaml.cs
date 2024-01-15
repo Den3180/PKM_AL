@@ -10,7 +10,7 @@ namespace PKM_AL;
 
 public partial class WindowIntro : Window
 {
-    private string[] listIntro = new []{ "Загрузка приложения...", "Подключение к базе данных..." , "Инициализация данных..." };
+    private string[] listIntro = new []{ "Р—Р°РіСЂСѓР·РєР° РїСЂРёР»РѕР¶РµРЅРёСЏ...", "РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С…...", "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґР°РЅРЅС‹С…..." };
     private Avalonia.Threading.DispatcherTimer dispatcherTimer;
     int countText=0;
     public WindowIntro()
@@ -40,6 +40,6 @@ public partial class WindowIntro : Window
 
     public void ShowInfo(string info)
     {
-        this.LabelInfo.Text = info + "...";
+        this.LabelInfo.Text = info;
     }
 }

@@ -10,7 +10,7 @@
 			<Image HorizontalAlignment="Center" Height="60"  VerticalAlignment="Top"
                    Width="240" Source="..\Resources\TPLogoM.png"/>
 			<TextBlock Text="Система оперативной телеметрии и комплексного анализа" HorizontalAlignment="Center"/>
-			<TextBlock Text="..." HorizontalAlignment="Center" Name="LabelInfo" Foreground="Blue"/>
+			<TextBlock Text="..." HorizontalAlignment="Center" Name="LabelInfo" Foreground="Blue" Margin="10 20"/>
 		</StackPanel>
 	</Grid>
 
