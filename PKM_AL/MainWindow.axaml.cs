@@ -62,23 +62,35 @@ namespace PKM_AL
                 Task<ButtonResult> buttonResult;
                 using (var source = new CancellationTokenSource())
                 {
-                    buttonResult= ClassMessage.ShowMessage(this, "Файл не доступен.\nСоздать базу данных?"
+                    buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
                         ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question);
                     buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                     Dispatcher.UIThread.MainLoop(source.Token);
                 }
                 if (buttonResult.Result == ButtonResult.Yes)
                 {
+                    IStorageFile dialogResult;
                     using (var source = new CancellationTokenSource())
                     {
                         var topLevel = TopLevel.GetTopLevel(this);
                         var files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
                         {
-                            Title = "Выбор БД"                            
+                            Title = "Выбор БД",
+                            DefaultExtension="db",
+                            ShowOverwritePrompt=true,
+                            SuggestedFileName="pkm.db",
+                            FileTypeChoices=new List<FilePickerFileType>() 
+                            { 
+                                new FilePickerFileType("") { Patterns=new[] { "*.db" } } 
+                            }
                         });
-                        IStorageFile lis = files.Result;
-                        files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());                    
+                        dialogResult = files.Result;
+                        files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());
                         Dispatcher.UIThread.MainLoop(source.Token);
+                        if (dialogResult != null && dialogResult.Name!=string.Empty)
+                        {
+                            ClassDB.Create(dialogResult.Path.AbsolutePath);
+                        }
                     }
                 }
 

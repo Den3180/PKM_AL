@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows;
 //using System.Windows.Documents;
 //using Google.Protobuf.WellKnownTypes;
 using Microsoft.Data.Sqlite;
+using SQLitePCL;
 
 namespace PKM
 {
@@ -31,6 +33,10 @@ namespace PKM
         /// <returns></returns>
         public static bool Create(string PathDB)
         {
+            if (File.Exists(PathDB))
+            {
+                File.Delete(PathDB);
+            }
             //Класс базы данных.
             SqliteConnectionStringBuilder csb = new SqliteConnectionStringBuilder();
             //Путь к базе.
@@ -48,7 +54,7 @@ namespace PKM
             //Создать таблицу info.
             cmd.CommandText = "CREATE TABLE info(version INTEGER, lpu TEXT)";
             //Выполнить команду.
-            cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();            
             //Всавить в таблицу info версию БД.
             cmd.CommandText = "INSERT INTO info (version) VALUES(" + Version.ToString() + ")";
             cmd.ExecuteNonQuery();
