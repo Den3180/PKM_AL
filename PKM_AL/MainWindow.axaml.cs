@@ -36,13 +36,13 @@ namespace PKM_AL
         }
 
         /// <summary>
-        /// Загрузка основного окна.
+        /// Р—Р°РіСЂСѓР·РєР° РѕСЃРЅРѕРІРЅРѕРіРѕ РѕРєРЅР°.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            ClassLog.Write("Запуск приложения");
+            ClassLog.Write("Р—Р°РїСѓСЃРє РїСЂРёР»РѕР¶РµРЅРёСЏ");
             settings = ClassSettings.Load();
             switch (settings.TypeDB)
             {
@@ -62,7 +62,7 @@ namespace PKM_AL
                 Task<ButtonResult> buttonResult;
                 using (var source = new CancellationTokenSource())
                 {
-                    buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
+                    buttonResult= ClassMessage.ShowMessage(this, "Р‘Р°Р·Р° РґР°РЅРЅС‹С… РЅРµ РґРѕСЃС‚СѓРїРЅР°.\nРЎРѕР·РґР°С‚СЊ Р±Р°Р·Сѓ РґР°РЅРЅС‹С…?"
                         ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question);
                     buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                     Dispatcher.UIThread.MainLoop(source.Token);
@@ -75,7 +75,7 @@ namespace PKM_AL
                         var topLevel = TopLevel.GetTopLevel(this);
                         var files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
                         {
-                            Title = "Выбор БД",
+                            Title = "Р’С‹Р±РѕСЂ Р‘Р”",
                             DefaultExtension="db",
                             ShowOverwritePrompt=true,
                             SuggestedFileName="pkm.db",
@@ -94,15 +94,15 @@ namespace PKM_AL
                     }
                 }
 
-                //    //if (System.Windows.MessageBox.Show("Файл БД не доступен" + Environment.NewLine
-                //    //                    + "Создать БД?", "СУБД", MessageBoxButton.YesNo, MessageBoxImage.Exclamation)
+                //    //if (System.Windows.MessageBox.Show("Р¤Р°Р№Р» Р‘Р” РЅРµ РґРѕСЃС‚СѓРїРµРЅ" + Environment.NewLine
+                //    //                    + "РЎРѕР·РґР°С‚СЊ Р‘Р”?", "РЎРЈР‘Р”", MessageBoxButton.YesNo, MessageBoxImage.Exclamation)
                 //    //                    == MessageBoxResult.Yes)
 
-                //    ClassMessage.ShowMessage(this, "Файл БД не доступен");
-                //    //if(ClassMessage.ShowMessage(this, "Файл БД не доступен"))
+                //    ClassMessage.ShowMessage(this, "Р¤Р°Р№Р» Р‘Р” РЅРµ РґРѕСЃС‚СѓРїРµРЅ");
+                //    //if(ClassMessage.ShowMessage(this, "Р¤Р°Р№Р» Р‘Р” РЅРµ РґРѕСЃС‚СѓРїРµРЅ"))
                 //    //{
                 //    //    //System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
-                //    //    //dlg.Filter = "Файлы DB (*.db)|*.db|Все файлы (*.*)|*.*";
+                //    //    //dlg.Filter = "Р¤Р°Р№Р»С‹ DB (*.db)|*.db|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*";
                 //    //    //dlg.FileName = "pkm.db";
                 //    //    //if ((dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) &&
                 //    //    //    (dlg.FileName != ""))
@@ -111,7 +111,7 @@ namespace PKM_AL
                 //    //    //}
                 //    //}
             }
-            //ClassMessage.ShowMessage(this, "Смена пользователя...");
+            //ClassMessage.ShowMessage(this, "РЎРјРµРЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ...");
         }
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
@@ -119,7 +119,7 @@ namespace PKM_AL
             Task<ButtonResult> buttonResult;
             using (var source = new CancellationTokenSource())
             {
-                buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу","",ButtonEnum.YesNo);
+                buttonResult = ClassMessage.ShowMessage(this, "Р—Р°РєСЂС‹С‚СЊ РїСЂРѕРіСЂР°РјРјСѓ","",ButtonEnum.YesNo);
                 buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);
             }            
@@ -138,38 +138,38 @@ namespace PKM_AL
             MenuItem menuItem = (MenuItem)sender;
             switch (menuItem.Header)
             {
-                case "Выход":
-                //ClassMessage.ShowMessage("Завершить работу?", this);
+                case "Р’С‹С…РѕРґ":
+                //ClassMessage.ShowMessage("Р—Р°РІРµСЂС€РёС‚СЊ СЂР°Р±РѕС‚Сѓ?", this);
                 Close();
                 break;
-                case "Смена пользователя...":
-                // ClassMessage.ShowMessage(this,"Смена пользователя...");
+                case "РЎРјРµРЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ...":
+                // ClassMessage.ShowMessage(this,"РЎРјРµРЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ...");
                 break;
-                case "Устройства...":
+                case "РЈСЃС‚СЂРѕР№СЃС‚РІР°...":
                 break;
-                case "Каналы данных...":
+                case "РљР°РЅР°Р»С‹ РґР°РЅРЅС‹С…...":
                 break;
-                case "Графики...":
+                case "Р“СЂР°С„РёРєРё...":
                 break;
-                case "Журнал событий...":
+                case "Р–СѓСЂРЅР°Р» СЃРѕР±С‹С‚РёР№...":
                 break;
-                case "Журнал тревог...":
+                case "Р–СѓСЂРЅР°Р» С‚СЂРµРІРѕРі...":
                 break;
-                case "Журнал сообщений...":
+                case "Р–СѓСЂРЅР°Р» СЃРѕРѕР±С‰РµРЅРёР№...":
                 break;
-                case "Карта...":
+                case "РљР°СЂС‚Р°...":
                 break;
-                case "База данных...":
+                case "Р‘Р°Р·Р° РґР°РЅРЅС‹С…...":
                 break;
-                case "Параметры...":
+                case "РџР°СЂР°РјРµС‚СЂС‹...":
                 break;
-                case "Пользователи...":
+                case "РџРѕР»СЊР·РѕРІР°С‚РµР»Рё...":
                 break;
-                case "Шаблоны...":
+                case "РЁР°Р±Р»РѕРЅС‹...":
                 break;
-                case "Создать БД...":
+                case "РЎРѕР·РґР°С‚СЊ Р‘Р”...":
                 break;
-                case "О программе...":
+                case "Рћ РїСЂРѕРіСЂР°РјРјРµ...":
                 break;
                 default:
                 break;

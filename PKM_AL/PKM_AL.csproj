@@ -6,6 +6,7 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Resources\iconfinder_inventory_categories_44826.ico</ApplicationIcon>
   </PropertyGroup>
 
 
@@ -47,5 +48,12 @@
 
   <ItemGroup>
     <Folder Include="Classes\DevicesClasses\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <AvaloniaResource Update="Resources\iconfinder_inventory_categories_44826.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AvaloniaResource>
   </ItemGroup>
 </Project>
