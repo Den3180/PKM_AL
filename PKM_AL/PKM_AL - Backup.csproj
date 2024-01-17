@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Resources\iconfinder_inventory_categories_44826.ico</ApplicationIcon>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.6" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
+    <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.0" />
+    <PackageReference Include="NModbus4" Version="2.1.0" />
+    <PackageReference Include="Npgsql" Version="8.0.1" />
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+	<AvaloniaResource Include="Resources\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <AvaloniaXaml Remove="Windows\Window1.axaml" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Remove="Windows\Window1.axaml.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Remove="Resources\bullet-green-32.png" />
+    <None Remove="Resources\bullet-red-32.png" />
+    <None Remove="Resources\database_blue.png" />
+    <None Remove="Resources\TPLogoM.png" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Classes\DevicesClasses\" />
+  </ItemGroup>
+</Project>
