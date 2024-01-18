@@ -69,7 +69,7 @@ namespace PKM_AL
                 }
                 if (buttonResult.Result == ButtonResult.Yes)
                 {
-                    IStorageFile dialogResult;
+                    //IStorageFile dialogResult;
                     using (var source = new CancellationTokenSource())
                     {
                         var topLevel = TopLevel.GetTopLevel(this);
@@ -84,12 +84,12 @@ namespace PKM_AL
                                 new FilePickerFileType("") { Patterns=new[] { "*.db" } } 
                             }
                         });
-                        dialogResult = files.Result;
+                        //dialogResult = files.Result;
                         files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());
                         Dispatcher.UIThread.MainLoop(source.Token);
-                        if (dialogResult != null && dialogResult.Name!=string.Empty)
+                        if (files.Result != null && files.Result.Name!=string.Empty)
                         {
-                            ClassDB.Create(dialogResult.Path.AbsolutePath);
+                            ClassDB.Create(files.Result.Path.AbsolutePath);
                         }
                     }
                 }
