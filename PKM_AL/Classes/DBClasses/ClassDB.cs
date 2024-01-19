@@ -40,7 +40,7 @@ namespace PKM
             string s = $"Server=localhost;UserID=root;Password=Sotka@75";
             try
             {
-                var transaction = mySql.BeginTransaction();
+                //var transaction = mySql.BeginTransaction();
                 mySql = new MySqlConnection(builder.ConnectionString);
                 mySql.Open();
                 string s1 = $"CREATE DATABASE IF NOT EXISTS pkm;";
