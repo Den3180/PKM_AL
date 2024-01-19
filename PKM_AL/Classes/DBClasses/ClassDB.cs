@@ -13,6 +13,8 @@ using System.Windows;
 //using System.Windows.Documents;
 //using Google.Protobuf.WellKnownTypes;
 using Microsoft.Data.Sqlite;
+using MySql.Data.MySqlClient;
+using MySql.Data;
 using SQLitePCL;
 
 namespace PKM
@@ -23,6 +25,48 @@ namespace PKM
         public static string AreaName { get; set;} = "Технопром";
         
         private static SqliteConnection conn;
+        private static MySqlConnection mySql;
+        private static MySqlCommand sqlCommand;
+
+        public static bool MySQLCreate(string PathDB)
+        {
+            if (File.Exists(PathDB))
+            {
+                File.Delete(PathDB);
+            }
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder($"Server=localhost;UserID=root;" +
+                $"Password=Sotka@75");            
+            
+            string s = $"Server=localhost;UserID=root;Password=Sotka@75";
+            try
+            {
+                var transaction = mySql.BeginTransaction();
+                mySql = new MySqlConnection(builder.ConnectionString);
+                mySql.Open();
+                string s1 = $"CREATE DATABASE IF NOT EXISTS pkm;";
+                sqlCommand = new MySqlCommand(s1, mySql);
+                sqlCommand.ExecuteNonQuery();
+                s1 = @"CREATE TABLE pkm.new_table (   idnew_table INT NOT NULL,
+                                                      new_tablecol VARCHAR(45) NULL,
+                                                      new_tablecol1 VARCHAR(45) NULL,
+                                                      new_tablecol2 VARCHAR(45) NULL,
+                                                      PRIMARY KEY (idnew_table));";
+                sqlCommand = new MySqlCommand(s1, mySql);
+                sqlCommand.ExecuteNonQuery();
+            }
+
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                mySql.Close();
+            }
+
+            return true;
+        }
+
 
         #region [DB]
 

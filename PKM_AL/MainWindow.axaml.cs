@@ -89,7 +89,8 @@ namespace PKM_AL
                         Dispatcher.UIThread.MainLoop(source.Token);
                         if (files.Result != null && files.Result.Name!=string.Empty)
                         {
-                            ClassDB.Create(files.Result.Path.AbsolutePath);
+                            //ClassDB.Create(files.Result.Path.AbsolutePath);
+                            ClassDB.MySQLCreate(files.Result.Path.AbsolutePath);
                         }
                     }
                 }
