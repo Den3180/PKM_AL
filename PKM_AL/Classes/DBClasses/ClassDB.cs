@@ -16,6 +16,8 @@ using Microsoft.Data.Sqlite;
 using MySql.Data.MySqlClient;
 using MySql.Data;
 using SQLitePCL;
+using Npgsql;
+using Org.BouncyCastle.Bcpg;
 
 namespace PKM
 {
@@ -28,22 +30,66 @@ namespace PKM
         private static MySqlConnection mySql;
         private static MySqlCommand sqlCommand;
 
+
+
+        public static bool PostgresCreate()
+        {
+            NpgsqlConnection conn;
+            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder() 
+            {
+                Host="localhost",
+                Username = "postgres",                
+                Password = "pkm"
+            };
+
+            conn = new NpgsqlConnection(builder.ConnectionString);
+
+            try
+            {
+                conn.Open();
+                NpgsqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = $"CREATE DATABASE pkm" +
+                    $" WITH OWNER = postgres ENCODING = 'UTF8' LOCALE_PROVIDER = 'libc' " +
+                    $"CONNECTION LIMIT = -1 IS_TEMPLATE = False;";
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+                string s = "Server=localhost;Port=5432;User Id=postgres;Password=pkm;Database=pkm;";
+                conn = new NpgsqlConnection(s);
+                conn.Open();
+                cmd = conn.CreateCommand();
+                cmd.CommandText = @"CREATE TABLE  public.user1 (  
+                                                     Id SERIAL PRIMARY KEY,
+                                                     Name CHARACTER VARYING(30),
+                                                     Age INTEGER);";
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static bool MySQLCreate(string PathDB)
         {
             if (File.Exists(PathDB))
             {
                 File.Delete(PathDB);
             }
-            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder($"Server=localhost;UserID=root;" +
-                $"Password=Sotka@75");            
-            
-            string s = $"Server=localhost;UserID=root;Password=Sotka@75";
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder()
+            {
+                Server = "localhost",
+                UserID = "root",
+                Password = "Sotka@75"
+            };
+
             try
             {
-                //var transaction = mySql.BeginTransaction();
                 mySql = new MySqlConnection(builder.ConnectionString);
                 mySql.Open();
-                string s1 = $"CREATE DATABASE IF NOT EXISTS pkm;";
+                string s1 = $"CREATE DATABASE IF NOT EXISTS pkm2;";
                 sqlCommand = new MySqlCommand(s1, mySql);
                 sqlCommand.ExecuteNonQuery();
                 s1 = @"CREATE TABLE pkm.new_table (   idnew_table INT NOT NULL,
