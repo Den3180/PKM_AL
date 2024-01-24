@@ -39,7 +39,8 @@ namespace PKM
             {
                 Host="localhost",
                 Username = "postgres",                
-                Password = "pkm"
+                Password = "''"
+               // Password = "pkm"
             };
 
             conn = new NpgsqlConnection(builder.ConnectionString);

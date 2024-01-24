@@ -84,14 +84,14 @@ namespace PKM_AL
                                 new FilePickerFileType("") { Patterns=new[] { "*.db" } } 
                             }
                         });
-                        //dialogResult = files.Result;
                         files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());
                         Dispatcher.UIThread.MainLoop(source.Token);
-                        if (files.Result != null && files.Result.Name!=string.Empty)
+                        var dialogResult = files.Result;
+                        if (dialogResult?.Name!=string.Empty)
                         {
-                            //ClassDB.Create(files.Result.Path.AbsolutePath);
+                            ClassDB.Create(dialogResult?.Path.AbsolutePath);
                             //ClassDB.MySQLCreate(files.Result.Path.AbsolutePath);
-                            ClassDB.PostgresCreate();
+                            //ClassDB.PostgresCreate();
                         }
                     }
                 }
