@@ -50,23 +50,28 @@ namespace PKM_AL
                 default:
                 break;
             }
-            using (var source = new CancellationTokenSource())
-            {
-                WindowIntro frmIntro = new WindowIntro();
-                frmIntro.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());                
-                Dispatcher.UIThread.MainLoop(source.Token);
-            }
+            //using (var source = new CancellationTokenSource())
+            //{
+            //    WindowIntro frmIntro = new WindowIntro();
+            //    frmIntro.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());                
+            //    Dispatcher.UIThread.MainLoop(source.Token);
+            //}
+
+            WindowIntro frmIntro = new WindowIntro();
+            frmIntro.WindowShow(this);
 
             if (!File.Exists(settings.DB))
             {
-                Task<ButtonResult> buttonResult;
-                using (var source = new CancellationTokenSource())
-                {
-                    buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
-                        ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question);
-                    buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-                    Dispatcher.UIThread.MainLoop(source.Token);
-                }
+                Task<ButtonResult> buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
+                      ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question); 
+                //using (var source = new CancellationTokenSource())
+                //{
+                //    buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
+                //        ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question);
+                //    buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                //    Dispatcher.UIThread.MainLoop(source.Token);
+                //}
+
                 if (buttonResult.Result == ButtonResult.Yes)
                 {
                     //IStorageFile dialogResult;
@@ -76,12 +81,12 @@ namespace PKM_AL
                         var files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
                         {
                             Title = "Выбор БД",
-                            DefaultExtension="db",
-                            ShowOverwritePrompt=true,
-                            SuggestedFileName="pkm.db",
-                            FileTypeChoices=new List<FilePickerFileType>() 
-                            { 
-                                new FilePickerFileType("") { Patterns=new[] { "*.db" } } 
+                            DefaultExtension = "db",
+                            ShowOverwritePrompt = true,
+                            SuggestedFileName = "pkm.db",
+                            FileTypeChoices = new List<FilePickerFileType>()
+                            {
+                                new FilePickerFileType("") { Patterns=new[] { "*.db" } }
                             }
                         });
                         files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());
@@ -90,28 +95,9 @@ namespace PKM_AL
                         if (dialogResult?.Name!=string.Empty)
                         {
                             ClassDB.Create(dialogResult?.Path.AbsolutePath);
-                            //ClassDB.MySQLCreate(files.Result.Path.AbsolutePath);
-                            //ClassDB.PostgresCreate();
                         }
                     }
                 }
-
-                //    //if (System.Windows.MessageBox.Show("Файл БД не доступен" + Environment.NewLine
-                //    //                    + "Создать БД?", "СУБД", MessageBoxButton.YesNo, MessageBoxImage.Exclamation)
-                //    //                    == MessageBoxResult.Yes)
-
-                //    ClassMessage.ShowMessage(this, "Файл БД не доступен");
-                //    //if(ClassMessage.ShowMessage(this, "Файл БД не доступен"))
-                //    //{
-                //    //    //System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
-                //    //    //dlg.Filter = "Файлы DB (*.db)|*.db|Все файлы (*.*)|*.*";
-                //    //    //dlg.FileName = "pkm.db";
-                //    //    //if ((dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) &&
-                //    //    //    (dlg.FileName != ""))
-                //    //    //{
-                //    //    //    ClassDB.Create(dlg.FileName);
-                //    //    //}
-                //    //}
             }
             //ClassMessage.ShowMessage(this, "Смена пользователя...");
         }

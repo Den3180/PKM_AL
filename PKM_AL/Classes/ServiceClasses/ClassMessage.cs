@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Threading;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Base;
 using MsBox.Avalonia.Enums;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AvaloniaTest1.Service
@@ -19,16 +21,24 @@ namespace AvaloniaTest1.Service
         public static Task<ButtonResult> ShowMessage(Window owner, string text = "", string title = "", ButtonEnum buttonEnum = ButtonEnum.Ok,
                                        Icon icon = Icon.Info, WindowStartupLocation location = WindowStartupLocation.CenterScreen )
         {
-            IMsBox <ButtonResult> messageWindow = MessageBoxManager.GetMessageBoxStandard(new MsBox.Avalonia.Dto.MessageBoxStandardParams
+            Task<ButtonResult> res;
+            using (var source = new CancellationTokenSource())
             {
-                ContentTitle = title,
-                ContentMessage = text,
-                WindowStartupLocation=location,
-                ButtonDefinitions=buttonEnum,
-                Icon=icon,
-                SystemDecorations = SystemDecorations.BorderOnly
-            }) ;
-            return messageWindow.ShowWindowDialogAsync(owner);
+                IMsBox <ButtonResult> messageWindow = MessageBoxManager.GetMessageBoxStandard(new MsBox.Avalonia.Dto.MessageBoxStandardParams
+                {
+                    ContentTitle = title,
+                    ContentMessage = text,
+                    WindowStartupLocation=location,
+                    ButtonDefinitions=buttonEnum,
+                    Icon=icon,
+                    SystemDecorations = SystemDecorations.BorderOnly
+                }) ;
+                //return messageWindow.ShowWindowDialogAsync(owner);            
+                res=messageWindow.ShowWindowDialogAsync(owner);
+                res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+            }
+            return res;
         }
 
         public static void ShowMessage(string text, Window owner)
