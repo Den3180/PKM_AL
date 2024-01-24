@@ -50,12 +50,6 @@ namespace PKM_AL
                 default:
                 break;
             }
-            //using (var source = new CancellationTokenSource())
-            //{
-            //    WindowIntro frmIntro = new WindowIntro();
-            //    frmIntro.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());                
-            //    Dispatcher.UIThread.MainLoop(source.Token);
-            //}
 
             WindowIntro frmIntro = new WindowIntro();
             frmIntro.WindowShow(this);
@@ -64,17 +58,9 @@ namespace PKM_AL
             {
                 Task<ButtonResult> buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
                       ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question); 
-                //using (var source = new CancellationTokenSource())
-                //{
-                //    buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
-                //        ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question);
-                //    buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-                //    Dispatcher.UIThread.MainLoop(source.Token);
-                //}
 
                 if (buttonResult.Result == ButtonResult.Yes)
                 {
-                    //IStorageFile dialogResult;
                     using (var source = new CancellationTokenSource())
                     {
                         var topLevel = TopLevel.GetTopLevel(this);
@@ -99,18 +85,11 @@ namespace PKM_AL
                     }
                 }
             }
-            //ClassMessage.ShowMessage(this, "Смена пользователя...");
         }
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
-            Task<ButtonResult> buttonResult;
-            using (var source = new CancellationTokenSource())
-            {
-                buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу","",ButtonEnum.YesNo);
-                buttonResult.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-                Dispatcher.UIThread.MainLoop(source.Token);
-            }            
+            Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу","",ButtonEnum.YesNo);
             if (buttonResult.Result == ButtonResult.Yes)
             {
                 Environment.Exit(0);
@@ -127,11 +106,9 @@ namespace PKM_AL
             switch (menuItem.Header)
             {
                 case "Выход":
-                //ClassMessage.ShowMessage("Завершить работу?", this);
                 Close();
                 break;
                 case "Смена пользователя...":
-                // ClassMessage.ShowMessage(this,"Смена пользователя...");
                 break;
                 case "Устройства...":
                 break;
