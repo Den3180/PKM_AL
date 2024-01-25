@@ -31,9 +31,8 @@ namespace AvaloniaTest1.Service
                     WindowStartupLocation=location,
                     ButtonDefinitions=buttonEnum,
                     Icon=icon,
-                    SystemDecorations = SystemDecorations.BorderOnly
+                    SystemDecorations = SystemDecorations.None                    
                 }) ;
-                //return messageWindow.ShowWindowDialogAsync(owner);            
                 res=messageWindow.ShowWindowDialogAsync(owner);
                 res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);

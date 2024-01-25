@@ -78,18 +78,32 @@ namespace PKM_AL
                         files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());
                         Dispatcher.UIThread.MainLoop(source.Token);
                         var dialogResult = files.Result;
-                        if (dialogResult?.Name!=string.Empty)
+                        if (!string.IsNullOrEmpty(dialogResult?.Name))
                         {
                             ClassDB.Create(dialogResult?.Path.AbsolutePath);
                         }
+                        else
+                        {
+                            ClassMessage.ShowMessage(this,"База данных не создана.\nПрограмма будет закрыта.", 
+                                                     icon: MsBox.Avalonia.Enums.Icon.Stop);
+                            Environment.Exit(0);
+                        }
                     }
+                }
+                else
+                {
+                    ClassMessage.ShowMessage(this, "База данных не создана.\nПрограмма будет закрыта.",
+                         icon: MsBox.Avalonia.Enums.Icon.Stop);
+                    Environment.Exit(0);
+
                 }
             }
         }
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
-            Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу","",ButtonEnum.YesNo);
+            Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу","",ButtonEnum.YesNo, 
+                                                                       icon: MsBox.Avalonia.Enums.Icon.Question);
             if (buttonResult.Result == ButtonResult.Yes)
             {
                 Environment.Exit(0);
@@ -108,8 +122,8 @@ namespace PKM_AL
                 case "Выход":
                 Close();
                 break;
-                case "Смена пользователя...":
-                break;
+                case "Смена пользователя...":                
+                break;   
                 case "Устройства...":
                 break;
                 case "Каналы данных...":
