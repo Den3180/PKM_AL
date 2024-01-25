@@ -148,6 +148,7 @@ namespace PKM_AL
                 break;
                 case "Создать БД...":
                     WindowDB windowDb = new WindowDB();
+                    
                     windowDb.WindowShow(this);
                 break;
                 case "О программе...":
