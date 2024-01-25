@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PKM_AL;
 
-public partial class WindowIntro : Window
+public partial class WindowIntro : ClassWindowPKM
 {
     private string[] listIntro = new []{ "Загрузка приложения...", "Подключение к базе данных...", "Инициализация данных..." };
     private Avalonia.Threading.DispatcherTimer dispatcherTimer;
@@ -42,15 +42,5 @@ public partial class WindowIntro : Window
     public void ShowInfo(string info)
     {
         this.LabelInfo.Text = info;
-    }
-
-    public void WindowShow(Window owner)
-    {
-        using(var source=new CancellationTokenSource())
-        {
-            this.ShowDialog(owner).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-            Dispatcher.UIThread.MainLoop(source.Token);
-        }
-
     }
 }
