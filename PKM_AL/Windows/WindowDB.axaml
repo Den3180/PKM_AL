@@ -9,8 +9,8 @@
 	<Grid Margin="10" RowDefinitions="30,auto,30,30,30,30" ColumnDefinitions="80,*">
 		<Label Grid.Row="0" Content="СУБД:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 		<ComboBox Grid.Row="0" Grid.Column="1" Width="120" HorizontalAlignment="Left" Margin="5"
-                  Name ="TypeDB">
-			<ComboBoxItem Content="SQLite" IsSelected="True"/>
+                  Name ="TypeDB" SelectedIndex="0">
+			<ComboBoxItem Content="SQLite"/>
 			<ComboBoxItem Content="PostgreSQL"/>
 		</ComboBox>
 		<Label Grid.Row="1" Grid.Column="0" Content="БД:" VerticalAlignment="Center"/>
@@ -26,7 +26,7 @@
                     Margin="5" Name="TxtLogin"/>
 		<Label Grid.Row="4" Grid.Column="0" Content="Пароль:"/>
 		<TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="100" PasswordChar="*"
-                     Margin="5" Name="Pass"/>
+                     Margin="5" Name="Pass"/>			
 		<Button Grid.Row="5" Grid.Column="1" Content="Применить" Height="30" Width="100"
                 HorizontalAlignment="Right" VerticalAlignment="Top"/>
 	</Grid>

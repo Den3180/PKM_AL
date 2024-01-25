@@ -58,44 +58,60 @@ namespace PKM_AL
             {
                 Task<ButtonResult> buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
                       ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question); 
-
                 if (buttonResult.Result == ButtonResult.Yes)
                 {
-                    using (var source = new CancellationTokenSource())
-                    {
-                        var topLevel = TopLevel.GetTopLevel(this);
-                        var files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-                        {
-                            Title = "Выбор БД",
-                            DefaultExtension = "db",
-                            ShowOverwritePrompt = true,
-                            SuggestedFileName = "pkm.db",
-                            FileTypeChoices = new List<FilePickerFileType>()
-                            {
-                                new FilePickerFileType("") { Patterns=new[] { "*.db" } }
-                            }
-                        });
-                        files.ContinueWith(t=>source.Cancel(),TaskScheduler.FromCurrentSynchronizationContext());
-                        Dispatcher.UIThread.MainLoop(source.Token);
-                        var dialogResult = files.Result;
-                        if (!string.IsNullOrEmpty(dialogResult?.Name))
-                        {
-                            ClassDB.Create(dialogResult?.Path.AbsolutePath);
-                        }
-                        else
-                        {
-                            ClassMessage.ShowMessage(this,"База данных не создана.\nПрограмма будет закрыта.", 
-                                                     icon: MsBox.Avalonia.Enums.Icon.Stop);
-                            Environment.Exit(0);
-                        }
-                    }
+                    CreateDBDialog();
                 }
                 else
                 {
                     ClassMessage.ShowMessage(this, "База данных не создана.\nПрограмма будет закрыта.",
-                         icon: MsBox.Avalonia.Enums.Icon.Stop);
+                         icon: MsBox.Avalonia.Enums.Icon.Stop);                   
                     Environment.Exit(0);
+                }
+            }
+            if (!DB.Open(settings))
+            {
+                ClassMessage.ShowMessage(this, "База данных не доступна.\nПроверьте конфигурацию?"
+                      , "", ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
+                WindowDB windowDb = new WindowDB();
+                windowDb.WindowShow(this);
+                Environment.Exit(0);
+            }
+        }
 
+        /// <summary>
+        /// Создать базу данных.
+        /// </summary>
+        private void CreateDBDialog()
+        {
+            using (var source = new CancellationTokenSource())
+            {
+                var topLevel = TopLevel.GetTopLevel(this);
+                var files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                {
+                    Title = "Выбор БД",
+                    DefaultExtension = "db",
+                    ShowOverwritePrompt = true,
+                    SuggestedFileName = "pkm.db",
+                    FileTypeChoices = new List<FilePickerFileType>()
+                            {
+                                new FilePickerFileType("") { Patterns=new[] { "*.db" } }
+                            }
+                });
+                files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+                var dialogResult = files.Result;
+                if (!string.IsNullOrEmpty(dialogResult?.Name))
+                {
+                    ClassDB.Create(dialogResult?.Path.AbsolutePath);
+                    settings.DB = dialogResult.Path.AbsolutePath;
+                    settings.Save();
+                }
+                else
+                {
+                    ClassMessage.ShowMessage(this, "База данных не создана.\nПрограмма будет закрыта.",
+                                             icon: MsBox.Avalonia.Enums.Icon.Stop);
+                    Environment.Exit(0);
                 }
             }
         }
@@ -138,7 +154,9 @@ namespace PKM_AL
                 break;
                 case "Карта...":
                 break;
-                case "База данных...":
+                case "База данных...":                    
+                    WindowDB windowDb = new WindowDB();
+                    windowDb.WindowShow(this);
                 break;
                 case "Параметры...":
                 break;
@@ -147,8 +165,7 @@ namespace PKM_AL
                 case "Шаблоны...":
                 break;
                 case "Создать БД...":
-                    WindowDB windowDb = new WindowDB();
-                    windowDb.WindowShow(this);//hhhh
+                    CreateDBDialog();
                 break;
                 case "О программе...":
                 break;
