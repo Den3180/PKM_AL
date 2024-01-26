@@ -19,7 +19,7 @@ namespace PKM_AL;
 
 public partial class WindowDB : ClassWindowPKM
 {
-    public WindowDB(Window owner)
+    public WindowDB()
     {
         InitializeComponent();
         ClassSettings settings = ClassSettings.Load();

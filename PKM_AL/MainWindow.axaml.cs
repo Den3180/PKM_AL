@@ -88,7 +88,7 @@ namespace PKM_AL
             {
                 ClassMessage.ShowMessage(this, "База данных не доступна.\nПроверьте конфигурацию!"
                                          , "", ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
-                WindowDB windowDb = new WindowDB(this);
+                WindowDB windowDb = new WindowDB();
                 windowDb.WindowShow(this);
                 Environment.Exit(0);
             }
@@ -165,8 +165,8 @@ namespace PKM_AL
                 case "Карта...":
                 break;
                 case "База данных...":                    
-                    // WindowDB windowDb = new WindowDB();
-                    // windowDb.WindowShow(this);
+                    WindowDB windowDb = new WindowDB();
+                    windowDb.WindowShow(this);
                 break;
                 case "Параметры...":
                 break;

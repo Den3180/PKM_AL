@@ -18,10 +18,11 @@ namespace PKM_AL.Classes.ServiceClasses
         public static string CreateDBDialog(Window owner)
         {
             IStorageFile dialogResult;
+            Task<IStorageFile> files;
             using (var source = new CancellationTokenSource())
             {
                 var topLevel = TopLevel.GetTopLevel(owner);
-                var files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
                 {
                     Title = "Выбор БД",
                     DefaultExtension = "db",
@@ -35,8 +36,8 @@ namespace PKM_AL.Classes.ServiceClasses
                 });
                 files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);
-                dialogResult = files.Result;
             }
+            dialogResult = files.Result;
             if (!string.IsNullOrEmpty(dialogResult?.Name))
             {
                 return dialogResult?.Path.LocalPath;
