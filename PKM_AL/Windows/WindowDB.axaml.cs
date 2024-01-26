@@ -3,6 +3,15 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using AvaloniaTest1.Service;
 using MsBox.Avalonia.Enums;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using Avalonia.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using PKM;
 using PKM_AL.Classes.ServiceClasses;
 
@@ -10,7 +19,7 @@ namespace PKM_AL;
 
 public partial class WindowDB : ClassWindowPKM
 {
-    public WindowDB()
+    public WindowDB(Window owner)
     {
         InitializeComponent();
         ClassSettings settings = ClassSettings.Load();
@@ -20,7 +29,7 @@ public partial class WindowDB : ClassWindowPKM
         this.TxtLogin.Text = settings.Login;
         this.Pass.Text = settings.Password;
     }
-
+        Task < IReadOnlyList < IStorageFile >> files;
     private void ButtonDB_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         string path = ClassDialogWindows.ChooseDBDialog(this);
@@ -36,8 +45,9 @@ public partial class WindowDB : ClassWindowPKM
         settings.Login = this.TxtLogin.Text;
         settings.Password = this.Pass.Text;
         settings.Save();
-        ClassMessage.ShowMessage(this, "Подключение к БД будет выполнено после перезапуска программы.", "", ButtonEnum.Ok,
-                                          icon: MsBox.Avalonia.Enums.Icon.Info);
+        ClassMessage.ShowMessage(this, "РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С… Р±СѓРґРµС‚ РІС‹РїРѕР»РЅРµРЅРѕ РїРѕСЃР»Рµ РїРµСЂРµР·Р°РїСѓСЃРєР° РїСЂРѕРіСЂР°РјРјС‹.",
+                                "", 
+                                ButtonEnum.Ok,icon: MsBox.Avalonia.Enums.Icon.Info);
         this.Close();
     }
 }

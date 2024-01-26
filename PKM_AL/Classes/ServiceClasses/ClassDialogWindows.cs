@@ -29,8 +29,8 @@ namespace PKM_AL.Classes.ServiceClasses
                     SuggestedFileName = "pkm.db",
                     FileTypeChoices = new List<FilePickerFileType>()
                             {
-                                new FilePickerFileType("") { Patterns=new[] { "*.db" } },
-                                new FilePickerFileType("") { Patterns=new[] { "*.*","all files" } }
+                                new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } },
+                                new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
                             }
                 });
                 files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
@@ -51,26 +51,25 @@ namespace PKM_AL.Classes.ServiceClasses
         /// <returns></returns>
         public static string ChooseDBDialog(Window owner)
         {
-            IStorageFile dialogResult;
+            Task < IReadOnlyList < IStorageFile >> files;
             using (var source = new CancellationTokenSource())
             {
                 var topLevel = TopLevel.GetTopLevel(owner);
-                var files = topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+                files = topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
                     Title = "Выбор БД",
                     AllowMultiple=false,
                     FileTypeFilter = new List<FilePickerFileType>()
                     {
-                        new FilePickerFileType("") { Patterns=new[] { "*.db" } }
+                        new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } }
                     }
-                }); 
+                });
             files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
             Dispatcher.UIThread.MainLoop(source.Token);
-            dialogResult = files.Result[0];
             }
-            if (!string.IsNullOrEmpty(dialogResult?.Name))
+            if (files.Result.Count > 0)
             {
-                return dialogResult?.Path.LocalPath;
+                return files.Result[0].Path.LocalPath;
             }
             return string.Empty;
         }
