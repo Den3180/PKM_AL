@@ -1169,7 +1169,7 @@ namespace PKM
         //    List<ClassEvent> lst = new List<ClassEvent>();
         //    SqliteCommand cmd = conn.CreateCommand();
         //    cmd.CommandText = $"SELECT rowid, * FROM log WHERE type={type} AND namdev='{nameDev}' ORDER BY dt ASC";
-            
+
         //    using (SqliteDataReader reader = cmd.ExecuteReader())       //Считываем с базы.
         //    {
         //        while (reader.Read())                                   //Построчное чтение.
@@ -1184,7 +1184,7 @@ namespace PKM
         //            lst.Add(ev);                                         //Добавление считаной строки в список событий.
         //        }
         //    }
-            
+
         //    return lst;
         //}
 
@@ -1440,230 +1440,230 @@ namespace PKM
 
         //#endregion
 
-        //#region [Update]
+        #region [Update]
 
-        //public virtual bool Update(int Version)
-        //{
-        //    if (Version < 2)
-        //    {
-        //        if (!Update2()) return false;
-        //        InfoEdit(2);
-        //    }
-        //    if (Version < 3)
-        //    {
-        //        if (!Update3()) return false;
-        //        InfoEdit(3);
-        //    }
-        //    if (Version < 4)
-        //    {
-        //        if (!Update4()) return false;
-        //        InfoEdit(4);
-        //    }
-        //    if (Version < 5)
-        //    {
-        //        if (!Update5()) return false;
-        //        InfoEdit(5);
-        //    }
-        //    if (Version < 6)
-        //    {
-        //        if (!Update6()) return false;
-        //        InfoEdit(6);
-        //    }
-        //    if (Version < 7)
-        //    {
-        //        if (!Update7()) return false;
-        //        InfoEdit(7);
-        //    }
-        //    return true;
-        //}
+        public virtual bool Update(int Version)
+        {
+            if (Version < 2)
+            {
+                if (!Update2()) return false;
+                InfoEdit(2);
+            }
+            if (Version < 3)
+            {
+                if (!Update3()) return false;
+                InfoEdit(3);
+            }
+            if (Version < 4)
+            {
+                if (!Update4()) return false;
+                InfoEdit(4);
+            }
+            if (Version < 5)
+            {
+                if (!Update5()) return false;
+                InfoEdit(5);
+            }
+            if (Version < 6)
+            {
+                if (!Update6()) return false;
+                InfoEdit(6);
+            }
+            if (Version < 7)
+            {
+                if (!Update7()) return false;
+                InfoEdit(7);
+            }
+            return true;
+        }
 
-        //private bool Update2()
-        //{
-        //    var transaction = conn.BeginTransaction();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DROP TABLE IF EXISTS lib";
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch
-        //    {
-        //        transaction.Rollback();
-        //        return false;
-        //    }
-        //    cmd.CommandText = "CREATE TABLE lib(name TEXT, pic BLOB)";
-        //    cmd.ExecuteNonQuery();
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch
-        //    {
-        //        transaction.Rollback();
-        //        return false;
-        //    }
-        //    transaction.Commit();
-        //    return true;
-        //}
+        private bool Update2()
+        {
+            var transaction = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "DROP TABLE IF EXISTS lib";
+            try { cmd.ExecuteNonQuery(); }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
+            cmd.CommandText = "CREATE TABLE lib(name TEXT, pic BLOB)";
+            cmd.ExecuteNonQuery();
+            try { cmd.ExecuteNonQuery(); }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
+            transaction.Commit();
+            return true;
+        }
 
-        //private bool Update3()
-        //{
-        //    var transaction = conn.BeginTransaction();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "ALTER TABLE dev ADD model INTEGER";
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch
-        //    {
-        //        transaction.Rollback();
-        //        return false;
-        //    }
-        //    transaction.Commit();
-        //    return true;
-        //}
+        private bool Update3()
+        {
+            var transaction = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "ALTER TABLE dev ADD model INTEGER";
+            try { cmd.ExecuteNonQuery(); }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
+            transaction.Commit();
+            return true;
+        }
 
-        //private bool Update4()
-        //{
-        //    var transaction = conn.BeginTransaction();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "CREATE TABLE sub (var TEXT, val INTEGER, txt TEXT, fcolor INTEGER,"
-        //        + " bcolor INTEGER)";
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch (Exception Ex)
-        //    {
-        //        transaction.Rollback();
-        //        ClassLog.Write(Ex.Message);
-        //        return false;
-        //    }
-        //    transaction.Commit();
-        //    return true;
-        //}
+        private bool Update4()
+        {
+            var transaction = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "CREATE TABLE sub (var TEXT, val INTEGER, txt TEXT, fcolor INTEGER,"
+                + " bcolor INTEGER)";
+            try { cmd.ExecuteNonQuery(); }
+            catch (Exception Ex)
+            {
+                transaction.Rollback();
+                ClassLog.Write(Ex.Message);
+                return false;
+            }
+            transaction.Commit();
+            return true;
+        }
 
-        //private bool Update5()
-        //{
-        //    var transaction = conn.BeginTransaction();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "ALTER TABLE reg ADD accuracy INTEGER";
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch
-        //    {
-        //        transaction.Rollback();
-        //        return false;
-        //    }
-        //    transaction.Commit();
-        //    return true;
-        //}
+        private bool Update5()
+        {
+            var transaction = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "ALTER TABLE reg ADD accuracy INTEGER";
+            try { cmd.ExecuteNonQuery(); }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
+            transaction.Commit();
+            return true;
+        }
 
-        //private bool Update6()
-        //{
-        //    var transaction = conn.BeginTransaction();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "ALTER TABLE reg ADD nval NUMERIC";
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch
-        //    {
-        //        transaction.Rollback();
-        //        return false;
-        //    }
-        //    transaction.Commit();
-        //    return true;
-        //}
+        private bool Update6()
+        {
+            var transaction = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "ALTER TABLE reg ADD nval NUMERIC";
+            try { cmd.ExecuteNonQuery(); }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
+            transaction.Commit();
+            return true;
+        }
 
-        //private bool Update7()
-        //{
-        //    var transaction = conn.BeginTransaction();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    try
-        //    {
-        //        cmd.CommandText = "ALTER TABLE info ADD lpu TEXT";
-        //        cmd.ExecuteNonQuery();
-        //        cmd.CommandText = "ALTER TABLE dev ADD lat REAL";
-        //        cmd.ExecuteNonQuery();
-        //        cmd.CommandText = "ALTER TABLE dev ADD longt REAL";
-        //        cmd.ExecuteNonQuery();
-        //        cmd.CommandText = "ALTER TABLE dev ADD elev REAL";
-        //        cmd.ExecuteNonQuery();
-        //        cmd.CommandText = "ALTER TABLE dev ADD picket TEXT";
-        //        cmd.ExecuteNonQuery();
-        //        cmd.CommandText = "ALTER TABLE log ADD namdev TEXT";
-        //        cmd.ExecuteNonQuery();
+        private bool Update7()
+        {
+            var transaction = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            try
+            {
+                cmd.CommandText = "ALTER TABLE info ADD lpu TEXT";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "ALTER TABLE dev ADD lat REAL";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "ALTER TABLE dev ADD longt REAL";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "ALTER TABLE dev ADD elev REAL";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "ALTER TABLE dev ADD picket TEXT";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "ALTER TABLE log ADD namdev TEXT";
+                cmd.ExecuteNonQuery();
 
-        //        //Создать таблицу az.
-        //        cmd.CommandText = "CREATE TABLE az (Identity TEXT,Location TEXT, TypeOfConstruction TEXT,"
-        //            + "ElectrodeMaterial TEXT, CurrentLoad REAL, DissolutionRate REAL, SurfaceArea REAL, WeightAZ REAL, LenghtAZ INTEGER,"
-        //            + "Diagonal INTEGER, MassAssembly REAL, MountingMethod TEXT, ServiceLife INTEGER, KMA TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу ehz1.
-        //        cmd.CommandText = "CREATE TABLE ehz1 (daterec TEXT, namelpu TEXT, nameobj TEXT, km TEXT, ukz INTEGER, skz INTEGER, typeskz TEXT," +
-        //            " dateinskz TEXT, methodground TEXT, typeground TEXT, elmeter TEXT, typecontrol TEXT, bsz TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу ehz4.
-        //        cmd.CommandText = "CREATE TABLE ehz4(daterec TEXT, namelpu TEXT, nameobj TEXT, upz TEXT, lastrepair TEXT, location TEXT," +
-        //            " typeprotect TEXT, numprotect INTEGER, startupz TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу ehz6.
-        //        cmd.CommandText = "CREATE TABLE ehz6(daterec TEXT, namelpu TEXT, nameobj TEXT, actpit TEXT, datepit TEXT, km TEXT, gps TEXT, " +
-        //            "lenghtpit INTEGER, dnar INTEGER, thickness INTEGER, reasonpit TEXT, deep REAL, typeground TEXT, soilresi INTEGER, " +
-        //            "insulatiomat TEXT, adhesiomat TEXT, damagearea INTEGER, nutcorrdamage TEXT, maxdeepdamage INTEGER, damage1mm INTEGER," +
-        //            "damage13 INTEGER, damage3 INTEGER, ute TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу ehz8q.
-        //        cmd.CommandText = "CREATE TABLE ehz8q(daterec TEXT, namelpu TEXT, nametube TEXT, km TEXT, nameroad TEXT, typeroad TEXT," +
-        //            " datemeasure TEXT, ustart NUMERIC, upatr NUMERIC, usvech NUMERIC, uend NUMERIC, upatrend NUMERIC, usvechend NUMERIC, " +
-        //            "resis INTEGER, note TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу f02year.
-        //        cmd.CommandText = "CREATE TABLE f02year(daterec TEXT,namelpu TEXT,namejbj TEXT, km REAL, typeehz TEXT, numukz TEXT, " +
-        //            "stateukz TEXT,tokukz REAL,numskz TEXT,tokmedskz REAL,uskz REAL,azresist REAL,numupz TEXT,stateupz TEXT,tokupz REAL," +
-        //            "numudz TEXT,stateudz TEXT,tokudz REAL)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу f141gas.
-        //        cmd.CommandText = "CREATE TABLE f141gas (datarec TEXT,namelpu TEXT,nameobj TEXT,number INTEGER, typework TEXT, " +
-        //            "smrpot REAL,smrplan REAL, smrfact REAL, mtrpot REAL, mtrplan REAL, mtrfact REAL, pirpot REAL, pirplan REAL," +
-        //            " pirfact REAL, ukzpot INTEGER, ukzplan INTEGER, ukzfact INTEGER, vlpot INTEGER, vlplan INTEGER, vlfact INTEGER," +
-        //            " udzpot INTEGER, udzplan INTEGER, udzfact INTEGER, upzpot INTEGER, upzplan INTEGER, upzfact INTEGER," +
-        //            " vstavkapot INTEGER, vstavkaplan INTEGER, vstavkafact INTEGER, kippot INTEGER, kipplan INTEGER, kipfact INTEGER," +
-        //            " istochtokpot INTEGER, istochtokplan INTEGER, istochtokfact INTEGER, prochpot INTEGER, prochplan INTEGER, " +
-        //            " prochfact INTEGER, note TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу f40year.
-        //        cmd.CommandText = "CREATE TABLE f40year(daterec TEXT,namelpu TEXT,nameobj TEXT,singlepipe INTEGER,countKIP INTEGER," +
-        //                         "countUKZ INTEGER,countUDZ INTEGER,countUPZ INTEGER,countsource  INTEGER,countins INTEGER,lengthLEP INTEGER," +
-        //                         "countSKZtime INTEGER,countSKZtele INTEGER,electricity INTEGER, electricityload INTEGER,rejectionLEP INTEGER," +
-        //                         "rejectionEHZ INTEGER,rejectionSUM INTEGER,securitysinglepipe INTEGER,securityspKPZ INTEGER," +
-        //                         " securitylenght TEXT,securitytime TEXT, securityKPZ TEXT,securityUvom TEXT,lenghtVKO INTEGER," +
-        //                         "lenghtPKO INTEGER,transresisMax INTEGER,transresisMin INTEGER)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу f41year.
-        //        cmd.CommandText = "CREATE TABLE f41year(Field2 TEXT,Field3 TEXT,Field4 TEXT,Field5 REAL,Field6 REAL,Field7 REAL," +
-        //            "Field8 INTEGER,Field9 TEXT,Field10 TEXT,Field11 TEXT,Field12 REAL,Field13 REAL,Field14 REAL,Field15 REAL," +
-        //            "Field16 REAL,Field17 REAL,Field18 INTEGER,Field19 INTEGER,Field20 INTEGER,Field21 INTEGER,Field22 INTEGER," +
-        //            "Field23 INTEGER,Field24 INTEGER,Field25 INTEGER,Field26 INTEGER,Field27 INTEGER,Field28 INTEGER,Field29 INTEGER," +
-        //            "Field30 REAL,Field31 REAL,Field32 TEXT,Field33 REAL,Field34 REAL,Field35 TEXT,Field36 REAL,Field37 INTEGER," +
-        //            "Field38 INTEGER,Field39 TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу f52gas.
-        //        cmd.CommandText = "CREATE TABLE f52gas(Field1 TEXT,Field2 TEXT,Field3 TEXT,Field4 TEXT,Field5 TEXT,Field6 TEXT," +
-        //            "Field7 REAL,Field8 INTEGER,Field9 INTEGER,Field10 INTEGER,Field11 INTEGER,Field12 INTEGER,Field13 INTEGER," +
-        //            "Field14 INTEGER,Field15 INTEGER,Field16 INTEGER,Field17 INTEGER,Field18 INTEGER,Field19 INTEGER,Field20 INTEGER," +
-        //            "Field21 INTEGER,Field22 INTEGER,Field23 INTEGER,Field24 INTEGER,Field25 INTEGER,Field26 INTEGER,Field27 INTEGER," +
-        //            "Field28 INTEGER,Field29 INTEGER,Field30 INTEGER,Field31  INTEGER,Field32 INTEGER,Field33 INTEGER,Field34 INTEGER," +
-        //            "Field35 INTEGER,Field36 INTEGER,Field37 INTEGER)";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу skz.
-        //        cmd.CommandText = "CREATE TABLE skz(id INTEGER NOT NULL,unomin REAL,nactivin REAL,nfullin REAL,unomout REAL," +
-        //            "inomout REAL,nnomout REAL,fcode TEXT,fnumber INTEGER,modulescount INTEGER,fyear TEXT, yearstart TEXT," +
-        //            "resource INTEGER, PRIMARY KEY(id))";
-        //        cmd.ExecuteNonQuery();
-        //        //Создать таблицу vei.
-        //        cmd.CommandText = "CREATE TABLE vei(daterec TEXT, namelpu TEXT, typeobj TEXT, location TEXT, km TEXT, typeflange TEXT, " +
-        //            "placement TEXT, datebegin TEXT, manufactory TEXT, datemade TEXT, serial TEXT, dnar INTEGER, pmax INTEGER, " +
-        //            "status TEXT, kip TEXT, spark TEXT, bsz TEXT)";
-        //        cmd.ExecuteNonQuery();
-        //    }
-        //    catch
-        //    {
-        //        transaction.Rollback();
-        //        return false;
-        //    }
-        //    transaction.Commit();
-        //    return true;
-        //}
+                //Создать таблицу az.
+                cmd.CommandText = "CREATE TABLE az (Identity TEXT,Location TEXT, TypeOfConstruction TEXT,"
+                    + "ElectrodeMaterial TEXT, CurrentLoad REAL, DissolutionRate REAL, SurfaceArea REAL, WeightAZ REAL, LenghtAZ INTEGER,"
+                    + "Diagonal INTEGER, MassAssembly REAL, MountingMethod TEXT, ServiceLife INTEGER, KMA TEXT)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу ehz1.
+                cmd.CommandText = "CREATE TABLE ehz1 (daterec TEXT, namelpu TEXT, nameobj TEXT, km TEXT, ukz INTEGER, skz INTEGER, typeskz TEXT," +
+                    " dateinskz TEXT, methodground TEXT, typeground TEXT, elmeter TEXT, typecontrol TEXT, bsz TEXT)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу ehz4.
+                cmd.CommandText = "CREATE TABLE ehz4(daterec TEXT, namelpu TEXT, nameobj TEXT, upz TEXT, lastrepair TEXT, location TEXT," +
+                    " typeprotect TEXT, numprotect INTEGER, startupz TEXT)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу ehz6.
+                cmd.CommandText = "CREATE TABLE ehz6(daterec TEXT, namelpu TEXT, nameobj TEXT, actpit TEXT, datepit TEXT, km TEXT, gps TEXT, " +
+                    "lenghtpit INTEGER, dnar INTEGER, thickness INTEGER, reasonpit TEXT, deep REAL, typeground TEXT, soilresi INTEGER, " +
+                    "insulatiomat TEXT, adhesiomat TEXT, damagearea INTEGER, nutcorrdamage TEXT, maxdeepdamage INTEGER, damage1mm INTEGER," +
+                    "damage13 INTEGER, damage3 INTEGER, ute TEXT)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу ehz8q.
+                cmd.CommandText = "CREATE TABLE ehz8q(daterec TEXT, namelpu TEXT, nametube TEXT, km TEXT, nameroad TEXT, typeroad TEXT," +
+                    " datemeasure TEXT, ustart NUMERIC, upatr NUMERIC, usvech NUMERIC, uend NUMERIC, upatrend NUMERIC, usvechend NUMERIC, " +
+                    "resis INTEGER, note TEXT)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу f02year.
+                cmd.CommandText = "CREATE TABLE f02year(daterec TEXT,namelpu TEXT,namejbj TEXT, km REAL, typeehz TEXT, numukz TEXT, " +
+                    "stateukz TEXT,tokukz REAL,numskz TEXT,tokmedskz REAL,uskz REAL,azresist REAL,numupz TEXT,stateupz TEXT,tokupz REAL," +
+                    "numudz TEXT,stateudz TEXT,tokudz REAL)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу f141gas.
+                cmd.CommandText = "CREATE TABLE f141gas (datarec TEXT,namelpu TEXT,nameobj TEXT,number INTEGER, typework TEXT, " +
+                    "smrpot REAL,smrplan REAL, smrfact REAL, mtrpot REAL, mtrplan REAL, mtrfact REAL, pirpot REAL, pirplan REAL," +
+                    " pirfact REAL, ukzpot INTEGER, ukzplan INTEGER, ukzfact INTEGER, vlpot INTEGER, vlplan INTEGER, vlfact INTEGER," +
+                    " udzpot INTEGER, udzplan INTEGER, udzfact INTEGER, upzpot INTEGER, upzplan INTEGER, upzfact INTEGER," +
+                    " vstavkapot INTEGER, vstavkaplan INTEGER, vstavkafact INTEGER, kippot INTEGER, kipplan INTEGER, kipfact INTEGER," +
+                    " istochtokpot INTEGER, istochtokplan INTEGER, istochtokfact INTEGER, prochpot INTEGER, prochplan INTEGER, " +
+                    " prochfact INTEGER, note TEXT)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу f40year.
+                cmd.CommandText = "CREATE TABLE f40year(daterec TEXT,namelpu TEXT,nameobj TEXT,singlepipe INTEGER,countKIP INTEGER," +
+                                 "countUKZ INTEGER,countUDZ INTEGER,countUPZ INTEGER,countsource  INTEGER,countins INTEGER,lengthLEP INTEGER," +
+                                 "countSKZtime INTEGER,countSKZtele INTEGER,electricity INTEGER, electricityload INTEGER,rejectionLEP INTEGER," +
+                                 "rejectionEHZ INTEGER,rejectionSUM INTEGER,securitysinglepipe INTEGER,securityspKPZ INTEGER," +
+                                 " securitylenght TEXT,securitytime TEXT, securityKPZ TEXT,securityUvom TEXT,lenghtVKO INTEGER," +
+                                 "lenghtPKO INTEGER,transresisMax INTEGER,transresisMin INTEGER)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу f41year.
+                cmd.CommandText = "CREATE TABLE f41year(Field2 TEXT,Field3 TEXT,Field4 TEXT,Field5 REAL,Field6 REAL,Field7 REAL," +
+                    "Field8 INTEGER,Field9 TEXT,Field10 TEXT,Field11 TEXT,Field12 REAL,Field13 REAL,Field14 REAL,Field15 REAL," +
+                    "Field16 REAL,Field17 REAL,Field18 INTEGER,Field19 INTEGER,Field20 INTEGER,Field21 INTEGER,Field22 INTEGER," +
+                    "Field23 INTEGER,Field24 INTEGER,Field25 INTEGER,Field26 INTEGER,Field27 INTEGER,Field28 INTEGER,Field29 INTEGER," +
+                    "Field30 REAL,Field31 REAL,Field32 TEXT,Field33 REAL,Field34 REAL,Field35 TEXT,Field36 REAL,Field37 INTEGER," +
+                    "Field38 INTEGER,Field39 TEXT)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу f52gas.
+                cmd.CommandText = "CREATE TABLE f52gas(Field1 TEXT,Field2 TEXT,Field3 TEXT,Field4 TEXT,Field5 TEXT,Field6 TEXT," +
+                    "Field7 REAL,Field8 INTEGER,Field9 INTEGER,Field10 INTEGER,Field11 INTEGER,Field12 INTEGER,Field13 INTEGER," +
+                    "Field14 INTEGER,Field15 INTEGER,Field16 INTEGER,Field17 INTEGER,Field18 INTEGER,Field19 INTEGER,Field20 INTEGER," +
+                    "Field21 INTEGER,Field22 INTEGER,Field23 INTEGER,Field24 INTEGER,Field25 INTEGER,Field26 INTEGER,Field27 INTEGER," +
+                    "Field28 INTEGER,Field29 INTEGER,Field30 INTEGER,Field31  INTEGER,Field32 INTEGER,Field33 INTEGER,Field34 INTEGER," +
+                    "Field35 INTEGER,Field36 INTEGER,Field37 INTEGER)";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу skz.
+                cmd.CommandText = "CREATE TABLE skz(id INTEGER NOT NULL,unomin REAL,nactivin REAL,nfullin REAL,unomout REAL," +
+                    "inomout REAL,nnomout REAL,fcode TEXT,fnumber INTEGER,modulescount INTEGER,fyear TEXT, yearstart TEXT," +
+                    "resource INTEGER, PRIMARY KEY(id))";
+                cmd.ExecuteNonQuery();
+                //Создать таблицу vei.
+                cmd.CommandText = "CREATE TABLE vei(daterec TEXT, namelpu TEXT, typeobj TEXT, location TEXT, km TEXT, typeflange TEXT, " +
+                    "placement TEXT, datebegin TEXT, manufactory TEXT, datemade TEXT, serial TEXT, dnar INTEGER, pmax INTEGER, " +
+                    "status TEXT, kip TEXT, spark TEXT, bsz TEXT)";
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
+            transaction.Commit();
+            return true;
+        }
 
-        //#endregion
+        #endregion
 
         //#region[Отчеты]
 
@@ -1891,7 +1891,7 @@ namespace PKM
         //    {
 
         //    }        
-        
+
         //}
 
         //public virtual bool EventAddArchive(ClassEvent obj)
