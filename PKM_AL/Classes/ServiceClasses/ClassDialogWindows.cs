@@ -29,8 +29,8 @@ namespace PKM_AL.Classes.ServiceClasses
                     SuggestedFileName = "pkm.db",
                     FileTypeChoices = new List<FilePickerFileType>()
                             {
-                                new FilePickerFileType("") { Patterns=new[] { "*.db" } },
-                                new FilePickerFileType("") { Patterns=new[] { "*.*","all files" } }
+                                new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } },
+                                new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*"} }
                             }
                 });
                 files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
@@ -61,7 +61,7 @@ namespace PKM_AL.Classes.ServiceClasses
                     AllowMultiple=false,
                     FileTypeFilter = new List<FilePickerFileType>()
                     {
-                        new FilePickerFileType("") { Patterns=new[] { "*.db" } }
+                        new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } }
                     }
                 }); 
             files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
