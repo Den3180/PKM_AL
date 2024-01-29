@@ -74,7 +74,6 @@ namespace PKM_AL
                         ClassMessage.ShowMessage(this, "База данных не создана.\nПриложение будет закрыто.",
                                                 icon: MsBox.Avalonia.Enums.Icon.Stop);
                         Environment.Exit(0);
-
                     }
                 }
                 else
@@ -167,6 +166,7 @@ namespace PKM_AL
                 case "База данных...":                    
                     WindowDB windowDb = new WindowDB();
                     windowDb.WindowShow(this);
+                    Environment.Exit(0);
                 break;
                 case "Параметры...":
                 break;
@@ -174,9 +174,13 @@ namespace PKM_AL
                 break;
                 case "Шаблоны...":
                 break;
-                case "Создать БД...":
-                    //CreateDBDialog();
-                break;
+                case "Создать БД...":                   
+                    string path = ClassDialogWindows.CreateDBDialog(this);
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        ClassDB.Create(path);
+                    }                    
+                    break;
                 case "О программе...":
                 break;
                 default:
