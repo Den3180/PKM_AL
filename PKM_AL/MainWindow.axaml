@@ -2,8 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:PKM_AL"
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         x:Class="PKM_AL.MainWindow"
+		x:DataType="vm:MainWindow"
         Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 	<DockPanel>
 		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="LightGray">
@@ -114,17 +116,13 @@
 		<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
 					  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="LightGray" />
 		<ContentControl Grid.Column="2" Name="ContentArea"/>
-		<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectionChanged">
-			<!--<TreeView.ItemTemplate>
+		<!--<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectionChanged" ItemsSource="{Binding Groups}">
+			<TreeView.ItemTemplate>
 				<TreeDataTemplate ItemsSource="{Binding SubGroups}">
-					<StackPanel Orientation="Horizontal" Margin="1">
-						<Image Source="{Binding IconUri}" Height="16"></Image>
-						<TextBlock Text="{Binding Name}" Margin="5,0,0,0"></TextBlock>
-					</StackPanel>
+					<TextBlock Text="{Binding Name}"/>
 				</TreeDataTemplate>
-			</TreeView.ItemTemplate>-->
-		</TreeView>
+			</TreeView.ItemTemplate>
+		</TreeView>-->
 			</Grid>
-
 	</DockPanel> 
 </Window>

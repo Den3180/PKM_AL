@@ -23,8 +23,8 @@ namespace PKM_AL
 {
     public partial class MainWindow : Window
     {
-        public static List<ClassGroup> Groups;
         public static ClassDB DB;
+        public static ObservableCollection<ClassGroup> Groups;
         public static ObservableCollection<ClassDevice> Devices;
         public static ObservableCollection<ClassChannel> Channels;
         public static ObservableCollection<ClassEvent> Events;
@@ -128,6 +128,29 @@ namespace PKM_AL
             Events = new ObservableCollection<ClassEvent>();
             Devices = new ObservableCollection<ClassDevice>(DB.DevicesLoad());
             Channels = new ObservableCollection<ClassChannel>(DB.RegistriesLoad(0));
+            Groups = new ObservableCollection<ClassGroup>();
+
+            ClassGroup d = new ClassGroup();
+            d.ID = Groups.Count + 1;
+            d.Name = "Устройства";
+            d.IconUri = "folders_explorer.png";
+            d.GroupType = ClassGroup.eType.Devices;
+            //Если из базы вытянуты хоть какие-то устройства.
+            foreach (ClassDevice item in Devices)
+            {
+                //Добавляем их в подузлы.
+                d.SubGroups.Add(new ClassItem()
+                {
+                    ID = item.ID,
+                    NameCh = item.Name,
+                    IconUri = "Resources/hardware.png",
+                    Group = d,
+                    ItemType = ClassItem.eType.Device
+                });
+            }
+            //Добавить узел дерева.
+            Groups.Add(d);
+            //this.treeView.ItemsSource = Groups;
         }
 
 
