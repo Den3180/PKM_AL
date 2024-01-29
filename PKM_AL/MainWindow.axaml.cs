@@ -25,8 +25,10 @@ namespace PKM_AL
     {
         public static List<ClassGroup> Groups;
         public static ClassDB DB;
-        //public static ObservableCollection<ClassDevice> Devices;
-        //public static ObservableCollection<ClassChannel> Channels;
+        public static ObservableCollection<ClassDevice> Devices;
+        public static ObservableCollection<ClassChannel> Channels;
+        public static ObservableCollection<ClassEvent> Events;
+
         public static ClassSettings settings;
 
         public MainWindow()
@@ -122,7 +124,12 @@ namespace PKM_AL
                     }
                 }
             }
+
+            Events = new ObservableCollection<ClassEvent>();
+            Devices = new ObservableCollection<ClassDevice>(DB.DevicesLoad());
+            Channels = new ObservableCollection<ClassChannel>(DB.RegistriesLoad(0));
         }
+
 
 
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)

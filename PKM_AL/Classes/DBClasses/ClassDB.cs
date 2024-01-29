@@ -19,6 +19,7 @@ using SQLitePCL;
 using Npgsql;
 using Org.BouncyCastle.Bcpg;
 using System.Data;
+using PKM_AL;
 
 namespace PKM
 {
@@ -233,52 +234,53 @@ namespace PKM
 
         #endregion
 
-        //#region [Devices]
+        #region [Devices]
 
-        //public virtual List<ClassDevice> DevicesLoad()
-        //{
-        //    List<ClassDevice> lst = new List<ClassDevice>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    string commandTextDevices = "SELECT rowid, * FROM dev ORDER BY name";
-        //    cmd.CommandText = commandTextDevices;
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassDevice obj = new ClassDevice();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Name = reader["name"].ToString();
-        //            if (reader["prot"] != DBNull.Value)
-        //                obj.Protocol = (ClassDevice.EnumProtocol)Convert.ToInt32(reader["prot"]);
-        //            obj.Period = Convert.ToInt32(reader["period"]);
-        //            obj.IPAddress = Convert.ToString(reader["ip_adr"]);
-        //            if (reader["ip_port"] != DBNull.Value)
-        //                obj.IPPort =  Convert.ToInt32(reader["ip_port"]);
-        //            obj.Address = Convert.ToInt32(reader["address"]);
-        //            if (reader["port"] != DBNull.Value)
-        //                obj.ComPort = (string)reader["port"];
-        //            if (reader["sim"] != DBNull.Value)
-        //                obj.SIM = (string)reader["sim"];
-        //            if (reader["model"] != DBNull.Value)
-        //                obj.Model = (ClassDevice.EnumModel)Convert.ToInt32(reader["model"]);
-        //            if (reader["lat"] != DBNull.Value)
-        //                obj.Latitude = Convert.ToDouble(reader["lat"]);
-        //            if (reader["longt"] != DBNull.Value)
-        //                obj.Longitude = Convert.ToDouble(reader["longt"]);
-        //            if (reader["elev"] != DBNull.Value)
-        //                obj.Elevation = Convert.ToDouble(reader["elev"]);
-        //            if (reader["picket"] != DBNull.Value)
-        //                obj.Picket = (string)(reader["picket"]);
-        //            lst.Add(obj);
+        public virtual List<ClassDevice> DevicesLoad()
+        {
+            List<ClassDevice> lst = new List<ClassDevice>();
+            SqliteCommand cmd = conn.CreateCommand();
+            string commandTextDevices = "SELECT rowid, * FROM dev ORDER BY name";
+            cmd.CommandText = commandTextDevices;
+            using (SqliteDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ClassDevice obj = new ClassDevice();
+                    obj.ID = Convert.ToInt32(reader["rowid"]);
+                    obj.Name = reader["name"].ToString();
+                    if (reader["prot"] != DBNull.Value)
+                        obj.Protocol = (ClassDevice.EnumProtocol)Convert.ToInt32(reader["prot"]);
+                    obj.Period = Convert.ToInt32(reader["period"]);
+                    obj.IPAddress = Convert.ToString(reader["ip_adr"]);
+                    if (reader["ip_port"] != DBNull.Value)
+                        obj.IPPort = Convert.ToInt32(reader["ip_port"]);
+                    obj.Address = Convert.ToInt32(reader["address"]);
+                    if (reader["port"] != DBNull.Value)
+                        obj.ComPort = (string)reader["port"];
+                    if (reader["sim"] != DBNull.Value)
+                        obj.SIM = (string)reader["sim"];
+                    if (reader["model"] != DBNull.Value)
+                        obj.Model = (ClassDevice.EnumModel)Convert.ToInt32(reader["model"]);
+                    if (reader["lat"] != DBNull.Value)
+                        obj.Latitude = Convert.ToDouble(reader["lat"]);
+                    if (reader["longt"] != DBNull.Value)
+                        obj.Longitude = Convert.ToDouble(reader["longt"]);
+                    if (reader["elev"] != DBNull.Value)
+                        obj.Elevation = Convert.ToDouble(reader["elev"]);
+                    if (reader["picket"] != DBNull.Value)
+                        obj.Picket = (string)(reader["picket"]);
+                    lst.Add(obj);
 
-        //            if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-        //            {
-        //                LoadSKZData(obj);
-        //            }
-        //        }
-        //    }
-        //    return lst;
-        //}
+                    //Загрузка СКЗ.
+                    //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+                    //{
+                    //    LoadSKZData(obj);
+                    //}
+                }
+            }
+            return lst;
+        }
 
         ///// <summary>
         ///// Загрузка данных СКЗ.
@@ -310,41 +312,44 @@ namespace PKM
         //}
 
 
-        ///// <summary>
-        ///// Добавление устройства в БД.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public virtual bool DeviceAdd(ClassDevice obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO dev (name, prot, period, ip_adr, ip_port, address, port, sim,"
-        //        + " model, lat, longt, elev, picket)"
-        //        + " VALUES(@Name, @Protocol, @Period, @IPAddress, @IPPort, @Address, @Port, @SIM,"
-        //        + " @Model, @Latitude, @Longitude, @Elevation, @Picket)";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Protocol", (int)obj.Protocol);
-        //    cmd.Parameters.AddWithValue("@Period", obj.Period);
-        //    cmd.Parameters.AddWithValue("@IPAddress", obj.IPAddress);
-        //    cmd.Parameters.AddWithValue("@IPPort", obj.IPPort);
-        //    cmd.Parameters.AddWithValue("@Address", obj.Address);
-        //    cmd.Parameters.AddWithValue("@Port", obj.ComPort);
-        //    cmd.Parameters.AddWithValue("@SIM", obj.SIM);
-        //    cmd.Parameters.AddWithValue("@Model", (int)obj.Model);
-        //    cmd.Parameters.AddWithValue("@Latitude", obj.Latitude);
-        //    cmd.Parameters.AddWithValue("@Longitude", obj.Longitude);
-        //    cmd.Parameters.AddWithValue("@Elevation", obj.Elevation);
-        //    cmd.Parameters.AddWithValue("@Picket", obj.Picket);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    if(obj.Model==ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-        //    {
-        //        AddSKZData(cmd,obj);
-        //    }
-        //    return true;
-        //}
+        /// <summary>
+        /// Добавление устройства в БД.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual bool DeviceAdd(ClassDevice obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "INSERT INTO dev (name, prot, period, ip_adr, ip_port, address, port, sim,"
+                + " model, lat, longt, elev, picket)"
+                + " VALUES(@Name, @Protocol, @Period, @IPAddress, @IPPort, @Address, @Port, @SIM,"
+                + " @Model, @Latitude, @Longitude, @Elevation, @Picket)";
+            cmd.Parameters.AddWithValue("@Name", obj.Name);
+            cmd.Parameters.AddWithValue("@Protocol", (int)obj.Protocol);
+            cmd.Parameters.AddWithValue("@Period", obj.Period);
+            cmd.Parameters.AddWithValue("@IPAddress", obj.IPAddress);
+            cmd.Parameters.AddWithValue("@IPPort", obj.IPPort);
+            cmd.Parameters.AddWithValue("@Address", obj.Address);
+            cmd.Parameters.AddWithValue("@Port", obj.ComPort);
+            cmd.Parameters.AddWithValue("@SIM", obj.SIM);
+            cmd.Parameters.AddWithValue("@Model", (int)obj.Model);
+            cmd.Parameters.AddWithValue("@Latitude", obj.Latitude);
+            cmd.Parameters.AddWithValue("@Longitude", obj.Longitude);
+            cmd.Parameters.AddWithValue("@Elevation", obj.Elevation);
+            cmd.Parameters.AddWithValue("@Picket", obj.Picket);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            cmd.CommandText = "SELECT last_insert_rowid()";
+            obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+            
+            //Добавление СКЗ.
+            //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+            //{
+            //    AddSKZData(cmd, obj);
+            //}
+            return true;
+        }
+
         ///// <summary>
         ///// Добавление паспортных параметров СКЗ.
         ///// </summary>
@@ -371,40 +376,44 @@ namespace PKM
         //    catch { return; }
         //}
 
-        ///// <summary>
-        ///// Редактирование устройства в БД.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public virtual bool DeviceEdit(ClassDevice obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE dev SET name = @Name, prot = @Protocol, period = @Period,"
-        //        + " ip_adr = @IPAddress, ip_port = @IPPort, address = @Address, port = @Port,"
-        //        + " sim = @SIM, model = @Model, lat=@Latitude, longt=@Longitude, elev=@Elevation, picket=@Picket" 
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Protocol", (int)obj.Protocol);
-        //    cmd.Parameters.AddWithValue("@Period", obj.Period);
-        //    cmd.Parameters.AddWithValue("@IPAddress", obj.IPAddress);
-        //    cmd.Parameters.AddWithValue("@IPPort", obj.IPPort);
-        //    cmd.Parameters.AddWithValue("@Address", obj.Address);
-        //    cmd.Parameters.AddWithValue("@Port", obj.ComPort);
-        //    cmd.Parameters.AddWithValue("@SIM", obj.SIM);
-        //    cmd.Parameters.AddWithValue("@Model", (int)obj.Model);
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    cmd.Parameters.AddWithValue("@Latitude", obj.Latitude);
-        //    cmd.Parameters.AddWithValue("@Longitude", obj.Longitude);
-        //    cmd.Parameters.AddWithValue("@Elevation", obj.Elevation);
-        //    cmd.Parameters.AddWithValue("@Picket", obj.Picket);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-        //    {
-        //        EditSKZData(cmd, obj);
-        //    }
-        //    return true;
-        //}
+        /// <summary>
+        /// Редактирование устройства в БД.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual bool DeviceEdit(ClassDevice obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE dev SET name = @Name, prot = @Protocol, period = @Period,"
+                + " ip_adr = @IPAddress, ip_port = @IPPort, address = @Address, port = @Port,"
+                + " sim = @SIM, model = @Model, lat=@Latitude, longt=@Longitude, elev=@Elevation, picket=@Picket"
+                + " WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@Name", obj.Name);
+            cmd.Parameters.AddWithValue("@Protocol", (int)obj.Protocol);
+            cmd.Parameters.AddWithValue("@Period", obj.Period);
+            cmd.Parameters.AddWithValue("@IPAddress", obj.IPAddress);
+            cmd.Parameters.AddWithValue("@IPPort", obj.IPPort);
+            cmd.Parameters.AddWithValue("@Address", obj.Address);
+            cmd.Parameters.AddWithValue("@Port", obj.ComPort);
+            cmd.Parameters.AddWithValue("@SIM", obj.SIM);
+            cmd.Parameters.AddWithValue("@Model", (int)obj.Model);
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            cmd.Parameters.AddWithValue("@Latitude", obj.Latitude);
+            cmd.Parameters.AddWithValue("@Longitude", obj.Longitude);
+            cmd.Parameters.AddWithValue("@Elevation", obj.Elevation);
+            cmd.Parameters.AddWithValue("@Picket", obj.Picket);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+
+            //Редактирование СКЗ.
+            //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+            //{
+            //    EditSKZData(cmd, obj);
+            //}
+            return true;
+        }
+
+
         ///// <summary>
         ///// Обновление паспортных параметров СКЗ.
         ///// </summary>
@@ -431,1014 +440,377 @@ namespace PKM
         //    try { cmd.ExecuteNonQuery(); }
         //    catch { return; }
         //}
-        ///// <summary>
-        ///// Удаление устройства из базы данных.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public virtual bool DeviceDel(ClassDevice obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM dev WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-        //    {
-        //        SqliteCommand cmdSKZ = conn.CreateCommand();
-        //        cmdSKZ.CommandText= $"DELETE FROM skz WHERE id ={obj.ID} ";
-        //        try { cmdSKZ.ExecuteNonQuery(); }
-        //        catch { return false; }
-        //    }
-        //        return true;
-        //}
 
-        //#endregion
+        /// <summary>
+        /// Удаление устройства из базы данных.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual bool DeviceDel(ClassDevice obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "DELETE FROM dev WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+
+            //Удаление СКЗ.
+            //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+            //{
+            //    SqliteCommand cmdSKZ = conn.CreateCommand();
+            //    cmdSKZ.CommandText = $"DELETE FROM skz WHERE id ={obj.ID} ";
+            //    try { cmdSKZ.ExecuteNonQuery(); }
+            //    catch { return false; }
+            //}
+            return true;
+        }
+
+        #endregion
+
+        #region [Registries]
+        /// <summary>
+        /// Загрузка регистров.
+        /// </summary>
+        /// <param name="DeviceID"></param>
+        /// <returns></returns>
+        public virtual List<ClassChannel> RegistriesLoad(int DeviceID)
+        {
+            List<ClassChannel> lst = new List<ClassChannel>();//Пустой список каналов.
+            SqliteCommand cmd = conn.CreateCommand();//Обьект sql команд.
+            cmd.CommandText = "SELECT reg.rowid, reg.*, dev.name AS d_name, dev.address AS d_adr"
+                + " FROM reg LEFT JOIN dev ON reg.dev = dev.rowid"; //Текст команды.
+            //Если передан номер устройства больше нуля.
+            if (DeviceID != 0) cmd.CommandText += " WHERE reg.dev = " + DeviceID.ToString();
+            cmd.CommandText += " ORDER by type DESC, adr ASC";
+            //Чтение регистров из базы и добавление их в список.
+            using (SqliteDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ClassChannel obj = new ClassChannel();
+                    obj.ID = Convert.ToInt32(reader["rowid"]);
+                    obj.Name = (string)reader["name"];
+                    obj.TypeRegistry = (ClassChannel.EnumTypeRegistry)Convert.ToInt32(reader["type"]);
+                    obj.Address = Convert.ToInt32(reader["adr"]);
+                    if (reader["format"] != DBNull.Value)
+                        obj.Format = (ClassChannel.EnumFormat)Convert.ToInt32(reader["format"]);
+                    if (reader["k"] != DBNull.Value)
+                        obj.Koef = Convert.ToSingle(reader["k"]);
+                    if (reader["vmax"] != DBNull.Value)
+                        obj.Max = Convert.ToDecimal(reader["vmax"]);
+                    if (reader["vmin"] != DBNull.Value)
+                        obj.Min = Convert.ToDecimal(reader["vmin"]);
+                    if (reader["rec"] != DBNull.Value)
+                        obj.Archive = Convert.ToBoolean(reader["rec"]);
+                    if (reader["dev"] != DBNull.Value)
+                        obj.Device.ID = Convert.ToInt32(reader["dev"]);
+                    if (reader["d_name"] != DBNull.Value)
+                        obj.Device.Name = reader["d_name"].ToString();
+                    if (reader["d_adr"] != DBNull.Value)
+                        obj.Device.Address = Convert.ToInt32(reader["d_adr"]);
+                    if (reader["ext"] != DBNull.Value)
+                        obj.Ext = Convert.ToInt32(reader["ext"]);
+                    if (reader["accuracy"] != DBNull.Value)
+                        obj.Accuracy = Convert.ToInt32(reader["accuracy"]);
+                    if (reader["val"] != DBNull.Value && reader["dt"] != DBNull.Value) //last!
+                        obj.LoadSavedValue(Convert.ToDecimal(reader["val"]),
+                            DateTime.Parse(reader["dt"].ToString()));
+                    lst.Add(obj);
+                }
+            }
+            return lst;//Возврат списка.
+        }
+        object locker = new object();
+        public virtual bool RegistryAdd(ClassChannel obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "INSERT INTO reg (name, dev, type, adr, format, k, vmax, vmin, rec, ext, accuracy)"
+                + " VALUES(@Name, @Device, @Type, @Address, @Format, @K, @Vmax, @Vmin, @Rec, @Ext, @Accuracy)";
+            cmd.Parameters.AddWithValue("@Name", obj.Name);
+            cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
+            cmd.Parameters.AddWithValue("@Type", (int)obj.TypeRegistry);
+            cmd.Parameters.AddWithValue("@Address", obj.Address);
+            cmd.Parameters.AddWithValue("@Format", (int)obj.Format);
+            cmd.Parameters.AddWithValue("@K", obj.Koef);
+            if (obj.Max.HasValue) cmd.Parameters.AddWithValue("@Vmax", obj.Max.Value);
+            else cmd.Parameters.AddWithValue("@Vmax", DBNull.Value);
+            if (obj.Min.HasValue) cmd.Parameters.AddWithValue("@Vmin", obj.Min.Value);
+            else cmd.Parameters.AddWithValue("@Vmin", DBNull.Value);
+            cmd.Parameters.AddWithValue("@Rec", obj.Archive);
+            if (obj.Ext.HasValue) cmd.Parameters.AddWithValue("@Ext", obj.Ext.Value);
+            else cmd.Parameters.AddWithValue("@Ext", DBNull.Value);
+            if (obj.Accuracy.HasValue) cmd.Parameters.AddWithValue("@Accuracy", obj.Accuracy.Value);
+            else cmd.Parameters.AddWithValue("@Accuracy", DBNull.Value);
+            try
+            {
+                lock (locker)
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch { return false; }
+            cmd.CommandText = "SELECT last_insert_rowid()";
+            obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+            return true;
+        }
+
+        public virtual bool RegistryEdit(ClassChannel obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE reg SET name = @Name, dev = @Device, type = @Type,"
+                + " adr = @Address, format = @Format, k = @K, vmax = @Vmax, vmin = @Vmin,"
+                + " rec = @Rec, ext = @Ext, accuracy = @Accuracy"
+                + " WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@Name", obj.Name);
+            cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
+            cmd.Parameters.AddWithValue("@Type", (int)obj.TypeRegistry);
+            cmd.Parameters.AddWithValue("@Address", obj.Address);
+            cmd.Parameters.AddWithValue("@Format", (int)obj.Format);
+            cmd.Parameters.AddWithValue("@K", obj.Koef);
+            if (obj.Max.HasValue) cmd.Parameters.AddWithValue("@Vmax", obj.Max.Value);
+            else cmd.Parameters.AddWithValue("@Vmax", DBNull.Value);
+            if (obj.Min.HasValue) cmd.Parameters.AddWithValue("@Vmin", obj.Min.Value);
+            else cmd.Parameters.AddWithValue("@Vmin", DBNull.Value);
+            cmd.Parameters.AddWithValue("@Rec", obj.Archive);
+            if (obj.Ext.HasValue) cmd.Parameters.AddWithValue("@Ext", obj.Ext.Value);
+            else cmd.Parameters.AddWithValue("@Ext", DBNull.Value);
+            if (obj.Accuracy.HasValue) cmd.Parameters.AddWithValue("@Accuracy", obj.Accuracy.Value);
+            else cmd.Parameters.AddWithValue("@Accuracy", DBNull.Value);
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        /// <summary>
+        /// Изменение значения регистра в таблице регистров БД.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual bool RegistrySaveValue(ClassChannel obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE reg SET val = @Val, dt = datetime('now', 'localtime')"
+                + " WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@Val", obj.Value);
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        /// <summary>
+        /// Обновление поля значения для записи.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="newValue"></param>
+        /// <returns></returns>
+        public virtual bool RegistrySaveNewValue(int ID, decimal? newValue)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE reg SET nval = @NewVal"
+                + " WHERE rowid = @ID";
+            if (newValue.HasValue) cmd.Parameters.AddWithValue("@NewValue", newValue.Value);
+            else cmd.Parameters.AddWithValue("@NewValue", DBNull.Value);
+            cmd.Parameters.AddWithValue("@ID", ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+            return true;
+        }
+
+        public virtual bool RegistryDel(int ID)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "DELETE FROM reg WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@ID", ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        public virtual bool RegistryDelDev(int DeviceID)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "DELETE FROM reg WHERE dev = @Device";
+            cmd.Parameters.AddWithValue("@Device", DeviceID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        /// <summary>
+        /// Загрузка регистров если в них заполнено поле нового значения.
+        /// </summary>
+        /// <param name="DeviceID"></param>
+        /// <returns></returns>
+        public virtual List<ClassChannel> RegistriesLoadNew(int DeviceID)
+        {
+            //Список каналов пустой.
+            List<ClassChannel> lst = new List<ClassChannel>();
+            SqliteCommand cmd = conn.CreateCommand();
+            //Выбрать по id из reg, где значение nval не равно null.
+            cmd.CommandText = "SELECT rowid, * FROM reg WHERE nval IS NOT NULL";
+            //Привязка к номеру устройства.
+            if (DeviceID != 0) cmd.CommandText += " AND dev = " + DeviceID.ToString();
+            using (SqliteDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ClassChannel obj = new ClassChannel();
+                    obj.ID = Convert.ToInt32(reader["rowid"]);
+                    if (reader["nval"] != DBNull.Value)
+                        obj.NValue = Convert.ToDecimal(reader["nval"]);
+                    lst.Add(obj);
+                }
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region [Events]
+
+        public static List<ClassEvent> AllEventsDeviceLoad(string nameDev, int type)
+        {
+            List<ClassEvent> lst = new List<ClassEvent>();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = $"SELECT rowid, * FROM log WHERE type={type} AND namdev='{nameDev}' ORDER BY dt ASC";
+
+            using (SqliteDataReader reader = cmd.ExecuteReader())       //Считываем с базы.
+            {
+                while (reader.Read())                                   //Построчное чтение.
+                {
+                    ClassEvent ev = new ClassEvent();
+                    ev.ID = Convert.ToInt32(reader["rowid"]);
+                    ev.Type = (ClassEvent.EnumType)Convert.ToInt32(reader["type"]);
+                    ev.DT = DateTime.Parse(reader["dt"].ToString());
+                    ev.Param = Convert.ToString(reader["param"]);
+                    ev.Val = Convert.ToString(reader["val"]);
+                    ev.NameDevice = Convert.ToString(reader["namdev"]);
+                    lst.Add(ev);                                         //Добавление считаной строки в список событий.
+                }
+            }
+
+            return lst;
+        }
+
+        /// <summary>
+        /// Загрузка событий с учетом заданного периода времени.
+        /// </summary>
+        /// <param name="dt1">Начальная дата</param>
+        /// <param name="dt2">Конечная дата</param>
+        /// <param name="types">Тип событий</param>
+        /// <param name="str">Название параметра</param>
+        /// <param name="nameDev">Название устройства</param>
+        /// <returns></returns>
+        public virtual List<ClassEvent> EventsLoad(DateTime dt1, DateTime dt2, List<int> types, string str, string nameDev = "")
+        {
+            string sIN = "";
+            if (types != null)//Если тип события не null.
+            {
+                foreach (int numberType in types)
+                {
+                    if (sIN != "") sIN += ",";
+                    sIN += numberType.ToString();//Заносим тип события в строку.
+                }
+            }
+            List<ClassEvent> lst = new List<ClassEvent>();              //Пустой список событий.
+            SqliteCommand cmd = conn.CreateCommand();                   //Создание команды к базе.
+            cmd.CommandText = "SELECT rowid, * FROM log";
+            cmd.CommandText += " WHERE dt BETWEEN datetime ('" + dt1.ToString("yyyy-MM-dd HH:mm:ss") + "') " +
+                "AND datetime('" + dt2.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+            if (types != null) cmd.CommandText += $" AND type IN ({sIN})";
+            //cmd.CommandText += $" AND param LIKE '%{strResBKM_5}%'"; //Если есть вхождение либо вначале либо в конце.
+            if (str != "Нет") cmd.CommandText += $" AND param LIKE '{str}'";
+            if (nameDev != "" && sIN.Contains("1") != true && sIN.Contains("2") != true) cmd.CommandText += $" AND namdev='{nameDev}'";
+            cmd.CommandText += " ORDER BY dt ASC";
+            using (SqliteDataReader reader = cmd.ExecuteReader())       //Считываем с базы.
+            {
+                while (reader.Read())                                   //Построчное чтение.
+                {
+                    ClassEvent ev = new ClassEvent();
+                    ev.ID = Convert.ToInt32(reader["rowid"]);
+                    ev.Type = (ClassEvent.EnumType)Convert.ToInt32(reader["type"]);
+                    ev.DT = DateTime.Parse(reader["dt"].ToString());
+                    ev.Param = Convert.ToString(reader["param"]);
+                    ev.Val = Convert.ToString(reader["val"]);
+                    ev.NameDevice = Convert.ToString(reader["namdev"]);
+                    lst.Add(ev);                                         //Добавление считаной строки в список событий.
+                }
+            }
+            return lst;                                                 //Возврат списка событий.
+        }
+
+        /// <summary>
+        /// Сохранить событие в лог архива базы данных.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual bool EventAdd(ClassEvent obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "INSERT INTO log (type, dt, param, val,namdev)"
+                + " VALUES(@Type, datetime('now', 'localtime'), @Param, @Val,@NameDevice)";
+            cmd.Parameters.AddWithValue("@Type", (int)obj.Type);
+            cmd.Parameters.AddWithValue("@Param", obj.Param);
+            cmd.Parameters.AddWithValue("@Val", obj.Val);
+            obj.NameDevice ??= string.Empty;
+            cmd.Parameters.AddWithValue("@NameDevice", obj.NameDevice);
+            try { cmd.ExecuteNonQuery(); }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            //Извлекаем номер(rowID) последнего события.
+            cmd.CommandText = "SELECT last_insert_rowid()";
+            //Присваиваем ID объекта события ID последней вставленой строки в таблицу событий.  
+            obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+            return true;
+        }
+
+        /// <summary>
+        /// Изменение статуса реакции на конкректное событие.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public virtual bool EventAck(int ID)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE log SET ack = 1"
+                + " WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@ID", ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch (Exception Ex)
+            {
+                ClassLog.Write(Ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Изменение статуса реакции на все события.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool EventAckAll()
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE log SET ack = 1";
+            try { cmd.ExecuteNonQuery(); }
+            catch (Exception Ex)
+            {
+                ClassLog.Write(Ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
 
-        //#region[AZ]
-        ///// <summary>
-        ///// Загрузка анодных заземлителей из БД.
-        ///// </summary>
-        ///// <returns></returns>
-        //public List<ClassAZ> LoadAZ()
-        //{
-        //    List<ClassAZ> lst = new List<ClassAZ>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    string commandTextDevices = "SELECT rowid, * FROM az ORDER BY Identity";
-        //    cmd.CommandText = commandTextDevices;
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassAZ obj = new ClassAZ();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Identity = reader["Identity"] != DBNull.Value ? Convert.ToString(reader["Identity"]) : "нет данных";
-        //            obj.Location = reader["Location"] != DBNull.Value ? Convert.ToString(reader["Location"]) : "нет данных";
-        //            obj.TypeOfConstruction = reader["TypeOfConstruction"] != DBNull.Value ? Convert.ToString(reader["TypeOfConstruction"]) : "нет данных";
-        //            obj.ElectrodeMaterial = reader["ElectrodeMaterial"] != DBNull.Value ? Convert.ToString(reader["ElectrodeMaterial"]) : "нет данных";
-        //            obj.CurrentLoad = reader["CurrentLoad"] != DBNull.Value ? Convert.ToInt32(reader["CurrentLoad"]) : 0;
-        //            obj.DissolutionRate = reader["DissolutionRate"] != DBNull.Value ? Convert.ToDouble(reader["DissolutionRate"]) : 0;
-        //            obj.SurfaceArea = reader["SurfaceArea"] != DBNull.Value ? Convert.ToDouble(reader["SurfaceArea"]) : 0;
-        //            obj.WeightAZ = reader["WeightAZ"] != DBNull.Value ? Convert.ToDouble(reader["WeightAZ"]) : 0;
-        //            obj.LenghtAZ = reader["LenghtAZ"] != DBNull.Value ? Convert.ToInt32(reader["LenghtAZ"]) : 0;
-        //            obj.Diagonal = reader["Diagonal"] != DBNull.Value ? Convert.ToInt32(reader["Diagonal"]) : 0;
-        //            obj.MassAssembly = reader["MassAssembly"] != DBNull.Value ? Convert.ToDouble(reader["MassAssembly"]) : 0;
-        //            obj.MountingMethod = reader["MountingMethod"] != DBNull.Value ? Convert.ToString(reader["MountingMethod"]) : "нет данных";
-        //            obj.ServiceLife = reader["ServiceLife"] != DBNull.Value ? Convert.ToInt32(reader["ServiceLife"]) : 0;
-        //            obj.KMA = reader["KMA"] != DBNull.Value ? Convert.ToString(reader["KMA"]) : "нет данных";
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        ///// <summary>
-        ///// Добавить АЗ в базу данных.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public bool AddAZ(ClassAZ obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO az (Identity, Location, TypeOfConstruction, ElectrodeMaterial, CurrentLoad," +
-        //        " DissolutionRate, SurfaceArea, WeightAZ, LenghtAZ, Diagonal, MassAssembly, MountingMethod, ServiceLife, KMA)"
-        //        + " VALUES(@Identity, @Location, @TypeOfConstruction, @ElectrodeMaterial, @CurrentLoad," +
-        //        "@DissolutionRate, @SurfaceArea, @WeightAZ, @LenghtAZ, @Diagonal, @MassAssembly, @MountingMethod, @ServiceLife, @KMA)";
-        //    cmd.Parameters.AddWithValue("@Identity", obj.Identity);
-        //    cmd.Parameters.AddWithValue("@Location", obj.Location);
-        //    cmd.Parameters.AddWithValue("@TypeOfConstruction", obj.TypeOfConstruction);
-        //    cmd.Parameters.AddWithValue("@ElectrodeMaterial", obj.ElectrodeMaterial);
-        //    cmd.Parameters.AddWithValue("@CurrentLoad", obj.CurrentLoad);
-        //    cmd.Parameters.AddWithValue("@DissolutionRate", obj.DissolutionRate);
-        //    cmd.Parameters.AddWithValue("@SurfaceArea", obj.SurfaceArea);
-        //    cmd.Parameters.AddWithValue("@WeightAZ", obj.WeightAZ);
-        //    cmd.Parameters.AddWithValue("@LenghtAZ", obj.LenghtAZ);
-        //    cmd.Parameters.AddWithValue("@Diagonal", obj.Diagonal);
-        //    cmd.Parameters.AddWithValue("@MassAssembly", obj.MassAssembly);
-        //    cmd.Parameters.AddWithValue("@MountingMethod", obj.MountingMethod);
-        //    cmd.Parameters.AddWithValue("@ServiceLife", obj.ServiceLife);
-        //    cmd.Parameters.AddWithValue("@KMA", obj.KMA);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public bool EditAZ(ClassAZ obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE az SET Identity=@Identity, Location=@Location, TypeOfConstruction=@TypeOfConstruction, " +
-        //        "ElectrodeMaterial=@ElectrodeMaterial, CurrentLoad=@CurrentLoad," +
-        //        " DissolutionRate=@DissolutionRate, SurfaceArea=@SurfaceArea, WeightAZ=@WeightAZ, LenghtAZ=@LenghtAZ, " +
-        //        "Diagonal=@Diagonal, MassAssembly=@MassAssembly, MountingMethod=@MountingMethod, ServiceLife=@ServiceLife, " +
-        //        "KMA=@KMA WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    cmd.Parameters.AddWithValue("@Identity", obj.Identity);
-        //    cmd.Parameters.AddWithValue("@Location", obj.Location);
-        //    cmd.Parameters.AddWithValue("@TypeOfConstruction", obj.TypeOfConstruction);
-        //    cmd.Parameters.AddWithValue("@ElectrodeMaterial", obj.ElectrodeMaterial);
-        //    cmd.Parameters.AddWithValue("@CurrentLoad", obj.CurrentLoad);
-        //    cmd.Parameters.AddWithValue("@DissolutionRate", obj.DissolutionRate);
-        //    cmd.Parameters.AddWithValue("@SurfaceArea", obj.SurfaceArea);
-        //    cmd.Parameters.AddWithValue("@WeightAZ", obj.WeightAZ);
-        //    cmd.Parameters.AddWithValue("@LenghtAZ", obj.LenghtAZ);
-        //    cmd.Parameters.AddWithValue("@Diagonal", obj.Diagonal);
-        //    cmd.Parameters.AddWithValue("@MassAssembly", obj.MassAssembly);
-        //    cmd.Parameters.AddWithValue("@MountingMethod", obj.MountingMethod);
-        //    cmd.Parameters.AddWithValue("@ServiceLife", obj.ServiceLife);
-        //    cmd.Parameters.AddWithValue("@KMA", obj.KMA);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-
-        ///// <summary>
-        ///// Удаление анодных заземлителей из БД.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public virtual bool AZDel(ClassAZ obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM az WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Удаление всех анодных заземлителей из БД.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public virtual bool AZDelAll()
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM az";
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-        //#endregion
-
-        //#region [Registries]
-        //    /// <summary>
-        //    /// Загрузка регистров.
-        //    /// </summary>
-        //    /// <param name="DeviceID"></param>
-        //    /// <returns></returns>
-        //public virtual List<ClassChannel> RegistriesLoad(int DeviceID)
-        //{
-        //    List<ClassChannel> lst = new List<ClassChannel>();//Пустой список каналов.
-        //    SqliteCommand cmd = conn.CreateCommand();//Обьект sql команд.
-        //    cmd.CommandText = "SELECT reg.rowid, reg.*, dev.name AS d_name, dev.address AS d_adr"
-        //        + " FROM reg LEFT JOIN dev ON reg.dev = dev.rowid"; //Текст команды.
-        //    //Если передан номер устройства больше нуля.
-        //    if (DeviceID != 0) cmd.CommandText += " WHERE reg.dev = " + DeviceID.ToString();
-        //    cmd.CommandText += " ORDER by type DESC, adr ASC";
-        //    //Чтение регистров из базы и добавление их в список.
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassChannel obj = new ClassChannel();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Name = (string)reader["name"];
-        //            obj.TypeRegistry = (ClassChannel.EnumTypeRegistry)Convert.ToInt32(reader["type"]);
-        //            obj.Address = Convert.ToInt32(reader["adr"]);
-        //            if (reader["format"] != DBNull.Value)
-        //                obj.Format = (ClassChannel.EnumFormat)Convert.ToInt32(reader["format"]);
-        //            if (reader["k"] != DBNull.Value)
-        //                obj.Koef = Convert.ToSingle(reader["k"]);
-        //            if (reader["vmax"] != DBNull.Value)
-        //                obj.Max = Convert.ToDecimal(reader["vmax"]);
-        //            if (reader["vmin"] != DBNull.Value)
-        //                obj.Min = Convert.ToDecimal(reader["vmin"]);
-        //            if (reader["rec"] != DBNull.Value)
-        //                obj.Archive = Convert.ToBoolean(reader["rec"]);
-        //            if (reader["dev"] != DBNull.Value)
-        //                obj.Device.ID = Convert.ToInt32(reader["dev"]);
-        //            if (reader["d_name"] != DBNull.Value)
-        //                obj.Device.Name = reader["d_name"].ToString();
-        //            if (reader["d_adr"] != DBNull.Value)
-        //                obj.Device.Address = Convert.ToInt32(reader["d_adr"]);
-        //            if (reader["ext"] != DBNull.Value)
-        //                obj.Ext = Convert.ToInt32(reader["ext"]);
-        //            if (reader["accuracy"] != DBNull.Value)
-        //                obj.Accuracy = Convert.ToInt32(reader["accuracy"]);
-        //            if (reader["val"] != DBNull.Value && reader["dt"] != DBNull.Value) //last!
-        //                obj.LoadSavedValue(Convert.ToDecimal(reader["val"]),
-        //                    DateTime.Parse(reader["dt"].ToString()));
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;//Возврат списка.
-        //}
-        //object locker = new object();
-        //public virtual bool RegistryAdd(ClassChannel obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO reg (name, dev, type, adr, format, k, vmax, vmin, rec, ext, accuracy)"
-        //        + " VALUES(@Name, @Device, @Type, @Address, @Format, @K, @Vmax, @Vmin, @Rec, @Ext, @Accuracy)";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.TypeRegistry);
-        //    cmd.Parameters.AddWithValue("@Address", obj.Address);
-        //    cmd.Parameters.AddWithValue("@Format", (int)obj.Format);
-        //    cmd.Parameters.AddWithValue("@K", obj.Koef);
-        //    if (obj.Max.HasValue) cmd.Parameters.AddWithValue("@Vmax", obj.Max.Value);
-        //    else cmd.Parameters.AddWithValue("@Vmax", DBNull.Value);
-        //    if (obj.Min.HasValue) cmd.Parameters.AddWithValue("@Vmin", obj.Min.Value);
-        //    else cmd.Parameters.AddWithValue("@Vmin", DBNull.Value);
-        //    cmd.Parameters.AddWithValue("@Rec", obj.Archive);
-        //    if (obj.Ext.HasValue) cmd.Parameters.AddWithValue("@Ext", obj.Ext.Value);
-        //    else cmd.Parameters.AddWithValue("@Ext", DBNull.Value);
-        //    if (obj.Accuracy.HasValue) cmd.Parameters.AddWithValue("@Accuracy", obj.Accuracy.Value);
-        //    else cmd.Parameters.AddWithValue("@Accuracy", DBNull.Value);
-        //    try 
-        //    {
-        //        lock (locker)
-        //        {
-        //            cmd.ExecuteNonQuery(); 
-        //        }
-        //    }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual bool RegistryEdit(ClassChannel obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE reg SET name = @Name, dev = @Device, type = @Type,"
-        //        + " adr = @Address, format = @Format, k = @K, vmax = @Vmax, vmin = @Vmin,"
-        //        + " rec = @Rec, ext = @Ext, accuracy = @Accuracy"
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.TypeRegistry);
-        //    cmd.Parameters.AddWithValue("@Address", obj.Address);
-        //    cmd.Parameters.AddWithValue("@Format", (int)obj.Format);
-        //    cmd.Parameters.AddWithValue("@K", obj.Koef);
-        //    if (obj.Max.HasValue) cmd.Parameters.AddWithValue("@Vmax", obj.Max.Value);
-        //    else cmd.Parameters.AddWithValue("@Vmax", DBNull.Value);
-        //    if (obj.Min.HasValue) cmd.Parameters.AddWithValue("@Vmin", obj.Min.Value);
-        //    else cmd.Parameters.AddWithValue("@Vmin", DBNull.Value);
-        //    cmd.Parameters.AddWithValue("@Rec", obj.Archive);
-        //    if (obj.Ext.HasValue) cmd.Parameters.AddWithValue("@Ext", obj.Ext.Value);
-        //    else cmd.Parameters.AddWithValue("@Ext", DBNull.Value);
-        //    if (obj.Accuracy.HasValue) cmd.Parameters.AddWithValue("@Accuracy", obj.Accuracy.Value);
-        //    else cmd.Parameters.AddWithValue("@Accuracy", DBNull.Value);
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Изменение значения регистра в таблице регистров БД.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public virtual bool RegistrySaveValue(ClassChannel obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE reg SET val = @Val, dt = datetime('now', 'localtime')"
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Val", obj.Value);
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Обновление поля значения для записи.
-        ///// </summary>
-        ///// <param name="ID"></param>
-        ///// <param name="newValue"></param>
-        ///// <returns></returns>
-        //public virtual bool RegistrySaveNewValue(int ID, decimal? newValue)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE reg SET nval = @NewVal"
-        //        + " WHERE rowid = @ID";
-        //    if (newValue.HasValue) cmd.Parameters.AddWithValue("@NewValue", newValue.Value);
-        //    else cmd.Parameters.AddWithValue("@NewValue", DBNull.Value);
-        //    cmd.Parameters.AddWithValue("@ID", ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch (Exception ex)
-        //    {
-
-        //        return false; 
-        //    }
-        //    return true;
-        //}
-
-        //public virtual bool RegistryDel(int ID)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM reg WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //public virtual bool RegistryDelDev(int DeviceID)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM reg WHERE dev = @Device";
-        //    cmd.Parameters.AddWithValue("@Device", DeviceID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Загрузка регистров если в них заполнено поле нового значения.
-        ///// </summary>
-        ///// <param name="DeviceID"></param>
-        ///// <returns></returns>
-        //public virtual List<ClassChannel> RegistriesLoadNew(int DeviceID)
-        //{
-        //    //Список каналов пустой.
-        //    List<ClassChannel> lst = new List<ClassChannel>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    //Выбрать по id из reg, где значение nval не равно null.
-        //    cmd.CommandText = "SELECT rowid, * FROM reg WHERE nval IS NOT NULL";
-        //    //Привязка к номеру устройства.
-        //    if (DeviceID != 0) cmd.CommandText += " AND dev = " + DeviceID.ToString();
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassChannel obj = new ClassChannel();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            if (reader["nval"] != DBNull.Value)
-        //                obj.NValue = Convert.ToDecimal(reader["nval"]);
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //#endregion
-
-        //#region [Maps]
-
-        //public virtual List<ClassMap> MapsLoad()
-        //{
-        //    List<ClassMap> lst = new List<ClassMap>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT rowid, * FROM map ORDER BY name";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassMap obj = new ClassMap();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Name = (string)reader["name"];
-        //            if (reader["json"] != DBNull.Value)
-        //            {
-        //                string json = Convert.ToString(reader["json"]);
-        //                obj.ForeColor = ClassMap.GetObject(json).ForeColor;
-        //            }
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //public virtual ClassMap MapLoad(int ID)
-        //{
-        //    ClassMap obj = new ClassMap();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT rowid, * FROM map WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", ID);
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        reader.Read();
-        //        obj.ID = Convert.ToInt32(reader["rowid"]);
-        //        obj.Name = (string)reader["name"];
-        //        if (reader["json"] != DBNull.Value)
-        //        {
-        //            string json = Convert.ToString(reader["json"]);
-        //            obj.ForeColor = ClassMap.GetObject(json).ForeColor;
-        //        }
-        //    }
-        //    return obj;
-        //}
-
-        //public virtual bool MapAdd(ClassMap obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO map (name, json) VALUES(@Name, @Json)";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Json", obj.GetJson());
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual bool MapEdit(ClassMap obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE map SET name = @Name, json = @Json WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Json", obj.GetJson());
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //public virtual bool MapDel(int ID)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM map WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //#endregion
-
-        //#region [Widgets]
-
-        //public virtual List<ClassWidget> WidgetsLoad(int MapID)
-        //{
-        //    List<ClassWidget> lst = new List<ClassWidget>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT rowid, * FROM obj WHERE map = " + MapID.ToString();
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            string p = Convert.ToString(reader["prop"]);
-        //            ClassWidget obj = ClassWidget.GetObject(p);
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Type = (ClassWidget.EnumType)Convert.ToInt32(reader["type"]);
-        //            obj.X = Convert.ToInt32(reader["x"]);
-        //            obj.Y = Convert.ToInt32(reader["y"]);
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //public virtual bool WidgetAdd(int MapID, ClassWidget obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO obj (type, map, x, y, prop)"
-        //        + " VALUES(@Type, @Map, @X, @Y, @Prop)";
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.Type);
-        //    cmd.Parameters.AddWithValue("@Map", MapID);
-        //    cmd.Parameters.AddWithValue("@X", obj.X);
-        //    cmd.Parameters.AddWithValue("@Y", obj.Y);
-        //    cmd.Parameters.AddWithValue("@Prop", obj.GetJson());
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual bool WidgetEdit(ClassWidget obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE obj SET x = @X, y = @Y, prop = @Prop"
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@X", obj.X);
-        //    cmd.Parameters.AddWithValue("@Y", obj.Y);
-        //    cmd.Parameters.AddWithValue("@Prop", obj.GetJson());
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //public virtual bool WidgetDel(ClassWidget obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM obj WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    cmd.ExecuteNonQuery();
-        //    return true;
-        //}
-
-        //public virtual bool WidgetsDel(int MapID)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM obj WHERE map = @MapID";
-        //    cmd.Parameters.AddWithValue("@MapID", MapID);
-        //    cmd.ExecuteNonQuery();
-        //    return true;
-        //}
-
-        //#endregion
-
-        //#region [Commands]
-
-        //public virtual List<ClassCommand> CommandsLoad()
-        //{
-        //    List<ClassCommand> lst = new List<ClassCommand>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT cmd.rowid, cmd.*"
-        //        + " FROM cmd LEFT JOIN dev ON cmd.dev = dev.rowid";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassCommand obj = new ClassCommand();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Name = (string)reader["name"];
-        //            obj.CommandType = (ClassCommand.EnumType)Convert.ToInt32(reader["type"]);
-        //            obj.Value = Convert.ToInt32(reader["val"]);
-        //            obj.Address = Convert.ToInt32(reader["adr"]);
-        //            if (reader["val"] != DBNull.Value)
-        //                obj.Value = Convert.ToInt32(reader["val"]);
-        //            if (reader["period"] != DBNull.Value)
-        //                obj.Period = Convert.ToInt32(reader["period"]);
-        //            obj.Device.ID = Convert.ToInt32(reader["dev"]);
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //public virtual bool CommandAdd(ClassCommand obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO cmd (name, type, dev, adr, val, period)"
-        //        + " VALUES(@Name, @Type, @Device, @Address, @Value, @Period)";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.CommandType);
-        //    cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
-        //    cmd.Parameters.AddWithValue("@Address", obj.Address);
-        //    cmd.Parameters.AddWithValue("@Value", obj.Value);
-        //    cmd.Parameters.AddWithValue("@Period", obj.Period);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual bool CommandEdit(ClassCommand obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE cmd SET name = @Name, type = @Type, dev = @Device,"
-        //        + " adr = @Address, val = @Value, period = @Period WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.CommandType);
-        //    cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
-        //    cmd.Parameters.AddWithValue("@Address", obj.Address);
-        //    cmd.Parameters.AddWithValue("@Value", obj.Value);
-        //    cmd.Parameters.AddWithValue("@Period", obj.Period);
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //public virtual bool CommandDel(ClassCommand obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM cmd WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //#endregion
-
-        //#region [Links]
-
-        //public virtual List<ClassLink> LinksLoad()
-        //{
-        //    List<ClassLink> lst = new List<ClassLink>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT link.rowid, link.*, reg.name as r_name, cmd.name AS c_name"
-        //        + " FROM link"
-        //        + " LEFT JOIN reg ON link.src = reg.rowid"
-        //        + " LEFT JOIN cmd ON link.cmd = cmd.rowid";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassLink obj = new ClassLink();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.EventType = (ClassEvent.EnumType)Convert.ToInt32(reader["event"]);
-        //            obj.SourceID = Convert.ToInt32(reader["src"]);
-        //            if (reader["r_name"] != DBNull.Value)
-        //                obj.SourceName = (string)reader["r_name"];
-        //            obj.Command.ID = Convert.ToInt32(reader["cmd"]);
-        //            obj.Command.Name = (string)reader["c_name"];
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //public virtual bool LinkAdd(ClassLink obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO link (event, src, cmd)"
-        //        + " VALUES(@Event, @Src, @Cmd)";
-        //    cmd.Parameters.AddWithValue("@Event", (int)obj.EventType);
-        //    cmd.Parameters.AddWithValue("@Src", obj.SourceID);
-        //    cmd.Parameters.AddWithValue("@Cmd", obj.Command.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual bool LinkEdit(ClassLink obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE link SET event = @Event, src = @Src, cmd = @Cmd"
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Event", (int)obj.EventType);
-        //    cmd.Parameters.AddWithValue("@Src", obj.SourceID);
-        //    cmd.Parameters.AddWithValue("@Cmd", obj.Command.ID);
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //public virtual bool LinkDel(ClassLink obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM link WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //#endregion
-
-        //#region [Users]
-
-        //public virtual List<ClassUser> UsersLoad()
-        //{
-        //    List<ClassUser> lst = new List<ClassUser>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT rowid, * FROM user ORDER BY name";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassUser obj = new ClassUser();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Name = (string)reader["name"];
-        //            obj.Login = Convert.ToString(reader["login"]);
-        //            obj.Pass = Convert.ToString(reader["pass"]);
-        //            obj.Grant = Convert.ToInt32(reader["grant"]);
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //public virtual bool UserAdd(ClassUser obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO user (name, login, pass, grant)"
-        //        + " VALUES(@Name, @Login, @Pass, @Grant)";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Login", obj.Login);
-        //    cmd.Parameters.AddWithValue("@Pass", obj.Pass);
-        //    cmd.Parameters.AddWithValue("@Grant", obj.Grant);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual bool UserEdit(ClassUser obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE user SET name = @Name, login = @Login, pass = @Pass, grant = @Grant"
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Name", obj.Name);
-        //    cmd.Parameters.AddWithValue("@Login", obj.Login);
-        //    cmd.Parameters.AddWithValue("@Pass", obj.Pass);
-        //    cmd.Parameters.AddWithValue("@Grant", obj.Grant);
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch (Exception Ex)
-        //    {
-        //        ClassLog.Write(Ex.Message);
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        //public virtual bool UserDel(ClassUser obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM user WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //#endregion
-
-        //#region [Events]
-
-        //public static List<ClassEvent> AllEventsDeviceLoad(string nameDev ,int type)
-        //{
-        //    List<ClassEvent> lst = new List<ClassEvent>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = $"SELECT rowid, * FROM log WHERE type={type} AND namdev='{nameDev}' ORDER BY dt ASC";
-
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())       //Считываем с базы.
-        //    {
-        //        while (reader.Read())                                   //Построчное чтение.
-        //        {
-        //            ClassEvent ev = new ClassEvent();
-        //            ev.ID = Convert.ToInt32(reader["rowid"]);
-        //            ev.Type = (ClassEvent.EnumType)Convert.ToInt32(reader["type"]);
-        //            ev.DT = DateTime.Parse(reader["dt"].ToString());
-        //            ev.Param = Convert.ToString(reader["param"]);
-        //            ev.Val = Convert.ToString(reader["val"]);
-        //            ev.NameDevice = Convert.ToString(reader["namdev"]);
-        //            lst.Add(ev);                                         //Добавление считаной строки в список событий.
-        //        }
-        //    }
-
-        //    return lst;
-        //}
-
-        ///// <summary>
-        ///// Загрузка событий с учетом заданного периода времени.
-        ///// </summary>
-        ///// <param name="dt1">Начальная дата</param>
-        ///// <param name="dt2">Конечная дата</param>
-        ///// <param name="types">Тип событий</param>
-        ///// <param name="str">Название параметра</param>
-        ///// <param name="nameDev">Название устройства</param>
-        ///// <returns></returns>
-        //public virtual List<ClassEvent> EventsLoad(DateTime dt1, DateTime dt2, List<int> types, string str,string nameDev="")
-        //{
-        //    string sIN = "";
-        //    if (types != null)//Если тип события не null.
-        //    {
-        //        foreach (int numberType in types)
-        //        {
-        //            if (sIN != "") sIN += ",";
-        //            sIN += numberType.ToString();//Заносим тип события в строку.
-        //        }
-        //    }
-        //    List<ClassEvent> lst = new List<ClassEvent>();              //Пустой список событий.
-        //    SqliteCommand cmd = conn.CreateCommand();                   //Создание команды к базе.
-        //    cmd.CommandText = "SELECT rowid, * FROM log";
-        //    cmd.CommandText += " WHERE dt BETWEEN datetime ('" + dt1.ToString("yyyy-MM-dd HH:mm:ss") +"') " +
-        //        "AND datetime('" + dt2.ToString("yyyy-MM-dd HH:mm:ss") + "')";
-        //    if (types != null) cmd.CommandText += $" AND type IN ({sIN})";
-        //    //cmd.CommandText += $" AND param LIKE '%{strResBKM_5}%'"; //Если есть вхождение либо вначале либо в конце.
-        //    if(str!="Нет") cmd.CommandText += $" AND param LIKE '{str}'";
-        //    if(nameDev!="" && sIN.Contains("1") != true && sIN.Contains("2") != true) cmd.CommandText+=$" AND namdev='{nameDev}'";
-        //    cmd.CommandText += " ORDER BY dt ASC";         
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())       //Считываем с базы.
-        //    {
-        //        while (reader.Read())                                   //Построчное чтение.
-        //        {
-        //            ClassEvent ev = new ClassEvent();
-        //            ev.ID = Convert.ToInt32(reader["rowid"]);
-        //            ev.Type = (ClassEvent.EnumType)Convert.ToInt32(reader["type"]);
-        //            ev.DT = DateTime.Parse(reader["dt"].ToString());
-        //            ev.Param = Convert.ToString(reader["param"]);
-        //            ev.Val = Convert.ToString(reader["val"]);
-        //            ev.NameDevice= Convert.ToString(reader["namdev"]);
-        //            lst.Add(ev);                                         //Добавление считаной строки в список событий.
-        //        }
-        //    }            
-        //    return lst;                                                 //Возврат списка событий.
-        //}
-
-        ///// <summary>
-        ///// Сохранить событие в лог архива базы данных.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public virtual bool EventAdd(ClassEvent obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO log (type, dt, param, val,namdev)"
-        //        + " VALUES(@Type, datetime('now', 'localtime'), @Param, @Val,@NameDevice)";
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.Type);
-        //    cmd.Parameters.AddWithValue("@Param", obj.Param);
-        //    cmd.Parameters.AddWithValue("@Val", obj.Val);
-        //    obj.NameDevice ??= string.Empty;            
-        //    cmd.Parameters.AddWithValue("@NameDevice", obj.NameDevice);            
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch (Exception ex)
-        //    {
-        //        return false; 
-        //    }
-        //    //Извлекаем номер(rowID) последнего события.
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    //Присваиваем ID объекта события ID последней вставленой строки в таблицу событий.  
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Изменение статуса реакции на конкректное событие.
-        ///// </summary>
-        ///// <param name="ID"></param>
-        ///// <returns></returns>
-        //public virtual bool EventAck(int ID)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE log SET ack = 1"
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch (Exception Ex)
-        //    {
-        //        ClassLog.Write(Ex.Message);
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Изменение статуса реакции на все события.
-        ///// </summary>
-        ///// <returns></returns>
-        //public virtual bool EventAckAll()
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE log SET ack = 1";
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch (Exception Ex)
-        //    {
-        //        ClassLog.Write(Ex.Message);
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        //#endregion
-
-        //#region [Messages]
-
-        //public virtual List<ClassMessage> MessagesLoad()
-        //{
-        //    List<ClassMessage> lst = new List<ClassMessage>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT rowid, * FROM mes ORDER BY rowid DESC";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassMessage obj = new ClassMessage();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Type = (ClassMessage.EnumType)Convert.ToInt32(reader["type"]);
-        //            obj.DT = DateTime.Parse(reader["dt"].ToString());
-        //            obj.Bytes = (byte[])reader["buf"];
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //public virtual bool MessageAdd(ClassMessage obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO mes (type, buf) VALUES(@Type, @Buf)";
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.Type);
-        //    cmd.Parameters.Add(new SqliteParameter("@Buf", SqliteType.Blob) { Value = obj.Bytes });
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch(Exception ex)
-        //    {
-        //        return false; 
-        //    }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual List<System.Windows.Media.Imaging.BitmapImage> ImagesLoad()
-        //{
-        //    List<System.Windows.Media.Imaging.BitmapImage> lst = new List<System.Windows.Media.Imaging.BitmapImage>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT rowid, * FROM lib ORDER BY rowid";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            int ID = Convert.ToInt32(reader["rowid"]);
-        //            string Name = (string)reader["name"];
-        //            byte[] b = (byte[])reader["pic"];
-        //            System.IO.MemoryStream stream = new System.IO.MemoryStream(b);
-        //            System.Windows.Media.Imaging.BitmapImage image = new System.Windows.Media.Imaging.BitmapImage();
-        //            image.BeginInit();
-        //            image.StreamSource = stream;
-        //            image.EndInit();
-        //            lst.Add(image);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //#endregion
-
-        //#region [Subs]
-
-        //public virtual List<ClassSub> SubsLoad()
-        //{
-        //    List<ClassSub> lst = new List<ClassSub>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT rowid, * FROM sub ORDER BY var, val";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            ClassSub obj = new ClassSub();
-        //            obj.ID = Convert.ToInt32(reader["rowid"]);
-        //            obj.Group = (string)reader["var"];
-        //            obj.Value = Convert.ToInt32(reader["val"]);
-        //            obj.Text = (string)reader["txt"];
-        //            if (reader["fcolor"] != DBNull.Value)
-        //                obj.ARGB = Convert.ToInt32(reader["fcolor"]);
-        //            if (reader["bcolor"] != DBNull.Value)
-        //                obj.BackRGB = Convert.ToInt32(reader["bcolor"]);
-        //            lst.Add(obj);
-        //        }
-        //    }
-        //    return lst;
-        //}
-
-        //public virtual bool SubAdd(ClassSub obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO sub (var, val, txt, fcolor, bcolor)"
-        //        + " VALUES(@Var, @Val, @Txt, @FColor, @BColor)";
-        //    cmd.Parameters.AddWithValue("@Var", obj.Group);
-        //    cmd.Parameters.AddWithValue("@Val", obj.Value);
-        //    cmd.Parameters.AddWithValue("@Txt", obj.Text);
-        //    cmd.Parameters.AddWithValue("@FColor", obj.ARGB);
-        //    cmd.Parameters.AddWithValue("@BColor", obj.BackRGB);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
-
-        //public virtual bool SubEdit(ClassSub obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "UPDATE sub SET var = @Var, val = @Val, txt = @Txt, fcolor = @FColor,"
-        //        + " bcolor = @BColor"
-        //        + " WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@Var", obj.Group);
-        //    cmd.Parameters.AddWithValue("@Val", obj.Value);
-        //    cmd.Parameters.AddWithValue("@Txt", obj.Text);
-        //    cmd.Parameters.AddWithValue("@FColor", obj.ARGB);
-        //    cmd.Parameters.AddWithValue("@BColor", obj.BackRGB);
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch (Exception Ex)
-        //    {
-        //        ClassLog.Write(Ex.Message);
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        //public virtual bool SubDel(int ID)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "DELETE FROM sub WHERE rowid = @ID";
-        //    cmd.Parameters.AddWithValue("@ID", ID);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    return true;
-        //}
-
-        //#endregion
 
         #region [Update]
 

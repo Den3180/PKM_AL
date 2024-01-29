@@ -51,11 +51,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Classes\DevicesClasses\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <AvaloniaResource Update="Resources\iconfinder_inventory_categories_44826.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>
