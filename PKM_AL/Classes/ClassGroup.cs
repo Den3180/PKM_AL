@@ -40,17 +40,16 @@ namespace PKM_AL
             ID = 0;
             SubGroups = new ObservableCollection<ClassItem>();
         }
-    }
 
-    public class ClassItem : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        public override string ToString()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            return Name;
         }
 
+    }
+
+    public class ClassItem : MyPropertyChanged
+    {
         public enum eType
         {
             None = 0,
@@ -80,6 +79,11 @@ namespace PKM_AL
                 _NameCh = value;
                 OnPropertyChanged("NameCh");
             }
+        }
+
+        public override string ToString()
+        {
+            return NameCh;
         }
     }
 }
