@@ -248,7 +248,6 @@ namespace PKM_AL
             case "База данных...":
             WindowDB windowDb = new WindowDB();
             windowDb.WindowShow(this);
-            Environment.Exit(0);
             break;
             case "Параметры...":
             break;

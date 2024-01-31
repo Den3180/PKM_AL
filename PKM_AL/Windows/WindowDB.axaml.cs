@@ -49,5 +49,6 @@ public partial class WindowDB : ClassWindowPKM
                                 "", 
                                 ButtonEnum.Ok,icon: MsBox.Avalonia.Enums.Icon.Info);
         this.Close();
+        Environment.Exit(0);
     }
 }
