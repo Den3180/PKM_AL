@@ -6,7 +6,6 @@ using PKM;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -18,6 +17,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Base;
 using Avalonia;
 using PKM_AL.Classes.ServiceClasses;
+using Avalonia.Media.Imaging;
 
 namespace PKM_AL
 {
@@ -56,12 +56,12 @@ namespace PKM_AL
 
             WindowIntro frmIntro = new WindowIntro();
             frmIntro.WindowShow(this);
-            
-   
+
+
             if (!File.Exists(settings.DB))
             {
-                Task<ButtonResult> buttonResult= ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
-                      ,"",ButtonEnum.YesNo,icon:MsBox.Avalonia.Enums.Icon.Question); 
+                Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
+                      , "", ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
                 if (buttonResult.Result == ButtonResult.Yes)
                 {
                     string path = ClassDialogWindows.CreateDBDialog(this);
@@ -81,7 +81,7 @@ namespace PKM_AL
                 else
                 {
                     ClassMessage.ShowMessage(this, "База данных не создана.\nПриложение будет закрыто.",
-                         icon: MsBox.Avalonia.Enums.Icon.Stop);                   
+                         icon: MsBox.Avalonia.Enums.Icon.Stop);
                     Environment.Exit(0);
                 }
             }
@@ -95,14 +95,14 @@ namespace PKM_AL
             }
             else
             {
-                ClassMessage.ShowMessage(this, "База данных подключена.", "", ButtonEnum.Ok, 
+                ClassMessage.ShowMessage(this, "База данных подключена.", "", ButtonEnum.Ok,
                                          icon: MsBox.Avalonia.Enums.Icon.Success);
             }
             int VersionDB = DB.InfoLoad();
             if (VersionDB != ClassDB.Version)
             {
-                var buttonResault = ClassMessage.ShowMessage(this, "Версия базы данных не поддерживается.\nВыполнить обновление?", "", 
-                    ButtonEnum.YesNo,icon: MsBox.Avalonia.Enums.Icon.Error);
+                var buttonResault = ClassMessage.ShowMessage(this, "Версия базы данных не поддерживается.\nВыполнить обновление?", "",
+                    ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Error);
                 if (buttonResault.Result == ButtonResult.No)
                 {
                     ClassMessage.ShowMessage(this, "База данных не обновлена.\nПриложение будет закрыто.",
@@ -130,12 +130,20 @@ namespace PKM_AL
             Channels = new ObservableCollection<ClassChannel>(DB.RegistriesLoad(0));
             Groups = new ObservableCollection<ClassGroup>();
 
-            ClassGroup d = new ClassGroup();
+
+            BuildMainTree();
+
+            //this.treeView.ItemsSource = Groups;
+        }
+
+        private void BuildMainTree()
+        {
+            ClassGroup d;
+            d = new ClassGroup();
             d.ID = Groups.Count + 1;
             d.Name = "Устройства";
-            d.IconUri = "folders_explorer.png";
+            d.IconUri = "../../../Resources/folders_explorer.png";
             d.GroupType = ClassGroup.eType.Devices;
-            //Если из базы вытянуты хоть какие-то устройства.
             foreach (ClassDevice item in Devices)
             {
                 //Добавляем их в подузлы.
@@ -143,101 +151,145 @@ namespace PKM_AL
                 {
                     ID = item.ID,
                     NameCh = item.Name,
-                    IconUri = "Resources/hardware.png",
+                    IconUri = "../../../Resources/hardware.png",
                     Group = d,
                     ItemType = ClassItem.eType.Device
                 });
             }
-            //Добавить узел дерева.
+            //Добавить узел мнемосхем.
             Groups.Add(d);
-            //this.treeView.ItemsSource = Groups;
-        }
-
-
-
-        private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
-        {
-            Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу","",ButtonEnum.YesNo, 
-                                                                       icon: MsBox.Avalonia.Enums.Icon.Question);
-            if (buttonResult.Result == ButtonResult.Yes)
+            foreach (var group in Groups)
             {
-                Environment.Exit(0);
-            }
-            else
-            {
-                e.Cancel = true;
+                this.treeView.Items.Add(MakeTreeViewItem(group));
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private TreeViewItem MakeTreeViewItem(ClassGroup d)
         {
-            MenuItem menuItem = (MenuItem)sender;
-            switch (menuItem.Header)
+            TreeViewItem item = new TreeViewItem();
+            StackPanel rootPanel = new StackPanel()
             {
-                case "Выход":
-                Close();
-                break;
-                case "Смена пользователя...":                
-                break;   
-                case "Устройства...":
-                break;
-                case "Каналы данных...":
-                break;
-                case "Графики...":
-                break;
-                case "Журнал событий...":
-                break;
-                case "Журнал тревог...":
-                break;
-                case "Журнал сообщений...":
-                break;
-                case "Карта...":
-                break;
-                case "База данных...":                    
-                    WindowDB windowDb = new WindowDB();
-                    windowDb.WindowShow(this);
-                    Environment.Exit(0);
-                break;
-                case "Параметры...":
-                break;
-                case "Пользователи...":
-                break;
-                case "Шаблоны...":
-                break;
-                case "Создать БД...":                   
-                    string path = ClassDialogWindows.CreateDBDialog(this);
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        ClassDB.Create(path);
-                    }                    
-                    break;
-                case "О программе...":
-                break;
-                default:
-                break;
+                Orientation = Avalonia.Layout.Orientation.Horizontal
+            };
+            Label rootLabel = new Label()
+            {
+                Content = d,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+            };
+            Image rootimage = new Image()
+            {
+                Source = new Bitmap(d.IconUri)
+            };
+            rootPanel.Children.Add(rootimage);
+            rootPanel.Children.Add(rootLabel);
+            item.Header = rootPanel;
+
+            foreach (var subGr in d.SubGroups)
+            {
+                StackPanel stackPanel = new StackPanel()
+                {
+                    Orientation = Avalonia.Layout.Orientation.Horizontal
+                };
+                Label label = new Label()
+                {
+                    Content = subGr,
+                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+                };
+                Image image = new Image()
+                {
+                    Source = new Bitmap(subGr.IconUri)
+                };
+                stackPanel.Children.Add(image);
+                stackPanel.Children.Add(label);
+                item.Items.Add(stackPanel);
             }
+            return item;
         }
+    
 
-        private void MenuItemGSM_Click(object sender, RoutedEventArgs e)
+    private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
+    {
+        Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу", "", ButtonEnum.YesNo,
+                                                                   icon: MsBox.Avalonia.Enums.Icon.Question);
+        if (buttonResult.Result == ButtonResult.Yes)
         {
-
+            Environment.Exit(0);
         }
-        private void MenuItem_Click_Form(object sender, RoutedEventArgs e)
+        else
         {
-
+            e.Cancel = true;
         }
-        private void MenuItem_Click_OBD(object sender, RoutedEventArgs e)
+    }
+
+    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        MenuItem menuItem = (MenuItem)sender;
+        switch (menuItem.Header)
         {
-
+            case "Выход":
+            Close();
+            break;
+            case "Смена пользователя...":
+            break;
+            case "Устройства...":
+            break;
+            case "Каналы данных...":
+            break;
+            case "Графики...":
+            break;
+            case "Журнал событий...":
+            break;
+            case "Журнал тревог...":
+            break;
+            case "Журнал сообщений...":
+            break;
+            case "Карта...":
+            break;
+            case "База данных...":
+            WindowDB windowDb = new WindowDB();
+            windowDb.WindowShow(this);
+            Environment.Exit(0);
+            break;
+            case "Параметры...":
+            break;
+            case "Пользователи...":
+            break;
+            case "Шаблоны...":
+            break;
+            case "Создать БД...":
+            string path = ClassDialogWindows.CreateDBDialog(this);
+            if (!string.IsNullOrEmpty(path))
+            {
+                ClassDB.Create(path);
+            }
+            break;
+            case "О программе...":
+            break;
+            default:
+            break;
         }
-        private void MenuItem_Click_Reports(object sender, RoutedEventArgs e)
-        {
-        }
+    }
 
-        private void TreeView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+    private void MenuItemGSM_Click(object sender, RoutedEventArgs e)
+    {
 
-        }
+    }
+    private void MenuItem_Click_Form(object sender, RoutedEventArgs e)
+    {
+
+    }
+    private void MenuItem_Click_OBD(object sender, RoutedEventArgs e)
+    {
+
+    }
+    private void MenuItem_Click_Reports(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private void TreeView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
 
     }
 }

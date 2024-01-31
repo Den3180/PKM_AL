@@ -116,13 +116,7 @@
 		<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
 					  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="LightGray" />
 		<ContentControl Grid.Column="2" Name="ContentArea"/>
-		<!--<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectionChanged" ItemsSource="{Binding Groups}">
-			<TreeView.ItemTemplate>
-				<TreeDataTemplate ItemsSource="{Binding SubGroups}">
-					<TextBlock Text="{Binding Name}"/>
-				</TreeDataTemplate>
-			</TreeView.ItemTemplate>
-		</TreeView>-->
+		<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectionChanged"/>
 			</Grid>
 	</DockPanel> 
 </Window>

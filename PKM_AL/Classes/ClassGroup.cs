@@ -45,7 +45,6 @@ namespace PKM_AL
         {
             return Name;
         }
-
     }
 
     public class ClassItem : MyPropertyChanged
