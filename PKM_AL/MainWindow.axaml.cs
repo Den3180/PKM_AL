@@ -24,6 +24,7 @@ namespace PKM_AL
     public partial class MainWindow : Window
     {
         public static ClassDB DB;
+        private DispatcherTimer TimerSec;
         public static ObservableCollection<ClassGroup> Groups;
         public static ObservableCollection<ClassDevice> Devices;
         public static ObservableCollection<ClassChannel> Channels;
@@ -129,20 +130,35 @@ namespace PKM_AL
             Devices = new ObservableCollection<ClassDevice>(DB.DevicesLoad());
             Channels = new ObservableCollection<ClassChannel>(DB.RegistriesLoad(0));
             Groups = new ObservableCollection<ClassGroup>();
+            
+            //Блок генерации дерева.
+            BuildContentMainTreeItems();
+            MakeTreeViewItem();
 
+            //Блок настроек и запуска таймера.
+            TimerSec = new DispatcherTimer();
+            TimerSec.Tick += TimerSec_Tick;
+            TimerSec.Interval = new TimeSpan(0, 0, 0, 0, 700);
+            //TimerSec.Start();
 
-            BuildMainTree();
-
-            //this.treeView.ItemsSource = Groups;
         }
 
-        private void BuildMainTree()
+        private void TimerSec_Tick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Формирование контента основного дерева приложения.
+        /// </summary>
+        private void BuildContentMainTreeItems()
         {
             ClassGroup d;
+            //Добаваить узел устройств.
             d = new ClassGroup();
             d.ID = Groups.Count + 1;
             d.Name = "Устройства";
-            d.IconUri = "../../../Resources/folders_explorer.png";
+            d.IconUri = "folders_explorer.png";
             d.GroupType = ClassGroup.eType.Devices;
             foreach (ClassDevice item in Devices)
             {
@@ -151,61 +167,106 @@ namespace PKM_AL
                 {
                     ID = item.ID,
                     NameCh = item.Name,
-                    IconUri = "../../../Resources/hardware.png",
+                    IconUri = "hardware.png",
                     Group = d,
                     ItemType = ClassItem.eType.Device
                 });
             }
-            //Добавить узел мнемосхем.
             Groups.Add(d);
+
+            //Добавить узел журналов.
+            d = new ClassGroup();
+            d.ID = Groups.Count + 1;
+            d.Name = "Журналы";
+            d.IconUri = "folders_explorer.png";
+            //Подузел журнала событий.
+            d.SubGroups.Add(new ClassItem()
+            {
+                ID = 1,
+                NameCh = "Журнал событий",
+                IconUri = "book.png",
+                ItemType = ClassItem.eType.Log
+            });
+            //Подузел журнала тревог.
+            d.SubGroups.Add(new ClassItem()
+            {
+                ID = 2,
+                NameCh = "Журнал тревог",
+                IconUri = "book_error.png",
+                ItemType = ClassItem.eType.Alarms
+            });
+            Groups.Add(d);
+
+            //Добавить узел сценариев.
+            if (settings.Interface)
+            {
+                d = new ClassGroup();
+                d.ID = Groups.Count + 1;
+                d.Name = "Сценарии";
+                d.IconUri = "folders_explorer.png";
+                //Подузел команды.
+                d.SubGroups.Add(new ClassItem()
+                {
+                    ID = 1,
+                    NameCh = "Команды",
+                    IconUri = "tags.png",
+                    ItemType = ClassItem.eType.Command
+                });
+                //Подузел связи событий.
+                d.SubGroups.Add(new ClassItem()
+                {
+                    ID = 2,
+                    NameCh = "Связи событий",
+                    IconUri = "connect.png",
+                    ItemType = ClassItem.eType.Links
+                });
+                Groups.Add(d);
+            }
+                //Узел архив.
+                d = new ClassGroup();
+                d.ID = Groups.Count + 1;
+                d.Name = "Архив";
+                d.IconUri = "folders_explorer.png";
+                //Подузел график трендов.
+                d.SubGroups.Add(new ClassItem()
+                {
+                    ID = 1,
+                    NameCh = "Графики трендов",
+                    IconUri = "wave.png",
+                    ItemType = ClassItem.eType.Graph,
+                    Group = d
+                });
+                //Подузел поиск в архиве.
+                d.SubGroups.Add(new ClassItem()
+                {
+                    ID = 2,
+                    NameCh = "Поиск в архиве",
+                    IconUri = "magnify_16.png",
+                    ItemType = ClassItem.eType.Archive,
+                    Group = d
+                });
+                Groups.Add(d);
+        }
+
+        /// <summary>
+        /// Построение элементов основного дерева приложения.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        private void MakeTreeViewItem()
+        {
             foreach (var group in Groups)
             {
-                this.treeView.Items.Add(MakeTreeViewItem(group));
+                TreeViewItem item = new TreeViewItem();
+                item.Header =ClassBuildControl.MakeContentTreeViewItem(group);
+                foreach (var subGr in group.SubGroups)
+                {
+                    item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(subGr));
+                }
+                this.treeView.Items.Add(item);
             }
         }
 
-        private TreeViewItem MakeTreeViewItem(ClassGroup d)
-        {
-            TreeViewItem item = new TreeViewItem();
-            StackPanel rootPanel = new StackPanel()
-            {
-                Orientation = Avalonia.Layout.Orientation.Horizontal
-            };
-            Label rootLabel = new Label()
-            {
-                Content = d,
-                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
-            };
-            Image rootimage = new Image()
-            {
-                Source = new Bitmap(d.IconUri)
-            };
-            rootPanel.Children.Add(rootimage);
-            rootPanel.Children.Add(rootLabel);
-            item.Header = rootPanel;
-
-            foreach (var subGr in d.SubGroups)
-            {
-                StackPanel stackPanel = new StackPanel()
-                {
-                    Orientation = Avalonia.Layout.Orientation.Horizontal
-                };
-                Label label = new Label()
-                {
-                    Content = subGr,
-                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
-                };
-                Image image = new Image()
-                {
-                    Source = new Bitmap(subGr.IconUri)
-                };
-                stackPanel.Children.Add(image);
-                stackPanel.Children.Add(label);
-                item.Items.Add(stackPanel);
-            }
-            return item;
-        }
-    
 
     private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
     {

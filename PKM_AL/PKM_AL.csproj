@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.7" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.7" />
+    <PackageReference Include="Avalonia.Skia" Version="11.0.7" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.7" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.7" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -43,16 +44,28 @@
 
 
   <ItemGroup>
+    <None Remove="Resources\book.png" />
+    <None Remove="Resources\book_error.png" />
     <None Remove="Resources\bullet-green-32.png" />
     <None Remove="Resources\bullet-red-32.png" />
+    <None Remove="Resources\connect.png" />
     <None Remove="Resources\database_blue.png" />
     <None Remove="Resources\folders_explorer.png" />
     <None Remove="Resources\hardware.png" />
+    <None Remove="Resources\magnify_16.png" />
+    <None Remove="Resources\tags.png" />
     <None Remove="Resources\TPLogoM.png" />
+    <None Remove="Resources\wave.png" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <AvaloniaResource Update="Resources\folders_explorer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Resources\hardware.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AvaloniaResource>
     <AvaloniaResource Update="Resources\iconfinder_inventory_categories_44826.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>

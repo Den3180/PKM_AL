@@ -6,7 +6,8 @@
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         x:Class="PKM_AL.MainWindow"
 		x:DataType="vm:MainWindow"
-        Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+		Icon="/Resources/iconfinder_inventory_categories_44826.ico">
 	<DockPanel>
 		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="LightGray">
 			<MenuItem Header="Файл">
