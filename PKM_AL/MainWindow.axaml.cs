@@ -18,13 +18,18 @@ using MsBox.Avalonia.Base;
 using Avalonia;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace PKM_AL
 {
     public partial class MainWindow : Window
     {
-        public static ClassDB DB;
         private DispatcherTimer TimerSec;
+
+        public static ClassDB DB;
+        public static MainWindow currentMainWindow;
+        public static ClassSlave Slave;
+
         public static ObservableCollection<ClassGroup> Groups;
         public static ObservableCollection<ClassDevice> Devices;
         public static ObservableCollection<ClassChannel> Channels;
@@ -35,6 +40,7 @@ namespace PKM_AL
         public MainWindow()
         {
             InitializeComponent();
+            currentMainWindow = this;
             this.Loaded += MainWindow_Loaded;
             this.Closing += MainWindow_Closing;
         }
@@ -130,7 +136,9 @@ namespace PKM_AL
             Devices = new ObservableCollection<ClassDevice>(DB.DevicesLoad());
             Channels = new ObservableCollection<ClassChannel>(DB.RegistriesLoad(0));
             Groups = new ObservableCollection<ClassGroup>();
-            
+            Slave = new ClassSlave();
+
+
             //Блок генерации дерева.
             BuildContentMainTreeItems();
             MakeTreeViewItem();
@@ -140,6 +148,26 @@ namespace PKM_AL
             TimerSec.Tick += TimerSec_Tick;
             TimerSec.Interval = new TimeSpan(0, 0, 0, 0, 700);
             //TimerSec.Start();
+
+            switch (settings.StartWindow)
+            {
+                case 0:
+                this.ContentArea.Content = new UserControlDevices();
+                this.StatusMode.Text = "Устройства";
+                break;
+                //case 1:
+                //this.ContentArea.Content = new UserControlArchive();
+                //this.StatusMode.Content = "Поиск в архиве";
+                //break;
+                //default:
+                //if (settings.Interface && Maps.Count > 0)
+                //{
+                //    this.ContentArea.Content = new UserControlCanvas(Maps[0].ID);
+                //    this.StatusMode.Content = "Мнемосхема";
+                //}
+                //break;
+            }
+
 
         }
 
