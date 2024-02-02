@@ -23,13 +23,23 @@
 			  HorizontalGridLinesBrush="Black"
 			  VerticalGridLinesBrush="Black"
 			  LoadingRow="DataGrid_LoadingRow">
+		<DataGrid.Styles>
+			<Style Selector="DataGridColumnHeader">
+				<Setter Property="HorizontalContentAlignment" Value="Center"/>
+				<Setter Property="SeparatorBrush" Value="Black"/>
+				<Setter Property="Foreground" Value="Black"/>
+				<Setter Property="BorderBrush" Value="Black"/>
+				<Setter Property="AreSeparatorsVisible" Value="True"/>
+				<Setter Property="Background" Value="Beige"/>				
+			</Style>
+		</DataGrid.Styles>
 		<DataGrid.Columns>
 			<DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Tag}" />
 			<DataGridTextColumn Header="Устройство" Binding="{Binding Name}"/>
 			<DataGridTextColumn Header="Модель" Binding="{Binding ModelName}" />
 			<DataGridTextColumn Header="Пикет" Binding="{Binding Picket}" />
 			<DataGridTextColumn Header="С.Ш." Binding="{Binding Latitude}" />
-			<DataGridTextColumn Header="В.Д" Binding="{Binding Longitude}" />			
+			<DataGridTextColumn Header="В.Д." Binding="{Binding Longitude}" />			
 			<DataGridTextColumn Header="Высота" Binding="{Binding Elevation}" />
 			<DataGridTextColumn Header="Протокол" Binding="{Binding ProtocolName}" />
 			<DataGridTextColumn Header="Порт/IP" Binding="{Binding CommParam}" />
