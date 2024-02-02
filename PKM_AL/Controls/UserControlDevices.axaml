@@ -4,9 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:PKM_AL"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 x:DataType="vm:MainWindow"
-             x:Class="PKM_AL.UserControlDevices">
-	<DataGrid Name="GridDevises" AutoGenerateColumns="False" SelectionMode="Single" CanUserReorderColumns="False"
-			  IsReadOnly="True" GridLinesVisibility="All" ItemsSource="{Binding $self.DataContext}" >		
+             x:Class="PKM_AL.UserControlDevices" Loaded="UserControl_Loaded">
+	<Design.DataContext>
+		<vm:ClassDevice/>
+	</Design.DataContext>
+	<Grid>		
+	<DataGrid Name="GridDevises" 
+			  x:DataType="vm:ClassDevice" 
+			  AutoGenerateColumns="false"
+			  IsReadOnly="True"
+			  GridLinesVisibility="All"
+			  BorderThickness="1"
+			  BorderBrush="Black"
+			  Foreground="Black"
+			  CanUserResizeColumns="False"
+			  CanUserSortColumns="False"
+			  ColumnHeaderHeight="50"
+			  HorizontalGridLinesBrush="Black"
+			  VerticalGridLinesBrush="Black"
+			  LoadingRow="DataGrid_LoadingRow">
+		<DataGrid.Columns>
+			<DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Tag}" />
+			<DataGridTextColumn Header="Устройство" Binding="{Binding Name}"/>
+			<DataGridTextColumn Header="Модель" Binding="{Binding ModelName}" />
+			<DataGridTextColumn Header="Пикет" Binding="{Binding Picket}" />
+			<DataGridTextColumn Header="С.Ш." Binding="{Binding Latitude}" />
+			<DataGridTextColumn Header="В.Д" Binding="{Binding Longitude}" />			
+			<DataGridTextColumn Header="Высота" Binding="{Binding Elevation}" />
+			<DataGridTextColumn Header="Протокол" Binding="{Binding ProtocolName}" />
+			<DataGridTextColumn Header="Порт/IP" Binding="{Binding CommParam}" />
+			<DataGridTextColumn Header="Адрес/ID" Binding="{Binding Address}" />
+			<DataGridTextColumn Header="SIM карта" Binding="{Binding SIM}" />
+			<DataGridTextColumn Header="Период опроса" Binding="{Binding Period}" />
+			<DataGridTextColumn Header="Пакетов" Binding="{Binding PacketStatistics}" />
+			<DataGridTextColumn Header="Наличие связи" Binding="{Binding LinkStateName}" />			
+		</DataGrid.Columns>
 	</DataGrid>
+	</Grid>
 </UserControl>

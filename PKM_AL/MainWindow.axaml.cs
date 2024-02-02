@@ -18,7 +18,6 @@ using MsBox.Avalonia.Base;
 using Avalonia;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace PKM_AL
 {

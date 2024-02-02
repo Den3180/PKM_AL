@@ -5,7 +5,6 @@
 		xmlns:vm="using:PKM_AL"
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         x:Class="PKM_AL.MainWindow"
-		x:DataType="vm:MainWindow"
         Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized"
 		Icon="/Resources/iconfinder_inventory_categories_44826.ico">
 	<DockPanel>
