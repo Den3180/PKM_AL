@@ -49,6 +49,21 @@
 			<DataGridTextColumn Header="Пакетов" Binding="{Binding PacketStatistics}" />
 			<DataGridTextColumn Header="Наличие связи" Binding="{Binding LinkStateName}" />			
 		</DataGrid.Columns>
+		<DataGrid.ContextMenu>
+			<ContextMenu Name="cMenu" Opened="cMenu_Opened">
+				<MenuItem Header="Состояние устройства" Click="MenuItemDetails_Click"/>
+				<MenuItem Header="Показать на карте..." Click="MenuItemShowMap_Click"/>
+				<Separator/>
+				<MenuItem Header="Добавить устройство..." Click="MenuItemAdd_Click"/>
+				<MenuItem Header="Изменить устройство..." Click="MenuItemEdit_Click"/>
+				<MenuItem Header="Удалить устройство" Click="MenuItemDelete_Click"/>
+				<Separator/>
+				<MenuItem Header="Сохранить профиль устройства в файл..." Click="MenuItemSave_Click"/>
+				<MenuItem Header="Загрузить профиль устройства из файла..." Click="MenuItemLoad_Click"/>
+				<Separator/>
+				<MenuItem Header="Настроить видимость столбцов..." Click="MenuItemCustom_Click"></MenuItem>
+			</ContextMenu>			
+		</DataGrid.ContextMenu>
 	</DataGrid>
 	</Grid>
 </UserControl>

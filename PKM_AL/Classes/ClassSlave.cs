@@ -1,5 +1,4 @@
-﻿using AvaloniaTest1.Service;
-using Modbus.Data;
+﻿using Modbus.Data;
 using Modbus.Device;
 using System;
 using System.Collections.Generic;

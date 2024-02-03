@@ -31,12 +31,6 @@
 
 
   <ItemGroup>
-    <AvaloniaXaml Remove="Windows\Window1.axaml" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Compile Remove="Windows\Window1.axaml.cs" />
     <Compile Update="Windows\WindowDB.axaml.cs">
       <DependentUpon>WindowDB.axaml</DependentUpon>
     </Compile>

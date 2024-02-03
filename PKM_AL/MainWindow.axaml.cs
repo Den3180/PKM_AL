@@ -1,6 +1,5 @@
 global using Avalonia.Interactivity;
 using Avalonia.Controls;
-using AvaloniaTest1.Service;
 using MsBox.Avalonia.Enums;
 using PKM;
 using System;
@@ -18,6 +17,7 @@ using MsBox.Avalonia.Base;
 using Avalonia;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace PKM_AL
 {
@@ -140,7 +140,7 @@ namespace PKM_AL
 
             //Блок генерации дерева.
             BuildContentMainTreeItems();
-            MakeTreeViewItem();
+            MakeTreeViewItem(Groups);
 
             //Блок настроек и запуска таймера.
             TimerSec = new DispatcherTimer();
@@ -280,7 +280,7 @@ namespace PKM_AL
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
-        private void MakeTreeViewItem()
+        private void MakeTreeViewItem(ObservableCollection<ClassGroup> Groups)
         {
             foreach (var group in Groups)
             {
@@ -377,6 +377,29 @@ namespace PKM_AL
     {
 
     }
+
+        /// <summary>
+        /// Открывает окно добавление устройства.
+        /// </summary>
+        public static void DeviceAdd()
+        {
+            WindowDevice frm = new WindowDevice(new ClassDevice());
+            frm.WindowShow(currentMainWindow);
+            bool? res = (bool)frm.Tag;
+            //Если была отмена - выход.
+            if (!res.Value) return;
+            //Добавление в дерево устройств новое устройство.
+            ClassItem item = new ClassItem()
+            {
+                ID = frm.Device.ID,
+                NameCh = frm.Device.Name,
+                IconUri = "hardware.png",
+                Group = Groups[0],
+                ItemType = ClassItem.eType.Device
+            };
+            Groups[0].SubGroups.Add(item);
+            (currentMainWindow.treeView.Items[0] as TreeViewItem).Items.Add(ClassBuildControl.MakeContentTreeViewItem(item));
+        }
 
     }
 }

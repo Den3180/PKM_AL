@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AvaloniaTest1.Service
+namespace PKM_AL
 {
     public class ClassMessage
     {

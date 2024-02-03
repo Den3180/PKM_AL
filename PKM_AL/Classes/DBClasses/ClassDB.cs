@@ -341,40 +341,40 @@ namespace PKM
             catch { return false; }
             cmd.CommandText = "SELECT last_insert_rowid()";
             obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-            
+
             //Добавление СКЗ.
-            //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-            //{
-            //    AddSKZData(cmd, obj);
-            //}
+            if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+            {
+                AddSKZData(cmd, obj);
+            }
             return true;
         }
 
-        ///// <summary>
-        ///// Добавление паспортных параметров СКЗ.
-        ///// </summary>
-        ///// <param name="cmd"></param>
-        ///// <param name="obj"></param>
-        //private void AddSKZData(SqliteCommand cmd, ClassDevice obj)
-        //{
-        //    cmd.CommandText = "INSERT INTO skz (id,unomin,nactivin,nfullin,unomout,inomout,nnomout,fcode,fnumber," +
-        //        "modulescount,fyear,yearstart) VALUES(@ID,@UnomInSKZ,@NactiveSKZ,@NfullInSKZ,@UnomOutSKZ,@InomOutSKZ,@NnomOutSKZ," +
-        //        "@FactoryCode,@FactoryNumber,@ModulesCount,@factoryYear,@DateStart)";
-        //    cmd.Parameters.AddWithValue("@ID", obj.ID);
-        //    cmd.Parameters.AddWithValue("@UnomInSKZ", obj.UnomInSKZ);
-        //    cmd.Parameters.AddWithValue("@NactiveSKZ", obj.NactiveSKZ);
-        //    cmd.Parameters.AddWithValue("@NfullInSKZ", obj.NfullInSKZ);
-        //    cmd.Parameters.AddWithValue("@UnomOutSKZ", obj.UnomOutSKZ);
-        //    cmd.Parameters.AddWithValue("@InomOutSKZ", obj.InomOutSKZ);
-        //    cmd.Parameters.AddWithValue("@NnomOutSKZ", obj.NnomOutSKZ);
-        //    cmd.Parameters.AddWithValue("@FactoryCode", obj.FactoryCode);
-        //    cmd.Parameters.AddWithValue("@FactoryNumber", obj.FactoryNumber);
-        //    cmd.Parameters.AddWithValue("@ModulesCount", obj.ModulesCount);
-        //    cmd.Parameters.AddWithValue("@factoryYear", obj.FactoryYear);
-        //    cmd.Parameters.AddWithValue("@DateStart", obj.DateStart.ToString("dd.MM.yyyy"));
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return; }
-        //}
+        /// <summary>
+        /// Добавление паспортных параметров СКЗ.
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="obj"></param>
+        private void AddSKZData(SqliteCommand cmd, ClassDevice obj)
+        {
+            cmd.CommandText = "INSERT INTO skz (id,unomin,nactivin,nfullin,unomout,inomout,nnomout,fcode,fnumber," +
+                "modulescount,fyear,yearstart) VALUES(@ID,@UnomInSKZ,@NactiveSKZ,@NfullInSKZ,@UnomOutSKZ,@InomOutSKZ,@NnomOutSKZ," +
+                "@FactoryCode,@FactoryNumber,@ModulesCount,@factoryYear,@DateStart)";
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            cmd.Parameters.AddWithValue("@UnomInSKZ", obj.UnomInSKZ);
+            cmd.Parameters.AddWithValue("@NactiveSKZ", obj.NactiveSKZ);
+            cmd.Parameters.AddWithValue("@NfullInSKZ", obj.NfullInSKZ);
+            cmd.Parameters.AddWithValue("@UnomOutSKZ", obj.UnomOutSKZ);
+            cmd.Parameters.AddWithValue("@InomOutSKZ", obj.InomOutSKZ);
+            cmd.Parameters.AddWithValue("@NnomOutSKZ", obj.NnomOutSKZ);
+            cmd.Parameters.AddWithValue("@FactoryCode", obj.FactoryCode);
+            cmd.Parameters.AddWithValue("@FactoryNumber", obj.FactoryNumber);
+            cmd.Parameters.AddWithValue("@ModulesCount", obj.ModulesCount);
+            cmd.Parameters.AddWithValue("@factoryYear", obj.FactoryYear);
+            cmd.Parameters.AddWithValue("@DateStart", obj.DateStart.ToString("dd.MM.yyyy"));
+            try { cmd.ExecuteNonQuery(); }
+            catch { return; }
+        }
 
         /// <summary>
         /// Редактирование устройства в БД.
