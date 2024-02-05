@@ -36,7 +36,7 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void DataGrid_LoadingRow(object sender, Avalonia.Controls.DataGridRowEventArgs e)
     {
-        e.Row.Tag = (e.Row.GetIndex() + 1).ToString();
+        e.Row.Tag = (e.Row.GetIndex() + 1).ToString();//fff
     }
 
     /// <summary>
