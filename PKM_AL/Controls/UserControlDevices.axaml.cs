@@ -30,7 +30,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Нумерация строк в таблице.ЦЦЦЦЦЦ
+    /// Нумерация строк в таблице.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
