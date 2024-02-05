@@ -5,6 +5,7 @@
       <map>
         <entry key="PKM_AL/MainWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowDB.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Windows/WindowDevice.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowIntro.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowMassage.axaml" value="PKM_AL/PKM_AL.csproj" />
       </map>

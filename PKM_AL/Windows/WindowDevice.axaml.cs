@@ -38,16 +38,16 @@ public partial class WindowDevice : ClassWindowPKM
         _Device.Period = Convert.ToInt32(this.Period.Text);
         _Device.IPAddress = string.IsNullOrEmpty(this.IPAddress.Text) ? "" : this.IPAddress.Text;
         _Device.IPPort = string.IsNullOrEmpty(this.IPPort.Text) ? 502 : Convert.ToInt32(this.IPPort.Text);
-        //Поля для конвертации в double проходят проверку на сепаратор чисел.
+        //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ double пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
         _Device.Latitude = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Latitude.Text, separatorCurrent));
         _Device.Longitude = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Longitude.Text, separatorCurrent));
-        _Device.Picket = $"ПК{Picket_km.Text}+{Picket_m.Text}";
+        _Device.Picket = $"пїЅпїЅ{Picket_km.Text}+{Picket_m.Text}";
         _Device.Elevation = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Elevation.Text, separatorCurrent));
         _Device.SIM = string.IsNullOrEmpty(this.txtSIM.Text) ? "" : this.txtSIM.Text;
-        //Выбрана вкладка СКЗ.
-        if ((Model.SelectedItem as ComboBoxItem).Content.ToString().Contains("СКЗ"))
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.
+        if ((Model.SelectedItem as ComboBoxItem).Content.ToString().Contains("пїЅпїЅпїЅ"))
         { SetSKZData(); }
-        //Проверка адреса устройства.
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         _Device.Model = (ClassDevice.EnumModel)this.Model.SelectedIndex;
         if (!CheckNameAndAddrDevice())
         { return; }
@@ -75,7 +75,7 @@ public partial class WindowDevice : ClassWindowPKM
     }
 
     /// <summary>
-    /// Внесение данных СКЗ из формы.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
     /// </summary>
     private void SetSKZData()
     {
@@ -85,16 +85,16 @@ public partial class WindowDevice : ClassWindowPKM
         _Device.UnomOutSKZ = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Unom_output.Text, NumberFormatInfo.CurrentInfo.NumberDecimalSeparator));
         _Device.InomOutSKZ = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Inom_output.Text, NumberFormatInfo.CurrentInfo.NumberDecimalSeparator));
         _Device.NnomOutSKZ = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Nnom_output.Text, NumberFormatInfo.CurrentInfo.NumberDecimalSeparator));
-        _Device.FactoryCode = FactoryCode.Text;//Код предприятия.
-        _Device.FactoryNumber = Convert.ToInt32(FactoryNumber.Text);//Заводской номер изделия.
-        _Device.ModulesCount = Convert.ToInt32(ModulesCount.Text);//Число модулей СКЗ.
+        _Device.FactoryCode = FactoryCode.Text;//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+        _Device.FactoryNumber = Convert.ToInt32(FactoryNumber.Text);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+        _Device.ModulesCount = Convert.ToInt32(ModulesCount.Text);//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.
         _Device.DateStart = DateStart.SelectedDate.Value;
-        _Device.FactoryYear = Convert.ToInt32(FactoryYear.SelectedValue);//Год выпуска.
+        _Device.FactoryYear = Convert.ToInt32(FactoryYear.SelectedValue);//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         _Device.Resource = Convert.ToInt32(Resource.Text);
     }
 
     /// <summary>
-    /// Проверка имени устройства на заполненность и адреса устройства на совпадение.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <returns></returns>
     private bool CheckNameAndAddrDevice()
@@ -102,19 +102,19 @@ public partial class WindowDevice : ClassWindowPKM
         ClassDevice device = MainWindow.Devices.FirstOrDefault(x => (x.Address == Convert.ToInt32(this.Address.Text) && x.ProtocolName == _Device.ProtocolName));
         if (string.IsNullOrEmpty(_Device.Name))
         {
-            ClassMessage.ShowMessage(text:"Введите имя устройства!",owner: MainWindow.currentMainWindow,icon: MsBox.Avalonia.Enums.Icon.Error);
+            ClassMessage.ShowMessage(text:"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!",owner: MainWindow.currentMainWindow,icon: MsBox.Avalonia.Enums.Icon.Error);
             return false;
         }
         if (device != null && _Device.ID != device.ID && _Device.Address != Convert.ToInt32(Address.Text))
         {
-            ClassMessage.ShowMessage(text: "Адреса устройств протокола ModbusRTU не должны совпадать!", owner: MainWindow.currentMainWindow, icon: MsBox.Avalonia.Enums.Icon.Error);
+            ClassMessage.ShowMessage(text: "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ModbusRTU пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", owner: MainWindow.currentMainWindow, icon: MsBox.Avalonia.Enums.Icon.Error);
             return false;
         }
         return true;
     }
 
     /// <summary>
-    ///  Обработка изменения выбранного элемента в Combobox. 
+    ///  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Combobox. 
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -126,7 +126,7 @@ public partial class WindowDevice : ClassWindowPKM
     }
 
     /// <summary>
-    /// Настройка ComboBox года выпуска.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ComboBox пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     /// </summary>
     private void SetFactoryYear()
     {
@@ -146,41 +146,40 @@ public partial class WindowDevice : ClassWindowPKM
         }
     }
 
-
     /// <summary>
-    /// Загрузка окна.
+    /// Р—Р°РїРѕР»РЅРµРЅРёРµ РґР°РЅРЅС‹С… РІ РѕРєРЅРµ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Window_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void WindowDevice_OnOpened(object sender, EventArgs e)
     {
-        this.DeviceName.Text = _Device.Name;
-        this.Protocol.SelectedIndex = (int)_Device.Protocol - 1;
-        this.Period.Text = _Device.Period.ToString();
-        this.IPAddress.Text = _Device.IPAddress;
-        this.IPPort.Text = _Device.IPPort.ToString();
-        this.Address.Text = _Device.Address.ToString();
-        this.txtSIM.Text = _Device.SIM;
-        this.Latitude.Text = _Device.Latitude.ToString();
-        this.Longitude.Text = _Device.Longitude.ToString();
-        this.Elevation.Text = _Device.Elevation.ToString();
-        this.Model.SelectedIndex = (int)_Device.Model;
-        this.Unom_supply.Text = _Device.UnomInSKZ.ToString();
-        this.Nactiv.Text = _Device.NactiveSKZ.ToString();
-        this.Nfull.Text = _Device.NfullInSKZ.ToString();
-        this.Unom_output.Text = _Device.UnomOutSKZ.ToString();
-        this.Inom_output.Text = _Device.InomOutSKZ.ToString();
-        this.Nnom_output.Text = _Device.NnomOutSKZ.ToString();
-        this.FactoryCode.Text = _Device.FactoryCode.ToString();
-        this.FactoryNumber.Text = _Device.FactoryNumber.ToString();
-        this.ModulesCount.Text = _Device.ModulesCount.ToString();
-        this.DateStart.SelectedDate = _Device.DateStart;
-        SetFactoryYear();
-        //Распарсивание строки пикетов.
-        if (!string.IsNullOrEmpty(_Device.Picket))
-        {
-            this.Picket_km.Text = _Device.Picket?.Split(new string[] { "+", "ПК" }, StringSplitOptions.RemoveEmptyEntries)[0];
-            this.Picket_m.Text = _Device.Picket?.Split(new string[] { "+", "ПК" }, StringSplitOptions.RemoveEmptyEntries)[1];
-        }
+        this.DeviceName.Text = string.IsNullOrEmpty(_Device.Name) ? "РЈСЃС‚СЂРѕР№СЃС‚РІРѕ" : _Device.Name;
+         this.Protocol.SelectedIndex = (int)_Device.Protocol - 1;
+         this.Period.Text = _Device.Period.ToString();
+         this.IPAddress.Text = _Device.IPAddress;
+         this.IPPort.Text = _Device.IPPort.ToString();
+         this.Address.Text = _Device.Address.ToString();
+         this.txtSIM.Text = _Device.SIM;
+         this.Latitude.Text = _Device.Latitude.ToString();
+         this.Longitude.Text = _Device.Longitude.ToString();
+         this.Elevation.Text = _Device.Elevation.ToString();
+         this.Model.SelectedIndex = (int)_Device.Model;
+         this.Unom_supply.Text = _Device.UnomInSKZ.ToString();
+         this.Nactiv.Text = _Device.NactiveSKZ.ToString();
+         this.Nfull.Text = _Device.NfullInSKZ.ToString();
+         this.Unom_output.Text = _Device.UnomOutSKZ.ToString();
+         this.Inom_output.Text = _Device.InomOutSKZ.ToString();
+         this.Nnom_output.Text = _Device.NnomOutSKZ.ToString();
+         this.FactoryCode.Text = _Device.FactoryCode.ToString();
+         this.FactoryNumber.Text = _Device.FactoryNumber.ToString();
+         this.ModulesCount.Text = _Device.ModulesCount.ToString();
+         this.DateStart.SelectedDate = _Device.DateStart;
+         SetFactoryYear();
+         //Р Р°СЃРїР°СЂСЃРёРІР°РЅРёРµ СЃС‚СЂРѕРєРё РїРёРєРµС‚РѕРІ.
+         if (!string.IsNullOrEmpty(_Device.Picket))
+         {
+             this.Picket_km.Text = _Device.Picket?.Split(new string[] { "+", "РџРљ" }, StringSplitOptions.RemoveEmptyEntries)[0];
+             this.Picket_m.Text = _Device.Picket?.Split(new string[] { "+", "РџРљ" }, StringSplitOptions.RemoveEmptyEntries)[1];
+         }
     }
 }
