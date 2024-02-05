@@ -6,6 +6,9 @@ using System;
 using Org.BouncyCastle.Asn1.Cmp;
 using System.Linq;
 using MsBox.Avalonia.Enums;
+using Avalonia.Controls.Primitives;
+using System.Diagnostics;
+using System.Threading;
 
 namespace PKM_AL;
 
@@ -33,16 +36,16 @@ public partial class WindowDevice : ClassWindowPKM
         _Device.Name = this.DeviceName.Text;
         _Device.Protocol = (ClassDevice.EnumProtocol)this.Protocol.SelectedIndex + 1;
         _Device.Period = Convert.ToInt32(this.Period.Text);
-        _Device.IPAddress = this.IPAddress.Text;
-        _Device.IPPort = Convert.ToInt32(this.IPPort.Text);
+        _Device.IPAddress = string.IsNullOrEmpty(this.IPAddress.Text) ? "" : this.IPAddress.Text;
+        _Device.IPPort = string.IsNullOrEmpty(this.IPPort.Text) ? 502 : Convert.ToInt32(this.IPPort.Text);
         //Поля для конвертации в double проходят проверку на сепаратор чисел.
         _Device.Latitude = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Latitude.Text, separatorCurrent));
         _Device.Longitude = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Longitude.Text, separatorCurrent));
         _Device.Picket = $"ПК{Picket_km.Text}+{Picket_m.Text}";
         _Device.Elevation = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator(Elevation.Text, separatorCurrent));
-        _Device.SIM = this.txtSIM.Text;
+        _Device.SIM = string.IsNullOrEmpty(this.txtSIM.Text) ? "" : this.txtSIM.Text;
         //Выбрана вкладка СКЗ.
-        if (Model.SelectedItem.ToString().Contains("СКЗ"))
+        if ((Model.SelectedItem as ComboBoxItem).Content.ToString().Contains("СКЗ"))
         { SetSKZData(); }
         //Проверка адреса устройства.
         _Device.Model = (ClassDevice.EnumModel)this.Model.SelectedIndex;
@@ -61,10 +64,13 @@ public partial class WindowDevice : ClassWindowPKM
             ClassItem item = MainWindow.Groups[0].SubGroups.FirstOrDefault(x => x.ID == _Device.ID);
             item.NameCh = _Device.Name;
         }
+        this.Tag = true;
+        this.Close();
+    }
 
-
-        Button button = sender as Button;
-        this.Tag = button.IsDefault != true;
+    private void Button_Cancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        this.Tag = false;
         this.Close();
     }
 
@@ -107,4 +113,73 @@ public partial class WindowDevice : ClassWindowPKM
         return true;
     }
 
+    /// <summary>
+    ///  Обработка изменения выбранного элемента в Combobox. 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ComboBox_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e)
+    {
+        if (Panel_SKZ == null) return;
+        ComboBox comboBox = sender as ComboBox;
+        Panel_SKZ.IsVisible = (comboBox.SelectedIndex == (int)ClassDevice.EnumModel.SKZ || comboBox.SelectedIndex == (int)ClassDevice.EnumModel.SKZ_IP);
+    }
+
+    /// <summary>
+    /// Настройка ComboBox года выпуска.
+    /// </summary>
+    private void SetFactoryYear()
+    {
+        int dtEnd = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
+
+        for (int i = 1950; i <= dtEnd; i++)
+        {
+            FactoryYear.Items.Add(i);
+        }
+        if (_Device.FactoryYear == 0)
+        {
+            this.FactoryYear.SelectedIndex = this.FactoryYear.Items.Count - 1;
+        }
+        else
+        { 
+            this.FactoryYear.SelectedItem = this.FactoryYear.Items.FirstOrDefault(x=>(int)x== _Device.FactoryYear);
+        }
+    }
+
+    /// <summary>
+    /// Загрузка окна.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Window_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        this.DeviceName.Text = _Device.Name;
+        this.Protocol.SelectedIndex = (int)_Device.Protocol - 1;
+        this.Period.Text = _Device.Period.ToString();
+        this.IPAddress.Text = _Device.IPAddress;
+        this.IPPort.Text = _Device.IPPort.ToString();
+        this.Address.Text = _Device.Address.ToString();
+        this.txtSIM.Text = _Device.SIM;
+        this.Latitude.Text = _Device.Latitude.ToString();
+        this.Longitude.Text = _Device.Longitude.ToString();
+        this.Elevation.Text = _Device.Elevation.ToString();
+        this.Model.SelectedIndex = (int)_Device.Model;
+        this.Unom_supply.Text = _Device.UnomInSKZ.ToString();
+        this.Nactiv.Text = _Device.NactiveSKZ.ToString();
+        this.Nfull.Text = _Device.NfullInSKZ.ToString();
+        this.Unom_output.Text = _Device.UnomOutSKZ.ToString();
+        this.Inom_output.Text = _Device.InomOutSKZ.ToString();
+        this.Nnom_output.Text = _Device.NnomOutSKZ.ToString();
+        this.FactoryCode.Text = _Device.FactoryCode.ToString();
+        this.FactoryNumber.Text = _Device.FactoryNumber.ToString();
+        this.ModulesCount.Text = _Device.ModulesCount.ToString();
+        this.DateStart.SelectedDate = _Device.DateStart;
+        SetFactoryYear();
+        //Распарсивание строки пикетов.
+        if (!string.IsNullOrEmpty(_Device.Picket))
+        {
+            this.Picket_km.Text = _Device.Picket?.Split(new string[] { "+", "ПК" }, StringSplitOptions.RemoveEmptyEntries)[0];
+            this.Picket_m.Text = _Device.Picket?.Split(new string[] { "+", "ПК" }, StringSplitOptions.RemoveEmptyEntries)[1];
+        }
+    }
 }
