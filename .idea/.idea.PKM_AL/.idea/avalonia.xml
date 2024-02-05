@@ -3,6 +3,7 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="PKM_AL/Controls/UserControlDevices.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/MainWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/Window1.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowDB.axaml" value="PKM_AL/PKM_AL.csproj" />
