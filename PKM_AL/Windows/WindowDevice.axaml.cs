@@ -175,6 +175,7 @@ public partial class WindowDevice : ClassWindowPKM
          this.ModulesCount.Text = _Device.ModulesCount.ToString();
          this.DateStart.SelectedDate = _Device.DateStart;
          SetFactoryYear();
+        //Строки пикетов.
          //Распарсивание строки пикетов.
          //Распарсивание строки пикетов.
          //Распарсивание строки пикетов.
