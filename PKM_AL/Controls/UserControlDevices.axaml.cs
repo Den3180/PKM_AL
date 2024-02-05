@@ -30,13 +30,13 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Нумерация строк в таблице.
+    /// Нумерация строк в таблице.ЦЦЦЦЦЦ
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void DataGrid_LoadingRow(object sender, Avalonia.Controls.DataGridRowEventArgs e)
     {
-        e.Row.Tag = (e.Row.GetIndex() + 1).ToString();//fff
+        e.Row.Tag = (e.Row.GetIndex() + 1).ToString();
     }
 
     /// <summary>
