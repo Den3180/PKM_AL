@@ -30,7 +30,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Нумерация строк в таблице.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -40,7 +40,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Настройка видимости пунктов контекстного меню, в зависимости от роли.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -49,7 +49,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Состояние устройства.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -59,7 +59,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Показать на карте.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -69,7 +69,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Добавить устройство.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -79,7 +79,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Изменить устройство.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -92,7 +92,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Удалить устройство.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -100,10 +100,10 @@ public partial class UserControlDevices : UserControl
     {
         ClassDevice obj = this.GridDevises.SelectedItem as ClassDevice;
         if (obj == null) return;
-        Task <ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить устройство {obj.Name}?", owner: MainWindow.currentMainWindow,
+        Task <ButtonResult> res = ClassMessage.ShowMessage(text: $"РЈРґР°Р»РёС‚СЊ СѓСЃС‚СЂРѕР№СЃС‚РІРѕ {obj.Name}?", owner: MainWindow.currentMainWindow,
                                  buttonEnum:ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
         if (res.Result == ButtonResult.No) return;
-        //Удаление регистров из БД.
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ.
         Task.Run(() => MainWindow.DB.RegistryDelDev(obj.ID));
         for (int i = MainWindow.Channels.Count - 1; i >= 0; i--)
         {
@@ -123,7 +123,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Сохранить профиль устройства в файл.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -133,7 +133,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Загрузить профиль устройства из файла.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -144,7 +144,7 @@ public partial class UserControlDevices : UserControl
 
 
     /// <summary>
-    /// Настроить видимость столбцов.Контекстное меню.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
