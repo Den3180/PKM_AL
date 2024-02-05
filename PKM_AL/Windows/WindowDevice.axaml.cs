@@ -14,7 +14,7 @@ namespace PKM_AL;
 
 public partial class WindowDevice : ClassWindowPKM
 {
-    private ClassDevice _Device;
+    private ClassDevice _Device = new ClassDevice();
 
     public ClassDevice Device { get { return _Device; } }
 
@@ -66,6 +66,11 @@ public partial class WindowDevice : ClassWindowPKM
         }
     }
 
+    /// <summary>
+    /// Кнопка применить.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         string separatorCurrent = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
@@ -106,6 +111,11 @@ public partial class WindowDevice : ClassWindowPKM
         this.Close();
     }
 
+    /// <summary>
+    /// Кнопка отмены.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Cancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         this.Tag = false;
@@ -152,7 +162,7 @@ public partial class WindowDevice : ClassWindowPKM
     }
 
     /// <summary>
-    ///  Обработка выбора Combobox. 
+    ///  Обработка выбора типа устройства Combobox. 
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

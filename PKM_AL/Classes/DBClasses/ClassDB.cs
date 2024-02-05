@@ -273,43 +273,43 @@ namespace PKM
                     lst.Add(obj);
 
                     //Загрузка СКЗ.
-                    //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-                    //{
-                    //    LoadSKZData(obj);
-                    //}
+                    if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+                    {
+                        LoadSKZData(obj);
+                    }
                 }
             }
             return lst;
         }
 
-        ///// <summary>
-        ///// Загрузка данных СКЗ.
-        ///// </summary>
-        ///// <param name="obj"></param>
-        //private void LoadSKZData(ClassDevice obj)
-        //{
-        //    string commandTextSKZ = $"SELECT * FROM skz WHERE id={obj.ID}";
-        //    SqliteCommand cmdSKZ = conn.CreateCommand();
-        //    cmdSKZ.CommandText = commandTextSKZ;
-        //    using (SqliteDataReader readerSKZ = cmdSKZ.ExecuteReader())
-        //    {
-        //        while (readerSKZ.Read())
-        //        {
-        //                obj.UnomInSKZ = Convert.ToDouble(readerSKZ["unomin"]);
-        //                obj.NactiveSKZ = Convert.ToDouble(readerSKZ["nactivin"]);
-        //                obj.NfullInSKZ = Convert.ToDouble(readerSKZ["nfullin"]);
-        //                obj.UnomOutSKZ = Convert.ToDouble(readerSKZ["unomout"]);
-        //                obj.InomOutSKZ = Convert.ToDouble(readerSKZ["inomout"]);
-        //                obj.NnomOutSKZ = Convert.ToDouble(readerSKZ["nnomout"]);
-        //                obj.FactoryCode = Convert.ToString(readerSKZ["fcode"]);
-        //                obj.FactoryNumber = Convert.ToInt32(readerSKZ["fnumber"]);
-        //                obj.ModulesCount = Convert.ToInt32(readerSKZ["modulescount"]);
-        //                obj.FactoryYear = Convert.ToInt32(readerSKZ["fyear"]);
-        //                obj.DateStart = Convert.ToDateTime(readerSKZ["yearstart"]);                    
-        //                obj.Resource = readerSKZ["resource"]!=DBNull.Value? Convert.ToInt32(readerSKZ["resource"]):0;                    
-        //        }
-        //    }
-        //}
+        /// <summary>
+        /// Загрузка данных СКЗ.
+        /// </summary>
+        /// <param name="obj"></param>
+        private void LoadSKZData(ClassDevice obj)
+        {
+            string commandTextSKZ = $"SELECT * FROM skz WHERE id={obj.ID}";
+            SqliteCommand cmdSKZ = conn.CreateCommand();
+            cmdSKZ.CommandText = commandTextSKZ;
+            using (SqliteDataReader readerSKZ = cmdSKZ.ExecuteReader())
+            {
+                while (readerSKZ.Read())
+                {
+                    obj.UnomInSKZ = Convert.ToDouble(readerSKZ["unomin"]);
+                    obj.NactiveSKZ = Convert.ToDouble(readerSKZ["nactivin"]);
+                    obj.NfullInSKZ = Convert.ToDouble(readerSKZ["nfullin"]);
+                    obj.UnomOutSKZ = Convert.ToDouble(readerSKZ["unomout"]);
+                    obj.InomOutSKZ = Convert.ToDouble(readerSKZ["inomout"]);
+                    obj.NnomOutSKZ = Convert.ToDouble(readerSKZ["nnomout"]);
+                    obj.FactoryCode = Convert.ToString(readerSKZ["fcode"]);
+                    obj.FactoryNumber = Convert.ToInt32(readerSKZ["fnumber"]);
+                    obj.ModulesCount = Convert.ToInt32(readerSKZ["modulescount"]);
+                    obj.FactoryYear = Convert.ToInt32(readerSKZ["fyear"]);
+                    obj.DateStart = Convert.ToDateTime(readerSKZ["yearstart"]);
+                    obj.Resource = readerSKZ["resource"] != DBNull.Value ? Convert.ToInt32(readerSKZ["resource"]) : 0;
+                }
+            }
+        }
 
 
         /// <summary>
@@ -405,41 +405,41 @@ namespace PKM
             try { cmd.ExecuteNonQuery(); }
             catch { return false; }
 
-            //Редактирование СКЗ.
-            //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-            //{
-            //    EditSKZData(cmd, obj);
-            //}
+           // Редактирование СКЗ.
+            if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+            {
+                EditSKZData(cmd, obj);
+            }
             return true;
         }
 
 
-        ///// <summary>
-        ///// Обновление паспортных параметров СКЗ.
-        ///// </summary>
-        ///// <param name="cmd"></param>
-        ///// <param name="obj"></param>
-        //private void EditSKZData(SqliteCommand cmd, ClassDevice obj)
-        //{
-        //    cmd.CommandText = $"UPDATE skz SET unomin = @UnomInSKZ, nactivin = @NactiveSKZ, nfullin = @NfullInSKZ, " +
-        //        $"unomout = @UnomOutSKZ, inomout = @InomOutSKZ, nnomout = @NnomOutSKZ," +
-        //        $"fcode = @FactoryCode, fnumber = @FactoryNumber, modulescount = @ModulesCount, " +
-        //        $"fyear = @factoryYear, yearstart=@DateStart,resource = @Resource   WHERE id = @ID";
-        //    cmd.Parameters.AddWithValue("@UnomInSKZ", obj.UnomInSKZ);
-        //    cmd.Parameters.AddWithValue("@NactiveSKZ", obj.NactiveSKZ);
-        //    cmd.Parameters.AddWithValue("@NfullInSKZ", obj.NfullInSKZ);
-        //    cmd.Parameters.AddWithValue("@UnomOutSKZ", obj.UnomOutSKZ);
-        //    cmd.Parameters.AddWithValue("@InomOutSKZ", obj.InomOutSKZ);
-        //    cmd.Parameters.AddWithValue("@NnomOutSKZ", obj.NnomOutSKZ);
-        //    cmd.Parameters.AddWithValue("@FactoryCode", obj.FactoryCode);
-        //    cmd.Parameters.AddWithValue("@FactoryNumber", obj.FactoryNumber);
-        //    cmd.Parameters.AddWithValue("@ModulesCount", obj.ModulesCount);
-        //    cmd.Parameters.AddWithValue("@factoryYear", obj.FactoryYear);
-        //    cmd.Parameters.AddWithValue("@DateStart", obj.DateStart.ToString("dd.MM.yyyy"));
-        //    cmd.Parameters.AddWithValue("@Resource", obj.Resource);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return; }
-        //}
+        /// <summary>
+        /// Обновление паспортных параметров СКЗ.
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="obj"></param>
+        private void EditSKZData(SqliteCommand cmd, ClassDevice obj)
+        {
+            cmd.CommandText = $"UPDATE skz SET unomin = @UnomInSKZ, nactivin = @NactiveSKZ, nfullin = @NfullInSKZ, " +
+                $"unomout = @UnomOutSKZ, inomout = @InomOutSKZ, nnomout = @NnomOutSKZ," +
+                $"fcode = @FactoryCode, fnumber = @FactoryNumber, modulescount = @ModulesCount, " +
+                $"fyear = @factoryYear, yearstart=@DateStart,resource = @Resource   WHERE id = @ID";
+            cmd.Parameters.AddWithValue("@UnomInSKZ", obj.UnomInSKZ);
+            cmd.Parameters.AddWithValue("@NactiveSKZ", obj.NactiveSKZ);
+            cmd.Parameters.AddWithValue("@NfullInSKZ", obj.NfullInSKZ);
+            cmd.Parameters.AddWithValue("@UnomOutSKZ", obj.UnomOutSKZ);
+            cmd.Parameters.AddWithValue("@InomOutSKZ", obj.InomOutSKZ);
+            cmd.Parameters.AddWithValue("@NnomOutSKZ", obj.NnomOutSKZ);
+            cmd.Parameters.AddWithValue("@FactoryCode", obj.FactoryCode);
+            cmd.Parameters.AddWithValue("@FactoryNumber", obj.FactoryNumber);
+            cmd.Parameters.AddWithValue("@ModulesCount", obj.ModulesCount);
+            cmd.Parameters.AddWithValue("@factoryYear", obj.FactoryYear);
+            cmd.Parameters.AddWithValue("@DateStart", obj.DateStart.ToString("dd.MM.yyyy"));
+            cmd.Parameters.AddWithValue("@Resource", obj.Resource);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return; }
+        }
 
         /// <summary>
         /// Удаление устройства из базы данных.
@@ -455,13 +455,13 @@ namespace PKM
             catch { return false; }
 
             //Удаление СКЗ.
-            //if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
-            //{
-            //    SqliteCommand cmdSKZ = conn.CreateCommand();
-            //    cmdSKZ.CommandText = $"DELETE FROM skz WHERE id ={obj.ID} ";
-            //    try { cmdSKZ.ExecuteNonQuery(); }
-            //    catch { return false; }
-            //}
+            if (obj.Model == ClassDevice.EnumModel.SKZ_IP || obj.Model == ClassDevice.EnumModel.SKZ)
+            {
+                SqliteCommand cmdSKZ = conn.CreateCommand();
+                cmdSKZ.CommandText = $"DELETE FROM skz WHERE id ={obj.ID} ";
+                try { cmdSKZ.ExecuteNonQuery(); }
+                catch { return false; }
+            }
             return true;
         }
 
