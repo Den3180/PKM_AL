@@ -176,6 +176,8 @@ public partial class WindowDevice : ClassWindowPKM
          this.DateStart.SelectedDate = _Device.DateStart;
          SetFactoryYear();
          //Распарсивание строки пикетов.
+         //Распарсивание строки пикетов.
+         //Распарсивание строки пикетов.
          if (!string.IsNullOrEmpty(_Device.Picket))
          {
              this.Picket_km.Text = _Device.Picket?.Split(new string[] { "+", "ПК" }, StringSplitOptions.RemoveEmptyEntries)[0];
