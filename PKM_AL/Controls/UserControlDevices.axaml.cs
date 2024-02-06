@@ -17,12 +17,12 @@ public partial class UserControlDevices : UserControl
     {
         InitializeComponent();
         ClassSettings settings = ClassSettings.Load();
-        foreach (DataGridColumn col in GridDevices.Columns)
+        foreach (DataGridColumn col in GridDevises.Columns)
         {
             if (settings.DevicesColumns.FirstOrDefault(x => x == col.Header?.ToString()) != null)
                 col.IsVisible = false;
         }
-        GridDevices.ItemsSource = MainWindow.Devices;
+        GridDevises.ItemsSource = MainWindow.Devices;
     }
 
     private void UserControl_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -85,7 +85,7 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemEdit_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        ClassDevice obj = this.GridDevices.SelectedItem as ClassDevice;
+        ClassDevice obj = this.GridDevises.SelectedItem as ClassDevice;
         if (obj == null) return;
         WindowDevice frmDevice = new WindowDevice(obj);
         frmDevice.WindowShow(MainWindow.currentMainWindow);
@@ -98,10 +98,10 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemDelete_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        ClassDevice obj = this.GridDevices.SelectedItem as ClassDevice;
+        ClassDevice obj = this.GridDevises.SelectedItem as ClassDevice;
         if (obj == null) return;
-        Task <ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить устройство {obj.Name}?", owner: MainWindow.currentMainWindow,
-                                 buttonEnum:ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
+        Task<ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить устройство {obj.Name}?", owner: MainWindow.currentMainWindow,
+                                 buttonEnum: ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
         if (res.Result == ButtonResult.No) return;
         //Удаление регистров из БД.
         Task.Run(() => MainWindow.DB.RegistryDelDev(obj.ID));
