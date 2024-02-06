@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using PKM_AL.Windows;
 
 namespace PKM_AL;
 
@@ -117,7 +118,7 @@ public partial class UserControlDevices : UserControl
             if (MainWindow.Groups[0].SubGroups[i].ID == obj.ID)
             {
                 MainWindow.Groups[0].SubGroups.RemoveAt(i);
-                (MainWindow.currentMainWindow.treeView.Items[0] as TreeViewItem).Items.RemoveAt(i);
+                (MainWindow.currentMainWindow.treeView.Items[0] as TreeViewItem)?.Items.RemoveAt(i);
             }
         }
     }
@@ -129,7 +130,7 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemSave_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-
+ 
     }
 
     /// <summary>
@@ -142,7 +143,6 @@ public partial class UserControlDevices : UserControl
 
     }
 
-
     /// <summary>
     /// Настройка видимости столбцов.
     /// </summary>
@@ -150,9 +150,8 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemCustom_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-
+        WindowColomns frm = new WindowColomns(this.GridDevices);
+        frm.WindowShow(MainWindow.currentMainWindow);
     }
-
-
 
 }
