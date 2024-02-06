@@ -23,7 +23,7 @@ public partial class WindowColumns : ClassWindowPKM
         foreach (DataGridColumn col in _Grid.Columns)
         {
             CheckBox cb = new CheckBox();
-            cb.Content = col.GetType().Name == "DataGridTemplateColumn" ? "Координаты" : col.Header.ToString();
+            cb.Content = col.GetType().Name == "DataGridTemplateColumn" ? "РљРѕРѕСЂРґРёРЅР°С‚С‹" : col.Header.ToString();
             if (col.IsVisible == false) cb.IsChecked = false;
             else cb.IsChecked = true;
             cb.Tag = col;
@@ -41,7 +41,7 @@ public partial class WindowColumns : ClassWindowPKM
     }
 
     /// <summary>
-    /// Кнопка.
+    /// РљРЅРѕРїРєР°.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
