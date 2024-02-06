@@ -69,7 +69,7 @@ public partial class UserControlDevices : UserControl
             s += Environment.NewLine + "Номинальный ток: " + device.NominalI + " A";
             s += Environment.NewLine + "Код предприятия: " + device.FactoryCode;
             s += Environment.NewLine + "Число модулей: " + device.ModulesCount.ToString();
-            s += Environment.NewLine + "Год выпуска: " + device.FactoryYear.ToString("00");
+            s += Environment.NewLine + "Год выпуска: " + device.FactoryYear.ToString();
             s += Environment.NewLine + "Заводской номер: " + device.FactoryNumber.ToString();
         }
         ClassMessage.ShowMessage(MainWindow.currentMainWindow, s, "Состояние");

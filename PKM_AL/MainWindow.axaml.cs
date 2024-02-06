@@ -18,6 +18,7 @@ using Avalonia;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using PKM_AL.Controls;
 
 namespace PKM_AL
 {
@@ -154,10 +155,10 @@ namespace PKM_AL
                 this.ContentArea.Content = new UserControlDevices();
                 this.StatusMode.Text = "Устройства";
                 break;
-                //case 1:
-                //this.ContentArea.Content = new UserControlArchive();
-                //this.StatusMode.Content = "Поиск в архиве";
-                //break;
+                case 1:
+                this.ContentArea.Content = new UserControlArchive();
+                this.StatusMode.Text = "Поиск в архиве";
+                break;
                 //default:
                 //if (settings.Interface && Maps.Count > 0)
                 //{
@@ -320,6 +321,7 @@ namespace PKM_AL
             case "Смена пользователя...":
             break;
             case "Устройства...":
+                
             break;
             case "Каналы данных...":
             break;
@@ -356,7 +358,6 @@ namespace PKM_AL
             break;
         }
     }
-
     private void MenuItemGSM_Click(object sender, RoutedEventArgs e)
     {
 
@@ -372,10 +373,16 @@ namespace PKM_AL
     private void MenuItem_Click_Reports(object sender, RoutedEventArgs e)
     {
     }
-
-    private void TreeView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    
+    /// <summary>
+    /// Выбор элемента дерева.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TreeView_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
     {
-
+        TreeViewItem item =(sender as TreeView).SelectedItem as TreeViewItem;
+        this.ContentArea.Content = new UserControlChannels();
     }
 
         /// <summary>

@@ -1,0 +1,75 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
+             xmlns:vm="using:PKM_AL"
+             x:Class="PKM_AL.Controls.UserControlChannels">
+    <Design.DataContext>
+        <vm:ClassChannel/>
+    </Design.DataContext>
+    <Grid>
+    <DataGrid Name="GridChannels" x:DataType="vm:ClassChannel"
+        AutoGenerateColumns="false"
+        IsReadOnly="True"
+        GridLinesVisibility="All"
+        BorderThickness="1"
+        BorderBrush="Black"
+        Foreground="Black"
+        CanUserResizeColumns="False"
+        CanUserSortColumns="False"
+        ColumnHeaderHeight="50"
+        HorizontalGridLinesBrush="Black"
+        VerticalGridLinesBrush="Black"
+        LoadingRow="DataGrid_LoadingRow">
+        <DataGrid.Styles>
+            <Style Selector="DataGridCell">
+                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            </Style>
+            <Style Selector="DataGridColumnHeader">
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+        </DataGrid.Styles>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="№" MinWidth="30" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                AncestorType={x:Type DataGridRow}},Path=Tag}"/>
+                <DataGridTextColumn Header="Наименование" MinWidth="250" Width="250" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Устройство"  MinWidth="80" Binding="{Binding DeviceName}"/>
+                <DataGridTextColumn Header="Тип регистра" MinWidth="100" Binding="{Binding TypeRegistryFullName}"/>
+                <DataGridTextColumn Header="Адрес"  MinWidth="50" Binding="{Binding Address}"/>
+                <DataGridTextColumn Header="Адр. (hex)" MinWidth="70" Binding="{Binding AddressHex}"/>
+                <DataGridTextColumn Header="Формат" MinWidth="60" Binding="{Binding Format}"/>
+                <DataGridTextColumn Header="Данные"  MinWidth="80" Binding="{Binding StrBaseValue}"/>
+                <DataGridTextColumn Header="Коэф." MinWidth="60" Binding="{Binding Koef}"/>
+                <DataGridTextColumn Header="Знаков" MinWidth="60" Binding="{Binding Accuracy}"/>
+                <DataGridTextColumn Header="Min"  MinWidth="40" Binding="{Binding Min}"/>
+                <DataGridTextColumn Header="Max" MinWidth="40" Binding="{Binding Max}"/>
+                <DataGridTextColumn Header="Значение" MinWidth="70" Binding="{Binding Value}"/>
+                <DataGridTextColumn Header="Актуальность" MinWidth="120" Binding="{Binding StrDTAct}"/>
+                <DataGridCheckBoxColumn  Header="Актуальность" MinWidth="120" Binding="{Binding Archive}"/>
+                <DataGridTextColumn Header="Шлюз" MinWidth="50" Binding="{Binding Ext}"/>
+        </DataGrid.Columns>
+        <DataGrid.ContextMenu>
+            <ContextMenu Name="cMenu" Opened="cMenu_Opened">
+                <MenuItem Header="Добавить канал..." Click="MenuItemAdd_Click"></MenuItem>
+                <MenuItem Header="Изменить канал..." Click="MenuItemEdit_Click"></MenuItem>
+                <MenuItem Header="Удалить" Click="MenuItemDelete_Click"></MenuItem>
+                <MenuItem Header="Удалить все" Click="MenuItemDeleteAll_Click"></MenuItem>
+                <MenuItem Header="Конвертировать из карты" Click="ConvertToPKM_Click" Name="convertFromTMS"></MenuItem>
+                <Separator/>
+                <MenuItem Header="Записать значение в канал..." Click="MenuItemWrite_Click" Name="Write"></MenuItem>
+                <Separator/>
+                <MenuItem Header="Настроить видимость столбцов..." Click="MenuItemCustom_Click"></MenuItem>
+                <Separator/>
+                <MenuItem Header="Каналы Discrete Input (DI)..." Click="MenuItemDI_Click"></MenuItem>
+                <MenuItem Header="Каналы Input Register (AI)..." Click="MenuItemAI_Click"></MenuItem>
+                <MenuItem Header="Каналы Coil Output (DO)..." Click="MenuItemDO_Click"></MenuItem>
+                <MenuItem Header="Каналы Holding Register (AO)..." Click="MenuItemAO_Click"></MenuItem>
+                <MenuItem Header="Все каналы..." Click="MenuItemAll_Click"></MenuItem>
+            </ContextMenu>
+        </DataGrid.ContextMenu>
+    </DataGrid>
+</Grid>
+</UserControl>
