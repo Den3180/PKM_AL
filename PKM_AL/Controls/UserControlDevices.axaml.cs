@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using PKM_AL.Windows;
 
 namespace PKM_AL;
 
@@ -150,7 +149,7 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemCustom_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        WindowColomns frm = new WindowColomns(this.GridDevices);
+        WindowColumns frm = new WindowColumns(this.GridDevices);
         frm.WindowShow(MainWindow.currentMainWindow);
     }
 

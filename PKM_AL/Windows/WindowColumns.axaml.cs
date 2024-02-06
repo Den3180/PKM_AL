@@ -1,15 +1,21 @@
-using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using PKM;
+using System.Collections.Generic;
 
-namespace PKM_AL.Windows;
+namespace PKM_AL;
 
-public partial class WindowColomns : ClassWindowPKM
+public partial class WindowColumns : ClassWindowPKM
 {
-    private DataGrid _Grid;
-    public WindowColomns(DataGrid grid)
+    private DataGrid _Grid=new DataGrid();
+
+    public WindowColumns()
+    {
+        InitializeComponent();
+    }
+
+    public WindowColumns(DataGrid grid)
     {
         InitializeComponent();
         _Grid = grid;
@@ -17,32 +23,24 @@ public partial class WindowColomns : ClassWindowPKM
         foreach (DataGridColumn col in _Grid.Columns)
         {
             CheckBox cb = new CheckBox();
-            cb.Content = col.GetType().Name == "DataGridTemplateColumn"?"РљРѕРѕСЂРґРёРЅР°С‚С‹": col.Header.ToString();
+            cb.Content = col.GetType().Name == "DataGridTemplateColumn" ? "Координаты" : col.Header.ToString();
             if (col.IsVisible == false) cb.IsChecked = false;
             else cb.IsChecked = true;
             cb.Tag = col;
-            cb.Checked += comboBox_Checked;
-            cb.Unchecked += comboBox_Unchecked;
+            cb.IsCheckedChanged += comboBox_Checked;
             this.lstColumns.Items.Add(cb);
         }
     }
 
-    private void comboBox_Checked(object sender, RoutedEventArgs e)
+    private void comboBox_Checked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         CheckBox cb = (CheckBox)sender;
         DataGridColumn col = (DataGridColumn)cb.Tag;
-        col.IsVisible = true;
+        col.IsVisible = cb.IsChecked == true;
 
     }
 
-    private void comboBox_Unchecked(object sender, RoutedEventArgs e)
-    {
-        CheckBox cb = (CheckBox)sender;
-        DataGridColumn col = (DataGridColumn)cb.Tag;
-        col.IsVisible = false;
-    }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void Button_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         ClassSettings settings = ClassSettings.Load();
         List<string> lst = null;
