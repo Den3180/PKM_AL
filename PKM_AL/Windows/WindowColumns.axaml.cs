@@ -8,7 +8,7 @@ namespace PKM_AL;
 
 public partial class WindowColumns : ClassWindowPKM
 {
-    private DataGrid _Grid=new DataGrid();
+    private DataGrid _Grid;
 
     public WindowColumns()
     {

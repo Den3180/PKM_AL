@@ -73,12 +73,12 @@ namespace PKM_AL
         private double _Longitude = 00.000000D;
         private double _Elevation;
         //private BitmapImage _bitmap;
-        //private double _UnomInSKZ;
-        //private double _NactiveSKZ;
-        //private double _NfullInSKZ;
-        //private double _UnomOutSKZ;
-        //private double _InomOutSKZ;
-        //private double _NnomOutSKZ;
+        // private double _UnomInSKZ;
+        // private double _NactiveSKZ;
+        // private double _NfullInSKZ;
+        // private double _UnomOutSKZ;
+        // private double _InomOutSKZ;
+        // private double _NnomOutSKZ;
         private string _LinkStateName = string.Empty;
 
 

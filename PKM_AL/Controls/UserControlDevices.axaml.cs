@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -55,7 +56,23 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemDetails_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-
+        ClassDevice device = this.GridDevices.SelectedItem as ClassDevice;
+        if (device == null) return;
+        string s = $"Состояние: {device.LinkStateName}";
+        //Только для СКЗ-ИП или СКЗ.
+        if (device.Model == ClassDevice.EnumModel.SKZ_IP || device.Model == ClassDevice.EnumModel.SKZ)
+        {
+            s += Environment.NewLine + "Режим работы: " + device.GetModeName();
+            s += Environment.NewLine + "Идентификационные данные: " + device.ServerID;
+            //if (String.IsNullOrEmpty(device.NominalU)) return;
+            s += Environment.NewLine + "Номинальное напряжение: " + device.NominalU + " В";
+            s += Environment.NewLine + "Номинальный ток: " + device.NominalI + " A";
+            s += Environment.NewLine + "Код предприятия: " + device.FactoryCode;
+            s += Environment.NewLine + "Число модулей: " + device.ModulesCount.ToString();
+            s += Environment.NewLine + "Год выпуска: " + device.FactoryYear.ToString("00");
+            s += Environment.NewLine + "Заводской номер: " + device.FactoryNumber.ToString();
+        }
+        ClassMessage.ShowMessage(MainWindow.currentMainWindow, s, "Состояние");
     }
 
     /// <summary>
