@@ -30,7 +30,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// ��������� ����� � �������.
+    /// Нумерация строк datagrid.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -40,7 +40,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// ��������� ��������� ������� ������������ ����, � ����������� �� ����.
+    /// Доступность пунктов меню, в зависимости от роли.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -49,7 +49,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// ��������� ����������.����������� ����.
+    /// Вывод окна состояния устройства.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -59,7 +59,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// �������� �� �����.����������� ����.
+    /// Переход на карту.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -69,7 +69,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// �������� ����������.����������� ����.
+    /// Добавить устройство.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -79,7 +79,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// �������� ����������.����������� ����.
+    /// Редактировать устройство.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -92,7 +92,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// ������� ����������.����������� ����.
+    ///Удалить устройство.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -103,7 +103,7 @@ public partial class UserControlDevices : UserControl
         Task <ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить устройство {obj.Name}?", owner: MainWindow.currentMainWindow,
                                  buttonEnum:ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
         if (res.Result == ButtonResult.No) return;
-        //�������� ��������� �� ��.
+        //Удаление регистров из БД.
         Task.Run(() => MainWindow.DB.RegistryDelDev(obj.ID));
         for (int i = MainWindow.Channels.Count - 1; i >= 0; i--)
         {
@@ -123,7 +123,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// ��������� ������� ���������� � ����.����������� ����.
+    /// Сохранить профиль устройства в файл.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -133,7 +133,7 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// ��������� ������� ���������� �� �����.����������� ����.
+    /// Загрузка из XML файла.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -144,7 +144,7 @@ public partial class UserControlDevices : UserControl
 
 
     /// <summary>
-    /// ��������� ��������� ��������.����������� ����.
+    /// Настройка видимости столбцов.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
