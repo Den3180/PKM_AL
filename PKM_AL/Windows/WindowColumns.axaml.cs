@@ -41,7 +41,7 @@ public partial class WindowColumns : ClassWindowPKM
     }
 
     /// <summary>
-    /// Кнопка.
+    /// Кнопка 45.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
