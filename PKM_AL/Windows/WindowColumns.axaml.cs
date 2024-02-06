@@ -40,6 +40,11 @@ public partial class WindowColumns : ClassWindowPKM
 
     }
 
+    /// <summary>
+    /// Кнопка.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         ClassSettings settings = ClassSettings.Load();
