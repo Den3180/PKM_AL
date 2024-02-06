@@ -9,7 +9,7 @@
 		<vm:ClassDevice/>
 	</Design.DataContext>
 	<Grid>		
-	<DataGrid Name="GridDevices" 
+	<DataGrid Name="GridDevises" 
 			  x:DataType="vm:ClassDevice" 
 			  AutoGenerateColumns="false"
 			  IsReadOnly="True"
