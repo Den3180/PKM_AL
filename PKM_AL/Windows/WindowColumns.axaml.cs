@@ -37,7 +37,6 @@ public partial class WindowColumns : ClassWindowPKM
         CheckBox cb = (CheckBox)sender;
         DataGridColumn col = (DataGridColumn)cb.Tag;
         col.IsVisible = cb.IsChecked == true;
-
     }
 
     /// <summary>
