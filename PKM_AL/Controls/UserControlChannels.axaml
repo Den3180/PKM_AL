@@ -4,33 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
              xmlns:vm="using:PKM_AL"
-             x:Class="PKM_AL.Controls.UserControlChannels">
+             x:Class="PKM_AL.Controls.UserControlChannels" Name="UconUserControl" Loaded="Control_OnLoaded">
     <Design.DataContext>
         <vm:ClassChannel/>
     </Design.DataContext>
     <Grid>
-    <DataGrid Name="GridChannels" x:DataType="vm:ClassChannel"
-        AutoGenerateColumns="false"
-        IsReadOnly="True"
-        GridLinesVisibility="All"
-        BorderThickness="1"
-        BorderBrush="Black"
-        Foreground="Black"
-        CanUserResizeColumns="False"
-        CanUserSortColumns="False"
-        ColumnHeaderHeight="50"
-        HorizontalGridLinesBrush="Black"
-        VerticalGridLinesBrush="Black"
-        LoadingRow="DataGrid_LoadingRow">
+    <DataGrid Name="GridChannels" x:DataType="vm:ClassChannel" 
+            Background="Azure" 
+            VerticalAlignment="Top"
+            AutoGenerateColumns="false"
+            IsReadOnly="false"
+            GridLinesVisibility="All"
+            BorderThickness="1"
+            BorderBrush="Black"
+            Foreground="Black"
+            CanUserResizeColumns="False"
+            CanUserSortColumns="False"
+            ColumnHeaderHeight="50"
+            HorizontalGridLinesBrush="Black"
+            VerticalGridLinesBrush="Black"
+            LoadingRow="DataGrid_LoadingRow">
         <DataGrid.Styles>
             <Style Selector="DataGridCell">
                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
             </Style>
-            <Style Selector="DataGridColumnHeader">
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="FontWeight" Value="SemiBold"/>
-            </Style>
+                <Style Selector="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="SeparatorBrush" Value="Black"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="AreSeparatorsVisible" Value="True"/>
+                    <Setter Property="Background" Value="Beige"/>
+                </Style>
         </DataGrid.Styles>
         <DataGrid.Columns>
             <DataGridTextColumn Header="№" MinWidth="30" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
@@ -48,7 +53,7 @@
                 <DataGridTextColumn Header="Max" MinWidth="40" Binding="{Binding Max}"/>
                 <DataGridTextColumn Header="Значение" MinWidth="70" Binding="{Binding Value}"/>
                 <DataGridTextColumn Header="Актуальность" MinWidth="120" Binding="{Binding StrDTAct}"/>
-                <DataGridCheckBoxColumn  Header="Актуальность" MinWidth="120" Binding="{Binding Archive}"/>
+                <DataGridCheckBoxColumn  Header="Архив" MinWidth="120" Binding="{Binding Archive}" IsReadOnly="False"/>
                 <DataGridTextColumn Header="Шлюз" MinWidth="50" Binding="{Binding Ext}"/>
         </DataGrid.Columns>
         <DataGrid.ContextMenu>

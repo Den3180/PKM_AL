@@ -1,10 +1,12 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-
+using Avalonia.VisualTree;
 using PKM;
 
 namespace PKM_AL.Controls;
@@ -21,9 +23,9 @@ public partial class UserControlChannels : UserControl
     }
 
     private ObservableCollection<ClassChannel> Channels;
-    private ICollectionView ItemsView;
     private ClassDevice _Device;
     private eFilter Filter=eFilter.All;
+    private double _actualHeightUserControl; //Актуальная высота UserControl.
     
     public UserControlChannels()
     {
@@ -42,43 +44,43 @@ public partial class UserControlChannels : UserControl
                 col.IsVisible = false;
         }
         Channels = MainWindow.Channels;
-        GridChannels.ItemsSource = Channels;
-        //FilterItems();
+        FilterItems();
     }
     
-    // /// <summary>
-    // /// Фильтр отображаемых регистров.
-    // /// </summary>
-    // private void FilterItems()
-    // {
-    //     if (_Device != null)
-    //     {
-    //         ItemsView.Filter = item =>
-    //         {
-    //             ClassChannel x = item as ClassChannel;
-    //             switch (Filter)
-    //             {
-    //                 case eFilter.DI:
-    //                     return x.Device.ID == _Device.ID && x.TypeRegistry == ClassChannel.EnumTypeRegistry.DiscreteInput;
-    //                 case eFilter.AI:
-    //                     return x.Device.ID == _Device.ID && x.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry;
-    //                 case eFilter.DO:
-    //                     return x.Device.ID == _Device.ID && x.TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput;
-    //                 case eFilter.AO:
-    //                     return x.Device.ID == _Device.ID && x.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry;
-    //                 default:
-    //                     return x.Device.ID == _Device.ID;
-    //             }
-    //         };
-    //     }
-    //     else ItemsView.Filter = null;
-    // }
-    
-    
-
+    /// <summary>
+    /// Фильтр отображаемых регистров.
+    /// </summary>
+    private void FilterItems()
+    {
+        if (_Device == null) return;
+        switch (Filter)
+        {
+         case   eFilter.All:
+                GridChannels.ItemsSource = Channels.Where(ch => ch.Device.ID == _Device.ID);
+             break;
+         case eFilter.AO:
+             GridChannels.ItemsSource = Channels.Where(ch => (
+                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.HoldingRegistry));
+             break;
+         case eFilter.DI:
+             GridChannels.ItemsSource = Channels.Where(ch => (
+                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.DiscreteInput));
+             break;
+         case eFilter.DO:
+             GridChannels.ItemsSource = Channels.Where(ch => (
+                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.CoilOutput));
+             break;
+         case eFilter.AI:
+             GridChannels.ItemsSource = Channels.Where(ch => (
+                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.InputRegistry));
+             break;
+         default:
+             break;
+        }
+    }
     
     /// <summary>
-    /// Нумерация строк datagrid.
+    /// Нумерация строк в GridChannels.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -130,30 +132,47 @@ public partial class UserControlChannels : UserControl
 
     private void MenuItemDI_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        Filter = eFilter.DI;
+        FilterItems();
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAI_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        Filter = eFilter.AI;
+        FilterItems();
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemDO_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        Filter = eFilter.DO;
+        FilterItems();
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAO_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        Filter = eFilter.AO;
+        FilterItems();
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAll_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        Filter = eFilter.All;
+        FilterItems();
     }
-}
 
-internal interface ICollectionView
-{
+    private void Control_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
+        }
+        catch
+        {
+          _actualHeightUserControl=double.NaN;  
+        }
+    }
 }

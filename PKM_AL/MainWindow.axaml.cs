@@ -9,12 +9,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using Avalonia.Platform.Storage;
 using Microsoft.Extensions.Logging;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Base;
 using Avalonia;
+using Avalonia.LogicalTree;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -279,7 +281,7 @@ namespace PKM_AL
         /// <summary>
         /// Построение элементов основного дерева приложения.
         /// </summary>
-        /// <param name="d"></param>
+        /// <param name="Groups"></param>
         /// <returns></returns>
         private void MakeTreeViewItem(ObservableCollection<ClassGroup> Groups)
         {
@@ -381,8 +383,25 @@ namespace PKM_AL
     /// <param name="e"></param>
     private void TreeView_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
     {
-        TreeViewItem item =(sender as TreeView).SelectedItem as TreeViewItem;
-        this.ContentArea.Content = new UserControlChannels();
+        ClassItem subGroup =new ClassItem();
+        StackPanel subStackPanel =(sender as TreeView)?.SelectedItem as StackPanel;
+        IEnumerable<ILogical> devItem = subStackPanel?.GetLogicalChildren(); 
+        if(devItem==null) return;
+        foreach (var control in devItem)
+        {
+            var label = control as Label;
+            if(label != null)
+            {
+                subGroup = label.Content as ClassItem;
+            }
+        }
+        switch (subGroup?.ItemType)
+        {
+            case ClassItem.eType.Device:
+                ClassDevice obj = MainWindow.Devices.FirstOrDefault(x => x.ID == subGroup.ID);
+                ContentArea.Content = new UserControlChannels(obj);
+                break;
+        }
     }
 
         /// <summary>

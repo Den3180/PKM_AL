@@ -21,7 +21,7 @@ namespace PKM_AL.Classes.ServiceClasses
         public static StackPanel MakeContentTreeViewItem(object obj)
         {
             string sourcePath = (obj is ClassGroup) == true ? ((ClassGroup)obj).IconUri : ((ClassItem)obj).IconUri;
-            string assembly = Assembly.GetEntryAssembly().GetName().Name;
+            string assembly = Assembly.GetEntryAssembly()?.GetName().Name;
 
             StackPanel stackPanel = new StackPanel()
             {
