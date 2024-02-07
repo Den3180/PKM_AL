@@ -9,6 +9,7 @@
         <entry key="PKM_AL/Controls/UserControlDevices.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/MainWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/Window1.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Windows/WindowChannel.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowColomns.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowColumns.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowDB.axaml" value="PKM_AL/PKM_AL.csproj" />

@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using PKM;
+using PKM_AL.Windows;
 
 namespace PKM_AL.Controls;
 
@@ -89,14 +90,28 @@ public partial class UserControlChannels : UserControl
         e.Row.Tag = (e.Row.GetIndex() + 1).ToString();
     }
 
+    /// <summary>
+    /// Настройка видимости кнопок меню.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void cMenu_Opened(object sender, RoutedEventArgs e)
     {
         
     }
 
+    /// <summary>
+    /// Добавить регистр.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <exception cref="NotImplementedException"></exception>
     private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        ClassChannel obj = new ClassChannel();
+        obj.Device = _Device;
+        WindowChannel frm = new WindowChannel(obj, isEditChannel: true);
+        frm.WindowShow(MainWindow.currentMainWindow);
     }
 
     private void MenuItemEdit_Click(object sender, RoutedEventArgs e)

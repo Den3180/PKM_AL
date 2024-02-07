@@ -1,0 +1,111 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+        x:Class="PKM_AL.Windows.WindowChannel"
+        Title="Канал данных" WindowStartupLocation="CenterScreen" 
+        SizeToContent="WidthAndHeight" CanResize="False">
+        <Window.Styles>
+                <Style Selector="Button">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Margin" Value="3"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+                <Style Selector="TextBox">
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Margin" Value="1"/>
+                        <Setter Property="Width" Value="100"/>
+                </Style>
+                <Style Selector="ComboBox">
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Padding" Value="5"/>
+                        <Setter Property="MaxDropDownHeight" Value="150"/>
+                        <Setter Property="SelectedIndex" Value="0"/>
+                </Style>
+                <Style Selector="Label">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>               
+                <Style Selector="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style Selector="TextBlock.T1">
+                        <Setter Property="Width" Value="155"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="2"/>
+                </Style>
+        </Window.Styles>
+        <Grid Margin="10">
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Наименование:"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="Канал 1" HorizontalAlignment="Left" Width="170"
+                         Margin="5 5 0 5" Name="ChannelName"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Устройство:"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Width="{Binding ElementName=ChannelName,Path=Width}" 
+                          HorizontalAlignment="Left" Margin="5" Name ="ComboDevice" SelectionChanged="ComboDevice_SelectionChanged"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="Тип регистра:" HorizontalAlignment="Left"/>
+                <ComboBox Grid.Row="2" Grid.Column="1"  Width="{Binding ElementName=ChannelName,Path=Width}"  
+                          HorizontalAlignment="Left" Margin="5" Name ="RegType"  SelectedIndex="0">
+                        <ComboBoxItem Content="DI - Discrete Input"/>
+                        <ComboBoxItem Content="DO - Coil Output"/>
+                        <ComboBoxItem Content="AI - Input Registry"/>
+                        <ComboBoxItem Content="AO - Holding Registry"/>
+                </ComboBox>
+                <Label Grid.Row="3" Grid.Column="0" Content="Адрес регистра:" />
+                <TextBox Grid.Row="3" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="80"
+                       Margin="5" Name="Address"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="Формат данных:" HorizontalAlignment="Left" />
+                <ComboBox Grid.Row="4" Grid.Column="1"  HorizontalAlignment="Left" Margin="5"
+                          Name ="Format" Width="{Binding ElementName=ChannelName,Path=Width}" SelectedIndex="0">
+                        <ComboBoxItem Content="UINT"/>
+                        <ComboBoxItem Content="SINT"/>
+                        <ComboBoxItem Content="Float"/>
+                        <ComboBoxItem Content="swFloat"/>
+                        <ComboBoxItem Content="UInt32"/>
+                </ComboBox>
+                <Label Grid.Row="5" Grid.Column="0" Content="Коэффициент:"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="80"
+                         Margin="5" Name="Koef"/> 
+                <Label Grid.Row="6" Grid.Column="0" Content="Max значение:"/>
+                <TextBox Grid.Row="6" Grid.Column="1" Text="100" HorizontalAlignment="Left" Width="80"
+                         Margin="5" Name="Max"/>
+                <Label Grid.Row="7" Grid.Column="0" Content="Min значение:"/>
+                <TextBox Grid.Row="7" Grid.Column="1" Text="100" HorizontalAlignment="Left" Width="80"
+                         Margin="5" Name="Min"/>
+                <Label Grid.Row="8" Grid.Column="0" Content="Округление:"/>
+                <TextBox Grid.Row="8" Grid.Column="1" HorizontalAlignment="Left" Width="80"
+                         Margin="5" Name="Accuracy"/>
+                <Label Grid.Row="9" Grid.Column="0" Content="Адрес шлюза:"/>
+                <TextBox Grid.Row="9" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="80"
+                         Margin="5" Name="Ext"/>
+                <Label Grid.Row="10" Grid.Column="0" Content="Запись в архив:"/>
+                <CheckBox Grid.Row="10" Grid.Column="1" Margin="5" Name="chArchive"/>
+                <Button Grid.Row="11" Grid.Column="1" Content="Сохранить" Height="30" Width="100"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom" IsDefault="True" Click="Button_Click"/>
+        </Grid>
+</Window>
