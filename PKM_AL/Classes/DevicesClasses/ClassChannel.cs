@@ -385,30 +385,31 @@ namespace PKM_AL
             }
         }
 
-        ///// <summary>
-        ///// Вставка команды записи в регистр в очередь команд.
-        ///// </summary>
-        ///// <param name="Value"></param>
-        //public void SendValue(decimal Value)
-        //{
-        //    ClassCommand cmd = new ClassCommand();
-        //    cmd.Device = _Device;
-        //    cmd.Channel = this;
-        //    cmd.Address = _Address;
-        //    if (_TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry)
-        //    {
-        //        cmd.CommandType = ClassCommand.EnumType.WriteRegistry;
-        //        if (_Koef == 1 || _Koef == 0) cmd.Value = (int)Value;
-        //        else cmd.Value = (int)((float)Value / _Koef);
-        //    }
-        //    else if (_TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
-        //    {
-        //        cmd.CommandType = ClassCommand.EnumType.WriteCoil;
-        //        cmd.Value = (int)Value;
-        //    }
-        //    else return;
-        //    MainWindow.QueueCommands.Enqueue(cmd);
-        //}
+        /// <summary>
+        /// Вставка команды записи в регистр в очередь команд.
+        /// </summary>
+        /// <param name="Value"></param>
+        public void SendValue(decimal Value)
+        {
+            // ClassCommand cmd = new ClassCommand();
+            // cmd.Device = _Device;
+            // cmd.Channel = this;
+            // cmd.Address = _Address;
+            // if (_TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry)
+            // {
+            //     cmd.CommandType = ClassCommand.EnumType.WriteRegistry;
+            //     if (_Koef == 1 || _Koef == 0) cmd.Value = (int)Value;
+            //     else cmd.Value = (int)((float)Value / _Koef);
+            // }
+            // else if (_TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
+            // {
+            //     cmd.CommandType = ClassCommand.EnumType.WriteCoil;
+            //     cmd.Value = (int)Value;
+            // }
+            // else return;
+            // MainWindow.QueueCommands.Enqueue(cmd);
+            throw new System.NotImplementedException();
+        }
 
         /// <summary>
         /// Конвертация значений в знаковые величины.

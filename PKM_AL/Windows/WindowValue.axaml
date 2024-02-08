@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PKM_AL.Windows.WindowValue"
+        Title="Запись значения в канал данных" WindowStartupLocation="CenterScreen" 
+        SizeToContent="WidthAndHeight" CanResize="False" ShowInTaskbar="False">
+      <Grid Margin="10" ColumnDefinitions="120,*" RowDefinitions="30,30,30,30,30,30,30,*">
+          <Grid.Styles>
+              <Style Selector="Label">
+                  <Setter Property="VerticalAlignment" Value="Center"></Setter>
+              </Style>
+          </Grid.Styles>
+          <Label Grid.Row="0" Grid.Column="0" Content="Наименование:"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="Канал 1" HorizontalAlignment="Left" Width="150"
+                 Margin="5" Name="ChannelName"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Устройство:" />
+        <TextBox Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="5"
+                  Name ="TextBoxDevice" IsReadOnly="True"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Тип регистра:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <ComboBox Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="5"
+                  Name ="RegType" SelectedIndex="3">
+            <ComboBoxItem Content="DI - Discrete Input"/>
+            <ComboBoxItem Content="DO - Coil Output"/>
+            <ComboBoxItem Content="AI - Input Registry"/>
+            <ComboBoxItem Content="AO - Holding Registry"/>
+        </ComboBox>
+        <Label Grid.Row="3" Grid.Column="0" Content="Адрес регистра:"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="80"
+                 Margin="5" Name="Address"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Формат данных:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <ComboBox Grid.Row="4" Grid.Column="1" Width="80" HorizontalAlignment="Left" Margin="5"
+                  Name ="Format" SelectedIndex="0">
+            <ComboBoxItem Content="UINT"/>
+            <ComboBoxItem Content="SINT"/>
+        </ComboBox>
+        <Label Grid.Row="5" Grid.Column="0" Content="Коэффициент:"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="80"
+                 Margin="5" Name="Koef" IsReadOnly="True"/>
+        <Label Grid.Row="6" Grid.Column="0" Content="Значение:"/>
+        <TextBox Grid.Row="6" Grid.Column="1" Text="100" HorizontalAlignment="Left" Width="80"
+                 Margin="5" Name="Val"/>
+        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
+        <Button Content="Записать" Height="30" Width="100"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" 
+                Click="Button_Click"/>  
+        <Button  Content="Отмена" Height="30" Width="100"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" 
+                IsDefault="True" IsCancel="True" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

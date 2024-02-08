@@ -140,6 +140,12 @@ namespace PKM_AL
             Groups = new ObservableCollection<ClassGroup>();
             Slave = new ClassSlave();
 
+            //Заполнение списка каналов для каждого устройства.
+            foreach (var item in Channels)
+            {
+                item.Device = Devices.FirstOrDefault(x => x.ID == item.Device.ID);                
+                item.Device?.Channels.Add(item);
+            }
 
             //Блок генерации дерева.
             BuildContentMainTreeItems();
@@ -411,6 +417,7 @@ namespace PKM_AL
         {
             WindowDevice frm = new WindowDevice(new ClassDevice());
             frm.WindowShow(currentMainWindow);
+            if(frm==null) return;
             bool? res = (bool)frm.Tag;
             //Если была отмена - выход.
             if (!res.Value) return;

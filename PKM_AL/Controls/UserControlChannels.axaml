@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
              xmlns:vm="using:PKM_AL"
-             x:Class="PKM_AL.Controls.UserControlChannels" Name="UconUserControl" Loaded="Control_OnLoaded">
+             x:Class="PKM_AL.Controls.UserControlChannels" Name="UconUserControl" Loaded="Control_OnLoaded" 
+             Background="Bisque">
     <Design.DataContext>
         <vm:ClassChannel/>
     </Design.DataContext>

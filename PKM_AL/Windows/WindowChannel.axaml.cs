@@ -1,15 +1,14 @@
 using System;
-using Avalonia;
+using System.Globalization;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using PKM_AL.Classes.ServiceClasses;
 
 namespace PKM_AL.Windows;
 
 public partial class WindowChannel : ClassWindowPKM
 {
-    private ClassChannel _Channel;
-    private string selectedColumn;
+    private readonly ClassChannel _channel;
+    private readonly string _selectedColumn;
     public WindowChannel()
     {
         InitializeComponent();
@@ -18,35 +17,31 @@ public partial class WindowChannel : ClassWindowPKM
     public WindowChannel(ClassChannel newChannel, bool isEditChannel = false, string selectedColumn="")
     {
         InitializeComponent();
-        _Channel = newChannel;
-        this.selectedColumn = selectedColumn;
+        _channel = newChannel;
+        _selectedColumn = selectedColumn;
         foreach (ClassDevice item in MainWindow.Devices)
         {
             ComboDevice?.Items.Add(item.Name);
-            if (_Channel.Device?.ID == item.ID)
+            if (_channel.Device?.ID == item.ID)
             {
-                ComboBox comboDevice = this.ComboDevice;
+                ComboBox comboDevice = ComboDevice;
                 if (comboDevice != null)
                     comboDevice.SelectedItem = item.Name;
             }
         }
-        if (_Channel.Device == null) { this.ComboDevice.SelectedIndex = 0; }
+        if (_channel.Device == null) { ComboDevice.SelectedIndex = 0; }
         //Доступность выбора устройств в режиме редактирования.
-        this.ComboDevice.IsEnabled = !isEditChannel; 
-        this.ChannelName.Text = _Channel.Name;
-        this.RegType.SelectedIndex = (int)_Channel.TypeRegistry - 1;
-        this.Address.Text = _Channel.Address.ToString();
-        this.Format.SelectedIndex = (int)_Channel.Format;
-        this.Koef.Text = _Channel.Koef.ToString();
-        if (_Channel.Min.HasValue) this.Min.Text = _Channel.Min.Value.ToString();
-        else this.Min.Text = "";
-        if (_Channel.Max.HasValue) this.Max.Text = _Channel.Max.Value.ToString();
-        else this.Max.Text = "";
-        if (_Channel.Accuracy.HasValue) this.Accuracy.Text = _Channel.Accuracy.Value.ToString();
-        else this.Accuracy.Text = "";
-        if (_Channel.Ext.HasValue) this.Ext.Text = _Channel.Ext.Value.ToString();
-        else this.Ext.Text = "";
-        this.chArchive.IsChecked = _Channel.Archive; 
+        ComboDevice.IsEnabled = !isEditChannel; 
+        ChannelName.Text = _channel.Name;
+        RegType.SelectedIndex = (int)_channel.TypeRegistry - 1;
+        Address.Text = _channel.Address.ToString();
+        Format.SelectedIndex = (int)_channel.Format;
+        Koef.Text = _channel.Koef.ToString(CultureInfo.CurrentCulture);
+        Min.Text = _channel.Min.HasValue ? _channel.Min.Value.ToString(CultureInfo.CurrentCulture) : "";
+        Max.Text = _channel.Max.HasValue ? _channel.Max.Value.ToString(CultureInfo.CurrentCulture) : "";
+        Accuracy.Text = _channel.Accuracy.HasValue ? _channel.Accuracy.Value.ToString() : "";
+        Ext.Text = _channel.Ext.HasValue ? _channel.Ext.Value.ToString() : "";
+        chArchive.IsChecked = _channel.Archive; 
     }
     
     /// <summary>
@@ -58,44 +53,43 @@ public partial class WindowChannel : ClassWindowPKM
         switch(selectedColumn)
         {
             case "Наименование":
-                this.ChannelName.Focus();
-                this.ChannelName.SelectAll();
+                ChannelName.Focus();
+                ChannelName.SelectAll();
                 break;
             case "Тип регистра":
-                this.RegType.Focus();
+                RegType.Focus();
                 break;
             case "Адрес":
-                this.Address.Focus();
-                this.Address.SelectAll();
+                Address.Focus();
+                Address.SelectAll();
                 break;
             case "Формат":
-                this.Format.Focus();
+                Format.Focus();
                 break;
             case "Коэф.":
-                this.Koef.Focus();
-                this.Koef.SelectAll();
+                Koef.Focus();
+                Koef.SelectAll();
                 break;
             case "Знаков":
-                this.Accuracy.Focus();
-                this.Accuracy.SelectAll();
+                Accuracy.Focus();
+                Accuracy.SelectAll();
                 break;
             case "Min":
-                this.Min.Focus();
-                this.Min.SelectAll();
+                Min.Focus();
+                Min.SelectAll();
                 break;
             case "Max":
-                this.Max.Focus();
-                this.Max.SelectAll();
+                Max.Focus();
+                Max.SelectAll();
                 break;
         };
     }
-
 
     private void ComboDevice_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         ComboBox comboBox = sender as ComboBox;
         if(comboBox==null) return;
-        _Channel.Device = MainWindow.Devices[comboBox.SelectedIndex];
+        _channel.Device = MainWindow.Devices[comboBox.SelectedIndex];
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -105,33 +99,33 @@ public partial class WindowChannel : ClassWindowPKM
         if(button==null) return;
         if (button.IsCancel == true)
         {
-            this.Close();
+            Close();
             return;
         }
         
-        _Channel.Name = this.ChannelName.Text;
-        _Channel.Device.ID = MainWindow.Devices[this.ComboDevice.SelectedIndex].ID;
-        _Channel.TypeRegistry = (ClassChannel.EnumTypeRegistry)this.RegType.SelectedIndex + 1;
-        _Channel.Address = Convert.ToInt32(this.Address.Text);
-        _Channel.Format = (ClassChannel.EnumFormat)this.Format.SelectedIndex;
+        _channel.Name = ChannelName.Text;
+        _channel.Device.ID = MainWindow.Devices[ComboDevice.SelectedIndex].ID;
+        _channel.TypeRegistry = (ClassChannel.EnumTypeRegistry)RegType.SelectedIndex + 1;
+        _channel.Address = Convert.ToInt32(Address.Text);
+        _channel.Format = (ClassChannel.EnumFormat)Format.SelectedIndex;
         decimal? Koef = ClassHelper.DecimalFromStr(this.Koef.Text);
-        if (Koef.HasValue) _Channel.Koef = Convert.ToSingle(Koef.Value);
-        _Channel.Min = ClassHelper.DecimalFromStr(this.Min.Text);
-        _Channel.Max = ClassHelper.DecimalFromStr(this.Max.Text);
-        _Channel.Accuracy = ClassHelper.IntFromStr(this.Accuracy.Text);
-        _Channel.Ext = ClassHelper.IntFromStr(this.Ext.Text);
-        _Channel.Archive = this.chArchive.IsChecked.Value;
-        if (_Channel.ID == 0)
+        if (Koef.HasValue) _channel.Koef = Convert.ToSingle(Koef.Value);
+        _channel.Min = ClassHelper.DecimalFromStr(Min.Text);
+        _channel.Max = ClassHelper.DecimalFromStr(Max.Text);
+        _channel.Accuracy = ClassHelper.IntFromStr(Accuracy.Text);
+        _channel.Ext = ClassHelper.IntFromStr(Ext.Text);
+        _channel.Archive = chArchive.IsChecked.Value;
+        if (_channel.ID == 0)
         {
-            MainWindow.DB.RegistryAdd(_Channel);
-            this.Tag = _Channel;
+            MainWindow.DB.RegistryAdd(_channel);
+            Tag = _channel;
         }
         else
         {
-            MainWindow.DB.RegistryEdit(_Channel);
-            this.Tag = _Channel;
+            MainWindow.DB.RegistryEdit(_channel);
+            Tag = _channel;
         }
-        this.Close();
+        Close();
     }
 
     /// <summary>
@@ -141,6 +135,6 @@ public partial class WindowChannel : ClassWindowPKM
     /// <param name="e"></param>
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
     {
-        GetFocusAndSelection(selectedColumn);
+        GetFocusAndSelection(_selectedColumn);
     }
 }

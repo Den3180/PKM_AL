@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -145,7 +146,17 @@ public partial class UserControlChannels : UserControl
 
     private void MenuItemDeleteAll_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        if (_Device.Channels.Count == 0) return;
+        foreach (ClassChannel ch in _Device.Channels)
+        {
+            ClassChannel channel = Channels.FirstOrDefault(c => c.Address == ch.Address && c.Name == ch.Name
+                && c.Device.ID == ch.Device.ID);
+            Channels.Remove(channel);
+            MainWindow.Channels.Remove(channel);
+        }
+        Task.Run(() => MainWindow.DB.RegistryDelDev(_Device.ID));
+        _Device.Channels.Clear();
+       // _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
     }
 
     private void ConvertToPKM_Click(object sender, RoutedEventArgs e)
@@ -153,9 +164,18 @@ public partial class UserControlChannels : UserControl
         throw new System.NotImplementedException();
     }
 
+    /// <summary>
+    /// Запись значения в канал.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <exception cref="NotImplementedException"></exception>
     private void MenuItemWrite_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        ClassChannel obj = this.GridChannels.SelectedItem as ClassChannel;
+        if (obj == null) return;
+        WindowValue frm = new WindowValue(obj);
+        frm.WindowShow(MainWindow.currentMainWindow);
     }
 
     /// <summary>
@@ -173,45 +193,46 @@ public partial class UserControlChannels : UserControl
     {
         Filter = eFilter.DI;
         FilterItems();
-        GridChannels.Height = _actualHeightUserControl;
+        //GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAI_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AI;
         FilterItems();
-        GridChannels.Height = _actualHeightUserControl;
+        //GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemDO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.DO;
         FilterItems();
-        GridChannels.Height = _actualHeightUserControl;
+        //GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AO;
         FilterItems();
-        GridChannels.Height = _actualHeightUserControl;
+        //GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAll_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.All;
         FilterItems();
+        //GridChannels.Height = _actualHeightUserControl;
     }
 
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
-        }
-        catch
-        {
-          _actualHeightUserControl=double.NaN;  
-        }
+        // try
+        // {
+        //     _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
+        // }
+        // catch
+        // {
+        //   _actualHeightUserControl=double.NaN;  
+        // }
     }
 }
