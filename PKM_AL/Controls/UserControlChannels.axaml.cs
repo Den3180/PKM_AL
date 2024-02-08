@@ -156,7 +156,7 @@ public partial class UserControlChannels : UserControl
         }
         Task.Run(() => MainWindow.DB.RegistryDelDev(_Device.ID));
         _Device.Channels.Clear();
-       // _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
+       GridChannels.Height = _actualHeightUserControl;
     }
 
     private void ConvertToPKM_Click(object sender, RoutedEventArgs e)
@@ -193,46 +193,47 @@ public partial class UserControlChannels : UserControl
     {
         Filter = eFilter.DI;
         FilterItems();
-        //GridChannels.Height = _actualHeightUserControl;
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAI_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AI;
         FilterItems();
-        //GridChannels.Height = _actualHeightUserControl;
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemDO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.DO;
         FilterItems();
-        //GridChannels.Height = _actualHeightUserControl;
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AO;
         FilterItems();
-        //GridChannels.Height = _actualHeightUserControl;
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAll_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.All;
         FilterItems();
-        //GridChannels.Height = _actualHeightUserControl;
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
     {
-        // try
-        // {
-        //     _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
-        // }
-        // catch
-        // {
-        //   _actualHeightUserControl=double.NaN;  
-        // }
+        try
+        {
+            _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
+            GridChannels.Height = _actualHeightUserControl;
+        }
+        catch
+        {
+          _actualHeightUserControl=double.NaN;  
+        }
     }
 }
