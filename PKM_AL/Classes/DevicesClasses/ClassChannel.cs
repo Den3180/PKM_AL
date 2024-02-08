@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -66,7 +63,7 @@ namespace PKM_AL
             set
             {
                 _Name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged();
             }
         }
 
@@ -82,7 +79,7 @@ namespace PKM_AL
             set
             {
                 _Address = value;
-                OnPropertyChanged("Address");
+                OnPropertyChanged();
             }
         }
 
@@ -92,7 +89,7 @@ namespace PKM_AL
             set
             {
                 _Format = value;
-                OnPropertyChanged("Format");
+                OnPropertyChanged();
             }
         }
 
@@ -102,7 +99,7 @@ namespace PKM_AL
             set
             {
                 _Koef = value;
-                OnPropertyChanged("Koef");
+                OnPropertyChanged();
             }
         }
 
@@ -123,12 +120,12 @@ namespace PKM_AL
                 if (_Koef != 1) _Value = _Value * (decimal)_Koef;
                 //Округление значений.
                 if (_Accuracy.HasValue) _Value = Decimal.Round(_Value, _Accuracy.Value);
-                OnPropertyChanged("Value");
+                OnPropertyChanged();
                 _DTAct = DateTime.Now;
                 OnPropertyChanged("DTAct");
                 OnPropertyChanged("StrDTAct");
                 //Сохранение нового значение в таблицу регистров.
-                if (this.Name != "" && this.Name != "Резерв")
+                if (Name != "" && Name != "Резерв")
                 {
                     Task.Run(() => MainWindow.DB.RegistrySaveValue(this));
                 }
@@ -138,7 +135,7 @@ namespace PKM_AL
                 ev.Param = _Name;
                 ev.Val = _Value.ToString();
                 ev.SourceID = ID;
-                ev.NameDevice = this.DeviceName;
+                ev.NameDevice = DeviceName;
                 //ClassEvent.SaveNewEvent(ev, _Archive);
 
                 //Изменение значений на мнемосхеме.
@@ -152,7 +149,7 @@ namespace PKM_AL
                     ev.Param = _Name;
                     ev.Val = _Value.ToString();
                     ev.SourceID = ID;
-                    ev.NameDevice = this.DeviceName;
+                    ev.NameDevice = DeviceName;
                    // ClassEvent.SaveNewEvent(ev, _Archive);
                 }
                 //Если задано минимальное ограничение величины и оно пройдено.
@@ -164,7 +161,7 @@ namespace PKM_AL
                     ev.Param = _Name;
                     ev.Val = _Value.ToString();
                     ev.SourceID = ID;
-                    ev.NameDevice = this.DeviceName;
+                    ev.NameDevice = DeviceName;
                     //ClassEvent.SaveNewEvent(ev, _Archive);
                 }
                 //Если величина в пределах допуска и границы заданы.
@@ -186,7 +183,7 @@ namespace PKM_AL
             set
             {
                 _Max = value;
-                OnPropertyChanged("Max");
+                OnPropertyChanged();
             }
         }
 
@@ -196,7 +193,7 @@ namespace PKM_AL
             set
             {
                 _Min = value;
-                OnPropertyChanged("Min");
+                OnPropertyChanged();
             }
         }
 
@@ -207,7 +204,7 @@ namespace PKM_AL
             set
             {
                 _State = value;
-                OnPropertyChanged("State");
+                OnPropertyChanged();
             }
         }
         public EnumTypeRegistry TypeRegistry
@@ -216,7 +213,7 @@ namespace PKM_AL
             set
             {
                 _TypeRegistry = value;
-                OnPropertyChanged("TypeRegistry");
+                OnPropertyChanged();
                 OnPropertyChanged("TypeRegistryName");
                 OnPropertyChanged("TypeRegistryShortName");
                 OnPropertyChanged("TypeRegistryFullName");
@@ -241,7 +238,7 @@ namespace PKM_AL
             set
             {
                 _BaseValue = value;
-                OnPropertyChanged("BaseValue");
+                OnPropertyChanged();
                 OnPropertyChanged("StrBaseValue");
             }
         }
@@ -256,7 +253,7 @@ namespace PKM_AL
             set
             {
                 _Archive = value;
-                OnPropertyChanged("Archive");
+                OnPropertyChanged();
             }
         }
         /// <summary>
@@ -269,7 +266,7 @@ namespace PKM_AL
             set
             {
                 _Ext = value;
-                OnPropertyChanged("Ext");
+                OnPropertyChanged();
             }
         }
 
@@ -279,7 +276,7 @@ namespace PKM_AL
             set
             {
                 _Accuracy = value;
-                OnPropertyChanged("Accuracy");
+                OnPropertyChanged();
             }
         }
 
@@ -339,7 +336,7 @@ namespace PKM_AL
             get
             {
                 if (DTAct == DateTime.MinValue) return "";
-                else return DTAct.ToString("dd.MM.yyyy HH:mm:ss");
+                return DTAct.ToString("dd.MM.yyyy HH:mm:ss");
             }
         }
         public string StrBaseValue
@@ -408,7 +405,7 @@ namespace PKM_AL
             // }
             // else return;
             // MainWindow.QueueCommands.Enqueue(cmd);
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
