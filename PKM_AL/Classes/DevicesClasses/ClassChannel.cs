@@ -405,7 +405,7 @@ namespace PKM_AL
             // }
             // else return;
             // MainWindow.QueueCommands.Enqueue(cmd);
-            throw new NotImplementedException();
+           
         }
 
         /// <summary>
