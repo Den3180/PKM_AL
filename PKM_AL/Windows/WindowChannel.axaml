@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
         x:Class="PKM_AL.Windows.WindowChannel"
         Title="Канал данных" WindowStartupLocation="CenterScreen" 
-        SizeToContent="WidthAndHeight" CanResize="False">
+        SizeToContent="WidthAndHeight" CanResize="False" Loaded="Control_OnLoaded">
         <Window.Styles>
                 <Style Selector="Button">
                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -105,7 +105,11 @@
                          Margin="5" Name="Ext"/>
                 <Label Grid.Row="10" Grid.Column="0" Content="Запись в архив:"/>
                 <CheckBox Grid.Row="10" Grid.Column="1" Margin="5" Name="chArchive"/>
-                <Button Grid.Row="11" Grid.Column="1" Content="Сохранить" Height="30" Width="100"
+                <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
+                <Button Content="Сохранить" Height="30" Width="100"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+                <Button Content="Отмена" IsCancel="True" Height="30" Width="100"
                         HorizontalAlignment="Right" VerticalAlignment="Bottom" IsDefault="True" Click="Button_Click"/>
+                </StackPanel>
         </Grid>
 </Window>

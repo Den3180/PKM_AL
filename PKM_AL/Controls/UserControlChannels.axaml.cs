@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
@@ -44,7 +45,6 @@ public partial class UserControlChannels : UserControl
             if (settings.ChannelsColumns.FirstOrDefault(x => x == col.Header?.ToString()) != null)
                 col.IsVisible = false;
         }
-        Channels = MainWindow.Channels;
         FilterItems();
     }
     
@@ -57,23 +57,29 @@ public partial class UserControlChannels : UserControl
         switch (Filter)
         {
          case   eFilter.All:
-                GridChannels.ItemsSource = Channels.Where(ch => ch.Device.ID == _Device.ID);
+             Channels=new ObservableCollection<ClassChannel>(MainWindow.Channels.Where(ch => 
+                                          ch.Device.ID == _Device.ID));
+             GridChannels.ItemsSource = Channels;
              break;
          case eFilter.AO:
-             GridChannels.ItemsSource = Channels.Where(ch => (
-                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.HoldingRegistry));
+             Channels=new ObservableCollection<ClassChannel>(MainWindow.Channels.Where(ch => (
+                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.HoldingRegistry)));
+             GridChannels.ItemsSource = Channels;
              break;
          case eFilter.DI:
-             GridChannels.ItemsSource = Channels.Where(ch => (
-                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.DiscreteInput));
+             Channels=new ObservableCollection<ClassChannel>(MainWindow.Channels.Where(ch => (
+                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.DiscreteInput)));
+             GridChannels.ItemsSource = Channels;
              break;
          case eFilter.DO:
-             GridChannels.ItemsSource = Channels.Where(ch => (
-                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.CoilOutput));
+             Channels=new ObservableCollection<ClassChannel>( MainWindow.Channels.Where(ch => (
+                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.CoilOutput)));
+             GridChannels.ItemsSource = Channels;
              break;
          case eFilter.AI:
-             GridChannels.ItemsSource = Channels.Where(ch => (
-                 ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.InputRegistry));
+             Channels=new ObservableCollection<ClassChannel>( MainWindow.Channels.Where(ch => (
+                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.InputRegistry)));
+             GridChannels.ItemsSource = Channels;
              break;
          default:
              break;
@@ -112,11 +118,24 @@ public partial class UserControlChannels : UserControl
         obj.Device = _Device;
         WindowChannel frm = new WindowChannel(obj, isEditChannel: true);
         frm.WindowShow(MainWindow.currentMainWindow);
+        if(frm.Tag ==null) return;
+        Channels.Add(obj);
+        MainWindow.Channels.Add(obj);
+        obj.Device.Channels.Add(obj);
     }
 
+    /// <summary>
+    /// Редактировать регистр.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <exception cref="NotImplementedException"></exception>
     private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        ClassChannel obj = this.GridChannels.SelectedItem as ClassChannel;
+        if (obj == null) return;
+        WindowChannel frm = new WindowChannel(obj,isEditChannel:true,GridChannels.CurrentColumn.Header.ToString());
+        frm.WindowShow(MainWindow.currentMainWindow);
     }
 
     private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
@@ -139,6 +158,11 @@ public partial class UserControlChannels : UserControl
         throw new System.NotImplementedException();
     }
 
+    /// <summary>
+    /// Видимость столбцов.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void MenuItemCustom_Click(object sender, RoutedEventArgs e)
     {
         WindowColumns frm = new WindowColumns(this.GridChannels);

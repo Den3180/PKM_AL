@@ -1,12 +1,15 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using PKM_AL.Classes.ServiceClasses;
 
 namespace PKM_AL.Windows;
 
 public partial class WindowChannel : ClassWindowPKM
 {
     private ClassChannel _Channel;
+    private string selectedColumn;
     public WindowChannel()
     {
         InitializeComponent();
@@ -16,6 +19,7 @@ public partial class WindowChannel : ClassWindowPKM
     {
         InitializeComponent();
         _Channel = newChannel;
+        this.selectedColumn = selectedColumn;
         foreach (ClassDevice item in MainWindow.Devices)
         {
             ComboDevice?.Items.Add(item.Name);
@@ -42,13 +46,11 @@ public partial class WindowChannel : ClassWindowPKM
         else this.Accuracy.Text = "";
         if (_Channel.Ext.HasValue) this.Ext.Text = _Channel.Ext.Value.ToString();
         else this.Ext.Text = "";
-        this.chArchive.IsChecked = _Channel.Archive;
-        GetFocusAndSelection(selectedColumn);
-
+        this.chArchive.IsChecked = _Channel.Archive; 
     }
     
     /// <summary>
-    /// Выбор фокуса для поля.
+    /// Выбор фокуса для поля(работает только в режиме редактирования регистра).
     /// </summary>
     /// <param name="selectedColumn"></param>
     private void GetFocusAndSelection(string selectedColumn)
@@ -91,11 +93,54 @@ public partial class WindowChannel : ClassWindowPKM
 
     private void ComboDevice_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      
+        ComboBox comboBox = sender as ComboBox;
+        if(comboBox==null) return;
+        _Channel.Device = MainWindow.Devices[comboBox.SelectedIndex];
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
+        var button = sender as Button;
         
+        if(button==null) return;
+        if (button.IsCancel == true)
+        {
+            this.Close();
+            return;
+        }
+        
+        _Channel.Name = this.ChannelName.Text;
+        _Channel.Device.ID = MainWindow.Devices[this.ComboDevice.SelectedIndex].ID;
+        _Channel.TypeRegistry = (ClassChannel.EnumTypeRegistry)this.RegType.SelectedIndex + 1;
+        _Channel.Address = Convert.ToInt32(this.Address.Text);
+        _Channel.Format = (ClassChannel.EnumFormat)this.Format.SelectedIndex;
+        decimal? Koef = ClassHelper.DecimalFromStr(this.Koef.Text);
+        if (Koef.HasValue) _Channel.Koef = Convert.ToSingle(Koef.Value);
+        _Channel.Min = ClassHelper.DecimalFromStr(this.Min.Text);
+        _Channel.Max = ClassHelper.DecimalFromStr(this.Max.Text);
+        _Channel.Accuracy = ClassHelper.IntFromStr(this.Accuracy.Text);
+        _Channel.Ext = ClassHelper.IntFromStr(this.Ext.Text);
+        _Channel.Archive = this.chArchive.IsChecked.Value;
+        if (_Channel.ID == 0)
+        {
+            MainWindow.DB.RegistryAdd(_Channel);
+            this.Tag = _Channel;
+        }
+        else
+        {
+            MainWindow.DB.RegistryEdit(_Channel);
+            this.Tag = _Channel;
+        }
+        this.Close();
+    }
+
+    /// <summary>
+    /// Выделение поля в форме редактирования каналов.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Control_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        GetFocusAndSelection(selectedColumn);
     }
 }
