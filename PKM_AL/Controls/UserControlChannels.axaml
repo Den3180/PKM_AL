@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
              xmlns:vm="using:PKM_AL"
-             x:Class="PKM_AL.Controls.UserControlChannels" Name="UconUserControl" Loaded="Control_OnLoaded" 
-             Background="Bisque">
+             x:Class="PKM_AL.Controls.UserControlChannels" Name="UconUserControl" Loaded="Control_OnLoaded">
     <Design.DataContext>
         <vm:ClassChannel/>
     </Design.DataContext>
@@ -14,17 +13,17 @@
             Background="Azure" 
             VerticalAlignment="Top"
             AutoGenerateColumns="false"
-            IsReadOnly="false"
+            IsReadOnly="False"
             GridLinesVisibility="All"
             BorderThickness="1"
             BorderBrush="Black"
             Foreground="Black"
-            CanUserResizeColumns="False"
+            CanUserResizeColumns="True"
             CanUserSortColumns="False"
             ColumnHeaderHeight="50"
             HorizontalGridLinesBrush="Black"
             VerticalGridLinesBrush="Black"
-            LoadingRow="DataGrid_LoadingRow">
+            LoadingRow="DataGrid_LoadingRow" KeyDown="GridChannels_OnKeyDown">
         <DataGrid.Styles>
             <Style Selector="DataGridCell">
                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
@@ -37,12 +36,17 @@
                     <Setter Property="AreSeparatorsVisible" Value="True"/>
                     <Setter Property="Background" Value="Beige"/>
                 </Style>
+                <Style Selector="DataGridCell.DGC_Left">
+                    <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+                </Style>
         </DataGrid.Styles>
         <DataGrid.Columns>
             <DataGridTextColumn Header="№" MinWidth="30" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                 AncestorType={x:Type DataGridRow}},Path=Tag}"/>
-                <DataGridTextColumn Header="Наименование" MinWidth="250" Width="250" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Устройство"  MinWidth="80" Binding="{Binding DeviceName}"/>
+                <DataGridTextColumn Header="Наименование" CellStyleClasses="DGC_Left" MinWidth="250" Width="250" CanUserResize="True"
+                                     Binding="{Binding Name}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Устройство" MinWidth="80" Binding="{Binding DeviceName}"/>
                 <DataGridTextColumn Header="Тип регистра" MinWidth="100" Binding="{Binding TypeRegistryFullName}"/>
                 <DataGridTextColumn Header="Адрес"  MinWidth="50" Binding="{Binding Address}"/>
                 <DataGridTextColumn Header="Адр. (hex)" MinWidth="70" Binding="{Binding AddressHex}"/>

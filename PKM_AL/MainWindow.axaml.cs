@@ -73,7 +73,7 @@ namespace PKM_AL
                       , "", ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
                 if (buttonResult.Result == ButtonResult.Yes)
                 {
-                    string path = ClassDialogWindows.CreateDBDialog(this);
+                    string path = ClassDialogWindows.CreateDbDialog(this);
                     if (!string.IsNullOrEmpty(path))
                     {
                         ClassDB.Create(path);
@@ -156,7 +156,8 @@ namespace PKM_AL
             TimerSec.Tick += TimerSec_Tick;
             TimerSec.Interval = new TimeSpan(0, 0, 0, 0, 700);
             //TimerSec.Start();
-
+            //Создается событие начала работы программы и добавляется архив базы данных.
+            DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Start});
             switch (settings.StartWindow)
             {
                 case 0:
@@ -329,7 +330,6 @@ namespace PKM_AL
             case "Смена пользователя...":
             break;
             case "Устройства...":
-                
             break;
             case "Каналы данных...":
             break;
@@ -354,7 +354,7 @@ namespace PKM_AL
             case "Шаблоны...":
             break;
             case "Создать БД...":
-            string path = ClassDialogWindows.CreateDBDialog(this);
+            string path = ClassDialogWindows.CreateDbDialog(this);
             if (!string.IsNullOrEmpty(path))
             {
                 ClassDB.Create(path);

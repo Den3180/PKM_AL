@@ -10,14 +10,13 @@ using System.Threading.Tasks;
 
 namespace PKM_AL.Classes.ServiceClasses
 {
-    public class ClassDialogWindows
+    public static class ClassDialogWindows
     {
         /// <summary>
         /// Диалог создать базу данных.
         /// </summary>
-        public static string CreateDBDialog(Window owner)
+        public static string CreateDbDialog(Window owner)
         {
-            IStorageFile dialogResult;
             Task<IStorageFile> files;
             using (var source = new CancellationTokenSource())
             {
@@ -37,7 +36,7 @@ namespace PKM_AL.Classes.ServiceClasses
                 files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);
             }
-            dialogResult = files.Result;
+            var dialogResult = files.Result;
             if (!string.IsNullOrEmpty(dialogResult?.Name))
             {
                 return dialogResult?.Path.LocalPath;
@@ -50,7 +49,7 @@ namespace PKM_AL.Classes.ServiceClasses
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public static string ChooseDBDialog(Window owner)
+        public static string ChooseDbDialog(Window owner)
         {
             Task < IReadOnlyList < IStorageFile >> files;
             using (var source = new CancellationTokenSource())
@@ -62,7 +61,8 @@ namespace PKM_AL.Classes.ServiceClasses
                     AllowMultiple=false,
                     FileTypeFilter = new List<FilePickerFileType>()
                     {
-                        new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } }
+                        new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } },
+                        new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
                     }
                 });
             files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());

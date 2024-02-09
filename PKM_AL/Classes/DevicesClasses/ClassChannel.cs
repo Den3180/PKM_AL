@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -124,19 +125,22 @@ namespace PKM_AL
                 _DTAct = DateTime.Now;
                 OnPropertyChanged("DTAct");
                 OnPropertyChanged("StrDTAct");
-                //Сохранение нового значение в таблицу регистров.
+                //Сохранение нового значение в таблицу регистров(только в том случае если у регистра есть имя и оно не "Резерв").
                 if (Name != "" && Name != "Резерв")
                 {
                     Task.Run(() => MainWindow.DB.RegistrySaveValue(this));
                 }
-                _PreviousValue = _Value;
-                ClassEvent ev = new ClassEvent();
-                ev.Type = ClassEvent.EnumType.Measure;
-                ev.Param = _Name;
-                ev.Val = _Value.ToString();
-                ev.SourceID = ID;
-                ev.NameDevice = DeviceName;
-                //ClassEvent.SaveNewEvent(ev, _Archive);
+                _PreviousValue = _Value; //Странное место?
+                //Создание объекта события.
+                ClassEvent ev = new ClassEvent
+                {
+                    Type = ClassEvent.EnumType.Measure,
+                    Param = _Name,
+                    Val = _Value.ToString(CultureInfo.CurrentCulture),
+                    SourceID = ID,
+                    NameDevice = DeviceName
+                };
+                ClassEvent.SaveNewEvent(ev, _Archive);
 
                 //Изменение значений на мнемосхеме.
                 NewValueEvent?.Invoke(this);
@@ -144,25 +148,29 @@ namespace PKM_AL
                 if (_Max.HasValue && _Value > _Max.Value)
                 {
                     if (State != EnumState.Over) State = EnumState.Over;
-                    ev = new ClassEvent();
-                    ev.Type = ClassEvent.EnumType.Over;
-                    ev.Param = _Name;
-                    ev.Val = _Value.ToString();
-                    ev.SourceID = ID;
-                    ev.NameDevice = DeviceName;
-                   // ClassEvent.SaveNewEvent(ev, _Archive);
+                    ev = new ClassEvent
+                    {
+                        Type = ClassEvent.EnumType.Over,
+                        Param = _Name,
+                        Val = _Value.ToString(CultureInfo.CurrentCulture),
+                        SourceID = ID,
+                        NameDevice = DeviceName
+                    };
+                    ClassEvent.SaveNewEvent(ev, _Archive);
                 }
                 //Если задано минимальное ограничение величины и оно пройдено.
                 else if (_Min.HasValue && _Value < _Min.Value)
                 {
                     if (State != EnumState.Less) State = EnumState.Less;
-                    ev = new ClassEvent();
-                    ev.Type = ClassEvent.EnumType.Less;
-                    ev.Param = _Name;
-                    ev.Val = _Value.ToString();
-                    ev.SourceID = ID;
-                    ev.NameDevice = DeviceName;
-                    //ClassEvent.SaveNewEvent(ev, _Archive);
+                    ev = new ClassEvent
+                    {
+                        Type = ClassEvent.EnumType.Less,
+                        Param = _Name,
+                        Val = _Value.ToString(CultureInfo.CurrentCulture),
+                        SourceID = ID,
+                        NameDevice = DeviceName
+                    };
+                    ClassEvent.SaveNewEvent(ev, _Archive);
                 }
                 //Если величина в пределах допуска и границы заданы.
                 else if (_Max.HasValue || _Min.HasValue)
@@ -245,7 +253,10 @@ namespace PKM_AL
 
         [XmlIgnore]
         public int ID { get; set; }
-
+        
+        /// <summary>
+        /// Флаг, для записи входящего значения в архив.
+        /// </summary>
         [XmlIgnore]
         public bool Archive
         {
@@ -254,8 +265,10 @@ namespace PKM_AL
             {
                 _Archive = value;
                 OnPropertyChanged();
+                //Task.Run(() => MainWindow.DB.RegistryEdit(this));
             }
         }
+        
         /// <summary>
         /// Адрес шлюза.
         /// </summary>
@@ -287,6 +300,9 @@ namespace PKM_AL
             set { _NValue = value; }
         }
 
+        /// <summary>
+        /// Тип регистра.
+        /// </summary>
         public string TypeRegistryName
         {
             get
@@ -301,6 +317,10 @@ namespace PKM_AL
                 }
             }
         }
+        
+        /// <summary>
+        /// Тип регистра(короткое имя).
+        /// </summary>
         public string TypeRegistryShortName
         {
             get
@@ -315,6 +335,10 @@ namespace PKM_AL
                 }
             }
         }
+        
+        /// <summary>
+        /// Тип регистра(полное имя).
+        /// </summary>
         public string TypeRegistryFullName
         {
             get
@@ -331,6 +355,10 @@ namespace PKM_AL
         }
         public string DeviceName { get { return Device.Name; } }
         public string AddressHex { get { return "0x" + _Address.ToString("X4"); } }
+        
+        /// <summary>
+        /// Актуальная дата в строковом формате(использована в табличном представлении регистров).
+        /// </summary>
         public string StrDTAct
         {
             get

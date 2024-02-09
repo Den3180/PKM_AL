@@ -468,6 +468,7 @@ namespace PKM
         #endregion
 
         #region [Registries]
+        
         /// <summary>
         /// Загрузка регистров.
         /// </summary>

@@ -30,7 +30,7 @@ public partial class WindowDB : ClassWindowPKM
         Task < IReadOnlyList < IStorageFile >> files;
     private void ButtonDB_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        string path = ClassDialogWindows.ChooseDBDialog(this);
+        string path = ClassDialogWindows.ChooseDbDialog(this);
         TxtDB.Text = string.IsNullOrEmpty(path)? TxtDB.Text: path;
     }
 

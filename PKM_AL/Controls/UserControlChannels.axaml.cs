@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
+using MsBox.Avalonia.Enums;
 using PKM;
+using PKM_AL.Classes.ServiceClasses;
 using PKM_AL.Windows;
 
 namespace PKM_AL.Controls;
@@ -139,11 +142,22 @@ public partial class UserControlChannels : UserControl
         frm.WindowShow(MainWindow.currentMainWindow);
     }
 
+    /// <summary>
+    /// Удалить один или группу регистров.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <exception cref="NotImplementedException"></exception>
     private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        DeleteOneOrMoreRegistryAsync();
     }
-
+    
+    /// <summary>
+/// Удалить все регистры.
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
     private void MenuItemDeleteAll_Click(object sender, RoutedEventArgs e)
     {
         if (_Device.Channels.Count == 0) return;
@@ -151,17 +165,68 @@ public partial class UserControlChannels : UserControl
         {
             ClassChannel channel = Channels.FirstOrDefault(c => c.Address == ch.Address && c.Name == ch.Name
                 && c.Device.ID == ch.Device.ID);
-            Channels.Remove(channel);
             MainWindow.Channels.Remove(channel);
         }
         Task.Run(() => MainWindow.DB.RegistryDelDev(_Device.ID));
+        Channels.Clear();
         _Device.Channels.Clear();
        GridChannels.Height = _actualHeightUserControl;
     }
 
+    /// <summary>
+    /// Открыть диалог конвертации из карт TikModscan.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <exception cref="NotImplementedException"></exception>
     private void ConvertToPKM_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        var pathFile = ClassDialogWindows.ChooseDbDialog(MainWindow.currentMainWindow);
+        if (string.IsNullOrEmpty(pathFile)) return;
+        ConvertToPKM(pathFile);
+    }
+
+    /// <summary>
+    /// Конвертирование карты регистров из TikModscan.
+    /// </summary>
+    /// <param name="fileName"></param>
+    private async void ConvertToPKM(string fileName)
+    {
+        SerializableCellsContainer serializableCells = ConverterToPKM.LoadMap(fileName);
+        List<CellData> cellsArray = serializableCells.CellsArray;
+        for (int i = 0; i < cellsArray.Count; i++)
+        {
+            if (string.IsNullOrEmpty(cellsArray[i].Name))
+            {
+                cellsArray[i].Name="Резерв";
+            }
+            ClassChannel channel = new ClassChannel();
+            channel.Device = _Device;
+            channel.Name = cellsArray[i].Name;
+            channel.Device.ID = _Device.ID;
+            channel.TypeRegistry= cellsArray[i].Type switch
+            {
+                "InputRegister" => ClassChannel.EnumTypeRegistry.InputRegistry,
+                "HoldingRegister" => ClassChannel.EnumTypeRegistry.HoldingRegistry,
+                _ => ClassChannel.EnumTypeRegistry.CoilOutput
+            };
+            channel.Address = Int32.Parse(cellsArray[i].Adress);
+            channel.Format = ClassChannel.EnumFormat.UINT;
+            channel.Koef = 1;
+            channel.Min = null;
+            channel.Max = null;
+            channel.Accuracy = null;
+            channel.Ext = null;
+            channel.Archive = false;                
+            if (channel.ID == 0)
+            {
+                await Task.Run(()=> MainWindow.DB.RegistryAdd(channel));
+                MainWindow.Channels.Add(channel);
+                channel.Device.Channels.Add(channel);
+                Channels.Add(channel);
+            }
+        }   
+
     }
 
     /// <summary>
@@ -235,5 +300,41 @@ public partial class UserControlChannels : UserControl
         {
           _actualHeightUserControl=double.NaN;  
         }
+    }
+
+    /// <summary>
+    /// Удаление одного или более регистров.
+    /// </summary>
+    private async void DeleteOneOrMoreRegistryAsync()
+    {
+        if (GridChannels.SelectedItems.Count == 0) return;
+        ClassChannel ob = this.GridChannels.SelectedItems[0] as ClassChannel;
+        if(ob==null) return;
+        string mes = GridChannels.SelectedItems.Count > 1 ? $"Удалить каналы?" : $"Удалить канал '{ob.Name}'?";
+        var res= ClassMessage.ShowMessage(MainWindow.currentMainWindow,mes,buttonEnum:ButtonEnum.OkCancel,
+            icon:MsBox.Avalonia.Enums.Icon.Question);
+        if (res.Result == ButtonResult.Cancel) return;
+        int countItems = GridChannels.SelectedItems.Count;
+        while ( countItems > 0)
+        {
+            ClassChannel obj = GridChannels.SelectedItems[0] as ClassChannel;
+            await Task.Run(() => MainWindow.DB.RegistryDel(obj.ID));
+            Channels.Remove(obj);
+            MainWindow.Channels.Remove(obj);
+            _Device.Channels.Remove(obj);
+            countItems--;
+        }
+    }
+    
+
+    /// <summary>
+    /// Обработка нажатия клавиш над DataGrid.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void GridChannels_OnKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Delete) return;
+            DeleteOneOrMoreRegistryAsync();
     }
 }

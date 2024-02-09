@@ -113,23 +113,22 @@ namespace PKM_AL
             Val = "";
         }
 
-        //public static void SaveNewEvent(ClassEvent ev, bool Archive = true)
-        //{
-        //    if (Archive) Task.Run(() => MainWindow.DB.EventAdd(ev));//Обращение к базе и сохранение лога.
-        //    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-        //    {
-        //        MainWindow.Events.Add(ev);
-        //    });
-        //    for (int i = 0; i < MainWindow.Links.Count; i++)
-        //    {
-        //        ClassLink link = MainWindow.Links[i];
-        //        if (link.EventType != ev.Type) continue;
-        //        if (link.SourceID != ev.SourceID) continue;
-        //        link.DT = DateTime.Now;
-        //        ClassCommand cmd = MainWindow.Commands.FirstOrDefault(x => x.ID == link.Command.ID);
-        //        if (cmd != null) MainWindow.QueueCommands.Enqueue(cmd);
-        //    }
-        //}
+        public static void SaveNewEvent(ClassEvent ev, bool Archive = true)
+        {
+            //Обращение к базе и сохранение лога, если включен флаг архивирования.
+            if (Archive) 
+                Task.Run(() => MainWindow.DB.EventAdd(ev));
+            MainWindow.Events.Add(ev);
+            // for (int i = 0; i < MainWindow.Links.Count; i++)
+            // {
+            //     ClassLink link = MainWindow.Links[i];
+            //     if (link.EventType != ev.Type) continue;
+            //     if (link.SourceID != ev.SourceID) continue;
+            //     link.DT = DateTime.Now;
+            //     ClassCommand cmd = MainWindow.Commands.FirstOrDefault(x => x.ID == link.Command.ID);
+            //     if (cmd != null) MainWindow.QueueCommands.Enqueue(cmd);
+            // }
+        }
 
         /// <summary>
         /// Возвращает тип события.
