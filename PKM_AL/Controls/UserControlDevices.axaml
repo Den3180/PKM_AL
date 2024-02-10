@@ -22,7 +22,7 @@
 			  ColumnHeaderHeight="50"
 			  HorizontalGridLinesBrush="Black"
 			  VerticalGridLinesBrush="Black"
-			  LoadingRow="DataGrid_LoadingRow">
+			  LoadingRow="DataGrid_LoadingRow" DoubleTapped="GridDevices_OnDoubleTapped">
 		<DataGrid.Styles>
 			<Style Selector="DataGridColumnHeader">
 				<Setter Property="HorizontalContentAlignment" Value="Center"/>

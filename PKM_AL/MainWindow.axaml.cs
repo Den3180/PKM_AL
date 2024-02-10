@@ -16,10 +16,12 @@ using Microsoft.Extensions.Logging;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Base;
 using Avalonia;
+using Avalonia.Input;
 using Avalonia.LogicalTree;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using PKM_AL.Classes;
 using PKM_AL.Controls;
 
 namespace PKM_AL
@@ -36,6 +38,9 @@ namespace PKM_AL
         public static ObservableCollection<ClassDevice> Devices;
         public static ObservableCollection<ClassChannel> Channels;
         public static ObservableCollection<ClassEvent> Events;
+        public static ObservableCollection<ClassCommand> Commands;
+        public static Queue<ClassCommand> QueueCommands;
+        public static ObservableCollection<ClassLink> Links;
 
         public static ClassSettings settings;
 
@@ -139,12 +144,20 @@ namespace PKM_AL
             Channels = new ObservableCollection<ClassChannel>(DB.RegistriesLoad(0));
             Groups = new ObservableCollection<ClassGroup>();
             Slave = new ClassSlave();
+            Commands = new ObservableCollection<ClassCommand>(DB.CommandsLoad());
+            QueueCommands = new Queue<ClassCommand>();
+            Links = new ObservableCollection<ClassLink>(DB.LinksLoad());
 
             //Заполнение списка каналов для каждого устройства.
             foreach (var item in Channels)
             {
                 item.Device = Devices.FirstOrDefault(x => x.ID == item.Device.ID);                
                 item.Device?.Channels.Add(item);
+            }
+            
+            foreach (ClassCommand item in Commands)
+            {
+                item.Device = Devices.FirstOrDefault(x => x.ID == item.Device.ID);
             }
 
             //Блок генерации дерева.
@@ -434,5 +447,9 @@ namespace PKM_AL
             (currentMainWindow.treeView.Items[0] as TreeViewItem).Items.Add(ClassBuildControl.MakeContentTreeViewItem(item));
         }
 
+        private void TreeView_OnTapped(object sender, TappedEventArgs e)
+        {
+            
+        }
     }
 }

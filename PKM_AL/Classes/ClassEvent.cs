@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PKM_AL.Classes;
 
 namespace PKM_AL
 {
@@ -119,15 +120,15 @@ namespace PKM_AL
             if (Archive) 
                 Task.Run(() => MainWindow.DB.EventAdd(ev));
             MainWindow.Events.Add(ev);
-            // for (int i = 0; i < MainWindow.Links.Count; i++)
-            // {
-            //     ClassLink link = MainWindow.Links[i];
-            //     if (link.EventType != ev.Type) continue;
-            //     if (link.SourceID != ev.SourceID) continue;
-            //     link.DT = DateTime.Now;
-            //     ClassCommand cmd = MainWindow.Commands.FirstOrDefault(x => x.ID == link.Command.ID);
-            //     if (cmd != null) MainWindow.QueueCommands.Enqueue(cmd);
-            // }
+            for (int i = 0; i < MainWindow.Links.Count; i++)
+            {
+                ClassLink link = MainWindow.Links[i];
+                if (link.EventType != ev.Type) continue;
+                if (link.SourceID != ev.SourceID) continue;
+                link.DT = DateTime.Now;
+                ClassCommand cmd = MainWindow.Commands.FirstOrDefault(x => x.ID == link.Command.ID);
+                if (cmd != null) MainWindow.QueueCommands.Enqueue(cmd);
+            }
         }
 
         /// <summary>

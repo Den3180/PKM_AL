@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Input;
 
 namespace PKM_AL;
 
@@ -170,4 +171,8 @@ public partial class UserControlDevices : UserControl
         frm.WindowShow(MainWindow.currentMainWindow);
     }
 
+    private void GridDevices_OnDoubleTapped(object sender, TappedEventArgs e)
+    {
+        
+    }
 }

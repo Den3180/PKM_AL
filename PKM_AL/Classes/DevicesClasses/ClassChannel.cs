@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using PKM_AL.Classes;
 
 namespace PKM_AL
 {
@@ -265,7 +266,6 @@ namespace PKM_AL
             {
                 _Archive = value;
                 OnPropertyChanged();
-                //Task.Run(() => MainWindow.DB.RegistryEdit(this));
             }
         }
         
@@ -416,23 +416,23 @@ namespace PKM_AL
         /// <param name="Value"></param>
         public void SendValue(decimal Value)
         {
-            // ClassCommand cmd = new ClassCommand();
-            // cmd.Device = _Device;
-            // cmd.Channel = this;
-            // cmd.Address = _Address;
-            // if (_TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry)
-            // {
-            //     cmd.CommandType = ClassCommand.EnumType.WriteRegistry;
-            //     if (_Koef == 1 || _Koef == 0) cmd.Value = (int)Value;
-            //     else cmd.Value = (int)((float)Value / _Koef);
-            // }
-            // else if (_TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
-            // {
-            //     cmd.CommandType = ClassCommand.EnumType.WriteCoil;
-            //     cmd.Value = (int)Value;
-            // }
-            // else return;
-            // MainWindow.QueueCommands.Enqueue(cmd);
+            ClassCommand cmd = new ClassCommand();
+            cmd.Device = _Device;
+            cmd.Channel = this;
+            cmd.Address = _Address;
+            if (_TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry)
+            {
+                cmd.CommandType = ClassCommand.EnumType.WriteRegistry;
+                if (_Koef == 1 || _Koef == 0) cmd.Value = (int)Value;
+                else cmd.Value = (int)((float)Value / _Koef);
+            }
+            else if (_TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
+            {
+                cmd.CommandType = ClassCommand.EnumType.WriteCoil;
+                cmd.Value = (int)Value;
+            }
+            else return;
+            MainWindow.QueueCommands.Enqueue(cmd);
            
         }
 

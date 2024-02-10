@@ -20,6 +20,7 @@ using Npgsql;
 using Org.BouncyCastle.Bcpg;
 using System.Data;
 using PKM_AL;
+using PKM_AL.Classes;
 
 namespace PKM
 {
@@ -555,6 +556,11 @@ namespace PKM
             return true;
         }
 
+        /// <summary>
+        /// Изменение всей таблицы регистров.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public virtual bool RegistryEdit(ClassChannel obj)
         {
             SqliteCommand cmd = conn.CreateCommand();
@@ -672,6 +678,151 @@ namespace PKM
         }
 
         #endregion
+        
+        #region [Commands]
+        public virtual List<ClassCommand> CommandsLoad()
+        {
+            List<ClassCommand> lst = new List<ClassCommand>();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT cmd.rowid, cmd.*"
+                + " FROM cmd LEFT JOIN dev ON cmd.dev = dev.rowid";
+            using (SqliteDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ClassCommand obj = new ClassCommand();
+                    obj.ID = Convert.ToInt32(reader["rowid"]);
+                    obj.Name = (string)reader["name"];
+                    obj.CommandType = (ClassCommand.EnumType)Convert.ToInt32(reader["type"]);
+                    obj.Value = Convert.ToInt32(reader["val"]);
+                    obj.Address = Convert.ToInt32(reader["adr"]);
+                    if (reader["val"] != DBNull.Value)
+                        obj.Value = Convert.ToInt32(reader["val"]);
+                    if (reader["period"] != DBNull.Value)
+                        obj.Period = Convert.ToInt32(reader["period"]);
+                    obj.Device.ID = Convert.ToInt32(reader["dev"]);
+                    lst.Add(obj);
+                }
+            }
+            return lst;
+        }
+
+        public virtual bool CommandAdd(ClassCommand obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "INSERT INTO cmd (name, type, dev, adr, val, period)"
+                + " VALUES(@Name, @Type, @Device, @Address, @Value, @Period)";
+            cmd.Parameters.AddWithValue("@Name", obj.Name);
+            cmd.Parameters.AddWithValue("@Type", (int)obj.CommandType);
+            cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
+            cmd.Parameters.AddWithValue("@Address", obj.Address);
+            cmd.Parameters.AddWithValue("@Value", obj.Value);
+            cmd.Parameters.AddWithValue("@Period", obj.Period);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            cmd.CommandText = "SELECT last_insert_rowid()";
+            obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+            return true;
+        }
+
+        public virtual bool CommandEdit(ClassCommand obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE cmd SET name = @Name, type = @Type, dev = @Device,"
+                + " adr = @Address, val = @Value, period = @Period WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@Name", obj.Name);
+            cmd.Parameters.AddWithValue("@Type", (int)obj.CommandType);
+            cmd.Parameters.AddWithValue("@Device", obj.Device.ID);
+            cmd.Parameters.AddWithValue("@Address", obj.Address);
+            cmd.Parameters.AddWithValue("@Value", obj.Value);
+            cmd.Parameters.AddWithValue("@Period", obj.Period);
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        public virtual bool CommandDel(ClassCommand obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "DELETE FROM cmd WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        #endregion
+        
+        #region [Links]
+
+        public virtual List<ClassLink> LinksLoad()
+        {
+            List<ClassLink> lst = new List<ClassLink>();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT link.rowid, link.*, reg.name as r_name, cmd.name AS c_name"
+                + " FROM link"
+                + " LEFT JOIN reg ON link.src = reg.rowid"
+                + " LEFT JOIN cmd ON link.cmd = cmd.rowid";
+            using (SqliteDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ClassLink obj = new ClassLink();
+                    obj.ID = Convert.ToInt32(reader["rowid"]);
+                    obj.EventType = (ClassEvent.EnumType)Convert.ToInt32(reader["event"]);
+                    obj.SourceID = Convert.ToInt32(reader["src"]);
+                    if (reader["r_name"] != DBNull.Value)
+                        obj.SourceName = (string)reader["r_name"];
+                    obj.Command.ID = Convert.ToInt32(reader["cmd"]);
+                    obj.Command.Name = (string)reader["c_name"];
+                    lst.Add(obj);
+                }
+            }
+            return lst;
+        }
+
+        public virtual bool LinkAdd(ClassLink obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "INSERT INTO link (event, src, cmd)"
+                + " VALUES(@Event, @Src, @Cmd)";
+            cmd.Parameters.AddWithValue("@Event", (int)obj.EventType);
+            cmd.Parameters.AddWithValue("@Src", obj.SourceID);
+            cmd.Parameters.AddWithValue("@Cmd", obj.Command.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            cmd.CommandText = "SELECT last_insert_rowid()";
+            obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+            return true;
+        }
+
+        public virtual bool LinkEdit(ClassLink obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE link SET event = @Event, src = @Src, cmd = @Cmd"
+                + " WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@Event", (int)obj.EventType);
+            cmd.Parameters.AddWithValue("@Src", obj.SourceID);
+            cmd.Parameters.AddWithValue("@Cmd", obj.Command.ID);
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        public virtual bool LinkDel(ClassLink obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "DELETE FROM link WHERE rowid = @ID";
+            cmd.Parameters.AddWithValue("@ID", obj.ID);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            return true;
+        }
+
+        #endregion
+
 
         #region [Events]
 
@@ -811,7 +962,6 @@ namespace PKM
         }
 
         #endregion
-
 
         #region [Update]
 

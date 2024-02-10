@@ -289,6 +289,11 @@ public partial class UserControlChannels : UserControl
         GridChannels.Height = _actualHeightUserControl;
     }
 
+    /// <summary>
+    /// окончательная загрузка контрола.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
     {
         try
@@ -325,7 +330,6 @@ public partial class UserControlChannels : UserControl
             countItems--;
         }
     }
-    
 
     /// <summary>
     /// Обработка нажатия клавиш над DataGrid.
@@ -336,5 +340,17 @@ public partial class UserControlChannels : UserControl
     {
         if (e.Key != Key.Delete) return;
             DeleteOneOrMoreRegistryAsync();
+    }
+
+    /// <summary>
+    /// Редактирование ячеек регистров.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void GridChannels_OnCellEditEnded(object sender, DataGridCellEditEndedEventArgs e)
+    {
+        var channel = GridChannels.SelectedItem as ClassChannel;
+        if (channel==null) return;
+        Task.Run(() => MainWindow.DB.RegistryEdit(channel));
     }
 }

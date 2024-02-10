@@ -23,7 +23,7 @@
             ColumnHeaderHeight="50"
             HorizontalGridLinesBrush="Black"
             VerticalGridLinesBrush="Black"
-            LoadingRow="DataGrid_LoadingRow" KeyDown="GridChannels_OnKeyDown">
+            LoadingRow="DataGrid_LoadingRow" KeyDown="GridChannels_OnKeyDown" CellEditEnded="GridChannels_OnCellEditEnded">
         <DataGrid.Styles>
             <Style Selector="DataGridCell">
                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
@@ -56,9 +56,10 @@
                 <DataGridTextColumn Header="Знаков" MinWidth="60" Binding="{Binding Accuracy}"/>
                 <DataGridTextColumn Header="Min"  MinWidth="40" Binding="{Binding Min}"/>
                 <DataGridTextColumn Header="Max" MinWidth="40" Binding="{Binding Max}"/>
-                <DataGridTextColumn Header="Значение" MinWidth="70" Binding="{Binding Value}"/>
+                <DataGridTextColumn Header="Значение" MinWidth="70" Binding="{Binding Value}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Актуальность" MinWidth="120" Binding="{Binding StrDTAct}"/>
-                <DataGridCheckBoxColumn  Header="Архив" MinWidth="120" Binding="{Binding Archive}" IsReadOnly="False"/>
+                <DataGridCheckBoxColumn  Header="Архив" MinWidth="120" Binding="{Binding Archive}" 
+                                         IsReadOnly="False"/>
                 <DataGridTextColumn Header="Шлюз" MinWidth="50" Binding="{Binding Ext}"/>
         </DataGrid.Columns>
         <DataGrid.ContextMenu>
