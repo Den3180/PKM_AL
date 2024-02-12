@@ -16,7 +16,50 @@ namespace PKM_AL
 {
     public class ClassMessage
     {
-        //static IMsBox <ButtonResult> mesageWindow;
+        public enum EnumType
+        {
+            Request = 1,
+            Answer = 2
+        }
+
+        public int ID { get; set; }
+        public DateTime DT { get; set; }
+        public EnumType Type { get; set; }
+        public byte[] Bytes { get; set; }
+        public string StrDT { get { return DT.ToString("dd.MM.yyyy hh:mm:ss.fff"); } }
+        public string TypeName
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case EnumType.Request: return "Запрос";
+                    case EnumType.Answer: return "Ответ";
+                    default: return "Нет данных";
+                }
+            }
+        }
+        public string StrBytes
+        {
+            get
+            {
+                string s = "";
+                foreach (byte b in Bytes)
+                    s += "0x" + b.ToString("X2") + " ";
+                return s; 
+            } 
+        }
+
+        public ClassMessage()
+        {
+            ID = 0;
+            DT = DateTime.Now;
+            Type = EnumType.Request;
+            Bytes = new byte[3];
+            for (int i = 0; i < Bytes.Length; i++)
+                Bytes[i] = (byte)i;
+        }
+
 
         public static Task<ButtonResult> ShowMessage(Window owner, string text = "", string title = "", ButtonEnum buttonEnum = ButtonEnum.Ok,
                                        Icon icon = Icon.Info, WindowStartupLocation location = WindowStartupLocation.CenterScreen )
@@ -45,5 +88,23 @@ namespace PKM_AL
             WindowMassage w = new(text, owner);
             w.ShowDialog(owner);
         }
+        
+        public static void SaveNewMessage(ClassMessage mes, byte func, ushort[] data = null)
+        {
+            if (data != null)
+            {
+                mes.Bytes = new byte[data.Length * 2 + 1];
+                mes.Bytes[0] = func; //Func
+                for (int i = 0; i < data.Length; i++)
+                {
+                    byte[] b = BitConverter.GetBytes(data[i]);
+                    mes.Bytes[1 + i * 2] = b[1]; //High
+                    mes.Bytes[1 + i * 2 + 1] = b[0]; //Low
+                }
+            }
+            MainWindow.DB.MessageAdd(mes);
+            MainWindow.Messages.Add(mes);
+        }
+
     }
 }

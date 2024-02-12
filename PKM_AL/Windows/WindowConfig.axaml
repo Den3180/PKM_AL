@@ -1,0 +1,107 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="450"
+        x:Class="PKM_AL.Windows.WindowConfig"
+        Title="Параметры" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight"
+         CanResize="False" ShowInTaskbar="False">
+    <Window.Styles>
+        <Style Selector="Label">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="14"></Setter>
+        </Style>
+    </Window.Styles>
+    <Grid Height="450" Width="450">
+      <TabControl Margin="5" TabStripPlacement="Top">
+          <TabItem Header="Параметры связи">
+                            <Grid Margin="10" RowDefinitions="30,30,30,30,30,30,30,30,*" ColumnDefinitions="205,Auto">
+                                <Label Grid.Row="0" Grid.Column="0" Content="COM порт RS-485:"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" Width="90" HorizontalAlignment="Left" Margin="5,5,0,5"
+                  Name ="Ports" SelectedIndex="0">
+                        <ComboBoxItem Content="COM1"/>
+                    </ComboBox>
+                    <Label Grid.Row="1" Grid.Column="0" Content="COM порт GSM-модем:"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Width="90" HorizontalAlignment="Left" Margin="5,5,0,5"
+                  Name ="PortModem" SelectedIndex="0">
+                        <ComboBoxItem Content="COM1"/>
+                    </ComboBox>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Скорость обмена:" />
+                    <ComboBox Grid.Row="2" Grid.Column="1" Width="90" HorizontalAlignment="Left" Margin="5,5,0,5"
+                  Name ="BaudRate" SelectedIndex="3">
+                        <ComboBoxItem Content="1200"/>
+                        <ComboBoxItem Content="2400"/>
+                        <ComboBoxItem Content="4800"/>
+                        <ComboBoxItem Content="9600"/>
+                        <ComboBoxItem Content="19200"/>
+                        <ComboBoxItem Content="38400"/>
+                        <ComboBoxItem Content="57600"/>
+                        <ComboBoxItem Content="115200"/>
+                    </ComboBox>
+                    <Label Grid.Row="3" Grid.Column="0" Content="Биты данных:"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" Width="90" HorizontalAlignment="Left" Margin="5,5,0,5"
+                  Name ="DataBits" SelectedIndex="3">
+                        <ComboBoxItem Content="5"/>
+                        <ComboBoxItem Content="6"/>
+                        <ComboBoxItem Content="7"/>
+                        <ComboBoxItem Content="8"/>
+                        <ComboBoxItem Content="9"/>
+                    </ComboBox>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Четность:"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" Width="90" HorizontalAlignment="Left" Margin="5,5,0,5"
+                  Name ="Parity" SelectedIndex="0">
+                        <ComboBoxItem Content="None"/>
+                        <ComboBoxItem Content="Odd"/>
+                        <ComboBoxItem Content="Even"/>
+                        <ComboBoxItem Content="Mark"/>
+                        <ComboBoxItem Content="Space"/>
+                    </ComboBox>
+                    <Label Grid.Row="5" Grid.Column="0" Content="Стоповые биты:"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" Width="90" HorizontalAlignment="Left" Margin="5,5,0,5"
+                  Name ="StopBits" SelectedIndex="0">
+                        <ComboBoxItem Content="1"/>
+                        <ComboBoxItem Content="2"/>
+                    </ComboBox>
+                    <Label Grid.Row="6" Grid.Column="0" Content="Таймаут, мс:" />
+                    <TextBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Width="90"
+                 Margin="5,5,0,5" Name="Timeout"/>
+                </Grid>
+          </TabItem>
+          <TabItem Header="Дополнительные параметры">
+                              <Grid Margin="10" RowDefinitions="30,30,30,30,30,30,30,*" ColumnDefinitions="205,Auto">
+                                  <Label Grid.Row="0" Grid.Column="0" Content="Открывать при старте:"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"
+                              Margin="5" Name ="lstStartWindow" SelectedIndex="0" Width="120">
+                        <ComboBoxItem Content="Устройства"/>
+                        <ComboBoxItem Content="Архив"/>
+                    </ComboBox>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Интерполяция трендов:"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="5"
+                  Name ="Inter" SelectedIndex="0" Width="{Binding ElementName=lstStartWindow, Path=Width}">
+                        <ComboBoxItem Content="Нет"/>
+                        <ComboBoxItem Content="Линейная"/>
+                    </ComboBox>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Период команд УСИКПСТ:"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,0,5" 
+                             Name="txtPeriodUSIKP" Width="{Binding ElementName=lstStartWindow, Path=Width}"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="Регистрация пользователей:"/>
+                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="5" Name="RequestLogin"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Расширенный интерфейс:"/>
+                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="5" Name="Interface"/>
+                    <Label Grid.Row="5" Grid.Column="0" Content="Протоколирование в файл:"/>
+                    <CheckBox Grid.Row="5" Grid.Column="1" Margin="5" Name="RecordLog"/>
+                    <Label Grid.Row="6" Grid.Column="0" Content="Шлюз в Modbus TCP Slave:"/>
+                    <CheckBox Grid.Row="6" Grid.Column="1" Margin="5" Name="ModbusSlave"/>
+                </Grid>
+          </TabItem>
+      </TabControl>
+          <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button Content="Применить" HorizontalContentAlignment="Center" Height="30" Width="100" Margin="2"
+                VerticalAlignment="Center" Click="Button_Click"/>
+              <Button Content="Отмена" Height="30" Width="100" Margin="2" HorizontalContentAlignment="Center"
+                      VerticalAlignment="Center" Click="Button_Click" IsCancel="True" IsDefault="True"/>
+          </StackPanel>
+    </Grid>
+</Window>

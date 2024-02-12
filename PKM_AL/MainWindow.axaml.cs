@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using Avalonia.Platform.Storage;
 using Microsoft.Extensions.Logging;
@@ -20,9 +21,12 @@ using Avalonia.Input;
 using Avalonia.LogicalTree;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PKM_AL.Classes;
+using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
+using PKM_AL.Windows;
 
 namespace PKM_AL
 {
@@ -33,6 +37,16 @@ namespace PKM_AL
         public static ClassDB DB;
         public static MainWindow currentMainWindow;
         public static ClassSlave Slave;
+        private static MainWindow thisG;
+        private int _TxCount;
+        private int _RxCount;
+        private int countBackup;//Счетчик сохранение БД.
+        private bool _PortErrorMessageShown;
+        public static string assembly;
+
+        public static ClassModbus modbus;
+        public static CancellationTokenSource cts;//Токен отмены.
+
 
         public static ObservableCollection<ClassGroup> Groups;
         public static ObservableCollection<ClassDevice> Devices;
@@ -41,6 +55,8 @@ namespace PKM_AL
         public static ObservableCollection<ClassCommand> Commands;
         public static Queue<ClassCommand> QueueCommands;
         public static ObservableCollection<ClassLink> Links;
+        public static ObservableCollection<ClassMessage> Messages;
+
 
         public static ClassSettings settings;
 
@@ -50,6 +66,7 @@ namespace PKM_AL
             currentMainWindow = this;
             this.Loaded += MainWindow_Loaded;
             this.Closing += MainWindow_Closing;
+            assembly=Assembly.GetEntryAssembly()?.GetName().Name;
         }
 
         /// <summary>
@@ -168,7 +185,12 @@ namespace PKM_AL
             TimerSec = new DispatcherTimer();
             TimerSec.Tick += TimerSec_Tick;
             TimerSec.Interval = new TimeSpan(0, 0, 0, 0, 700);
-            //TimerSec.Start();
+            TimerSec.Start();
+            modbus = new ClassModbus();
+            modbus.PortErrorEvent += Modbus_PortErrorEvent;
+            modbus.SendRequestEvent += Modbus_SendRequestEvent;
+            modbus.ReceivedAnswerEvent += Modbus_ReceivedAnswerEvent;
+
             //Создается событие начала работы программы и добавляется архив базы данных.
             DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Start});
             switch (settings.StartWindow)
@@ -189,14 +211,94 @@ namespace PKM_AL
                 //}
                 //break;
             }
-
-
         }
 
-        private void TimerSec_Tick(object sender, EventArgs e)
+        private async void TimerSec_Tick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //Запись времени в статусбар.
+            this.StatusTime.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss.fff");
+            
+            //Если в настройках стоит запрос пользователя.
+            // if (settings.RequestLogin && (User == null))
+            // {
+            //     UserLogin();
+            // }
+            
+            //Если не подключено устройство.
+            if (modbus.Mode == ClassModbus.eMode.None)
+            {
+                foreach (var dev in MainWindow.Devices)
+                {
+                    if (dev.Protocol != ClassDevice.EnumProtocol.SMS &&
+                        dev.Protocol != ClassDevice.EnumProtocol.GPRS_SMS &&
+                        dev.Protocol != ClassDevice.EnumProtocol.GPRS)
+                        dev.PortDisable();
+                }
+
+                //Если номер порта не ноль (по умолчанию 1).
+                if (settings.PortModbus != 0)
+                {
+                    //В этом методе modbus.Mode -> ClassModbus.eMode.PortOpen.
+                    //bool res= modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
+                    //    settings.Parity, settings.StopBits);
+                    //if (!res) TimerSec.Stop();
+
+                    await Task.Run(() => modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
+                        settings.Parity, settings.StopBits));
+                    //return;
+                }
+            }
+            if (modbus.Mode == ClassModbus.eMode.PortOpen)
+            {
+                modbus.RequestServerID();            
+            }
+            if (modbus.Mode == ClassModbus.eMode.MasterInit && DateTime.Now.Second % 7 == 0)
+            {
+                await modbus.Poll(DateTime.Now.Ticks);
+            }
+            else
+            {
+                this.ImageTx.Source = new Bitmap
+                    (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-green-32.png")));
+                this.ImageRx.Source = new Bitmap
+                    (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-green-32.png")));
+            }
+            if (DateTime.Now.Second % 10 == 0)
+            {
+                //if (settings.PeriodUSIKP > 0) USIKP.Poll();
+            }
+
         }
+        
+        private void Modbus_SendRequestEvent()
+        {
+            _TxCount++;
+            if (_TxCount > 9999) _TxCount = 0;
+            this.StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
+            this.ImageTx.Source = new Bitmap
+                (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-red-32.png")));
+        }
+        
+        private void Modbus_ReceivedAnswerEvent()
+        {
+            _RxCount++;
+            if (_RxCount > 9999) _RxCount = 0;
+            this.StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
+            this.ImageRx.Source = new Bitmap
+                (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-green-32.png")));
+        }
+
+        
+        private void Modbus_PortErrorEvent(string ErrorMessage)
+        {
+            if (_PortErrorMessageShown) return;
+            ClassMessage.ShowMessage(this, "Порт COM" + settings.PortModbus.ToString() + " не доступен"
+                                           + Environment.NewLine + ErrorMessage
+                                           + Environment.NewLine + "Проверьте настройки конфигурации","Инициализация",
+                ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error);
+            _PortErrorMessageShown = true;
+        }
+
 
         /// <summary>
         /// Формирование контента основного дерева приложения.
@@ -316,23 +418,22 @@ namespace PKM_AL
                 this.treeView.Items.Add(item);
             }
         }
-
-
-    private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
-    {
-        Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу", "", ButtonEnum.YesNo,
-                                                                   icon: MsBox.Avalonia.Enums.Icon.Question);
-        if (buttonResult.Result == ButtonResult.Yes)
+        
+        private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
-            Environment.Exit(0);
+            Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу", "", ButtonEnum.YesNo,
+                                                                       icon: MsBox.Avalonia.Enums.Icon.Question);
+            if (buttonResult.Result == ButtonResult.Yes)
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
-        else
-        {
-            e.Cancel = true;
-        }
-    }
 
-    private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
     {
         MenuItem menuItem = (MenuItem)sender;
         switch (menuItem.Header)
@@ -361,6 +462,8 @@ namespace PKM_AL
             windowDb.WindowShow(this);
             break;
             case "Параметры...":
+                WindowConfig windowConfig = new WindowConfig();
+                windowConfig.WindowShow(this);
             break;
             case "Пользователи...":
             break;
@@ -430,7 +533,6 @@ namespace PKM_AL
         {
             WindowDevice frm = new WindowDevice(new ClassDevice());
             frm.WindowShow(currentMainWindow);
-            if(frm==null) return;
             bool? res = (bool)frm.Tag;
             //Если была отмена - выход.
             if (!res.Value) return;
@@ -444,7 +546,7 @@ namespace PKM_AL
                 ItemType = ClassItem.eType.Device
             };
             Groups[0].SubGroups.Add(item);
-            (currentMainWindow.treeView.Items[0] as TreeViewItem).Items.Add(ClassBuildControl.MakeContentTreeViewItem(item));
+            (currentMainWindow.treeView.Items[0] as TreeViewItem)?.Items.Add(ClassBuildControl.MakeContentTreeViewItem(item));
         }
 
         private void TreeView_OnTapped(object sender, TappedEventArgs e)

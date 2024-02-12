@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using PKM_AL.Classes;
 
 namespace PKM_AL
 {
@@ -364,12 +365,26 @@ namespace PKM_AL
             get
             {
                 if ((_Protocol == EnumProtocol.TCP) || (_Protocol == EnumProtocol.GPRS)
-                    || (_Protocol == EnumProtocol.GPRS_SMS)) { commParam = _IPAddress + ":" + _IPPort.ToString(); }
-                else if (_ComPort != "") { commParam = _ComPort; }
-                else if (_Protocol == EnumProtocol.SMS) { commParam = "COM" + MainWindow.settings.PortModem.ToString(); }
-                else if (MainWindow.settings.PortModbus == 0) { commParam = "Нет"; }
-                else { commParam = "COM" + MainWindow.settings.PortModbus.ToString(); }
-
+                                                    || (_Protocol == EnumProtocol.GPRS_SMS))
+                {
+                    commParam = _IPAddress + ":" + _IPPort.ToString();
+                }
+                else if (_ComPort != "")
+                {
+                    commParam = _ComPort;
+                }
+                else if (_Protocol == EnumProtocol.SMS)
+                {
+                    commParam = "COM" + MainWindow.settings.PortModem.ToString();
+                }
+                else if (MainWindow.settings.PortModbus == 0)
+                {
+                    commParam = "Нет";
+                }
+                else
+                {
+                    commParam = "COM" + MainWindow.settings.PortModbus.ToString();
+                }
                 return commParam;
             }
             set
@@ -377,9 +392,7 @@ namespace PKM_AL
                 commParam = value;
                 OnPropertyChanged("CommParam");
             }
-
         }
-
 
         public bool WaitAnswer { get { return _WaitAnswer; } }
 
@@ -542,27 +555,27 @@ namespace PKM_AL
         /// Разбиение списка регистров устройства на группы по 100 или по типу.
         /// </summary>
         /// <returns></returns>
-        //public List<ClassGroupRequest> GetGroups()
-        //{
-        //    int MaxCount = 100;
-        //    int MaxSpace = 1;
-        //    List<ClassGroupRequest> Groups = new List<ClassGroupRequest>();
-        //    List<ClassChannel> lstChannels = new List<ClassChannel>();
-        //    lstChannels = Channels.OrderBy(x => x.TypeRegistry).ThenBy(x => x.Address).ToList();
-        //    if (lstChannels.Count == 0) return Groups;
-        //    Groups.Add(new ClassGroupRequest(lstChannels[0].TypeRegistry));
-        //    foreach (ClassChannel item in lstChannels)
-        //    {
-        //        ClassGroupRequest group = Groups[^1];
-        //        if ((group.TypeRegistry != item.TypeRegistry) || (group.GetSize() > MaxCount) ||
-        //            ((item.Address - group.GetLastAddress()) > MaxSpace))
-        //        {
-        //            Groups.Add(new ClassGroupRequest(item.TypeRegistry));
-        //        }
-        //        Groups[^1].AddChannel(item);
-        //    }
-        //    return Groups;
-        //}
+        public List<ClassGroupRequest> GetGroups()
+        {
+            int MaxCount = 100;
+            int MaxSpace = 1;
+            List<ClassGroupRequest> Groups = new List<ClassGroupRequest>();
+            List<ClassChannel> lstChannels = new List<ClassChannel>();
+            lstChannels = Channels.OrderBy(x => x.TypeRegistry).ThenBy(x => x.Address).ToList();
+            if (lstChannels.Count == 0) return Groups;
+            Groups.Add(new ClassGroupRequest(lstChannels[0].TypeRegistry));
+            foreach (ClassChannel item in lstChannels)
+            {
+                ClassGroupRequest group = Groups[^1];
+                if ((group.TypeRegistry != item.TypeRegistry) || (group.GetSize() > MaxCount) ||
+                    ((item.Address - group.GetLastAddress()) > MaxSpace))
+                {
+                    Groups.Add(new ClassGroupRequest(item.TypeRegistry));
+                }
+                Groups[^1].AddChannel(item);
+            }
+            return Groups;
+        }
 
         /// <summary>
         /// Определение текущего режима работы СКЗ.

@@ -820,7 +820,6 @@ namespace PKM
 
         #endregion
 
-
         #region [Events]
 
         public static List<ClassEvent> AllEventsDeviceLoad(string nameDev, int type)
@@ -1184,6 +1183,70 @@ namespace PKM
         }
 
         #endregion
+        
+        #region [Messages]
+
+        public virtual List<ClassMessage> MessagesLoad()
+        {
+            List<ClassMessage> lst = new List<ClassMessage>();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT rowid, * FROM mes ORDER BY rowid DESC";
+            using (SqliteDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ClassMessage obj = new ClassMessage();
+                    obj.ID = Convert.ToInt32(reader["rowid"]);
+                    obj.Type = (ClassMessage.EnumType)Convert.ToInt32(reader["type"]);
+                    obj.DT = DateTime.Parse(reader["dt"].ToString());
+                    obj.Bytes = (byte[])reader["buf"];
+                    lst.Add(obj);
+                }
+            }
+            return lst;
+        }
+
+        public virtual bool MessageAdd(ClassMessage obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "INSERT INTO mes (type, buf) VALUES(@Type, @Buf)";
+            cmd.Parameters.AddWithValue("@Type", (int)obj.Type);
+            cmd.Parameters.Add(new SqliteParameter("@Buf", SqliteType.Blob) { Value = obj.Bytes });
+            try { cmd.ExecuteNonQuery(); }
+            catch(Exception ex)
+            {
+                return false; 
+            }
+            cmd.CommandText = "SELECT last_insert_rowid()";
+            obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+            return true;
+        }
+
+        // public virtual List<System.Windows.Media.Imaging.BitmapImage> ImagesLoad()
+        // {
+        //     List<System.Windows.Media.Imaging.BitmapImage> lst = new List<System.Windows.Media.Imaging.BitmapImage>();
+        //     SqliteCommand cmd = conn.CreateCommand();
+        //     cmd.CommandText = "SELECT rowid, * FROM lib ORDER BY rowid";
+        //     using (SqliteDataReader reader = cmd.ExecuteReader())
+        //     {
+        //         while (reader.Read())
+        //         {
+        //             int ID = Convert.ToInt32(reader["rowid"]);
+        //             string Name = (string)reader["name"];
+        //             byte[] b = (byte[])reader["pic"];
+        //             System.IO.MemoryStream stream = new System.IO.MemoryStream(b);
+        //             System.Windows.Media.Imaging.BitmapImage image = new System.Windows.Media.Imaging.BitmapImage();
+        //             image.BeginInit();
+        //             image.StreamSource = stream;
+        //             image.EndInit();
+        //             lst.Add(image);
+        //         }
+        //     }
+        //     return lst;
+        // }
+
+        #endregion
+
 
         //#region[Отчеты]
 
