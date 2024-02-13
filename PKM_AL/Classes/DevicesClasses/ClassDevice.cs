@@ -73,6 +73,7 @@ namespace PKM_AL
         private double _Latitude = 00.000000D;
         private double _Longitude = 00.000000D;
         private double _Elevation;
+        private string commParam;
         //private BitmapImage _bitmap;
         // private double _UnomInSKZ;
         // private double _NactiveSKZ;
@@ -329,6 +330,8 @@ namespace PKM_AL
         }
 
         public EnumLink LinkState { get { return _LinkState; } }
+
+        private string _colorLineDev;
         public string LinkStateName
         {
             get
@@ -359,7 +362,6 @@ namespace PKM_AL
 
         public int PacketRxCount { get { return _RxCounter; } }
 
-        private string commParam;
         public string CommParam
         {
             get

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using Modbus.Device;
 using Modbus.Utility;
 using PKM;
@@ -138,7 +139,7 @@ public class ClassModbus
             }
             catch (Exception Ex)
             {
-                //PortErrorEvent?.Invoke(Ex.Message);                    
+                PortErrorEvent?.Invoke(Ex.Message);
                 return false;
             }
             Mode = eMode.PortOpen;

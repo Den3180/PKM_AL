@@ -80,7 +80,7 @@
 				<MenuItem Header="О программе..." Click="MenuItem_Click"></MenuItem>
 			</MenuItem>
 		</Menu>
-			<Grid DockPanel.Dock="Bottom" ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,auto,auto" 
+			<Grid DockPanel.Dock="Bottom" ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,Auto,180" 
 				  Background="LightGray" Height="30">
 			<Grid.Styles>
 				<Style Selector="TextBlock" >
@@ -110,7 +110,7 @@
 			<Image Grid.Column="12" Source="Resources/bullet-green-32.png" Name="ImageRx" ToolTip.Tip="RxD"></Image>
 			<Border Grid.Column="13"/>
 			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
-                           Margin="0 0 10 0" HorizontalAlignment="Right"/>
+                           Margin="0 0 10 0" HorizontalAlignment="Left"/>
 		</Grid>		
 	<Grid ColumnDefinitions="200,auto,*">
 		<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"

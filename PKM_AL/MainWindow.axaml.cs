@@ -325,10 +325,10 @@ namespace PKM_AL
         private void Modbus_PortErrorEvent(string ErrorMessage)
         {
             if (_PortErrorMessageShown) return;
-            ClassMessage.ShowMessage(currentMainWindow, "Порт COM" + settings.PortModbus.ToString() + " не доступен"
+           Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessage(currentMainWindow, "Порт COM" + settings.PortModbus.ToString() + " не доступен"
                                            + Environment.NewLine + ErrorMessage
                                            + Environment.NewLine + "Проверьте настройки конфигурации","Инициализация",
-                ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error);
+                ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error));
             _PortErrorMessageShown = true;
         }
 

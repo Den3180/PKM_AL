@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using Avalonia.Media;
 
 namespace PKM_AL;
 
@@ -39,6 +40,7 @@ public partial class UserControlDevices : UserControl
     private void DataGrid_LoadingRow(object sender, Avalonia.Controls.DataGridRowEventArgs e)
     {
         e.Row.Tag = (e.Row.GetIndex() + 1).ToString();
+      
     }
 
     /// <summary>
