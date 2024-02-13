@@ -26,8 +26,10 @@ namespace PKM
         public string Server { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public int PortModbus { get; set; }
-        public int PortModem { get; set; }
+        //public int PortModbus { get; set; }
+        public string PortModbus { get; set; }
+        // public int PortModem { get; set; }
+        public string PortModem { get; set; }
         public int Timeout { get; set; }
         public bool RequestLogin { get; set; }
         public bool RecordLog { get; set; }
@@ -48,8 +50,8 @@ namespace PKM
             TypeDB = EnumTypeDB.SQLite;
             DB = PathDB;
             Server = "localhost";
-            PortModbus = 1;
-            PortModem = 0;
+            PortModbus = "";
+            PortModem = "";
             Timeout = 300;
             RequestLogin = false;
             RecordLog = false;

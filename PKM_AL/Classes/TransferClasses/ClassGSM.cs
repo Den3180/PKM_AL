@@ -27,7 +27,8 @@ public class ClassGSM
             DeleteOneSMS
         }
 
-        private int PortNumber;
+        private string PortNumber;
+        // private int PortNumber;
         private SerialPort port;
         private int CountSMS;
         private int StartNumberSMS;
@@ -70,7 +71,8 @@ public class ClassGSM
         /// Включение модема.
         /// </summary>
         /// <param name="PortNumber"></param>
-        public void Start(int PortNumber)
+        //public void Start(int PortNumber)
+        public void Start(string PortNumber)
         {
             this.PortNumber = PortNumber;
             if (PortOpen(PortNumber)) SendInit();
@@ -81,10 +83,12 @@ public class ClassGSM
         /// </summary>
         /// <param name="PortNumber"></param>
         /// <returns></returns>
-        public bool PortOpen(int PortNumber)
+        public bool PortOpen(string PortNumber)
         {
             if (port!=null && port.IsOpen) return true;
-            port = new SerialPort("COM" + PortNumber);
+            
+            //port = new SerialPort("COM" + PortNumber);
+            port = new SerialPort(PortNumber);
             port.BaudRate = 9600;
             port.DataBits = 8;
             port.Parity = Parity.None;

@@ -19,21 +19,25 @@ public partial class WindowConfig : ClassWindowPKM
         Ports.Items.Add("Нет");
         PortModem.Items.Add("Нет");
         
-        //var portList = SerialPort.GetPortNames();
-        // foreach (var port in portList)
+        var portList = SerialPort.GetPortNames();
+         foreach (var port in portList)
+         {
+             Ports.Items.Add(port);
+             PortModem.Items.Add(port);
+         }
+        // for (int i = 1; i <= 32; i++)
         // {
-        //     Ports.Items.Add(port);
-        //     PortModem.Items.Add(port);
+        //     this.Ports.Items.Add("COM" + i.ToString());
+        //     this.PortModem.Items.Add("COM" + i.ToString());
         // }
-        for (int i = 1; i <= 32; i++)
-        {
-            this.Ports.Items.Add("COM" + i.ToString());
-            this.PortModem.Items.Add("COM" + i.ToString());
-        }
         
         settings = ClassSettings.Load();
-        Ports.SelectedIndex = settings.PortModbus;
-        PortModem.SelectedIndex = settings.PortModem;
+
+        Ports.SelectedItem = Ports.Items.FirstOrDefault(p=>p.ToString()==settings.PortModbus);
+        PortModem.SelectedItem = Ports.Items.FirstOrDefault(p=>p.ToString()==settings.PortModem);
+       
+        // Ports.SelectedIndex = settings.PortModbus;
+        // PortModem.SelectedIndex = settings.PortModem;
         BaudRate.SelectedValue =BaudRate.Items.FirstOrDefault(item=>(item as ComboBoxItem)?.Content?.ToString()==settings.BaudRate.ToString());
         DataBits.SelectedValue =DataBits.Items.FirstOrDefault(item=>(item as ComboBoxItem)?.Content?.ToString()==settings.DataBits.ToString());
         Parity.SelectedIndex = settings.Parity;
@@ -56,8 +60,8 @@ public partial class WindowConfig : ClassWindowPKM
             Close();
             return;
         }
-        settings.PortModbus = Ports.SelectedIndex;
-        settings.PortModem = PortModem.SelectedIndex;
+        settings.PortModbus = Ports.SelectedItem?.ToString();
+        settings.PortModem = PortModem.SelectedItem?.ToString();
         settings.BaudRate = Convert.ToInt32((BaudRate.SelectedItem as ComboBoxItem)?.Content);
         settings.DataBits = Convert.ToInt32((DataBits.SelectedItem as ComboBoxItem)?.Content);
         settings.Parity = Parity.SelectedIndex;

@@ -377,15 +377,17 @@ namespace PKM_AL
                 }
                 else if (_Protocol == EnumProtocol.SMS)
                 {
-                    commParam = "COM" + MainWindow.settings.PortModem.ToString();
+                    // commParam = "COM" + MainWindow.settings.PortModem.ToString();
+                    commParam = MainWindow.settings.PortModem;
                 }
-                else if (MainWindow.settings.PortModbus == 0)
+                else if (MainWindow.settings.PortModbus == "")
                 {
                     commParam = "Нет";
                 }
                 else
                 {
-                    commParam = "COM" + MainWindow.settings.PortModbus.ToString();
+                    //commParam = "COM" + MainWindow.settings.PortModbus.ToString();
+                    commParam =MainWindow.settings.PortModbus;
                 }
                 return commParam;
             }

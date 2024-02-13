@@ -192,9 +192,10 @@ namespace PKM_AL
             modbus.SendRequestEvent += Modbus_SendRequestEvent;
             modbus.ReceivedAnswerEvent += Modbus_ReceivedAnswerEvent;
             
-            GSM = new ClassGSM();
-            GSM.EventStateChanged += GSM_EventStateChanged;
-            if (settings.PortModem != 0) GSM.Start(settings.PortModem);
+            //GSM = new ClassGSM();
+            //GSM.EventStateChanged += GSM_EventStateChanged;
+            // if (settings.PortModem != 0) GSM.Start(settings.PortModem);
+           // if (!string.IsNullOrEmpty(settings.PortModem)) GSM.Start(settings.PortModem);
 
             //Создается событие начала работы программы и добавляется архив базы данных.
             DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Start});
@@ -241,7 +242,8 @@ namespace PKM_AL
                 }
 
                 //Если номер порта не ноль (по умолчанию 1).
-                if (settings.PortModbus != 0)
+                // if (settings.PortModbus != 0)
+                if (!string.IsNullOrEmpty(settings.PortModbus))
                 {
                     //В этом методе modbus.Mode -> ClassModbus.eMode.PortOpen.
                     //bool res= modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
@@ -276,10 +278,11 @@ namespace PKM_AL
             //Запрос к памяти модема каждую 10-ю секунду.
             if (DateTime.Now.Second % 10 == 0)
             {
-                if (settings.PortModem != 0)
+                // if (settings.PortModem != 0)
+                if (!string.IsNullOrEmpty(settings.PortModem))
                 {
-                    GSM.Start(settings.PortModem);
-                    GSM.SendGetMemory(); 
+                    //GSM.Start(settings.PortModem);
+                    //GSM.SendGetMemory(); 
                 }
             }
             //Сохранение БД каждые 10 часов.
