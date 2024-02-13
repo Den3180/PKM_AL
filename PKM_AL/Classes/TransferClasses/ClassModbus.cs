@@ -138,7 +138,7 @@ public class ClassModbus
             }
             catch (Exception Ex)
             {
-                PortErrorEvent?.Invoke(Ex.Message);                    
+                //PortErrorEvent?.Invoke(Ex.Message);                    
                 return false;
             }
             Mode = eMode.PortOpen;

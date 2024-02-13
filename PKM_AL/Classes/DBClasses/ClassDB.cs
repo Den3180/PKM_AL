@@ -1396,50 +1396,50 @@ namespace PKM
         //}
         //#endregion
 
-        //#region[Backup]
-        ///// <summary>
-        ///// Бэкап базы данных.
-        ///// </summary>
-        ///// <param name="appDataDirectory"></param>
-        //public void Backup(string appDataDirectory) 
-        //{
-        //    var now = DateTime.UtcNow;
-        //    var backupDir = Path.Combine(appDataDirectory, "Backup");
-        //    if (!Directory.Exists(backupDir))
-        //        Directory.CreateDirectory(backupDir);
-        //    var numbFiles = Directory.GetFiles(backupDir);            
-        //    if (numbFiles.Length > 0)
-        //    {
-        //        foreach(var name in numbFiles)
-        //        {
-        //            //Не переписывать базу данных больше одного раза в день.
-        //            if (File.GetCreationTime(name).DayOfYear == DateTime.Now.DayOfYear)
-        //                return;
-        //            File.Delete(name);
-        //        }
-        //    }
-        //    //if (HasBackupForToday(now, backupDir)) return;
-        //    var backupFile = (now.ToString("yyyy-MM-dd_hh-mm-ss"))+".back";
-        //    backupFile = Path.Combine(backupDir, backupFile);
-        //    string backupConnectionString = $"data source={backupFile}";
-        //    using (var backupConnection = new SqliteConnection(backupConnectionString))
-        //    {
-        //        backupConnection.Open();
-        //        conn.BackupDatabase(backupConnection);
-        //    }
-        //}
-        ///// <summary>
-        ///// Проверка сохранялась ли сегодня база данных.
-        ///// </summary>
-        ///// <param name="now"></param>
-        ///// <param name="backupDirectory"></param>
-        ///// <returns></returns>
-        //private bool HasBackupForToday(DateTime now, string backupDirectory)
-        //{
-        //    var today = now.ToString("yyyy-MM-dd");
-        //    return Directory.EnumerateFiles(backupDirectory).Any(f=>Path.GetFileName(f).StartsWith(today));
-        //}
-        //    #endregion
+        #region[Backup]
+        /// <summary>
+        /// Бэкап базы данных.
+        /// </summary>
+        /// <param name="appDataDirectory"></param>
+        public void Backup(string appDataDirectory) 
+        {
+            var now = DateTime.UtcNow;
+            var backupDir = Path.Combine(appDataDirectory, "Backup");
+            if (!Directory.Exists(backupDir))
+                Directory.CreateDirectory(backupDir);
+            var numbFiles = Directory.GetFiles(backupDir);            
+            if (numbFiles.Length > 0)
+            {
+                foreach(var name in numbFiles)
+                {
+                    //Не переписывать базу данных больше одного раза в день.
+                    if (File.GetCreationTime(name).DayOfYear == DateTime.Now.DayOfYear)
+                        return;
+                    File.Delete(name);
+                }
+            }
+            //if (HasBackupForToday(now, backupDir)) return;
+            var backupFile = (now.ToString("yyyy-MM-dd_hh-mm-ss"))+".back";
+            backupFile = Path.Combine(backupDir, backupFile);
+            string backupConnectionString = $"data source={backupFile}";
+            using (var backupConnection = new SqliteConnection(backupConnectionString))
+            {
+                backupConnection.Open();
+                conn.BackupDatabase(backupConnection);
+            }
+        }
+        /// <summary>
+        /// Проверка сохранялась ли сегодня база данных.
+        /// </summary>
+        /// <param name="now"></param>
+        /// <param name="backupDirectory"></param>
+        /// <returns></returns>
+        private bool HasBackupForToday(DateTime now, string backupDirectory)
+        {
+            var today = now.ToString("yyyy-MM-dd");
+            return Directory.EnumerateFiles(backupDirectory).Any(f=>Path.GetFileName(f).StartsWith(today));
+        }
+            #endregion
 
         //public void SaveArchiveToDB(List<int[]> archive,object nmDev)
         //{

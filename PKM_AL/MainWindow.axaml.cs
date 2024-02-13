@@ -42,8 +42,9 @@ namespace PKM_AL
         private int _RxCount;
         private int countBackup;//Счетчик сохранение БД.
         private bool _PortErrorMessageShown;
-        public static string assembly;
-
+        private static string _assembly;
+        public static ClassUSIKP USIKP;
+        public static ClassGSM GSM;
         public static ClassModbus modbus;
         public static CancellationTokenSource cts;//Токен отмены.
 
@@ -64,9 +65,9 @@ namespace PKM_AL
         {
             InitializeComponent();
             currentMainWindow = this;
-            this.Loaded += MainWindow_Loaded;
-            this.Closing += MainWindow_Closing;
-            assembly=Assembly.GetEntryAssembly()?.GetName().Name;
+            Loaded += MainWindow_Loaded;
+            Closing += MainWindow_Closing;
+            _assembly=Assembly.GetEntryAssembly()?.GetName().Name;
         }
 
         /// <summary>
@@ -190,18 +191,22 @@ namespace PKM_AL
             modbus.PortErrorEvent += Modbus_PortErrorEvent;
             modbus.SendRequestEvent += Modbus_SendRequestEvent;
             modbus.ReceivedAnswerEvent += Modbus_ReceivedAnswerEvent;
+            
+            GSM = new ClassGSM();
+            GSM.EventStateChanged += GSM_EventStateChanged;
+            if (settings.PortModem != 0) GSM.Start(settings.PortModem);
 
             //Создается событие начала работы программы и добавляется архив базы данных.
             DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Start});
             switch (settings.StartWindow)
             {
                 case 0:
-                this.ContentArea.Content = new UserControlDevices();
-                this.StatusMode.Text = "Устройства";
+                ContentArea.Content = new UserControlDevices();
+                StatusMode.Text = "Устройства";
                 break;
                 case 1:
-                this.ContentArea.Content = new UserControlArchive();
-                this.StatusMode.Text = "Поиск в архиве";
+                ContentArea.Content = new UserControlArchive();
+                StatusMode.Text = "Поиск в архиве";
                 break;
                 //default:
                 //if (settings.Interface && Maps.Count > 0)
@@ -216,7 +221,7 @@ namespace PKM_AL
         private async void TimerSec_Tick(object sender, EventArgs e)
         {
             //Запись времени в статусбар.
-            this.StatusTime.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss.fff");
+            StatusTime.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss.fff");
             
             //Если в настройках стоит запрос пользователя.
             // if (settings.RequestLogin && (User == null))
@@ -227,7 +232,7 @@ namespace PKM_AL
             //Если не подключено устройство.
             if (modbus.Mode == ClassModbus.eMode.None)
             {
-                foreach (var dev in MainWindow.Devices)
+                foreach (var dev in Devices)
                 {
                     if (dev.Protocol != ClassDevice.EnumProtocol.SMS &&
                         dev.Protocol != ClassDevice.EnumProtocol.GPRS_SMS &&
@@ -258,45 +263,86 @@ namespace PKM_AL
             }
             else
             {
-                this.ImageTx.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-green-32.png")));
-                this.ImageRx.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-green-32.png")));
+                ImageTx.Source = new Bitmap
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
+                ImageRx.Source = new Bitmap
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
             }
             if (DateTime.Now.Second % 10 == 0)
             {
-                //if (settings.PeriodUSIKP > 0) USIKP.Poll();
+                if (settings.PeriodUSIKP > 0) USIKP.Poll();
+            }
+            
+            //Запрос к памяти модема каждую 10-ю секунду.
+            if (DateTime.Now.Second % 10 == 0)
+            {
+                if (settings.PortModem != 0)
+                {
+                    GSM.Start(settings.PortModem);
+                    GSM.SendGetMemory(); 
+                }
+            }
+            //Сохранение БД каждые 10 часов.
+            if (countBackup++>36000)
+            {
+                DB.Backup(new FileInfo("pkm.exe").DirectoryName);
+                countBackup = 0;
             }
 
         }
+        
+        /// <summary>
+        /// Логгирование исключений.
+        /// </summary>
+        /// <param name="ex"></param>
+        public static void ExeptionLogging(Exception ex)
+        {
+            string s = Assembly.GetExecutingAssembly().GetName().Version?.ToString()
+                       + " " + ex.Message + " " + ex.StackTrace;
+            ClassLog.Write(s);
+        }
+
         
         private void Modbus_SendRequestEvent()
         {
             _TxCount++;
             if (_TxCount > 9999) _TxCount = 0;
-            this.StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
-            this.ImageTx.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-red-32.png")));
+            StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
+            ImageTx.Source = new Bitmap
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-red-32.png")));
         }
         
         private void Modbus_ReceivedAnswerEvent()
         {
             _RxCount++;
             if (_RxCount > 9999) _RxCount = 0;
-            this.StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
-            this.ImageRx.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{assembly}/Resources/"+"bullet-green-32.png")));
+            StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
+            ImageRx.Source = new Bitmap
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }
 
         
         private void Modbus_PortErrorEvent(string ErrorMessage)
         {
             if (_PortErrorMessageShown) return;
-            ClassMessage.ShowMessage(this, "Порт COM" + settings.PortModbus.ToString() + " не доступен"
+            ClassMessage.ShowMessage(currentMainWindow, "Порт COM" + settings.PortModbus.ToString() + " не доступен"
                                            + Environment.NewLine + ErrorMessage
                                            + Environment.NewLine + "Проверьте настройки конфигурации","Инициализация",
                 ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error);
             _PortErrorMessageShown = true;
+        }
+
+        /// <summary>
+        /// Загрузка индикаторов подключено/отключено для GSM-соединения.
+        /// </summary>
+        /// <param name="State"></param>
+        private void GSM_EventStateChanged(bool State)
+        {
+            if (State)
+                ImageDB.Source = new Bitmap
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"database_green.png")));
+            else ImageDB.Source = new Bitmap
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-blue-32.png")));
         }
 
 
@@ -415,7 +461,7 @@ namespace PKM_AL
                 {
                     item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(subGr));
                 }
-                this.treeView.Items.Add(item);
+                treeView.Items.Add(item);
             }
         }
         
@@ -444,6 +490,8 @@ namespace PKM_AL
             case "Смена пользователя...":
             break;
             case "Устройства...":
+                ContentArea.Content = new UserControlDevices();
+                StatusMode.Text = "Устройства";
             break;
             case "Каналы данных...":
             break;
@@ -520,7 +568,7 @@ namespace PKM_AL
         switch (subGroup?.ItemType)
         {
             case ClassItem.eType.Device:
-                ClassDevice obj = MainWindow.Devices.FirstOrDefault(x => x.ID == subGroup.ID);
+                ClassDevice obj = Devices.FirstOrDefault(x => x.ID == subGroup.ID);
                 ContentArea.Content = new UserControlChannels(obj);
                 break;
         }
