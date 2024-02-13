@@ -119,7 +119,7 @@ namespace PKM_AL
             //Обращение к базе и сохранение лога, если включен флаг архивирования.
             if (Archive) 
                 Task.Run(() => MainWindow.DB.EventAdd(ev));
-            MainWindow.Events.Add(ev);
+            //MainWindow.Events.Add(ev);
             for (int i = 0; i < MainWindow.Links.Count; i++)
             {
                 ClassLink link = MainWindow.Links[i];
