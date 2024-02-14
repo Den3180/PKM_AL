@@ -25,19 +25,11 @@ public partial class WindowConfig : ClassWindowPKM
              Ports.Items.Add(port);
              PortModem.Items.Add(port);
          }
-        // for (int i = 1; i <= 32; i++)
-        // {
-        //     this.Ports.Items.Add("COM" + i.ToString());
-        //     this.PortModem.Items.Add("COM" + i.ToString());
-        // }
-        
         settings = ClassSettings.Load();
-
-        Ports.SelectedItem = Ports.Items.FirstOrDefault(p=>p.ToString()==settings.PortModbus);
-        PortModem.SelectedItem = Ports.Items.FirstOrDefault(p=>p.ToString()==settings.PortModem);
-       
-        // Ports.SelectedIndex = settings.PortModbus;
-        // PortModem.SelectedIndex = settings.PortModem;
+     
+        Ports.SelectedItem = Ports.Items.FirstOrDefault(p => p.ToString() == settings.PortModbus) ?? Ports.Items[0];
+        PortModem.SelectedItem = Ports.Items.FirstOrDefault(p=>p.ToString()==settings.PortModem)??PortModem.Items[0];
+      
         BaudRate.SelectedValue =BaudRate.Items.FirstOrDefault(item=>(item as ComboBoxItem)?.Content?.ToString()==settings.BaudRate.ToString());
         DataBits.SelectedValue =DataBits.Items.FirstOrDefault(item=>(item as ComboBoxItem)?.Content?.ToString()==settings.DataBits.ToString());
         Parity.SelectedIndex = settings.Parity;
