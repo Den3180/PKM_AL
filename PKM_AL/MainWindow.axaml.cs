@@ -556,24 +556,42 @@ namespace PKM_AL
     /// <param name="e"></param>
     private void TreeView_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
     {
-        ClassItem subGroup =new ClassItem();
-        StackPanel subStackPanel =(sender as TreeView)?.SelectedItem as StackPanel;
-        IEnumerable<ILogical> devItem = subStackPanel?.GetLogicalChildren(); 
-        if(devItem==null) return;
-        foreach (var control in devItem)
+        if ((sender as TreeView)?.SelectedItem is StackPanel subStackPanel)
         {
-            var label = control as TextBlock;
-            if(label != null)
+            ClassItem subGroup =new ClassItem();
+            IEnumerable<ILogical> devItem = subStackPanel?.GetLogicalChildren();
+            foreach (var control in devItem)
             {
-                subGroup = label.Tag as ClassItem;
+                if(control is TextBlock label)
+                {
+                    subGroup = label.Tag as ClassItem;
+                }
+            }
+            switch (subGroup?.ItemType)
+            {
+                case ClassItem.eType.Device:
+                    ClassDevice obj = Devices.FirstOrDefault(x => x.ID == subGroup.ID);
+                    ContentArea.Content = new UserControlChannels(obj);
+                    break;
             }
         }
-        switch (subGroup?.ItemType)
+        else if((sender as TreeView)?.SelectedItem is TreeViewItem treeViewItem)
         {
-            case ClassItem.eType.Device:
-                ClassDevice obj = Devices.FirstOrDefault(x => x.ID == subGroup.ID);
-                ContentArea.Content = new UserControlChannels(obj);
-                break;
+            ClassGroup group = new ClassGroup();
+            var devItem= (treeViewItem.Header as StackPanel)?.GetLogicalChildren();
+                foreach (var control in devItem)
+                {
+                    if (control is TextBlock label)
+                    {
+                        group = label.Tag as ClassGroup;
+                    }
+                }
+                switch (group?.GroupType)
+                {
+                    case ClassGroup.eType.Devices:
+                        ContentArea.Content = new UserControlDevices();
+                        break;
+                }
         }
     }
 

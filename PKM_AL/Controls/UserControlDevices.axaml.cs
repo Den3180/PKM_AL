@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
+using PKM_AL.Controls;
 
 namespace PKM_AL;
 
@@ -48,6 +49,16 @@ public partial class UserControlDevices : UserControl
             Path = nameof(ClassDevice.ColorLineDevice)
         };
         gridRow.Bind(DataGridRow.BackgroundProperty, binding);
+        gridRow.DoubleTapped += DataGridRow_DoubleTapped;
+    }
+
+    private void DataGridRow_DoubleTapped(object sender, TappedEventArgs e)
+    {
+        if(sender is not DataGridRow row) return;
+        var selectedItem = row.DataContext as ClassDevice;
+        ClassDevice obj = MainWindow.Devices.FirstOrDefault(x => x.ID == selectedItem?.ID);
+        if (this.Parent is ContentControl control) control.Content = new UserControlChannels(obj);
+        MainWindow.currentMainWindow.StatusMode.Text=@"Устройство '" + obj?.Name + "'";
     }
 
     /// <summary>
