@@ -562,10 +562,10 @@ namespace PKM_AL
         if(devItem==null) return;
         foreach (var control in devItem)
         {
-            var label = control as Label;
+            var label = control as TextBlock;
             if(label != null)
             {
-                subGroup = label.Content as ClassItem;
+                subGroup = label.Tag as ClassItem;
             }
         }
         switch (subGroup?.ItemType)

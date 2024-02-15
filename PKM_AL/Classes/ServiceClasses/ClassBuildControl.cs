@@ -27,10 +27,11 @@ namespace PKM_AL.Classes.ServiceClasses
             {
                 Orientation = Avalonia.Layout.Orientation.Horizontal
             };
-            Label label = new Label()
+            TextBlock label = new TextBlock()
             {
-                Content = obj,
-                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+                Text = obj.ToString(),
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                Tag = obj
             };
 
             Image image = new Image()

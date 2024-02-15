@@ -41,6 +41,7 @@ public class ClassGSM
         public ClassGSM()
         {
         }
+        
         /// <summary>
         /// Прослушивание входящих сообщений для GSM-модема.
         /// </summary>

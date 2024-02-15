@@ -233,7 +233,12 @@ public class ClassModbus
         /// <returns></returns>
         public async Task Poll(long t)
         {
-            
+            if (!port.IsOpen)
+            {
+                PortOpen(MainWindow.settings.PortModbus, MainWindow.settings.BaudRate, MainWindow.settings.DataBits,
+                    MainWindow.settings.Parity, MainWindow.settings.StopBits);
+                return;
+            }
             //Запись в лог.
             if (MainWindow.settings.RecordLog) _=Task.Run(()=> ClassLog.Write($"Master Poll {t}"));
             //Если токен отмены заполнен.

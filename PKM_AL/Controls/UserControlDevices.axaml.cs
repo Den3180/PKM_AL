@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
 
@@ -33,14 +34,20 @@ public partial class UserControlDevices : UserControl
     }
 
     /// <summary>
-    /// Нумерация строк datagrid.
+    /// Нумерация строк datagrid и привязка к свойству background.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">DataGrid</param>
+    /// <param name="e">Данные о строке</param>
     private void DataGrid_LoadingRow(object sender, Avalonia.Controls.DataGridRowEventArgs e)
     {
-        e.Row.Tag = (e.Row.GetIndex() + 1).ToString();
-      
+        DataGridRow gridRow = e.Row;
+        gridRow.Tag = (e.Row.GetIndex() + 1).ToString();
+        var binding = new Binding()
+        {
+            Source = (gridRow.DataContext as ClassDevice),
+            Path = nameof(ClassDevice.ColorLineDevice)
+        };
+        gridRow.Bind(DataGridRow.BackgroundProperty, binding);
     }
 
     /// <summary>

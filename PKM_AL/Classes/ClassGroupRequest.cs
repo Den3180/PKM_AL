@@ -30,6 +30,7 @@ public class ClassGroupRequest
     {
         _Channels.Add(channel);
     }
+    
     /// <summary>
     /// Получение количества считываемых регистров.
     /// </summary>
@@ -54,12 +55,21 @@ public class ClassGroupRequest
         return Size;
     }
 
+    /// <summary>
+    /// Получить адрес последнего регистра.
+    /// </summary>
+    /// <returns></returns>
     public int GetLastAddress()
     {
         if (_Channels.Count == 0) return Int32.MaxValue;
         return _Channels[^1].Address;
     }
-    //Отступ от начального(не всегда нулевого) адреса.
+    
+    /// <summary>
+    /// Отступ от начального(не всегда нулевого) адреса.
+    /// </summary>
+    /// <param name="Index"></param>
+    /// <returns></returns>
     public int GetOffset(int Index)
     {
         return _Channels[Index].Address - StartAddress;

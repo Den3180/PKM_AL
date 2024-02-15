@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Avalonia.Media;
 using PKM_AL.Classes;
 
 namespace PKM_AL
@@ -74,6 +75,7 @@ namespace PKM_AL
         private double _Longitude = 00.000000D;
         private double _Elevation;
         private string commParam;
+        private Avalonia.Media.IBrush _bColorLine = Brushes.Beige; //Цвет линии таблицы устройств.
         //private BitmapImage _bitmap;
         // private double _UnomInSKZ;
         // private double _NactiveSKZ;
@@ -266,6 +268,7 @@ namespace PKM_AL
                 OnPropertyChanged("Elevation");
             }
         }
+        
         //Карта для маркера.
         //[XmlIgnore]
         //public BitmapImage Bitmap
@@ -277,7 +280,6 @@ namespace PKM_AL
         //        OnPropertyChanged("Bitmap");
         //    }
         //}
-
 
         [XmlIgnore]
         public DateTime DTAct
@@ -331,7 +333,18 @@ namespace PKM_AL
 
         public EnumLink LinkState { get { return _LinkState; } }
 
-        private string _colorLineDev;
+        [XmlIgnore]
+        public Avalonia.Media.IBrush ColorLineDevice
+        {
+            get => _bColorLine;
+            set
+            {
+                _bColorLine = value;
+                OnPropertyChanged(prop:"ColorLineDevice");
+            } 
+        }
+
+        
         public string LinkStateName
         {
             get
@@ -349,7 +362,6 @@ namespace PKM_AL
             {
                 _LinkStateName = value;
                 OnPropertyChanged("LinkStateName");
-
             }
         }
 
@@ -377,7 +389,6 @@ namespace PKM_AL
                 }
                 else if (_Protocol == EnumProtocol.SMS)
                 {
-                    // commParam = "COM" + MainWindow.settings.PortModem.ToString();
                     commParam = MainWindow.settings.PortModem;
                 }
                 else if (MainWindow.settings.PortModbus == "")
@@ -386,7 +397,6 @@ namespace PKM_AL
                 }
                 else
                 {
-                    //commParam = "COM" + MainWindow.settings.PortModbus.ToString();
                     commParam =MainWindow.settings.PortModbus;
                 }
                 return commParam;
@@ -447,6 +457,7 @@ namespace PKM_AL
                 ClassEvent ev = new ClassEvent() { Type = ClassEvent.EnumType.Connect, Param = _Name, NameDevice = Name };
                 MainWindow.DB.EventAdd(ev);
                 MainWindow.Events.Add(ev);
+                ColorLineDevice=Brushes.Chartreuse;
             }
             _PacketLost = 0;
             _DTAct = DateTime.Now;
@@ -473,6 +484,7 @@ namespace PKM_AL
                 ClassEvent ev = new ClassEvent() { Type = ClassEvent.EnumType.Disconnect, Param = _Name, NameDevice = Name };
                 MainWindow.DB.EventAdd(ev);
                 MainWindow.Events.Add(ev);
+                ColorLineDevice = Brushes.Red;
             }
             //Изменение маркера на карте.
             //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_gray.png", UriKind.Relative));
@@ -497,6 +509,11 @@ namespace PKM_AL
             return true;
         }
 
+        /// <summary>
+        /// Загрузка устройства из файла.
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
         public static ClassDevice Load(string FileName)
         {
             ClassDevice device = null;
