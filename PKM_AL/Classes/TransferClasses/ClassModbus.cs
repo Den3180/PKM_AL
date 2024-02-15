@@ -123,9 +123,6 @@ public class ClassModbus
     // public bool PortOpen(int PortNumber, int BaudRate, int DataBits, int iParity, int iStopBits)
     public bool PortOpen(string PortNumber, int BaudRate, int DataBits, int iParity, int iStopBits)
     {
-        lock (locker)
-        {
-
             if (port != null && port.IsOpen) port.Close();
             port = new SerialPort(PortNumber)
             {
@@ -145,7 +142,6 @@ public class ClassModbus
             }
             Mode = eMode.PortOpen;
             return true;
-        }
     }
     
     /// <summary>
@@ -265,7 +261,7 @@ public class ClassModbus
                 //Включено ожидание ответа.
                 if (device.WaitAnswer) continue;
                 //Список каналов устройства в котрых есть новое значение для записи.
-                List<ClassChannel> channels = Task.Run(()=> MainWindow.DB.RegistriesLoadNew(device.ID)).Result;     
+                List<ClassChannel> channels = Task.Run(()=> MainWindow.DB.RegistriesLoadNew(device.ID)).Result;
                 if (channels.Count == 0) continue;
                 foreach (ClassChannel ch in channels)
                 {
@@ -350,7 +346,7 @@ public class ClassModbus
                 //Цикл запроса данных по группам регистров.
                 ReadGroupRegistry(Groups,device,master);               
             }
-            //Чтение Coil и DI.
+            //????????????????????????????????????????????
             for (int i = 0; i < MainWindow.Channels.Count; i++)
             {
                 //Если есть команды в очереди команд - выход из цикла.

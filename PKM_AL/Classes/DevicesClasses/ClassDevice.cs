@@ -142,7 +142,7 @@ namespace PKM_AL
             set
             {
                 _Name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
         //Адрес.
@@ -152,7 +152,7 @@ namespace PKM_AL
             set
             {
                 _Address = value;
-                OnPropertyChanged("Address");
+                OnPropertyChanged(nameof(Address));
             }
         }
         //Протокол связи.
@@ -162,9 +162,9 @@ namespace PKM_AL
             set
             {
                 _Protocol = value;
-                OnPropertyChanged("Protocol");
-                OnPropertyChanged("ProtocolName");
-                OnPropertyChanged("CommParam");
+                OnPropertyChanged(nameof(Protocol));
+                OnPropertyChanged(nameof(ProtocolName));
+                OnPropertyChanged(nameof(CommParam));
             }
         }
         //Период опроса.
@@ -174,7 +174,7 @@ namespace PKM_AL
             set
             {
                 _Period = value;
-                OnPropertyChanged("Period");
+                OnPropertyChanged(nameof(Period));
             }
         }
         //IP адрес.
@@ -184,7 +184,7 @@ namespace PKM_AL
             set
             {
                 _IPAddress = value;
-                OnPropertyChanged("IPAddress");
+                OnPropertyChanged(nameof(IPAddress));
             }
         }
         //IP порт.
@@ -194,7 +194,7 @@ namespace PKM_AL
             set
             {
                 _IPPort = value;
-                OnPropertyChanged("IPPort");
+                OnPropertyChanged(nameof(IPPort));
             }
         }
         //COM порт.
@@ -204,7 +204,7 @@ namespace PKM_AL
             set
             {
                 _ComPort = value;
-                OnPropertyChanged("ComPort");
+                OnPropertyChanged(nameof(ComPort));
             }
         }
         //Номер сим-карты.        
@@ -214,7 +214,7 @@ namespace PKM_AL
             set
             {
                 _SIM = value;
-                OnPropertyChanged("SIM");
+                OnPropertyChanged(nameof(SIM));
             }
         }
         //Модель устройства.
@@ -224,8 +224,8 @@ namespace PKM_AL
             set
             {
                 _Model = value;
-                OnPropertyChanged("Model");
-                OnPropertyChanged("ModelName");
+                OnPropertyChanged(nameof(Model));
+                OnPropertyChanged(nameof(ModelName));
             }
         }
         //Пикет.
@@ -235,7 +235,7 @@ namespace PKM_AL
             set
             {
                 _Picket = value;
-                OnPropertyChanged("Picket");
+                OnPropertyChanged(nameof(Picket));
             }
         }
         //Широта(координата).
@@ -245,7 +245,7 @@ namespace PKM_AL
             set
             {
                 _Latitude = value;
-                OnPropertyChanged("Latitude");
+                OnPropertyChanged(nameof(Latitude));
             }
         }
         // Высота(координата).
@@ -255,7 +255,7 @@ namespace PKM_AL
             set
             {
                 _Longitude = value;
-                OnPropertyChanged("Longitude");
+                OnPropertyChanged(nameof(Longitude));
             }
         }
         //Высота над уровнем моря.
@@ -265,7 +265,7 @@ namespace PKM_AL
             set
             {
                 _Elevation = value;
-                OnPropertyChanged("Elevation");
+                OnPropertyChanged(nameof(Elevation));
             }
         }
         
@@ -288,7 +288,7 @@ namespace PKM_AL
             set
             {
                 _DTAct = value;
-                OnPropertyChanged("DTAct");
+                OnPropertyChanged(nameof(DTAct));
             }
         }
         /// <summary>
@@ -336,11 +336,20 @@ namespace PKM_AL
         [XmlIgnore]
         public Avalonia.Media.IBrush ColorLineDevice
         {
-            get => _bColorLine;
+            get
+            {
+               _bColorLine= _LinkState switch
+                {
+                    EnumLink.LinkNo => Brushes.Red,
+                    EnumLink.LinkYes => Brushes.Chartreuse,
+                    _ => Brushes.Beige
+                };
+                return _bColorLine;
+            }
             set
             {
                 _bColorLine = value;
-                OnPropertyChanged(prop:"ColorLineDevice");
+                OnPropertyChanged(prop:nameof(ColorLineDevice));
             } 
         }
 
@@ -361,7 +370,7 @@ namespace PKM_AL
             set
             {
                 _LinkStateName = value;
-                OnPropertyChanged("LinkStateName");
+                OnPropertyChanged(nameof(LinkStateName));
             }
         }
 
@@ -404,7 +413,7 @@ namespace PKM_AL
             set
             {
                 commParam = value;
-                OnPropertyChanged("CommParam");
+                OnPropertyChanged(nameof(CommParam));
             }
         }
 
@@ -436,7 +445,7 @@ namespace PKM_AL
         {
             _TxCounter++;
             if (_TxCounter > 10000) _TxCounter = 0;
-            OnPropertyChanged("PacketStatistics");
+            OnPropertyChanged(nameof(PacketStatistics));
             _WaitAnswer = true;
         }
 
@@ -448,16 +457,16 @@ namespace PKM_AL
             _WaitAnswer = false;
             _RxCounter++;
             if (_RxCounter > 10000) _RxCounter = 0;
-            OnPropertyChanged("PacketStatistics");
+            OnPropertyChanged(nameof(PacketStatistics));
             if (_LinkState != EnumLink.LinkYes)
             {
                 _LinkState = EnumLink.LinkYes;
-                OnPropertyChanged("LinkState");
-                OnPropertyChanged("LinkStateName");
+                OnPropertyChanged(nameof(LinkState));
+                OnPropertyChanged(nameof(LinkStateName));
+                OnPropertyChanged(nameof(ColorLineDevice));
                 ClassEvent ev = new ClassEvent() { Type = ClassEvent.EnumType.Connect, Param = _Name, NameDevice = Name };
                 MainWindow.DB.EventAdd(ev);
                 MainWindow.Events.Add(ev);
-                ColorLineDevice=Brushes.Chartreuse;
             }
             _PacketLost = 0;
             _DTAct = DateTime.Now;
@@ -479,12 +488,12 @@ namespace PKM_AL
             if (_LinkState != EnumLink.LinkNo)
             {
                 _LinkState = EnumLink.LinkNo;
-                OnPropertyChanged("LinkState");
-                OnPropertyChanged("LinkStateName");
+                OnPropertyChanged(nameof(LinkState));
+                OnPropertyChanged(nameof(LinkStateName));
+                OnPropertyChanged(nameof(ColorLineDevice));
                 ClassEvent ev = new ClassEvent() { Type = ClassEvent.EnumType.Disconnect, Param = _Name, NameDevice = Name };
                 MainWindow.DB.EventAdd(ev);
                 MainWindow.Events.Add(ev);
-                ColorLineDevice = Brushes.Red;
             }
             //Изменение маркера на карте.
             //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_gray.png", UriKind.Relative));
@@ -496,8 +505,9 @@ namespace PKM_AL
         public void PortDisable()
         {
             _LinkState = EnumLink.Unknown;
-            OnPropertyChanged("LinkState");
-            OnPropertyChanged("LinkStateName");
+            OnPropertyChanged(nameof(LinkState));
+            OnPropertyChanged(nameof(LinkStateName));
+            OnPropertyChanged(nameof(ColorLineDevice));
         }
 
         public bool SaveProfile(string FileName)
@@ -539,8 +549,8 @@ namespace PKM_AL
             if (_DTConnect.AddSeconds(_Period).CompareTo(DateTime.Now) > 0) return;
             _DTConnect = DateTime.Now;
             _LinkState = EnumLink.LinkConnect;
-            OnPropertyChanged("LinkState");
-            OnPropertyChanged("LinkStateName");
+            OnPropertyChanged(nameof(LinkState));
+            OnPropertyChanged(nameof(LinkStateName));
             TcpClient tcpClient = new TcpClient();
             IAsyncResult asyncResult = tcpClient.BeginConnect(_IPAddress, _IPPort,
                 OnTCPConnectCallback, tcpClient);
@@ -567,8 +577,8 @@ namespace PKM_AL
                 Master = null;
                 if (_Protocol == EnumProtocol.TCP) _LinkState = EnumLink.LinkNo;
                 else _LinkState = EnumLink.Unknown;
-                OnPropertyChanged("LinkState");
-                OnPropertyChanged("LinkStateName");
+                OnPropertyChanged(nameof(LinkState));
+                OnPropertyChanged(nameof(LinkStateName));
             }
         }
 

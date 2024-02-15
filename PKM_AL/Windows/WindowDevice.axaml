@@ -88,8 +88,8 @@
 				<TextBox ToolTip.Tip="Пример:+79991234567" Name="txtSIM"/>
 				<Label Content="Период опроса, с:"/>
 				<TextBox Text="1" Name="Period"/>
-				<Button Content="Отмена" Width="100" IsDefault="True" Click="Button_Cancel" />
-				<Button Content="Применить" Width="100" HorizontalAlignment="Left" Click="Button_Click"/>
+				<Button Content="Применить" Width="100" Click="Button_Click"/>
+				<Button Content="Отмена" IsDefault="True" Width="100" HorizontalAlignment="Left"  Click="Button_Cancel"/>
 			</UniformGrid>			
 		</Border>			
 		<Border Name="Panel_SKZ" IsVisible="False" Grid.Column="1" Margin="2.5 5 5 5" 

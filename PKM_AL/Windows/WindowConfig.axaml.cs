@@ -73,6 +73,7 @@ public partial class WindowConfig : ClassWindowPKM
             //к полям объекта MainWindow.setting.
             dev.OnPropertyChanged("CommParam");
         }
+        Tag = true;
         Close();
     }
 }
