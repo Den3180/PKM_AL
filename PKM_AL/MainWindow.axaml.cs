@@ -22,7 +22,7 @@ using Avalonia.LogicalTree;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+// using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PKM_AL.Classes;
 using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
