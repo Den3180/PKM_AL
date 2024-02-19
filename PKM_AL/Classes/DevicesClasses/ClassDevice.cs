@@ -92,6 +92,18 @@ namespace PKM_AL
         public double UnomOutSKZ { get; set; }
         public double InomOutSKZ { get; set; }
         public double NnomOutSKZ { get; set; }
+        
+        /// <summary>
+        ///Количество элементов в группе.
+        /// </summary>
+        [XmlIgnore]
+        public int CountGroups { get; set; }
+
+        /// <summary>
+        /// Флаг процесса опроса.
+        /// </summary>
+        [XmlIgnore]
+        public bool InProcess { get; set; }
 
         [XmlIgnore]
         public int CountNumber { get; set; }
@@ -436,6 +448,8 @@ namespace PKM_AL
             _WaitAnswer = false;
             //_bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_gray.png", UriKind.Relative));
             _Picket = string.Empty;
+            CountGroups = 0;
+            InProcess = false;
         }
 
         /// <summary>
@@ -509,7 +523,7 @@ namespace PKM_AL
             OnPropertyChanged(nameof(LinkStateName));
             OnPropertyChanged(nameof(ColorLineDevice));
         }
-
+        
         public bool SaveProfile(string FileName)
         {
             TextWriter writer = new StreamWriter(FileName);
@@ -605,6 +619,7 @@ namespace PKM_AL
                 }
                 Groups[^1].AddChannel(item);
             }
+            CountGroups = Groups.Count;
             return Groups;
         }
 
@@ -658,13 +673,11 @@ namespace PKM_AL
         /// <returns></returns>
         public bool IsNeedRequest()
         {
-            foreach (ClassChannel channel in Channels)
-            {
-                if (DateTime.Now.Subtract(channel.DTAct).TotalSeconds > Period) return true;
-            }
-            if (DateTime.Now.Subtract(DTAct).TotalSeconds > Period) return true;
-            else
-                return false;
+            // foreach (ClassChannel channel in Channels)
+            // {
+            //     if (DateTime.Now.Subtract(channel.DTAct).TotalSeconds > Period) return true;
+            // }
+            return DateTime.Now.Subtract(DTAct).TotalSeconds > Period;
         }
 
         public decimal GetParam(int Param)

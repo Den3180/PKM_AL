@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
@@ -288,19 +289,23 @@ public class ClassModbus
                     MainWindow.QueueCommands.Enqueue(cmd);
                     continue;
                 }
-                if (cmd.CommandType == ClassCommand.EnumType.WriteCoil)
+                switch (cmd.CommandType)
                 {
-                    if (cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP)
+                    case ClassCommand.EnumType.WriteCoil when cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP:
                         WriteCoils(cmd.Device, (ushort)cmd.Address, cmd.bValue, cmd);
-                    else WriteCoil(cmd.Device, (ushort)cmd.Address, cmd.bValue, cmd);
-                }
-                else if (cmd.CommandType == ClassCommand.EnumType.WriteRegistry)
-                {
-                    if (cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP)
+                        break;
+                    case ClassCommand.EnumType.WriteCoil:
+                        WriteCoil(cmd.Device, (ushort)cmd.Address, cmd.bValue, cmd);
+                        break;
+                    case ClassCommand.EnumType.WriteRegistry when cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP:
                         WriteRegistries(cmd.Device, (ushort)cmd.Address, (ushort)cmd.Value, cmd);
-                    else WriteRegistry(cmd.Device, (ushort)cmd.Address, (ushort)cmd.Value, cmd);
+                        break;
+                    case ClassCommand.EnumType.WriteRegistry:
+                        WriteRegistry(cmd.Device, (ushort)cmd.Address, (ushort)cmd.Value, cmd);
+                        break;
+                    default:
+                        continue;
                 }
-                else continue;
                 System.Threading.Thread.Sleep(10);
             }
             //Цикл проверки и запуска команд из текущего списка команд(не очередь).
@@ -309,19 +314,23 @@ public class ClassModbus
                 if (cmd.Period == 0 || cmd.Device == null) continue;
                 if (cmd.DT.AddSeconds(cmd.Period).CompareTo(DateTime.Now) > 0) continue;
                 if (cmd.Device.LinkState != ClassDevice.EnumLink.LinkYes) continue;
-                if (cmd.CommandType == ClassCommand.EnumType.WriteCoil)
+                switch (cmd.CommandType)
                 {
-                    if (cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP)
+                    case ClassCommand.EnumType.WriteCoil when cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP:
                         WriteCoils(cmd.Device, (ushort)cmd.Address, cmd.bValue, cmd);
-                    else WriteCoil(cmd.Device, (ushort)cmd.Address, cmd.bValue, cmd);
-                }
-                else if (cmd.CommandType == ClassCommand.EnumType.WriteRegistry)
-                {
-                    if (cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP)
+                        break;
+                    case ClassCommand.EnumType.WriteCoil:
+                        WriteCoil(cmd.Device, (ushort)cmd.Address, cmd.bValue, cmd);
+                        break;
+                    case ClassCommand.EnumType.WriteRegistry when cmd.Device.Model == ClassDevice.EnumModel.SKZ_IP:
                         WriteRegistries(cmd.Device, (ushort)cmd.Address, (ushort)cmd.Value, cmd);
-                    else WriteRegistry(cmd.Device, (ushort)cmd.Address, (ushort)cmd.Value, cmd);
+                        break;
+                    case ClassCommand.EnumType.WriteRegistry:
+                        WriteRegistry(cmd.Device, (ushort)cmd.Address, (ushort)cmd.Value, cmd);
+                        break;
+                    default:
+                        continue;
                 }
-                else continue;
                 System.Threading.Thread.Sleep(10);
             }
             //Цикл опроса регистров.
@@ -341,129 +350,157 @@ public class ClassModbus
                 if (!device.IsNeedRequest()) continue;
                 //Если устройство ожидает ответа, то пропуск итерации.
                 if (device.WaitAnswer) continue;
+                //Если не все пакеты отправлены.
+                if (device.CountGroups > 0) continue;
+                //Проверка на занятость порта каким либо устройством.
+                if (SomeDeviceInTheProcess(MainWindow.Devices, device)) continue;
                 //Разбиение карты регистров на группы.
                 List<ClassGroupRequest> Groups = device.GetGroups();
                 //Цикл запроса данных по группам регистров.
-                ReadGroupRegistry(Groups,device,master);               
+               await Task.Run(()=>ReadGroupRegistry(Groups,device,master));               
             }
             //????????????????????????????????????????????
-            for (int i = 0; i < MainWindow.Channels.Count; i++)
-            {
-                //Если есть команды в очереди команд - выход из цикла.
-                if (MainWindow.QueueCommands.Count > 0) break;
-                ClassChannel item = MainWindow.Channels[i];
-                //Если устройство работает по sms - следующая итерация.
-                if (item.Device.Protocol == ClassDevice.EnumProtocol.SMS) continue;
-                //Выбор мастера устройства.
-                ModbusMaster master = GetMaster(item.Device);
-                //Если мастер null - след. итерация.
-                if (master == null) continue;
-                //Если период опроса 0 -следю итерация.
-                if (item.Device.Period == 0) continue;
-                if (item.DTAct.AddSeconds(item.Device.Period).CompareTo(DateTime.Now) > 0) continue;
-                if (item.Device.WaitAnswer) continue;
-                if (item.Device.LinkState != ClassDevice.EnumLink.LinkYes) continue;
-                ushort RegistryCount = 1;
-                //Выбор, сколько регистров считать в зависимости от типа данных.
-                if (item.Format == ClassChannel.EnumFormat.Float ||
-                    item.Format == ClassChannel.EnumFormat.swFloat ||
-                    item.Format == ClassChannel.EnumFormat.UInt32) RegistryCount = 2;
-                try
-                {
-                    if (SendRequestEvent != null) SendRequestEvent();
-                    item.Device.PacketSended();
-                    if (item.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry)
-                    {
-                        ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Request },
-                            0x04, new ushort[] { (ushort)item.Address, 1 });
-                        if (MainWindow.settings.RecordLog)
-                            ClassLog.Write($"Request ID = {item.Device.Address} address {item.Address}");
-                        data = await master.ReadInputRegistersAsync((byte)item.Device.Address,
-                            (ushort)item.Address, RegistryCount);
-                        if (MainWindow.settings.RecordLog)
-                            ClassLog.Write($"Answer ID = {item.Device.Address} address {item.Address}");
-                        ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Answer },
-                            0x04, data);
-                    }
-                    else if (item.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry)
-                    {
-                        ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Request },
-                            0x03, new ushort[] { (ushort)item.Address, 1 });
-                        data = await master.ReadHoldingRegistersAsync((byte)item.Device.Address,
-                            (ushort)item.Address, RegistryCount);
-                        ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Answer },
-                            0x03, data);
-                    }
-                    else if (item.TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
-                    {
-                        bool[] b = await master.ReadCoilsAsync((byte)item.Device.Address,
-                            (ushort)item.Address, 1);
-                        data = new ushort[1];
-                        if (b[0]) data[0] = 1;
-                    }
-                    else if (item.TypeRegistry == ClassChannel.EnumTypeRegistry.DiscreteInput)
-                    {
-                        bool[] b = await master.ReadInputsAsync((byte)item.Device.Address,
-                            (ushort)item.Address, 1);
-                        data = new ushort[1];
-                        if (b[0]) data[0] = 1;
-                    }
-                    else continue;
-                    if (ReceivedAnswerEvent != null) ReceivedAnswerEvent();
-                }
-                catch (Exception Ex)
-                {
-                    item.Device.PacketNotReceived();
-                    if (MainWindow.settings.RecordLog)
-                        ClassLog.Write($"Answer Error = {Ex.Message}");
-                    continue;
-                }
-                item.BaseValue = (ushort[])data.Clone();
-                item.Device.PacketReceived();
-                item.Value = GetDecimalFromBuffer(0, item.Format);
-                System.Threading.Thread.Sleep(10);
-            }
+            // for (int i = 0; i < MainWindow.Channels.Count; i++)
+            // {
+            //     //Если есть команды в очереди команд - выход из цикла.
+            //     if (MainWindow.QueueCommands.Count > 0) break;
+            //     ClassChannel item = MainWindow.Channels[i];
+            //     //Если устройство работает по sms - следующая итерация.
+            //     if (item.Device.Protocol == ClassDevice.EnumProtocol.SMS) continue;
+            //     //Выбор мастера устройства.
+            //     ModbusMaster master = GetMaster(item.Device);
+            //     //Если мастер null - след. итерация.
+            //     if (master == null) continue;
+            //     //Если период опроса 0 -следю итерация.
+            //     if (item.Device.Period == 0) continue;
+            //     if (item.DTAct.AddSeconds(item.Device.Period).CompareTo(DateTime.Now) > 0) continue;
+            //     if (item.Device.WaitAnswer) continue;
+            //     if (item.Device.LinkState != ClassDevice.EnumLink.LinkYes) continue;
+            //     ushort RegistryCount = 1;
+            //     //Выбор, сколько регистров считать в зависимости от типа данных.
+            //     if (item.Format == ClassChannel.EnumFormat.Float ||
+            //         item.Format == ClassChannel.EnumFormat.swFloat ||
+            //         item.Format == ClassChannel.EnumFormat.UInt32) RegistryCount = 2;
+            //     try
+            //     {
+            //         if (SendRequestEvent != null) SendRequestEvent();
+            //         item.Device.PacketSended();
+            //         switch (item.TypeRegistry)
+            //         {
+            //             case ClassChannel.EnumTypeRegistry.InputRegistry:
+            //             {
+            //                 ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Request },
+            //                     0x04, new ushort[] { (ushort)item.Address, 1 });
+            //                 if (MainWindow.settings.RecordLog)
+            //                     ClassLog.Write($"Request ID = {item.Device.Address} address {item.Address}");
+            //                 data = await master.ReadInputRegistersAsync((byte)item.Device.Address,
+            //                     (ushort)item.Address, RegistryCount);
+            //                 if (MainWindow.settings.RecordLog)
+            //                     ClassLog.Write($"Answer ID = {item.Device.Address} address {item.Address}");
+            //                 ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Answer },
+            //                     0x04, data);
+            //                 break;
+            //             }
+            //             case ClassChannel.EnumTypeRegistry.HoldingRegistry:
+            //                 ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Request },
+            //                     0x03, new ushort[] { (ushort)item.Address, 1 });
+            //                 data = await master.ReadHoldingRegistersAsync((byte)item.Device.Address,
+            //                     (ushort)item.Address, RegistryCount);
+            //                 ClassMessage.SaveNewMessage(new ClassMessage() { Type = ClassMessage.EnumType.Answer },
+            //                     0x03, data);
+            //                 break;
+            //             case ClassChannel.EnumTypeRegistry.CoilOutput:
+            //             {
+            //                 bool[] b = await master.ReadCoilsAsync((byte)item.Device.Address,
+            //                     (ushort)item.Address, 1);
+            //                 data = new ushort[1];
+            //                 if (b[0]) data[0] = 1;
+            //                 break;
+            //             }
+            //             case ClassChannel.EnumTypeRegistry.DiscreteInput:
+            //             {
+            //                 bool[] b = await master.ReadInputsAsync((byte)item.Device.Address,
+            //                     (ushort)item.Address, 1);
+            //                 data = new ushort[1];
+            //                 if (b[0]) data[0] = 1;
+            //                 break;
+            //             }
+            //             default:
+            //                 continue;
+            //         }
+            //         if (ReceivedAnswerEvent != null) ReceivedAnswerEvent();
+            //     }
+            //     catch (Exception Ex)
+            //     {
+            //         item.Device.PacketNotReceived();
+            //         if (MainWindow.settings.RecordLog)
+            //             ClassLog.Write($"Answer Error = {Ex.Message}");
+            //         continue;
+            //     }
+            //     item.BaseValue = (ushort[])data.Clone();
+            //     item.Device.PacketReceived();
+            //     item.Value = GetDecimalFromBuffer(0, item.Format);
+            //     System.Threading.Thread.Sleep(10);
+            // }
             if (MainWindow.cts == newCTS) MainWindow.cts = null;
+            await Task.Yield();
         }
 
-                    /// <summary>
+        /// <summary>
+            /// Проверка, ведет ли какое нибудь устройство опрос в текущий момент.
+            /// </summary>
+            /// <param name="devices"></param>
+            /// <param name="currentDevice"></param>
+            /// <returns></returns>
+        private bool SomeDeviceInTheProcess(ObservableCollection<ClassDevice> devices, ClassDevice currentDevice)
+        {
+            return devices.Any(dev => dev.InProcess == true && currentDevice.ID != dev.ID);
+        }
+
+        /// <summary>
         /// Чтение групп регистров типа AO/AI.
         /// </summary>
         /// <param name="Groups">Список групп регистров</param>
         /// <param name="device">Текущее устройство</param>
         /// <param name="master">Мастер Modbus</param>
-        private async void ReadGroupRegistry(List<ClassGroupRequest> Groups, ClassDevice device, ModbusMaster master)
+        private void ReadGroupRegistry(List<ClassGroupRequest> Groups, ClassDevice device, ModbusMaster master)
         {
+            device.InProcess = true;
             foreach (ClassGroupRequest group in Groups)
             {
                 //Индикация отправки пакета.
                 device.PacketSended();
+                device.CountGroups--;
+                if (device.CountGroups <= 0)
+                {
+                    device.DTAct = DateTime.Now;
+                    device.InProcess = false;
+                }
                 int numOfPoint = group.GetSize();                
                 try
                 {
-                   
-                    //Отправка запроса для InputRegistry.
-                    if (group.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry && numOfPoint < numOfRegMax)
-                    {                        
-                        data = await master.ReadInputRegistersAsync((byte)device.Address, (ushort)group.StartAddress,(ushort)numOfPoint);           
-                    }
-                    //Отправка запроса для HoldingRegistry.
-                    else if (group.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry && numOfPoint < numOfRegMax)
+                    lock (locker)
                     {
-                      
-                        data = await master.ReadHoldingRegistersAsync((byte)device.Address,(ushort)group.StartAddress, (ushort)numOfPoint);                                              
-                       
+                        switch (group.TypeRegistry)
+                        {
+                            //Отправка запроса для InputRegistry.
+                            case ClassChannel.EnumTypeRegistry.InputRegistry when numOfPoint < numOfRegMax:
+                                data = master.ReadInputRegisters((byte)device.Address, (ushort)group.StartAddress,(ushort)numOfPoint);
+                                break;
+                            //Отправка запроса для HoldingRegistry.
+                            case ClassChannel.EnumTypeRegistry.HoldingRegistry when numOfPoint < numOfRegMax:
+                                data =  master.ReadHoldingRegisters((byte)device.Address,(ushort)group.StartAddress, (ushort)numOfPoint);
+                                break;
+                            case ClassChannel.EnumTypeRegistry.CoilOutput when numOfPoint < numOfRegMax:
+                                dataBool = master.ReadCoils((byte)device.Address, (ushort)group.StartAddress, (ushort)numOfPoint);
+                                break;
+                            case ClassChannel.EnumTypeRegistry.DiscreteInput when numOfPoint < numOfRegMax:
+                                dataBool = master.ReadInputs((byte)device.Address, (ushort)group.StartAddress, (ushort)numOfPoint);
+                                break;
+                            default:
+                                continue;
+                        }
                     }
-                    else if (group.TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput && numOfPoint < numOfRegMax)
-                    {
-
-                        dataBool = await master.ReadCoilsAsync((byte)device.Address, (ushort)group.StartAddress, (ushort)numOfPoint);
-                    }
-                    else if (group.TypeRegistry == ClassChannel.EnumTypeRegistry.DiscreteInput && numOfPoint < numOfRegMax)
-                    {
-                        dataBool = await master.ReadInputsAsync((byte)device.Address, (ushort)group.StartAddress, (ushort)numOfPoint);
-                    }
-                    else continue;
                 }
                 catch (Exception Ex)
                 {
@@ -548,7 +585,6 @@ public class ClassModbus
             }
             catch (Exception Ex)
             {
-
                 ClassLog.Write(Ex.Message);
             }
         }

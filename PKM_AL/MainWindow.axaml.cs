@@ -260,8 +260,8 @@ namespace PKM_AL
                 modbus.RequestServerID();            
             }
             if (modbus.Mode == ClassModbus.eMode.MasterInit && DateTime.Now.Second % 7 == 0)
-            {
-                await modbus.Poll(DateTime.Now.Ticks);
+            { 
+                modbus.Poll(DateTime.Now.Ticks);
             }
             else
             {
