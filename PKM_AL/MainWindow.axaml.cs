@@ -470,6 +470,11 @@ namespace PKM_AL
             }
         }
         
+        /// <summary>
+        /// Происходит в момент закрытия основного окна приложения.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
             Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу", "", ButtonEnum.YesNo,

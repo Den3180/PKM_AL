@@ -20,6 +20,7 @@ public partial class WindowConfig : ClassWindowPKM
         PortModem.Items.Add("Нет");
         
         var portList = SerialPort.GetPortNames();
+        Array.Sort(portList);
          foreach (var port in portList)
          {
              Ports.Items.Add(port);
@@ -29,7 +30,7 @@ public partial class WindowConfig : ClassWindowPKM
      
         Ports.SelectedItem = Ports.Items.FirstOrDefault(p => p.ToString() == settings.PortModbus) ?? Ports.Items[0];
         PortModem.SelectedItem = Ports.Items.FirstOrDefault(p=>p.ToString()==settings.PortModem)??PortModem.Items[0];
-      
+              
         BaudRate.SelectedValue =BaudRate.Items.FirstOrDefault(item=>(item as ComboBoxItem)?.Content?.ToString()==settings.BaudRate.ToString());
         DataBits.SelectedValue =DataBits.Items.FirstOrDefault(item=>(item as ComboBoxItem)?.Content?.ToString()==settings.DataBits.ToString());
         Parity.SelectedIndex = settings.Parity;
