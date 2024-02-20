@@ -283,9 +283,9 @@ namespace PKM_AL
             }
             
             //Запрос к памяти модема каждую 10-ю секунду.
-            if (DateTime.Now.Second % 10 == 0)
+            if (DateTime.Now.Second % 10 == 0 && settings.PortModem!="Нет")
             {
-                if (settings.PortModem !="Нет" && GSM.StatusPortModem!=ClassGSM.EModePortModem.PortModemOpen)
+                if (GSM.StatusPortModem!=ClassGSM.EModePortModem.PortModemOpen)
                 {
                    await Task.Run(()=> GSM.Start(settings.PortModem));
                 }
