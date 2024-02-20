@@ -192,10 +192,10 @@ namespace PKM_AL
             modbus.SendRequestEvent += Modbus_SendRequestEvent;
             modbus.ReceivedAnswerEvent += Modbus_ReceivedAnswerEvent;
             
-            //GSM = new ClassGSM();
-            //GSM.EventStateChanged += GSM_EventStateChanged;
-            // if (settings.PortModem != 0) GSM.Start(settings.PortModem);
-           // if (!string.IsNullOrEmpty(settings.PortModem)) GSM.Start(settings.PortModem);
+            GSM = new ClassGSM();
+            GSM.EventStateChanged += GSM_EventStateChanged;
+            if (!string.IsNullOrEmpty(settings.PortModem) && settings.PortModem != "Нет") 
+                Task.Run(()=> GSM.Start(settings.PortModem));
 
             //Создается событие начала работы программы и добавляется архив базы данных.
             DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Start});
@@ -255,9 +255,10 @@ namespace PKM_AL
                     //    settings.Parity, settings.StopBits);
                     //if (!res) TimerSec.Stop();
 
-                    await Task.Run(() => modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
+                   await Task.Run(()=>modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
                         settings.Parity, settings.StopBits));
-                    return;
+                    //Если включить выход, то все нижние строки не будут доступны.
+                    //return;
                 }
             }
             if (modbus.Mode == ClassModbus.eMode.PortOpen)
@@ -265,7 +266,8 @@ namespace PKM_AL
                 modbus.RequestServerID();            
             }
             if (modbus.Mode == ClassModbus.eMode.MasterInit && DateTime.Now.Second % 7 == 0)
-            { 
+            {
+                _PortErrorMessageShown = !_PortErrorMessageShown;
                 modbus.Poll(DateTime.Now.Ticks);
             }
             else
@@ -283,11 +285,14 @@ namespace PKM_AL
             //Запрос к памяти модема каждую 10-ю секунду.
             if (DateTime.Now.Second % 10 == 0)
             {
-                // if (settings.PortModem != 0)
-                if (!string.IsNullOrEmpty(settings.PortModem))
+                if (settings.PortModem !="Нет" && GSM.StatusPortModem!=ClassGSM.EModePortModem.PortModemOpen)
                 {
-                    //GSM.Start(settings.PortModem);
-                    //GSM.SendGetMemory(); 
+                   await Task.Run(()=> GSM.Start(settings.PortModem));
+                }
+                else
+                { 
+                   // _PortErrorMessageShown = !_PortErrorMessageShown;
+                    GSM.SendGetMemory();
                 }
             }
             //Сохранение БД каждые 10 часов.
@@ -328,14 +333,17 @@ namespace PKM_AL
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }
         
+        /// <summary>
+        /// Событие ошибки порта.
+        /// </summary>
+        /// <param name="ErrorMessage"></param>
         private void Modbus_PortErrorEvent(string ErrorMessage)
         {
             if (_PortErrorMessageShown) return; 
             _PortErrorMessageShown = true;
-           Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessage(currentMainWindow, "Порт COM" + settings.PortModbus.ToString() + " не доступен"
-                                           + Environment.NewLine + ErrorMessage
-                                           + Environment.NewLine + "Проверьте настройки конфигурации","Инициализация",
-                ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error));
+           Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessage(currentMainWindow, settings.PortModbus.ToString() + 
+               " не доступен" + Environment.NewLine + ErrorMessage + Environment.NewLine + 
+               "Проверьте настройки конфигурации","Инициализация",ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error));
         }
 
         /// <summary>
@@ -345,10 +353,11 @@ namespace PKM_AL
         private void GSM_EventStateChanged(bool State)
         {
             if (State)
-                ImageDB.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"database_green.png")));
-            else ImageDB.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-blue-32.png")));
+                Dispatcher.UIThread.Invoke(()=> ImageDB.Source = new Bitmap
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"database_green.png"))));
+            else 
+                Dispatcher.UIThread.Invoke(()=> ImageDB.Source = new Bitmap
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"database_blue.png"))));
         }
 
         /// <summary>

@@ -123,7 +123,7 @@ public class ClassModbus
     /// <param name="iStopBits"></param>
     /// <returns></returns>
     // public bool PortOpen(int PortNumber, int BaudRate, int DataBits, int iParity, int iStopBits)
-    public bool PortOpen(string PortNumber, int BaudRate, int DataBits, int iParity, int iStopBits)
+    public bool PortOpen(string PortNumber="", int BaudRate=9600, int DataBits=8, int iParity=0, int iStopBits=1)
     {
             if (port != null && port.IsOpen) port.Close();
             port = new SerialPort(PortNumber)

@@ -27,6 +27,13 @@ public class ClassGSM
             DeleteOneSMS
         }
 
+        public enum EModePortModem
+        {
+            None,
+            PortModemOpen,
+            PortModemClose
+        }
+
         private string PortNumber;
         // private int PortNumber;
         private SerialPort port;
@@ -35,6 +42,8 @@ public class ClassGSM
         private EnumCommand ActiveCommand;
         private int ActiveIndex;
         private string ActivePhone;
+
+        public EModePortModem StatusPortModem { get; set; } = EModePortModem.None;
 
         List<int> PositionSMSList=new List<int>();
 
@@ -99,6 +108,7 @@ public class ClassGSM
             {
                 port.Open();
                 port.DataReceived += Port_DataReceived;
+                StatusPortModem = EModePortModem.PortModemOpen;
             }
             catch (Exception Ex)
             {
@@ -354,6 +364,11 @@ public class ClassGSM
             {
                 port.WriteLine(Command);
                 EventSendCommand?.Invoke(Command);
+            }
+            else
+            {
+                StatusPortModem = EModePortModem.None;
+                if (EventStateChanged != null) EventStateChanged(false);
             }
         }
 
