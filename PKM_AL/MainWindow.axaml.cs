@@ -219,6 +219,11 @@ namespace PKM_AL
             }
         }
 
+        /// <summary>
+        /// Основной таймер.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void TimerSec_Tick(object sender, EventArgs e)
         {
             //Запись времени в статусбар.
@@ -252,7 +257,7 @@ namespace PKM_AL
 
                     await Task.Run(() => modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
                         settings.Parity, settings.StopBits));
-                    //return;
+                    return;
                 }
             }
             if (modbus.Mode == ClassModbus.eMode.PortOpen)
@@ -304,7 +309,6 @@ namespace PKM_AL
                        + " " + ex.Message + " " + ex.StackTrace;
             ClassLog.Write(s);
         }
-
         
         private void Modbus_SendRequestEvent()
         {
@@ -323,16 +327,15 @@ namespace PKM_AL
             ImageRx.Source = new Bitmap
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }
-
         
         private void Modbus_PortErrorEvent(string ErrorMessage)
         {
-            if (_PortErrorMessageShown) return;
+            if (_PortErrorMessageShown) return; 
+            _PortErrorMessageShown = true;
            Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessage(currentMainWindow, "Порт COM" + settings.PortModbus.ToString() + " не доступен"
                                            + Environment.NewLine + ErrorMessage
                                            + Environment.NewLine + "Проверьте настройки конфигурации","Инициализация",
                 ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error));
-            _PortErrorMessageShown = true;
         }
 
         /// <summary>
@@ -347,7 +350,6 @@ namespace PKM_AL
             else ImageDB.Source = new Bitmap
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-blue-32.png")));
         }
-
 
         /// <summary>
         /// Формирование контента основного дерева приложения.
@@ -472,14 +474,16 @@ namespace PKM_AL
         {
             Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу", "", ButtonEnum.YesNo,
                                                                        icon: MsBox.Avalonia.Enums.Icon.Question);
-            if (buttonResult.Result == ButtonResult.Yes)
-            {
-                Environment.Exit(0);
-            }
-            else
+            if (buttonResult.Result == ButtonResult.No)
             {
                 e.Cancel = true;
+                return;
             }
+            DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Finish });
+            DB.Backup(new FileInfo("pkm.exe").DirectoryName);
+            DB.Close();
+            ClassLog.Write("Завершение приложения");
+            Environment.Exit(0);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -538,19 +542,19 @@ namespace PKM_AL
             break;
         }
     }
-    private void MenuItemGSM_Click(object sender, RoutedEventArgs e)
+        private void MenuItemGSM_Click(object sender, RoutedEventArgs e)
     {
 
     }
-    private void MenuItem_Click_Form(object sender, RoutedEventArgs e)
+        private void MenuItem_Click_Form(object sender, RoutedEventArgs e)
     {
 
     }
-    private void MenuItem_Click_OBD(object sender, RoutedEventArgs e)
+        private void MenuItem_Click_OBD(object sender, RoutedEventArgs e)
     {
 
     }
-    private void MenuItem_Click_Reports(object sender, RoutedEventArgs e)
+        private void MenuItem_Click_Reports(object sender, RoutedEventArgs e)
     {
     }
     
@@ -559,7 +563,7 @@ namespace PKM_AL
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void TreeView_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
+        private void TreeView_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
     {
         if ((sender as TreeView)?.SelectedItem is StackPanel subStackPanel)
         {
