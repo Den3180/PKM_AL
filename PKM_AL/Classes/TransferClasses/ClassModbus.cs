@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Animation;
 using Avalonia.Threading;
 using Modbus.Device;
 using Modbus.Utility;
@@ -125,7 +126,14 @@ public class ClassModbus
     // public bool PortOpen(int PortNumber, int BaudRate, int DataBits, int iParity, int iStopBits)
     public bool PortOpen(string PortNumber="", int BaudRate=9600, int DataBits=8, int iParity=0, int iStopBits=1)
     {
-            if (port != null && port.IsOpen) port.Close();
+        if (port is { IsOpen: true })
+        {
+            if (port.PortName == PortNumber) 
+                port.Close();
+            else 
+                port = null;
+        }
+      
             port = new SerialPort(PortNumber)
             {
                 BaudRate = BaudRate,            //Скорость.

@@ -95,7 +95,13 @@ public class ClassGSM
         /// <returns></returns>
         public bool PortOpen(string PortNumber)
         {
-            if (port!=null && port.IsOpen) return true;
+            if (port is { IsOpen: true })
+            {
+                if (port.PortName == PortNumber) 
+                    port.Close();
+                else 
+                    port = null;
+            }
             
             //port = new SerialPort("COM" + PortNumber);
             port = new SerialPort(PortNumber);

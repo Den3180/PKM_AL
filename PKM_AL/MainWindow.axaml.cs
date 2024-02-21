@@ -255,8 +255,9 @@ namespace PKM_AL
                     //    settings.Parity, settings.StopBits);
                     //if (!res) TimerSec.Stop();
 
-                   await Task.Run(()=>modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
-                        settings.Parity, settings.StopBits));
+                   modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits, settings.Parity, settings.StopBits);
+                   // await Task.Run(()=>modbus.PortOpen(settings.PortModbus, settings.BaudRate, settings.DataBits,
+                   //      settings.Parity, settings.StopBits));
                     //Если включить выход, то все нижние строки не будут доступны.
                     //return;
                 }
@@ -537,6 +538,7 @@ namespace PKM_AL
                 {
                     settings = ClassSettings.Load();
                     modbus.Mode = ClassModbus.eMode.None;
+                    GSM.StatusPortModem = ClassGSM.EModePortModem.None;
                 }
                 break;
             case "Пользователи...":
