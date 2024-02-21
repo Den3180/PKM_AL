@@ -8,7 +8,7 @@ namespace PKM_AL.Classes.TransferClasses;
 
 public class ClassGSM
 {
-            public delegate void EventHandlerStateChanged(bool State);
+        public delegate void EventHandlerStateChanged(bool State);
         public delegate void EventHandlerSendCommand(string Command);
         public delegate void EventHandlerReceivedMessage(string Message);
         public event EventHandlerStateChanged EventStateChanged;
@@ -57,7 +57,7 @@ public class ClassGSM
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
-{            
+        {            
              lock (new object())
              {
                     try

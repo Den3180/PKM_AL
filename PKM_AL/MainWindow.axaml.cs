@@ -501,6 +501,11 @@ namespace PKM_AL
             Environment.Exit(0);
         }
 
+        /// <summary>
+        /// Кнопки основного меню.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
     {
         MenuItem menuItem = (MenuItem)sender;
@@ -558,9 +563,16 @@ namespace PKM_AL
             break;
         }
     }
+        
+        /// <summary>
+        /// Открыть окно GSM.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItemGSM_Click(object sender, RoutedEventArgs e)
     {
-
+        WindowGSM frm = new WindowGSM(GSM);
+        frm.WindowShow(this);
     }
         private void MenuItem_Click_Form(object sender, RoutedEventArgs e)
     {

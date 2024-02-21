@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PKM_AL.Windows.WindowGSM"
+        Title="GSM модем" WindowStartupLocation="CenterScreen" Width="700" 
+        Height="500" CanResize="False" ShowInTaskbar="False">
+        <Grid Margin="10 5 10 10">
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1">
+                        <ScrollViewer>
+                                <TextBlock x:Name="txtInfo" Margin="5"></TextBlock>
+                        </ScrollViewer>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="5 0 0 5">
+                        <Button Content="Опрос" Margin="5 0 0 5" Click="ButtonPoll_Click"></Button>
+                        <Button Content="Инициализация" Margin="5 0 0 5" Click="ButtonInit_Click"></Button>
+                        <Button Content="Уровень сигнала" Margin="5 0 0 5" Click="ButtonSignal_Click"></Button>
+                        <Button Content="Наличие SMS" Margin="5 0 0 5" Click="ButtonMemory_Click"></Button>
+                        <Button Content="Чтение SMS" Margin="5 0 0 5" Click="ButtonSMS_Click"></Button>
+                </StackPanel>
+        </Grid>
+
+</Window>
