@@ -366,12 +366,20 @@ public class ClassGSM
         /// <param name="Command"></param>
         private void Send(string Command)
         {
-            if (port.IsOpen)
+            try
             {
-                port.WriteLine(Command);
-                EventSendCommand?.Invoke(Command);
+                if (port is { IsOpen: true })
+                {
+                    port.WriteLine(Command);
+                    EventSendCommand?.Invoke(Command);
+                }
+                // else
+                // {
+                //     StatusPortModem = EModePortModem.None;
+                //     if (EventStateChanged != null) EventStateChanged(false);
+                // }
             }
-            else
+            catch (Exception ex)
             {
                 StatusPortModem = EModePortModem.None;
                 if (EventStateChanged != null) EventStateChanged(false);
