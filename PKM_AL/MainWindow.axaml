@@ -106,8 +106,8 @@
 			<Border Grid.Column="8"/>
 				<TextBlock Grid.Column="9" Name="StatusFrames" Text="0/0" HorizontalAlignment="Center"/>
 			<Border Grid.Column="10"/>
-			<Image Grid.Column="11" Source="Resources/bullet-green-32.png" Name="ImageTx" ToolTip.Tip="TxD"></Image>
-			<Image Grid.Column="12" Source="Resources/bullet-green-32.png" Name="ImageRx" ToolTip.Tip="RxD"></Image>
+			<Image Grid.Column="11" Source="Resources/bullet-grey-32.png" Name="ImageTx" ToolTip.Tip="TxD"></Image>
+			<Image Grid.Column="12" Source="Resources/bullet-grey-32.png" Name="ImageRx" ToolTip.Tip="RxD"></Image>
 			<Border Grid.Column="13"/>
 			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
                            Margin="0 0 10 0" HorizontalAlignment="Left"/>

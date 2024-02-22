@@ -276,9 +276,9 @@ namespace PKM_AL
             else
             {
                 ImageTx.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-grey-32.png")));
                 ImageRx.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-grey-32.png")));
             }
             if (DateTime.Now.Second % 10 == 0)
             {
@@ -529,6 +529,8 @@ namespace PKM_AL
             case "Графики...":
             break;
             case "Журнал событий...":
+                ContentArea.Content = new UserControlEvents();
+                StatusMode.Text = "Журнал событий";
             break;
             case "Журнал тревог...":
             break;

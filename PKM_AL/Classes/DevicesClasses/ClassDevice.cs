@@ -6,10 +6,14 @@ using System.IO.Ports;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia.Threading;
 using PKM_AL.Classes;
 
 namespace PKM_AL
@@ -463,6 +467,7 @@ namespace PKM_AL
             _WaitAnswer = true;
         }
 
+        string assembly = Assembly.GetEntryAssembly()?.GetName().Name;
         /// <summary>
         /// Увеличение счетчика пакетов, выставление индикации, если пришел пакет, добавление события.
         /// </summary>
@@ -480,10 +485,14 @@ namespace PKM_AL
                 OnPropertyChanged(nameof(ColorLineDevice));
                 ClassEvent ev = new ClassEvent() { Type = ClassEvent.EnumType.Connect, Param = _Name, NameDevice = Name };
                 MainWindow.DB.EventAdd(ev);
-                MainWindow.Events.Add(ev);
+                Dispatcher.UIThread.Invoke(()=>MainWindow.Events.Add(ev));
             }
             _PacketLost = 0;
             _DTAct = DateTime.Now;
+            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageTx.Source = new Bitmap(
+                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-green-32.png"))));
+            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageRx.Source = new Bitmap(
+                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-green-32.png"))));
             //Изменение маркера на карте.
             //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_blue.png", UriKind.Relative));
         }
@@ -507,8 +516,12 @@ namespace PKM_AL
                 OnPropertyChanged(nameof(ColorLineDevice));
                 ClassEvent ev = new ClassEvent() { Type = ClassEvent.EnumType.Disconnect, Param = _Name, NameDevice = Name };
                 MainWindow.DB.EventAdd(ev);
-                MainWindow.Events.Add(ev);
+                Dispatcher.UIThread.Invoke(()=> MainWindow.Events.Add(ev));
             }
+            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageTx.Source = new Bitmap(
+                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-red-32.png"))));
+            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageRx.Source = new Bitmap(
+                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-red-32.png"))));
             //Изменение маркера на карте.
             //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_gray.png", UriKind.Relative));
         }
