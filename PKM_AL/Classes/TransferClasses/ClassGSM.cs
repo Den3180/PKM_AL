@@ -64,8 +64,7 @@ public class ClassGSM
                     {
                         while (port.BytesToRead > 0)
                         {
-                            string s;
-                                s = port.ReadLine();
+                            var s = port.ReadLine();
                             Parse(s);
                             EventReceivedMessage?.Invoke(s+$"-> COMMAND: {ActiveCommand}");
                         }
@@ -120,7 +119,8 @@ public class ClassGSM
             {
                 return false;
             }
-            if (EventStateChanged != null) EventStateChanged(true);
+
+            EventStateChanged?.Invoke(true);
             return true;
         }        
 
@@ -373,16 +373,11 @@ public class ClassGSM
                     port.WriteLine(Command);
                     EventSendCommand?.Invoke(Command);
                 }
-                // else
-                // {
-                //     StatusPortModem = EModePortModem.None;
-                //     if (EventStateChanged != null) EventStateChanged(false);
-                // }
             }
             catch (Exception ex)
             {
                 StatusPortModem = EModePortModem.None;
-                if (EventStateChanged != null) EventStateChanged(false);
+                EventStateChanged?.Invoke(false);
             }
         }
 

@@ -133,8 +133,9 @@ namespace PKM_AL
             int VersionDB = DB.InfoLoad();
             if (VersionDB != ClassDB.Version)
             {
-                var buttonResault = ClassMessage.ShowMessage(this, "Версия базы данных не поддерживается.\nВыполнить обновление?", "",
-                    ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Error);
+                var buttonResault = ClassMessage.ShowMessage(this, "Версия базы данных не поддерживается." +
+                                                                   "\nВыполнить обновление?", "", ButtonEnum.YesNo, 
+                                                                    icon: MsBox.Avalonia.Enums.Icon.Error);
                 if (buttonResault.Result == ButtonResult.No)
                 {
                     ClassMessage.ShowMessage(this, "База данных не обновлена.\nПриложение будет закрыто.",
@@ -521,6 +522,8 @@ namespace PKM_AL
                 StatusMode.Text = "Устройства";
             break;
             case "Каналы данных...":
+                ContentArea.Content = new UserControlChannels();
+                StatusMode.Text = "Каналы данных";
             break;
             case "Графики...":
             break;

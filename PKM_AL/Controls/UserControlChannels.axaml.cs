@@ -36,6 +36,7 @@ public partial class UserControlChannels : UserControl
     public UserControlChannels()
     {
         InitializeComponent();
+        GridChannels.ItemsSource=MainWindow.Channels;
     }
     
     public UserControlChannels(ClassDevice newDevice)
@@ -49,43 +50,39 @@ public partial class UserControlChannels : UserControl
             if (settings.ChannelsColumns.FirstOrDefault(x => x == col.Header?.ToString()) != null)
                 col.IsVisible = false;
         }
-        FilterItems();
+        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
     }
     
     /// <summary>
     /// Фильтр отображаемых регистров.
     /// </summary>
-    private void FilterItems()
+    private List<ClassChannel> FilterItems()
     {
-        if (_Device == null) return;
+        if (_Device == null) 
+            return new List<ClassChannel>();
         switch (Filter)
         {
          case   eFilter.All:
-             Channels=new ObservableCollection<ClassChannel>(MainWindow.Channels.Where(ch => 
-                                          ch.Device.ID == _Device.ID));
-             GridChannels.ItemsSource = Channels;
+             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID).ToList();
              break;
          case eFilter.AO:
-             Channels=new ObservableCollection<ClassChannel>(MainWindow.Channels.Where(ch => (
-                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.HoldingRegistry)));
-             GridChannels.ItemsSource = Channels;
+             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+                                                    ch.TypeRegistry==ClassChannel.EnumTypeRegistry.HoldingRegistry).ToList();
              break;
          case eFilter.DI:
-             Channels=new ObservableCollection<ClassChannel>(MainWindow.Channels.Where(ch => (
-                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.DiscreteInput)));
-             GridChannels.ItemsSource = Channels;
+             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+                                                        ch.TypeRegistry==ClassChannel.EnumTypeRegistry.DiscreteInput).ToList();
              break;
          case eFilter.DO:
-             Channels=new ObservableCollection<ClassChannel>( MainWindow.Channels.Where(ch => (
-                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.CoilOutput)));
-             GridChannels.ItemsSource = Channels;
+             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+                                                    ch.TypeRegistry==ClassChannel.EnumTypeRegistry.CoilOutput).ToList();
              break;
          case eFilter.AI:
-             Channels=new ObservableCollection<ClassChannel>( MainWindow.Channels.Where(ch => (
-                                       ch.Device.ID == _Device.ID && ch.TypeRegistry==ClassChannel.EnumTypeRegistry.InputRegistry)));
-             GridChannels.ItemsSource = Channels;
+             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+                                                    ch.TypeRegistry==ClassChannel.EnumTypeRegistry.InputRegistry).ToList();
              break;
          default:
+             return new List<ClassChannel>();
              break;
         }
     }
@@ -107,7 +104,11 @@ public partial class UserControlChannels : UserControl
     /// <param name="e"></param>
     private void cMenu_Opened(object sender, RoutedEventArgs e)
     {
-        
+        if (_Device == null)
+        {
+            ((ContextMenu)sender).Close();
+            e.Handled=true;
+        }
     }
 
     /// <summary>
@@ -257,35 +258,35 @@ public partial class UserControlChannels : UserControl
     private void MenuItemDI_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.DI;
-        FilterItems();
+        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAI_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AI;
-        FilterItems();
+        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemDO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.DO;
-        FilterItems();
+        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AO;
-        FilterItems();
+        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAll_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.All;
-        FilterItems();
+        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.Height = _actualHeightUserControl;
     }
 
