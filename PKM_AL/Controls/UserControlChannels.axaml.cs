@@ -108,7 +108,27 @@ public partial class UserControlChannels : UserControl
         {
             ((ContextMenu)sender).Close();
             e.Handled=true;
+            return;
         }
+        // bool FlagEnabled = MainWindow.User == null || MainWindow.User.GrantConfig;
+        // foreach (object item in cMenu.Items)
+        // {
+        //     if (item is MenuItem)
+        //     {
+        //         ((MenuItem)item).IsEnabled = FlagEnabled;
+        //         if (((MenuItem)item).Name == "Write")
+        //         {
+        //             ClassChannel obj = this.GridChannels.SelectedItem as ClassChannel;
+        //             if (obj == null) continue;
+        //             if (obj.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry
+        //                 || obj.TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
+        //                 ((MenuItem)item).IsEnabled = FlagEnabled;
+        //             else ((MenuItem)item).IsEnabled = false;
+        //         }
+        //     }
+        // }
+        //Отключение возможности конвертации карты из TikModScan при наличии сущ. карты у устройства.
+        this.convertFromTMS.IsEnabled = _Device?.Channels.Count == 0;
     }
 
     /// <summary>

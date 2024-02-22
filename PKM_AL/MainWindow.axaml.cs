@@ -47,6 +47,7 @@ namespace PKM_AL
         public static ClassGSM GSM;
         public static ClassModbus modbus;
         public static CancellationTokenSource cts;//Токен отмены.
+        public static ClassUser User;
 
 
         public static ObservableCollection<ClassGroup> Groups;
