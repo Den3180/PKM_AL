@@ -49,7 +49,6 @@ namespace PKM_AL
         public static CancellationTokenSource cts;//Токен отмены.
         public static ClassUser User;
 
-
         public static ObservableCollection<ClassGroup> Groups;
         public static ObservableCollection<ClassDevice> Devices;
         public static ObservableCollection<ClassChannel> Channels;
@@ -509,7 +508,8 @@ namespace PKM_AL
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
-    {
+        {
+            var currentContent = ContentArea.Content;
         MenuItem menuItem = (MenuItem)sender;
         switch (menuItem.Header)
         {
@@ -519,16 +519,19 @@ namespace PKM_AL
             case "Смена пользователя...":
             break;
             case "Устройства...":
+                if (currentContent is UserControlDevices) break; 
                 ContentArea.Content = new UserControlDevices();
                 StatusMode.Text = "Устройства";
             break;
             case "Каналы данных...":
+                if (currentContent is UserControlChannels) break; 
                 ContentArea.Content = new UserControlChannels();
                 StatusMode.Text = "Каналы данных";
             break;
             case "Графики...":
             break;
             case "Журнал событий...":
+                if (currentContent is UserControlEvents) break; 
                 ContentArea.Content = new UserControlEvents();
                 StatusMode.Text = "Журнал событий";
             break;
@@ -598,7 +601,8 @@ namespace PKM_AL
     /// <param name="sender"></param>
     /// <param name="e"></param>
         private void TreeView_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
-    {
+        {
+            var currentContent = ContentArea.Content;
         if ((sender as TreeView)?.SelectedItem is StackPanel subStackPanel)
         {
             ClassItem subGroup =new ClassItem();
@@ -616,6 +620,11 @@ namespace PKM_AL
                     ClassDevice obj = Devices.FirstOrDefault(x => x.ID == subGroup.ID);
                     ContentArea.Content = new UserControlChannels(obj);
                     break;
+                case ClassItem.eType.Log:
+                    if (currentContent is UserControlEvents) break; 
+                    ContentArea.Content = new UserControlEvents();
+                    StatusMode.Text = "Журнал событий";
+                    break;
             }
         }
         else if((sender as TreeView)?.SelectedItem is TreeViewItem treeViewItem)
@@ -632,11 +641,12 @@ namespace PKM_AL
                 switch (group?.GroupType)
                 {
                     case ClassGroup.eType.Devices:
+                        if (currentContent is UserControlDevices) break; 
                         ContentArea.Content = new UserControlDevices();
                         break;
                 }
         }
-    }
+        }
 
         /// <summary>
         /// Открывает окно добавление устройства.

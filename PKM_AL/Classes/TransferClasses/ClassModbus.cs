@@ -481,6 +481,7 @@ public class ClassModbus
         {
             //Индикация отправки пакета.
             device.PacketSended();
+            Dispatcher.UIThread.Invoke(()=>SendRequestEvent?.Invoke());
             device.CountGroups--;
             if (device.CountGroups <= 0)
             {
@@ -523,7 +524,8 @@ public class ClassModbus
             }
             //Индикация получения пакета.
             device.PacketReceived();
-
+             Dispatcher.UIThread.Invoke(()=>ReceivedAnswerEvent?.Invoke()); 
+            
             if(group.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry || group.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry)
             {
                 //Заполнение данных каналов, в соответсвии с их типом и адресом.

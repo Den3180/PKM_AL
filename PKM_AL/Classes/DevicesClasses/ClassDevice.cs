@@ -466,8 +466,7 @@ namespace PKM_AL
             OnPropertyChanged(nameof(PacketStatistics));
             _WaitAnswer = true;
         }
-
-        string assembly = Assembly.GetEntryAssembly()?.GetName().Name;
+      
         /// <summary>
         /// Увеличение счетчика пакетов, выставление индикации, если пришел пакет, добавление события.
         /// </summary>
@@ -489,10 +488,6 @@ namespace PKM_AL
             }
             _PacketLost = 0;
             _DTAct = DateTime.Now;
-            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageTx.Source = new Bitmap(
-                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-green-32.png"))));
-            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageRx.Source = new Bitmap(
-                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-green-32.png"))));
             //Изменение маркера на карте.
             //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_blue.png", UriKind.Relative));
         }
@@ -518,10 +513,6 @@ namespace PKM_AL
                 MainWindow.DB.EventAdd(ev);
                 Dispatcher.UIThread.Invoke(()=> MainWindow.Events.Add(ev));
             }
-            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageTx.Source = new Bitmap(
-                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-red-32.png"))));
-            Dispatcher.UIThread.Invoke(()=>MainWindow.currentMainWindow.ImageRx.Source = new Bitmap(
-                AssetLoader.Open(new Uri($"avares://{assembly}/Resources/bullet-red-32.png"))));
             //Изменение маркера на карте.
             //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_gray.png", UriKind.Relative));
         }
