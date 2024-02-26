@@ -524,7 +524,7 @@ public class ClassModbus
             }
             //Индикация получения пакета.
             device.PacketReceived();
-             Dispatcher.UIThread.Invoke(()=>ReceivedAnswerEvent?.Invoke()); 
+            Dispatcher.UIThread.Invoke(()=>ReceivedAnswerEvent?.Invoke()); 
             
             if(group.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry || group.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry)
             {

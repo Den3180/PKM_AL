@@ -14,6 +14,12 @@ public partial class UserControlEvents : UserControl
         InitializeComponent();
         GridEvents.ItemsSource = MainWindow.Events;
     }
+    
+    /// <summary>
+    /// Генерация номера строки, окрашивание строки.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
     {
         DataGridRow gridRow = e.Row;

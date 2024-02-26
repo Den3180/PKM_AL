@@ -512,6 +512,10 @@ namespace PKM_AL
                 ClassEvent ev = new ClassEvent() { Type = ClassEvent.EnumType.Disconnect, Param = _Name, NameDevice = Name };
                 MainWindow.DB.EventAdd(ev);
                 Dispatcher.UIThread.Invoke(()=> MainWindow.Events.Add(ev));
+                if (ev.Category is ClassEvent.EnumCategory.Fault or ClassEvent.EnumCategory.Alarm)
+                {
+                    Dispatcher.UIThread.Invoke(()=>MainWindow.EventsAlarm.Add(ev));
+                }
             }
             //Изменение маркера на карте.
             //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_gray.png", UriKind.Relative));

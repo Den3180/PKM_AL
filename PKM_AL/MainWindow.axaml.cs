@@ -53,6 +53,7 @@ namespace PKM_AL
         public static ObservableCollection<ClassDevice> Devices;
         public static ObservableCollection<ClassChannel> Channels;
         public static ObservableCollection<ClassEvent> Events;
+        public static ObservableCollection<ClassEvent> EventsAlarm;
         public static ObservableCollection<ClassCommand> Commands;
         public static Queue<ClassCommand> QueueCommands;
         public static ObservableCollection<ClassLink> Links;
@@ -159,6 +160,7 @@ namespace PKM_AL
             }
 
             Events = new ObservableCollection<ClassEvent>();
+            EventsAlarm = new ObservableCollection<ClassEvent>();
             Devices = new ObservableCollection<ClassDevice>(DB.DevicesLoad());
             Channels = new ObservableCollection<ClassChannel>(DB.RegistriesLoad(0));
             Groups = new ObservableCollection<ClassGroup>();
@@ -323,7 +325,7 @@ namespace PKM_AL
             if (_TxCount > 9999) _TxCount = 0;
             StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
             ImageTx.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-red-32.png")));
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }
         
         private void Modbus_ReceivedAnswerEvent()
@@ -510,7 +512,7 @@ namespace PKM_AL
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             var currentContent = ContentArea.Content;
-        MenuItem menuItem = (MenuItem)sender;
+            MenuItem menuItem = (MenuItem)sender;
         switch (menuItem.Header)
         {
             case "Выход":
@@ -536,8 +538,12 @@ namespace PKM_AL
                 StatusMode.Text = "Журнал событий";
             break;
             case "Журнал тревог...":
+                ContentArea.Content = new UserControlAlarms();
+                StatusMode.Text = "Журнал тревог";
             break;
             case "Журнал сообщений...":
+                ContentArea.Content = new UserControlMessages();
+                StatusMode.Text = "Журнал сообщений";
             break;
             case "Карта...":
             break;
@@ -624,6 +630,11 @@ namespace PKM_AL
                     if (currentContent is UserControlEvents) break; 
                     ContentArea.Content = new UserControlEvents();
                     StatusMode.Text = "Журнал событий";
+                    break;
+                case ClassItem.eType.Alarms:
+                    if (currentContent is UserControlAlarms) break;
+                    ContentArea.Content = new UserControlAlarms();
+                    StatusMode.Text = "Журнал тревог";
                     break;
             }
         }

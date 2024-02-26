@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pkmAl="clr-namespace:PKM_AL"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PKM_AL.Controls.UserControlAlarms" >
+    <Grid>
+        <DataGrid Name="GridAlarms"
+                  x:DataType="pkmAl:ClassEvent" 
+                  AutoGenerateColumns="false"
+                  IsReadOnly="True"
+                  GridLinesVisibility="All"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  Foreground="Black"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  ColumnHeaderHeight="50"
+                  HorizontalGridLinesBrush="Black"
+                  VerticalGridLinesBrush="Black"
+                  LoadingRow="DataGrid_LoadingRow">
+            <DataGrid.Styles>
+                <Style Selector="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="SeparatorBrush" Value="Black"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="AreSeparatorsVisible" Value="True"/>
+                    <Setter Property="Background" Value="Beige"/>
+                </Style>
+            </DataGrid.Styles>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+			                               AncestorType={x:Type DataGridRow}}, Path=Tag}" />
+                <DataGridTextColumn Header="Дата/Время" Width="Auto" Binding="{Binding StrDTM}"/>
+                <DataGridTextColumn Header="Тип события" Width="180" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Параметр" Width="200" Binding="{Binding Param}"/>
+                <DataGridTextColumn Header="Подтверждение" Width="Auto" Binding="{Binding Val}"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu Name="CMenu">
+                    <MenuItem Header="Подтвердить тревогу" Click="MenuItemAck_Click"></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Подтвердить все" Click="MenuItemAckAll_Click"></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+    </Grid>
+</UserControl>
