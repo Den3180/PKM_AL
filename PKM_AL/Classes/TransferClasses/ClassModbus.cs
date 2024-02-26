@@ -134,7 +134,7 @@ public class ClassModbus
                 port = null;
         }
       
-            port = new SerialPort(PortNumber)
+        port = new SerialPort(PortNumber)
             {
                 BaudRate = BaudRate,            //Скорость.
                 DataBits = DataBits,            //Длина слова.
