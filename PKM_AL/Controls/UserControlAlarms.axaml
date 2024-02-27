@@ -33,7 +33,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
 			                               AncestorType={x:Type DataGridRow}}, Path=Tag}" />
-                <DataGridTextColumn Header="Дата/Время" Width="Auto" Binding="{Binding StrDTM}"/>
+                <DataGridTextColumn Header="Дата/Время" Width="Auto" Binding="{Binding StrDT}"/>
                 <DataGridTextColumn Header="Тип события" Width="180" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Параметр" Width="200" Binding="{Binding Param}"/>
                 <DataGridTextColumn Header="Подтверждение" Width="Auto" Binding="{Binding Val}"/>

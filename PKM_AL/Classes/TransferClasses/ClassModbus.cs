@@ -151,6 +151,7 @@ public class ClassModbus
                 return false;
             }
             Mode = eMode.PortOpen;
+            
             return true;
     }
     

@@ -345,9 +345,20 @@ namespace PKM_AL
         {
             if (_PortErrorMessageShown) return; 
             _PortErrorMessageShown = true;
-           Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessage(currentMainWindow, settings.PortModbus.ToString() + 
-               " не доступен" + Environment.NewLine + ErrorMessage + Environment.NewLine + 
-               "Проверьте настройки конфигурации","Инициализация",ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error));
+            ClassEvent eventLostPort = new ClassEvent()
+            {
+                Type = ClassEvent.EnumType.PortDisabled,
+                Param = settings.PortModbus
+            };
+            DB.EventAdd(eventLostPort);
+            Events.Add(eventLostPort);
+            if (eventLostPort.Category is ClassEvent.EnumCategory.Fault or ClassEvent.EnumCategory.Alarm)
+            {
+                EventsAlarm.Add(eventLostPort);
+            }
+            Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessage(currentMainWindow, settings.PortModbus.ToString() + 
+                " не доступен" + Environment.NewLine + ErrorMessage + Environment.NewLine + 
+                "Проверьте настройки конфигурации","Инициализация",ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error));
         }
 
         /// <summary>

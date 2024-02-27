@@ -7,6 +7,7 @@
         <entry key="PKM_AL/Controls/UserControlAlarms.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlArchive.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlChannels.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/UserControlCommands.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlDevices.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlEvents.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlMessages.axaml" value="PKM_AL/PKM_AL.csproj" />

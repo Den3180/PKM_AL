@@ -21,7 +21,8 @@ namespace PKM_AL
             Connect = 5,   //Установление связи.
             Disconnect = 6,//Потеря связи.
             Over = 7,      //Превышение.
-            Less = 8       //Понижение.
+            Less = 8,       //Понижение.
+            PortDisabled=9 //Порт не доступен.
         }
 
         public enum EnumCategory
@@ -79,6 +80,7 @@ namespace PKM_AL
                     EnumType.Disconnect => "Потеряна связь",
                     EnumType.Over => "Значение выше допустимого",
                     EnumType.Less => "Значение ниже допустимого",
+                    EnumType.PortDisabled => "Порт не доступен",
                     _ => "Нет данных",
                 };
             }
@@ -93,6 +95,7 @@ namespace PKM_AL
                     EnumType.Disconnect => EnumCategory.Fault,
                     EnumType.Over => EnumCategory.Fault,
                     EnumType.Less => EnumCategory.Fault,
+                    EnumType.PortDisabled => EnumCategory.Fault,
                     _ => EnumCategory.None,
                 };
             }
