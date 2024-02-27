@@ -202,6 +202,7 @@ namespace PKM_AL
 
             //Создается событие начала работы программы и добавляется архив базы данных.
             DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Start});
+            //Выбор стартового окна программы.
             switch (settings.StartWindow)
             {
                 case 0:
@@ -319,6 +320,9 @@ namespace PKM_AL
             ClassLog.Write(s);
         }
         
+        /// <summary>
+        /// Счетчик отправленных пакетов и индикация.
+        /// </summary>
         private void Modbus_SendRequestEvent()
         {
             _TxCount++;
@@ -328,6 +332,9 @@ namespace PKM_AL
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }
         
+        /// <summary>
+        /// Счетчик полученных пакетов и индикация.
+        /// </summary>
         private void Modbus_ReceivedAnswerEvent()
         {
             _RxCount++;
@@ -600,6 +607,7 @@ namespace PKM_AL
         WindowGSM frm = new WindowGSM(GSM);
         frm.WindowShow(this);
     }
+        
         private void MenuItem_Click_Form(object sender, RoutedEventArgs e)
     {
 
@@ -612,7 +620,7 @@ namespace PKM_AL
     {
     }
     
-    /// <summary>
+        /// <summary>
     /// Выбор элемента дерева.
     /// </summary>
     /// <param name="sender"></param>
@@ -646,6 +654,11 @@ namespace PKM_AL
                     if (currentContent is UserControlAlarms) break;
                     ContentArea.Content = new UserControlAlarms();
                     StatusMode.Text = "Журнал тревог";
+                    break;
+                case ClassItem.eType.Command:
+                    if (currentContent is UserControlCommands) break;
+                    ContentArea.Content = new UserControlCommands();
+                    StatusMode.Text = "Команды";
                     break;
             }
         }

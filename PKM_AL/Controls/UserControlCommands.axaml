@@ -3,6 +3,53 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:pkmAl="clr-namespace:PKM_AL.Classes"
              x:Class="PKM_AL.Controls.UserControlCommands">
-    Welcome to Avalonia!
+    <Grid>
+        <DataGrid Name="GridCommands"
+                  x:DataType="pkmAl:ClassCommand" 
+                  AutoGenerateColumns="false"
+                  IsReadOnly="True"
+                  GridLinesVisibility="All"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  Foreground="Black"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  ColumnHeaderHeight="50"
+                  HorizontalGridLinesBrush="Black"
+                  VerticalGridLinesBrush="Black"
+                  LoadingRow="DataGrid_LoadingRow">
+            <DataGrid.Styles>
+                <Style Selector="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="SeparatorBrush" Value="Black"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="AreSeparatorsVisible" Value="True"/>
+                    <Setter Property="Background" Value="Beige"/>
+                </Style>
+            </DataGrid.Styles>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+			                               AncestorType={x:Type DataGridRow}}, Path=Tag}" />
+                <DataGridTextColumn Header="Наименование" Width="Auto" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Устройство" Width="180" Binding="{Binding DeviceName}"/>
+                <DataGridTextColumn Header="Тип команды" Width="200" Binding="{Binding StrCommandType}"/>
+                <DataGridTextColumn Header="Адрес" Width="Auto" Binding="{Binding Address}"/>
+                <DataGridTextColumn Header="Значение" Width="Auto" Binding="{Binding Value}"/>
+                <DataGridTextColumn Header="Период" Width="Auto" Binding="{Binding Period}"/>
+                <DataGridTextColumn Header="Выполнено" Width="Auto" Binding="{Binding StrDT}"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu Name="cMenu" Opened="сMenu_OnOpened">
+                <MenuItem Header="Добавить команду..." Click="MenuItemAdd_Click"/>
+                <MenuItem Header="Изменить команду..." Click="MenuItemEdit_Click"/>
+                <MenuItem Header="Удалить команду..." Click="MenuItemDelete_Click"/>
+                <Separator/>
+                <MenuItem Header="Выполнить команду..." Click="MenuItemRun_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+    </Grid>
 </UserControl>
