@@ -38,6 +38,9 @@
 
   <ItemGroup>
     <Compile Remove="Windows\WindowColomns.axaml.cs" />
+    <Compile Update="Windows\WindowCommand.axaml.cs">
+      <DependentUpon>WindowCommand.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 

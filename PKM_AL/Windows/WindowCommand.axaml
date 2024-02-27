@@ -4,7 +4,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PKM_AL.Windows.WindowCommand"
-        Title="Команда" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" >
-        <Grid Margin="10" RowDefinitions="30,30,30,30,30,30" ColumnDefinitions="120,Auto">
+        Title="Команда" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" CanResize="False" >
+        <Grid Margin="10" RowDefinitions="30,30,30,30,30,30,Auto" ColumnDefinitions="120,Auto">
+                <Label Grid.Row="0" Grid.Column="0" Content="Наименование:"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="Команда 1" HorizontalAlignment="Left" Width="150"
+                         Margin="5" Name="CommandName"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Устройство:"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="5"
+                          Name ="ComboDevice"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Тип команды:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="5"
+                          Name ="ComboCommand" SelectedIndex="0">
+                        <ComboBoxItem Content="Write Coil (DO)"/>
+                        <ComboBoxItem Content="Write Registry (AO)"/>
+                </ComboBox>
+                <Label Grid.Row="3" Grid.Column="0" Content="Адрес:"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="70"
+                         Margin="5" Name="Address"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="Значение:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="70"
+                         Margin="5" Name="Val"/>
+                <Label Grid.Row="5" Grid.Column="0" Content="Период, с:"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="70"
+                         Margin="5" Name="Period"/>
+                <StackPanel Grid.Row="6" Grid.Column="1"  Orientation="Horizontal">
+                <Button Content="Сохранить" Height="30" Width="100"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click"/>
+                <Button Content="Отмена" Height="30" Width="100" IsCancel="True"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click"/>
+                </StackPanel>
         </Grid>
 </Window>

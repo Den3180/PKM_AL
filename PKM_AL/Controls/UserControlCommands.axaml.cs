@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using PKM_AL.Classes;
+using PKM_AL.Windows;
 
 namespace PKM_AL.Controls;
 
@@ -25,7 +27,8 @@ public partial class UserControlCommands : UserControl
 
     private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
     {
-        
+        WindowCommand frm = new WindowCommand(new ClassCommand());
+        frm.WindowShow(MainWindow.currentMainWindow);
     }
 
     private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
