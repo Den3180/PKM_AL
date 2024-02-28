@@ -17,12 +17,14 @@ namespace PKM_AL.Classes.TransferClasses;
 
 public class ClassModbus
 {
-    public delegate void PortErrorEventHandler(string ErrorMessage);
+    public delegate void PortErrorEventHandler(string errorMessage);
     public delegate void SendRequestEventHandler();
     public delegate void ReceivedAnswerEventHandler();
+    public delegate void ReceivedNotAnswerEventHandler();
     public event PortErrorEventHandler PortErrorEvent;
     public event SendRequestEventHandler SendRequestEvent;
     public event ReceivedAnswerEventHandler ReceivedAnswerEvent;
+    public event ReceivedNotAnswerEventHandler ReceivedNotAnswerEvent;
     
     /// <summary>
     /// Режимы последовательного порта.
@@ -521,6 +523,7 @@ public class ClassModbus
             {
                 //Индикация ошибки получения пакета.
                 device.PacketNotReceived();
+                Dispatcher.UIThread.Invoke(()=>ReceivedNotAnswerEvent?.Invoke()); 
                 if (MainWindow.settings.RecordLog)
                     ClassLog.Write($"Answer Error = {Ex.Message} Device name:{device.Name} Device address:{device.Address}");
                 continue;

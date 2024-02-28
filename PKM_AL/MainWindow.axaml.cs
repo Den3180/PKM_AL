@@ -194,6 +194,7 @@ namespace PKM_AL
             modbus.PortErrorEvent += Modbus_PortErrorEvent;
             modbus.SendRequestEvent += Modbus_SendRequestEvent;
             modbus.ReceivedAnswerEvent += Modbus_ReceivedAnswerEvent;
+            modbus.ReceivedNotAnswerEvent += Modbus_ReceivedNotAnswerEvent;
             
             GSM = new ClassGSM();
             GSM.EventStateChanged += GSM_EventStateChanged;
@@ -342,6 +343,12 @@ namespace PKM_AL
             StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
             ImageRx.Source = new Bitmap
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
+        }
+
+        private void Modbus_ReceivedNotAnswerEvent()
+        {
+            ImageRx.Source = new Bitmap
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-red-32.png")));
         }
         
         /// <summary>
