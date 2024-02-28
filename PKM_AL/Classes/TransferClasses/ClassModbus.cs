@@ -348,6 +348,8 @@ public class ClassModbus
         {
             //Получение текущего устройства из списка.
             ClassDevice device = MainWindow.Devices[i];
+            //Если нет каналов у устройства - пропуск итерации.
+            if (device.Channels.Count == 0) continue;
             //Получаем модбас мастер.
             ModbusMaster master = GetMaster(device);
             //Если нет мастера, то пропуск итерации.
