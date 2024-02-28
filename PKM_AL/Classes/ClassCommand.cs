@@ -4,15 +4,16 @@ namespace PKM_AL.Classes;
 
 public class ClassCommand : MyPropertyChanged
 {
-            public enum EnumType
+        public enum EnumType
         {
             WriteCoil = 1,
             WriteRegistry = 2
         }
 
         public int ID { get; set; }
-        public int Address { get; set; }
 
+
+        private int _address;
         private string _Name;
         private ClassDevice _Device;
         private DateTime _DT;
@@ -21,6 +22,15 @@ public class ClassCommand : MyPropertyChanged
         private int _Period;
         private ClassChannel _Channel;
 
+        public int Address
+        {
+            get=>_address;
+            set
+            {
+                _address = value;
+                OnPropertyChanged(prop: "Address");
+            }
+        }
         public string Name
         {
             get { return _Name; }

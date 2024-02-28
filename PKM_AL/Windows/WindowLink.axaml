@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PKM_AL.Windows.WindowLink"
+        Title="Связь события" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" CanResize="False"
+        ShowInTaskbar="False">
+    <Grid Margin="10" RowDefinitions="30,30,30,*" ColumnDefinitions="80,*">
+        <Label Grid.Row="0" Grid.Column="0" Content="Событие:"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" Width="190" HorizontalAlignment="Left" Margin="5"
+                  Name ="ComboEvent" SelectedIndex="0"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Источник:"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Width="190" HorizontalAlignment="Left" Margin="5"
+                  Name ="ComboSource" SelectedIndex="0"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Команда:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <ComboBox Grid.Row="2" Grid.Column="1" Width="190" HorizontalAlignment="Left" Margin="5"
+                  Name ="ComboCommand" SelectedIndex="0">
+        </ComboBox>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+        <Button Content="Сохранить" Height="30" Width="100" HorizontalContentAlignment="Center"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+        <Button Content="Отмена" Height="30" Width="100" HorizontalContentAlignment="Center" IsCancel="True"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+
+</Window>

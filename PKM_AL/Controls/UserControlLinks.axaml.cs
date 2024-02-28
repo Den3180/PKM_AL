@@ -9,13 +9,14 @@ using PKM_AL.Windows;
 
 namespace PKM_AL.Controls;
 
-public partial class UserControlCommands : UserControl
+public partial class UserControlLinks : UserControl
 {
     private double _actualHeightUserControl; //Актуальная высота UserControl.
-    public UserControlCommands()
+    
+    public UserControlLinks()
     {
         InitializeComponent();
-        GridCommands.ItemsSource = MainWindow.Commands;
+        GridLinks.ItemsSource = MainWindow.Links;
     }
 
     private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
@@ -35,33 +36,25 @@ public partial class UserControlCommands : UserControl
 
     private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
     {
-        WindowCommand frm = new WindowCommand(new ClassCommand());
+        WindowLink frm = new WindowLink(new ClassLink());
         frm.WindowShow(MainWindow.currentMainWindow);
     }
 
     private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
     {
-        ClassCommand obj = GridCommands.SelectedItem as ClassCommand;
-        WindowCommand frm = new WindowCommand(obj);
+        ClassLink obj = this.GridLinks.SelectedItem as ClassLink;
+        WindowLink frm = new WindowLink(obj);
         frm.WindowShow(MainWindow.currentMainWindow);
     }
 
     private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
     {
-        ClassCommand obj = this.GridCommands.SelectedItem as ClassCommand;
+        ClassLink obj = this.GridLinks.SelectedItem as ClassLink;
         if (obj == null) return;
-        Task<ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить команду\' {obj.Name}\'?", owner: MainWindow.currentMainWindow,
+        Task<ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить связь?", owner: MainWindow.currentMainWindow,
             buttonEnum: ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
         if (res.Result == ButtonResult.No) return;
-        if (MainWindow.DB.CommandDel(obj)) MainWindow.Commands.Remove(obj);
-    }
-
-    private void MenuItemRun_Click(object sender, RoutedEventArgs e)
-    {
-        ClassCommand obj = this.GridCommands.SelectedItem as ClassCommand;
-        if (obj == null) return;
-        //Вставка команды в очередь первоочередных команд.
-        MainWindow.QueueCommands.Enqueue(obj);
+        if (MainWindow.DB.LinkDel(obj)) MainWindow.Links.Remove(obj);
     }
 
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
@@ -69,11 +62,12 @@ public partial class UserControlCommands : UserControl
         try
         {
             _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
-            GridCommands.Height = _actualHeightUserControl;
+            GridLinks.Height = _actualHeightUserControl;
         }
         catch
         {
             _actualHeightUserControl=double.NaN;  
         }
     }
+  
 }

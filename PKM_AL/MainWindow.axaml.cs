@@ -660,6 +660,11 @@ namespace PKM_AL
                     ContentArea.Content = new UserControlCommands();
                     StatusMode.Text = "Команды";
                     break;
+                case ClassItem.eType.Links:
+                    if(currentContent is UserControlLinks) break;
+                    ContentArea.Content = new UserControlLinks();
+                    StatusMode.Text = "Связи событий";
+                    break;
             }
         }
         else if((sender as TreeView)?.SelectedItem is TreeViewItem treeViewItem)

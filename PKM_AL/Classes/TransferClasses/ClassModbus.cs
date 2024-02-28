@@ -289,7 +289,7 @@ public class ClassModbus
                 WriteRegistry(device, (ushort)channel.Address, NewValue);
             }
         }
-        //Цикл проверки наличия команд в очереди команд.
+        //Цикл проверки наличия команд в очереди команд(преимущественное выполнение).
         for (int i = 0; i < MainWindow.QueueCommands.Count; i++)
         {
             //Удаляет объект из начала очереди и возвращает его.
