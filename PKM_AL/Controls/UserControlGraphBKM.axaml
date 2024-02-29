@@ -3,13 +3,89 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:pkmAl="clr-namespace:PKM_AL"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="1000"
              x:Class="PKM_AL.Controls.UserControlGraphBKM" Loaded="Control_OnLoaded">
-    <Grid ColumnDefinitions="*,220">
+    <Grid ColumnDefinitions="*,0.2*">
         <UniformGrid Name="grathic"  Rows="3">
             <ScottPlot:AvaPlot Name="graphBKM_1"/>
             <ScottPlot:AvaPlot Name="graphBKM_2"/>
             <ScottPlot:AvaPlot Name="graphBKM_3"/>
+                    <!--Табличное представление-->
+        <Grid Name="gTable" IsVisible="False">
+            <DataGrid Grid.Column="0" 
+                      Name="GridEvents"
+                      x:DataType="pkmAl:ClassEvent"
+                      AutoGenerateColumns="False"
+                      CanUserResizeColumns="False" 
+                      CanUserReorderColumns="False"
+                      IsReadOnly="True" 
+                      GridLinesVisibility="None" 
+                      LoadingRow="GridEvents_LoadingRow">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="№ п/п" Width="50" 
+                                        Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                        AncestorType={x:Type DataGridRow}}, Path=Tag}"/>
+                    <DataGridTextColumn Header="Дата/Время" Width="120" Binding="{Binding StrDT}"/>
+                    <DataGridTextColumn Header="Устройство" Width="120" Binding="{Binding NameDevice}"/>
+                    <DataGridTextColumn Header="Тип события" Width="180" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Параметр" Width="200" Binding="{Binding Param}"/>
+                    <DataGridTextColumn Header="Значение" Width="120" Binding="{Binding Val}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
         </UniformGrid>
+        <Grid x:Name="gBigData" IsVisible="False" Background="{Binding ElementName=grathic, Path=Background}">
+            <ScottPlot:AvaPlot x:Name="wpfBigData" Tapped="wpfBigData_MouseDown"/>                    
+        </Grid>
+        <!--Информационно-расчетная панель-->
+        <StackPanel Grid.Column="1" Margin="5">
+                <StackPanel>
+                    <UniformGrid Columns="2" Margin="2">
+                        <TextBlock Text="Участок" VerticalAlignment="Center"/>
+                        <TextBlock Name="AreaTextBlock"  Text="Технопром" HorizontalAlignment="Stretch" FontWeight="Bold" />
+                    </UniformGrid>
+                    <UniformGrid Columns="2" Margin="2">
+                        <TextBlock Text="КИП" VerticalAlignment="Center"/>
+                        <ComboBox Name="KIP" SelectedIndex="0" Width="120" SelectionChanged="KIP_SelectionChanged"/>
+                    </UniformGrid>
+                </StackPanel>
+            
+                <StackPanel>
+                    <Label Content="Начало периода:"/>
+                    <DockPanel>
+                        <CalendarDatePicker Name="DBegin" Width="130" SelectedDateChanged="DBegin_SelectedDateChanged" />
+                        <TextBox Name="TBegin" Text="00:00:00" Margin ="5 0 0 0"
+                                 VerticalContentAlignment="Center"/>
+                    </DockPanel>
+                    <Label Content="Окончание периода:"/>
+                    <DockPanel>
+                        <CalendarDatePicker Name="DEnd" Width="130"  SelectedDate="{x:Static sys:DateTime.Now}" />
+                        <TextBox Name="TEnd" Text="00:00:00"  Margin ="5 0 0 0"
+                                 VerticalContentAlignment="Center"/>
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel x:Name="channelBoxes">
+                    <DockPanel Margin="0 2 0 1">
+                        <ComboBox DockPanel.Dock="Left" Name="cb1" SelectedIndex="0" Width="127"/>
+                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb1" Content="Тренд" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <DockPanel  Margin="0 2 0 1">
+                        <ComboBox DockPanel.Dock="Left" Name="cb2" SelectedIndex="0" Width="127"/>
+                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb2" Content="Тренд" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <DockPanel  Margin="0 2 0 1">
+                        <ComboBox DockPanel.Dock="Left" Name="cb3" SelectedIndex="0" Width="127"/>
+                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb3" Content="Тренд" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </DockPanel>
+                </StackPanel>
+            <Button x:Name="bApply" Content="Применить"  IsEnabled="False" Margin="0 10 0 0" Click="ButtonFind_Click"></Button>
+            <UniformGrid Columns="2">
+                <Button Name="bGrath" Content="График" IsEnabled="False" Margin="10" Click="bGrath_Click"/>
+                <Button Name="bTable" Content="Таблица" IsEnabled="False" Margin="10" Click="bTable_Click"/>
+            </UniformGrid>
+            <Button Name="bExcel" Content="Экспорт в Excel"  IsEnabled="False" Margin="0 10 0 0" Click="bExcel_Click"/>
+        </StackPanel>
     </Grid>
 </UserControl>

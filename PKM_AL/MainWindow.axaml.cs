@@ -560,7 +560,7 @@ namespace PKM_AL
             break;
             case "Графики...":
                 if (currentContent is UserControlGraphBKM) break; 
-                ContentArea.Content = new UserControlGraphBKM();
+                ContentArea.Content = new UserControlGraphBKM(new object());
                 StatusMode.Text = "Графики трендов";
             break;
             case "Журнал событий...":
@@ -682,7 +682,7 @@ namespace PKM_AL
                     break;
                 case ClassItem.eType.Graph:
                     if (currentContent is UserControlGraphBKM) break; 
-                    ContentArea.Content = new UserControlGraphBKM();
+                    ContentArea.Content = new UserControlGraphBKM(new object());
                     StatusMode.Text = "Графики трендов";
                     break;
             }
