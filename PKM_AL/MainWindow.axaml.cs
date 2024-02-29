@@ -345,6 +345,9 @@ namespace PKM_AL
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }
 
+        /// <summary>
+        /// Индикация не полученных пакетов.
+        /// </summary>
         private void Modbus_ReceivedNotAnswerEvent()
         {
             ImageRx.Source = new Bitmap
@@ -556,6 +559,9 @@ namespace PKM_AL
                 StatusMode.Text = "Каналы данных";
             break;
             case "Графики...":
+                if (currentContent is UserControlGraphBKM) break; 
+                ContentArea.Content = new UserControlGraphBKM();
+                StatusMode.Text = "Графики трендов";
             break;
             case "Журнал событий...":
                 if (currentContent is UserControlEvents) break; 
@@ -563,10 +569,12 @@ namespace PKM_AL
                 StatusMode.Text = "Журнал событий";
             break;
             case "Журнал тревог...":
+                if (currentContent is UserControlAlarms) break; 
                 ContentArea.Content = new UserControlAlarms();
                 StatusMode.Text = "Журнал тревог";
             break;
             case "Журнал сообщений...":
+                if (currentContent is UserControlMessages) break; 
                 ContentArea.Content = new UserControlMessages();
                 StatusMode.Text = "Журнал сообщений";
             break;
@@ -671,6 +679,11 @@ namespace PKM_AL
                     if(currentContent is UserControlLinks) break;
                     ContentArea.Content = new UserControlLinks();
                     StatusMode.Text = "Связи событий";
+                    break;
+                case ClassItem.eType.Graph:
+                    if (currentContent is UserControlGraphBKM) break; 
+                    ContentArea.Content = new UserControlGraphBKM();
+                    StatusMode.Text = "Графики трендов";
                     break;
             }
         }

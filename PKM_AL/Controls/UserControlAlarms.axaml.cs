@@ -10,7 +10,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using System.ComponentModel;
 using System.Reactive.Linq;
-using DynamicData;
 
 namespace PKM_AL.Controls;
 
