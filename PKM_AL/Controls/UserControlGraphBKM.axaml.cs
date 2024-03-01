@@ -433,6 +433,7 @@ public partial class UserControlGraphBKM : UserControl
                 lst.Add(ev);
             }
         }
+        enmr.Dispose();
         return lst;
     }
 
