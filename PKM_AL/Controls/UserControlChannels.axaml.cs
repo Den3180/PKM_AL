@@ -63,22 +63,22 @@ public partial class UserControlChannels : UserControl
         switch (Filter)
         {
          case   eFilter.All:
-             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID).ToList();
+             return MainWindow.Channels.Where(ch => ch.Device?.ID == _Device.ID).ToList();
              break;
          case eFilter.AO:
-             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+             return MainWindow.Channels.Where(ch => ch.Device?.ID == _Device.ID && 
                                                     ch.TypeRegistry==ClassChannel.EnumTypeRegistry.HoldingRegistry).ToList();
              break;
          case eFilter.DI:
-             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+             return MainWindow.Channels.Where(ch => ch.Device?.ID == _Device.ID && 
                                                         ch.TypeRegistry==ClassChannel.EnumTypeRegistry.DiscreteInput).ToList();
              break;
          case eFilter.DO:
-             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+             return MainWindow.Channels.Where(ch => ch.Device?.ID == _Device.ID && 
                                                     ch.TypeRegistry==ClassChannel.EnumTypeRegistry.CoilOutput).ToList();
              break;
          case eFilter.AI:
-             return MainWindow.Channels.Where(ch => ch.Device.ID == _Device.ID && 
+             return MainWindow.Channels.Where(ch => ch.Device?.ID == _Device.ID && 
                                                     ch.TypeRegistry==ClassChannel.EnumTypeRegistry.InputRegistry).ToList();
              break;
          default:
