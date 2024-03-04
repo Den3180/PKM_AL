@@ -237,8 +237,8 @@ public partial class UserControlGraphBKM : UserControl
         {
             ClassMessage.ShowMessage(MainWindow.currentMainWindow, $"Нет данных для параметра {selectParam}!");
             AvaPlot wpf = (grathic.Children[indexCombo] as AvaPlot);
-            wpf.Plot.Clear();
-            wpf.Refresh();
+            wpf?.Plot.Clear();
+            wpf?.Refresh();
             return;
         }
         SetLimitGraph(selectParam);
@@ -274,7 +274,7 @@ public partial class UserControlGraphBKM : UserControl
             plt.Title(selectParam);
             //plt.SetAxisLimits(xs[0], xs[^1], ys.Min() ,ys.Max());
             //plt.XAxis.SetBoundary(xs[0]-10, xs[^1]+10);
-
+            
             var lineParam = plt.Add.Scatter(xs, ys);
             lineParam.Color = ScottPlot.Generate.RandomColor();
             lineParam.LineWidth = 2.5f;
@@ -332,7 +332,7 @@ public partial class UserControlGraphBKM : UserControl
             var limLabelmin = plt.Add.Text($"Минимальный защитный потенциал {ln2.Y} В",x,ln2.Y);
             limLabelmin.Size = 16;
             limLabelmin.Bold = true;
-            var limLabelMax = plt.Add.Text($"Максимальный защитный потенциал {ln1.Y} В", x, ln1.Y/*, color: System.Drawing.Color.Black*/);
+            var limLabelMax = plt.Add.Text($"Максимальный защитный потенциал {ln1.Y} В", x, ln1.Y);
             limLabelMax.Bold = true;
             limLabelMax.Label.OffsetY = 25;
             //plt.YAxis.SetBoundary(ln1.Y*1.1,ln2.Y*0.9);
