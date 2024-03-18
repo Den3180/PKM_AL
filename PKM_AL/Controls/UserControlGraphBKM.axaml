@@ -8,10 +8,11 @@
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="1000"
              x:Class="PKM_AL.Controls.UserControlGraphBKM" Loaded="Control_OnLoaded">
     <Grid ColumnDefinitions="*,0.2*">
-        <UniformGrid Name="grathic"  Rows="3">
-            <ScottPlot:AvaPlot Name="graphBKM_1"/>
-            <ScottPlot:AvaPlot Name="graphBKM_2"/>
-            <ScottPlot:AvaPlot Name="graphBKM_3"/>
+        <UniformGrid Name="grathic"  Rows="3" >
+            <ScottPlot:AvaPlot Name="graphBKM_1" DoubleTapped="GraphBKM_1_OnDoubleTapped" Tapped="GraphBKM_1_OnTapped" 
+                               PointerPressed="GraphBKM_1_OnPointerPressed" PointerExited="GraphBKM_1_OnPointerExited" />
+            <ScottPlot:AvaPlot Name="graphBKM_2" DoubleTapped="GraphBKM_1_OnDoubleTapped"/>
+            <ScottPlot:AvaPlot Name="graphBKM_3" DoubleTapped="GraphBKM_1_OnDoubleTapped"/>
                     <!--Табличное представление-->
         <Grid Name="gTable" IsVisible="False">
             <DataGrid Grid.Column="0" 
