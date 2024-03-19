@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -16,9 +17,11 @@ using ScottPlot;
 using ScottPlot.AutoScalers;
 using ScottPlot.Avalonia;
 using ScottPlot.AxisRules;
+using ScottPlot.DataSources;
 using ScottPlot.Plottables;
 using Color = ScottPlot.Color;
 using Colors = ScottPlot.Colors;
+using MouseButton = Avalonia.Remote.Protocol.Input.MouseButton;
 
 namespace PKM_AL.Controls;
 
@@ -57,16 +60,14 @@ public partial class UserControlGraphBKM : UserControl
         devices = MainWindow.Devices;
         allEventsList = new List<ClassEvent>();
         lstSource = new List<ClassEvent>();
-        //SetUserControlGraphBkm();
-        // wpfBigData.Configuration.DoubleClickBenchmark = false;
-        // wpfBigData.Configuration.LeftClickDragPan = false;
+        GetAllEvents();
+        SetUserControlGraphBkm();
+        DBegin.SelectedDate = new DateTime(2021,2,1);
     }
     
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
     {  
-        //Выборка всех событий из базы для всех устройств.
-        GetAllEvents();
-        SetUserControlGraphBkm();
+       
     }
 
     /// <summary>
@@ -152,6 +153,11 @@ public partial class UserControlGraphBKM : UserControl
         }
     }
     
+    /// <summary>
+    /// Нумерация строк Datagrid.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void GridEvents_LoadingRow(object sender, DataGridRowEventArgs e)
     {
         DataGridRow gridRow = e.Row;
@@ -263,14 +269,10 @@ public partial class UserControlGraphBKM : UserControl
         /// <param name="selectParam">Название параметра</param>
         private void DrawPlotCurrent(int indexCombo,double[] xs, double[]ys, string selectParam)
         {
-            var min = ys.Min();
-            var max = ys.Max();
-            double yMin=nomValueMin<min?nomValueMin:min;
-            double yMax=nomValueMax<max?nomValueMax:max;
-            
-            
             //Объект сектора графика.
             AvaPlot wpfPlot = grathic.Children[indexCombo] as AvaPlot;
+            //Переопределение кнопок мыши.
+            //CustomBtnClick(wpfPlot);
             //Объект свойств графика.
             Plot plt = wpfPlot?.Plot;
             if(plt==null) return;
@@ -282,21 +284,6 @@ public partial class UserControlGraphBKM : UserControl
             plt.YLabel(GetLabelY(selectParam));
             //Надпись всего графика.
             plt.Title(selectParam);
-            //Диапазон значений.
-            var rangeDate =  ys.Max() - ys.Min();
-            //Назначение границы отображения графика.
-            //plt.Axes.SetLimits(xs[0], xs[^1], yMin ,yMax);
-            //plt.Axes.SetLimits(xs[0], xs[^1], bottom:2 ,top:-4);
-            //plt.Axes.SetLimits(xs[0], xs[^1], ys.Min()-rangeDate*0.2 ,ys.Max()+rangeDate*0.2);
-            
-                MaximumBoundary rule = new(
-                xAxis: plt.Axes.Bottom,
-                yAxis: plt.Axes.Left,
-                limits: new AxisLimits(xs[0], xs[^1], yMin+rangeDate*0.2, yMax-rangeDate*0.2)
-                );
-            plt.Axes.Rules.Clear();
-            plt.Axes.Rules.Add(rule);
-            
             //Добавление графика на холст.
             var lineParam = plt.Add.Scatter(xs, ys);
             lineParam.Color = ScottPlot.Generate.RandomColor();
@@ -312,18 +299,19 @@ public partial class UserControlGraphBKM : UserControl
                         break;
             }
             //Перекрестие.
-            Crosshair ch = plt.Add.Crosshair(xs[0], ys[0]);
-            ch.LineStyle.Color = Colors.Green;
-            ch.LineStyle.Pattern = LinePattern.Dashed;
-            
-            //ch.HorizontalLine.Color = System.Drawing.Color.Green;    //LabelFont.Color = ;
-            //ch.VerticalLine.PositionLabelBackground = System.Drawing.Color.DarkCyan;
-            //ch.HorizontalLine.PositionLabelBackground = System.Drawing.Color.DarkCyan;
-            //ch.VerticalLine.PositionFormatter = pos => DateTime.FromOADate(pos).ToString("dd.MM.yyyy\nhh:mm:ss");
-            
+            DrawCrosschair(xs[0], ys[0], plt);
             //Цвет тиков шкалы времени.
            plt.Axes.DateTimeTicksBottom().Color(Color.FromHex("#a0acb5"));
+           plt.Axes.AutoScale();
+           plt.Axes.Zoom(fracY:0.9);
            wpfPlot.Refresh();
+        }
+        
+        private void DrawCrosschair(double x, double y, Plot plt)
+        {
+             Crosshair  ch = plt.Add.Crosshair(x, y);
+             ch.LineStyle.Color = Colors.Green;
+             ch.LineStyle.Pattern = LinePattern.Dashed;
         }
         
         /// <summary>
@@ -534,20 +522,51 @@ public partial class UserControlGraphBKM : UserControl
 
     private void GraphBKM_1_OnTapped(object sender, TappedEventArgs e)
     {
-        
     }
+  
 
-    private void GraphBKM_1_OnPointerPressed(object sender, PointerPressedEventArgs e)
+    /// <summary>
+    /// Переопределение кнопок мыши.
+    /// </summary>
+    /// <param name="wpfPlot"></param>
+    private void CustomBtnClick( AvaPlot wpfPlot)
     {
-        if (e.Source is AvaPlot plot)
+        ScottPlot.Control.InputBindings customInputBindings = new()
         {
-            List<IAxisRule> rr;
-            rr = plot.Plot.Axes.Rules;
-        }
+            DragPanButton = ScottPlot.Control.MouseButton.Middle,
+            // DragZoomRectangleButton = ScottPlot.Control.MouseButton.Right,
+            // DragZoomButton = ScottPlot.Control.MouseButton.Right,
+            // ZoomInWheelDirection = ScottPlot.Control.MouseWheelDirection.Up,
+            // ZoomOutWheelDirection = ScottPlot.Control.MouseWheelDirection.Down,
+            // ClickAutoAxisButton = ScottPlot.Control.MouseButton.Right,
+            // ClickContextMenuButton = ScottPlot.Control.MouseButton.Left,
+        };
+
+        ScottPlot.Control.Interaction interaction = new(wpfPlot)
+        {
+            Inputs = customInputBindings,
+        };
+
+        wpfPlot.Interaction = interaction;
     }
 
-    private void GraphBKM_1_OnPointerExited(object sender, PointerEventArgs e)
+    
+    private void Graph_OnPointerMoved(object sender, PointerEventArgs e)
     {
-        
+        if(sender is not AvaPlot wpfPlot) return;
+        var list = wpfPlot.Plot.PlottableList;
+        if(list.Count==0) return;
+        Scatter  line = (Scatter)list[0];
+        Crosshair chr = (Crosshair)list[^1];
+        PointerPoint pp=e.GetCurrentPoint(wpfPlot);
+        Pixel mousePixel = new(pp.Position.X, pp.Position.Y);
+        Coordinates mouseLocation = wpfPlot.Plot.GetCoordinates(mousePixel);
+        DataPoint nearest = line.Data.GetNearest(mouseLocation, wpfPlot.Plot.LastRender);
+        if (!nearest.IsReal) return;
+        chr.Position = nearest.Coordinates;
+        var ll = line.Data.GetScatterPoints()[nearest.Index];
+        var plt = wpfPlot.Plot;
+        var h= plt.Axes.Left.Height;
+        wpfPlot.Refresh();
     }
 }

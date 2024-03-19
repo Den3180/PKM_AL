@@ -2,17 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+             xmlns:scottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
              xmlns:pkmAl="clr-namespace:PKM_AL"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="1000"
              x:Class="PKM_AL.Controls.UserControlGraphBKM" Loaded="Control_OnLoaded">
     <Grid ColumnDefinitions="*,0.2*">
         <UniformGrid Name="grathic"  Rows="3" >
-            <ScottPlot:AvaPlot Name="graphBKM_1" DoubleTapped="GraphBKM_1_OnDoubleTapped" Tapped="GraphBKM_1_OnTapped" 
-                               PointerPressed="GraphBKM_1_OnPointerPressed" PointerExited="GraphBKM_1_OnPointerExited" />
-            <ScottPlot:AvaPlot Name="graphBKM_2" DoubleTapped="GraphBKM_1_OnDoubleTapped"/>
-            <ScottPlot:AvaPlot Name="graphBKM_3" DoubleTapped="GraphBKM_1_OnDoubleTapped"/>
+            <scottPlot:AvaPlot Name="graphBKM_1" DoubleTapped="GraphBKM_1_OnDoubleTapped" Tapped="GraphBKM_1_OnTapped" 
+                               PointerMoved="Graph_OnPointerMoved"/>
+            <scottPlot:AvaPlot Name="graphBKM_2" DoubleTapped="GraphBKM_1_OnDoubleTapped" PointerMoved="Graph_OnPointerMoved"/>
+            <scottPlot:AvaPlot Name="graphBKM_3" DoubleTapped="GraphBKM_1_OnDoubleTapped" PointerMoved="Graph_OnPointerMoved"/>
                     <!--Табличное представление-->
         <Grid Name="gTable" IsVisible="False">
             <DataGrid Grid.Column="0" 
@@ -38,7 +38,7 @@
         </Grid>
         </UniformGrid>
         <Grid x:Name="gBigData" IsVisible="False" Background="{Binding ElementName=grathic, Path=Background}">
-            <ScottPlot:AvaPlot x:Name="wpfBigData" Tapped="wpfBigData_MouseDown"/>                    
+            <scottPlot:AvaPlot x:Name="wpfBigData" Tapped="wpfBigData_MouseDown"/>                    
         </Grid>
         <!--Информационно-расчетная панель-->
         <StackPanel Grid.Column="1" Margin="5">
@@ -56,7 +56,7 @@
                 <StackPanel>
                     <Label Content="Начало периода:"/>
                     <DockPanel>
-                        <CalendarDatePicker Name="DBegin" Width="130" SelectedDateChanged="DBegin_SelectedDateChanged" />
+                        <CalendarDatePicker Name="DBegin" Width="130" SelectedDateChanged="DBegin_SelectedDateChanged"/>
                         <TextBox Name="TBegin" Text="00:00:00" Margin ="5 0 0 0"
                                  VerticalContentAlignment="Center"/>
                     </DockPanel>
