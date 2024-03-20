@@ -298,8 +298,8 @@ public partial class UserControlGraphBKM : UserControl
                 case ParamGraphEnum.Сorrosion: CorrosionPlot(plt, xs[0]);
                         break;
             }
-            //Перекрестие.
-            DrawCrosschair(xs[0], ys[0], plt);
+            //Линия текущих данных.
+            DrawLineInfo(xs[0], ys[0], plt);
             //Цвет тиков шкалы времени.
            plt.Axes.DateTimeTicksBottom().Color(Color.FromHex("#a0acb5"));
            plt.Axes.AutoScale();
@@ -307,11 +307,25 @@ public partial class UserControlGraphBKM : UserControl
            wpfPlot.Refresh();
         }
         
-        private void DrawCrosschair(double x, double y, Plot plt)
+        private void DrawLineInfo(double x, double y, Plot plt)
         {
-             Crosshair  ch = plt.Add.Crosshair(x, y);
-             ch.LineStyle.Color = Colors.Green;
-             ch.LineStyle.Pattern = LinePattern.Dashed;
+             VerticalLine vlUp = plt.Add.VerticalLine(x);
+             VerticalLine vlLow = plt.Add.VerticalLine(x);
+             vlUp.LineStyle.Color = Colors.Green;
+             vlLow.LineStyle.Color = Colors.Green;
+             vlUp.LinePattern = LinePattern.Dashed;
+             vlLow.LinePattern = LinePattern.Dashed;
+             vlUp.Label.Text= $"{y}";
+             vlLow.Label.Text= DateTime.FromOADate(x).ToShortDateString();
+             vlUp.Label.FontSize = 12;
+             vlLow.Label.FontSize = 12;
+             vlUp.LabelOppositeAxis = true;
+             vlUp.Label.BorderWidth = 1;
+             vlLow.Label.BorderWidth = 1;
+             vlUp.Label.BorderColor = Colors.LightSeaGreen;
+             vlLow.Label.BorderColor = Colors.LightSeaGreen;
+             vlUp.Label.BackColor = Colors.DarkGray;
+             vlLow.Label.BackColor = Colors.DarkGray;
         }
         
         /// <summary>
@@ -557,16 +571,28 @@ public partial class UserControlGraphBKM : UserControl
         var list = wpfPlot.Plot.PlottableList;
         if(list.Count==0) return;
         Scatter  line = (Scatter)list[0];
-        Crosshair chr = (Crosshair)list[^1];
+        var vlList = list.Where(ch => ch.GetType() == typeof(VerticalLine)).ToList();
+        if(vlList.Count==0) return;
         PointerPoint pp=e.GetCurrentPoint(wpfPlot);
         Pixel mousePixel = new(pp.Position.X, pp.Position.Y);
         Coordinates mouseLocation = wpfPlot.Plot.GetCoordinates(mousePixel);
         DataPoint nearest = line.Data.GetNearest(mouseLocation, wpfPlot.Plot.LastRender);
         if (!nearest.IsReal) return;
-        chr.Position = nearest.Coordinates;
-        var ll = line.Data.GetScatterPoints()[nearest.Index];
-        var plt = wpfPlot.Plot;
-        var h= plt.Axes.Left.Height;
+        DrawVerticalInfoLine(vlList,nearest.Coordinates);
         wpfPlot.Refresh();
+    }
+
+    /// <summary>
+    /// Рисование информационных линий текущих значений.
+    /// </summary>
+    /// <param name="vlList"></param>
+    /// <param name="coordinates"></param>
+    private void DrawVerticalInfoLine(List<IPlottable> vlList,Coordinates coordinates)
+    {
+        ((VerticalLine)vlList[0]).Label.Text = coordinates.Y.ToString();
+        ((VerticalLine)vlList[0]).X=coordinates.X;
+        ((VerticalLine)vlList[1]).X=coordinates.X;
+        ((VerticalLine)vlList[1]).Label.Text = DateTime.FromOADate(coordinates.X).ToShortDateString();
+        
     }
 }
