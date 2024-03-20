@@ -48,6 +48,8 @@ public partial class UserControlGraphBKM : UserControl
     private double nomValueMin;
     private readonly Dispatcher dispatcher = Dispatcher.UIThread;
 
+   private ObservableCollection<ClassEvent> testSource = new();
+
 
     public UserControlGraphBKM()
     {
@@ -63,6 +65,8 @@ public partial class UserControlGraphBKM : UserControl
         GetAllEvents();
         SetUserControlGraphBkm();
         DBegin.SelectedDate = new DateTime(2021,2,1);
+        GridEvents.ItemsSource = testSource;
+        
     }
     
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
@@ -232,6 +236,13 @@ public partial class UserControlGraphBKM : UserControl
         eventsOnRequest=GetListEventsDevices(dtBegin,dtEnd,selectParam,KIP.SelectedItem?.ToString());
         //Добавление событий к списку-источнику данных таблицы событий.
         lstSource.AddRange(eventsOnRequest);
+        
+        // testSource.Clear();
+        // GridEvents.ItemsSource = null;
+        // testSource = new ObservableCollection<ClassEvent>(lstSource);
+        // GridEvents.ItemsSource = testSource;
+        
+        //GridEvents.ItemsSource = new ObservableCollection<ClassEvent>(lstSource);
         //Очистка сектора графиков, при условии, что для текущего параметра нет событий. 
         if (eventsOnRequest.Count == 0)
         {
@@ -258,6 +269,7 @@ public partial class UserControlGraphBKM : UserControl
         xs = dates.Select(x => x.ToOADate()).ToArray();
         //Отрисовка текущего графика.
         DrawPlotCurrent(indexCombo,xs,ys,selectParam);
+        trendCheckList[indexCombo].IsEnabled = true;
     }
     
         /// <summary>
@@ -287,7 +299,7 @@ public partial class UserControlGraphBKM : UserControl
             //Добавление графика на холст.
             var lineParam = plt.Add.Scatter(xs, ys);
             lineParam.Color = ScottPlot.Generate.RandomColor();
-            lineParam.LineWidth = 2f;
+            lineParam.LineStyle.Width = 3;
             lineParam.MarkerStyle = new MarkerStyle(MarkerShape.FilledDiamond,12,Colors.Brown);
            //Определение типа графика(ток, потенциал или другое) и назначение предельных значений.
             switch (CheckNameParam(selectParam))
@@ -304,6 +316,7 @@ public partial class UserControlGraphBKM : UserControl
            plt.Axes.DateTimeTicksBottom().Color(Color.FromHex("#a0acb5"));
            plt.Axes.AutoScale();
            plt.Axes.Zoom(fracY:0.9);
+           plt.Add.Palette=new ScottPlot.Palettes.ColorblindFriendly();
            wpfPlot.Refresh();
         }
         
@@ -515,12 +528,25 @@ public partial class UserControlGraphBKM : UserControl
     
         private void bGrath_Click(object sender, RoutedEventArgs e)
         {
-            
+            gTable.IsVisible = false;
+            bTable.IsEnabled = true;
+            bGrath.IsEnabled = false;
+            if (wpfBigData.Plot.PlottableList.Count > 0)
+            {
+                gBigData.IsVisible = false;
+            }
+
+            grathic.IsVisible = true;
         }
 
         private void bTable_Click(object sender, RoutedEventArgs e)
         {
-            
+            gTable.IsVisible = true;
+            grathic.IsVisible = false;
+            gBigData.IsVisible = false;
+            bTable.IsEnabled = false;
+            bGrath.IsEnabled = true;
+            //var yy= GridEvents.ItemsSource;
         }
 
         private void bExcel_Click(object sender, RoutedEventArgs e)
@@ -537,7 +563,6 @@ public partial class UserControlGraphBKM : UserControl
     private void GraphBKM_1_OnTapped(object sender, TappedEventArgs e)
     {
     }
-  
 
     /// <summary>
     /// Переопределение кнопок мыши.
@@ -564,7 +589,11 @@ public partial class UserControlGraphBKM : UserControl
         wpfPlot.Interaction = interaction;
     }
 
-    
+    /// <summary>
+    /// Обработчик событий перемещений курсора.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Graph_OnPointerMoved(object sender, PointerEventArgs e)
     {
         if(sender is not AvaPlot wpfPlot) return;
@@ -594,5 +623,45 @@ public partial class UserControlGraphBKM : UserControl
         ((VerticalLine)vlList[1]).X=coordinates.X;
         ((VerticalLine)vlList[1]).Label.Text = DateTime.FromOADate(coordinates.X).ToShortDateString();
         
+    }
+
+    /// <summary>
+    /// Отрисовка трендов.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnIsCheckedChanged(object sender, RoutedEventArgs e)
+    {
+        CheckBox checkBox = sender as CheckBox;
+        int currentIndexItem = trendCheckList.IndexOf(checkBox);
+        AvaPlot wpfPlot = gBigData.IsVisible==false ? grathic.Children[currentIndexItem] as AvaPlot : wpfBigData;
+        if(wpfPlot==null) return;
+        Plot plt = wpfPlot.Plot;
+        var plots = plt.PlottableList;
+        //Выход если нет элементов в плоте.
+        if (plots.Count == 0) return;
+        Scatter lineParam = plots.FirstOrDefault(line=>line.GetType() == typeof(Scatter)) as Scatter;
+        if (checkBox?.IsChecked == false)
+        {
+            if (lineParam != null) lineParam.LineStyle.Color=Generate.RandomColor().WithLightness();
+            var regLine = plots.FirstOrDefault(rg => rg.GetType() == typeof(LinePlot));
+            if(regLine!=null) plt.Remove(regLine);
+            wpfPlot.Refresh();
+            return;
+        }
+        var dataList= lineParam?.Data.GetScatterPoints();
+        var xs = dataList?.Select(item => item.X).ToArray();
+        var ys = dataList?.Select(item => item.Y).ToArray();
+        if(xs==null || ys==null) return;
+        ScottPlot.Statistics.LinearRegression reg = new(xs, ys);
+        Coordinates pt1 = new(xs.First(), reg.GetValue(xs.First()));
+        Coordinates pt2 = new(xs.Last(), reg.GetValue(xs.Last()));
+        var line = plt.Add.Line(pt1, pt2);
+        line.MarkerSize = 0;
+        line.LineWidth = 2;
+        line.LinePattern = LinePattern.Dashed;
+        line.LineStyle.Color=Colors.LightGreen;
+        lineParam.LineStyle.Color=Colors.Transparent;
+        wpfPlot.Refresh();
     }
 }

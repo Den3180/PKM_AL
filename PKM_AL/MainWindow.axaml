@@ -112,11 +112,11 @@
 			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
                            Margin="0 0 10 0" HorizontalAlignment="Left"/>
 		</Grid>		
-	<Grid ColumnDefinitions="200,auto,*">
-		<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
-					  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="LightGray" />
-		<ContentControl Grid.Column="2" Name="ContentArea"/>
-		<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectedItemChanged" Tapped="TreeView_OnTapped"/>
-	</Grid>
+		<Grid ColumnDefinitions="200,auto,*">
+			<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
+						  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="LightGray" />
+			<ContentControl Grid.Column="2" Name="ContentArea"/>
+			<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectedItemChanged" Tapped="TreeView_OnTapped"/>
+		</Grid>
 	</DockPanel> 
 </Window>

@@ -13,19 +13,34 @@
                                PointerMoved="Graph_OnPointerMoved"/>
             <scottPlot:AvaPlot Name="graphBKM_2" DoubleTapped="GraphBKM_1_OnDoubleTapped" PointerMoved="Graph_OnPointerMoved"/>
             <scottPlot:AvaPlot Name="graphBKM_3" DoubleTapped="GraphBKM_1_OnDoubleTapped" PointerMoved="Graph_OnPointerMoved"/>
+        </UniformGrid>
                     <!--Табличное представление-->
         <Grid Name="gTable" IsVisible="False">
             <DataGrid Grid.Column="0" 
                       Name="GridEvents"
                       x:DataType="pkmAl:ClassEvent"
                       AutoGenerateColumns="False"
-                      CanUserResizeColumns="False" 
+                      CanUserResizeColumns="True" 
                       CanUserReorderColumns="False"
                       IsReadOnly="True" 
-                      GridLinesVisibility="None" 
+                      GridLinesVisibility="All" 
+                      BorderThickness="1"
+                      BorderBrush="Black"
+                      HorizontalGridLinesBrush="Black"
+                      VerticalGridLinesBrush="Black"
                       LoadingRow="GridEvents_LoadingRow">
+                <DataGrid.Styles>
+                    <Style Selector="DataGridColumnHeader">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="SeparatorBrush" Value="Black"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="AreSeparatorsVisible" Value="True"/>
+                        <Setter Property="Background" Value="Beige"/>
+                    </Style>
+                </DataGrid.Styles>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="№ п/п" Width="50" 
+                    <DataGridTextColumn Header="№" Width="60" 
                                         Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                                         AncestorType={x:Type DataGridRow}}, Path=Tag}"/>
                     <DataGridTextColumn Header="Дата/Время" Width="120" Binding="{Binding StrDT}"/>
@@ -36,7 +51,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        </UniformGrid>
         <Grid x:Name="gBigData" IsVisible="False" Background="{Binding ElementName=grathic, Path=Background}">
             <scottPlot:AvaPlot x:Name="wpfBigData" Tapped="wpfBigData_MouseDown"/>                    
         </Grid>
@@ -70,23 +84,28 @@
                 <StackPanel x:Name="channelBoxes">
                     <DockPanel Margin="0 2 0 1">
                         <ComboBox DockPanel.Dock="Left" Name="cb1" SelectedIndex="0" Width="127"/>
-                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb1" Content="Тренд" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb1" Content="Тренд" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  IsEnabled="False" IsCheckedChanged="OnIsCheckedChanged"/>
                     </DockPanel>
                     <DockPanel  Margin="0 2 0 1">
                         <ComboBox DockPanel.Dock="Left" Name="cb2" SelectedIndex="0" Width="127"/>
-                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb2" Content="Тренд" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb2" Content="Тренд" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  IsEnabled="False" IsCheckedChanged="OnIsCheckedChanged"/>
                     </DockPanel>
                     <DockPanel  Margin="0 2 0 1">
                         <ComboBox DockPanel.Dock="Left" Name="cb3" SelectedIndex="0" Width="127"/>
-                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb3" Content="Тренд" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <CheckBox DockPanel.Dock="Right" x:Name="tr_cb3" Content="Тренд" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  IsEnabled="False" IsCheckedChanged="OnIsCheckedChanged"/>
                     </DockPanel>
                 </StackPanel>
-            <Button x:Name="bApply" Content="Применить"  IsEnabled="False" Margin="0 10 0 0" Click="ButtonFind_Click"></Button>
+            <Button x:Name="bApply" Content="Применить"  IsEnabled="False" Margin="0 10 0 0" 
+                    HorizontalAlignment="Center" Click="ButtonFind_Click"></Button>
             <UniformGrid Columns="2">
-                <Button Name="bGrath" Content="График" IsEnabled="False" Margin="10" Click="bGrath_Click"/>
-                <Button Name="bTable" Content="Таблица" IsEnabled="False" Margin="10" Click="bTable_Click"/>
+                <Button Name="bGrath" Content="График" Width="80" HorizontalContentAlignment="Center" IsEnabled="False" Margin="10" Click="bGrath_Click"/>
+                <Button Name="bTable" Content="Таблица" Width="80" HorizontalContentAlignment="Center"  IsEnabled="False" Margin="10" Click="bTable_Click"/>
             </UniformGrid>
-            <Button Name="bExcel" Content="Экспорт в Excel"  IsEnabled="False" Margin="0 10 0 0" Click="bExcel_Click"/>
+            <Button Name="bExcel" Content="Экспорт в Excel"  IsEnabled="False" Margin="0 10 0 0" 
+                    HorizontalAlignment="Center" Click="bExcel_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>
