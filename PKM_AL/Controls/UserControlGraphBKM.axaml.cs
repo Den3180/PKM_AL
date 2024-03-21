@@ -768,12 +768,15 @@ public partial class UserControlGraphBKM : UserControl
 
             CultureInfo cultureInfo = Environment.OSVersion.Platform == PlatformID.Win32NT ? 
                                        CultureInfo.CurrentCulture : CultureInfo.InvariantCulture;
-            using (FileStream SourceStream =
+            using (FileStream sourceStream =
                    File.Open($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv", FileMode.OpenOrCreate))
             {
-            using var writer = new StreamWriter(SourceStream,Encoding.UTF8);
-            using var csv = new CsvWriter(writer,cultureInfo);
-            csv.WriteRecords(transportEvents);
+            using var writer = new StreamWriter(sourceStream,Encoding.UTF8);
+            using (var csv = new CsvWriter(writer, cultureInfo))
+            {
+                csv.Context.RegisterClassMap<ClassEventMap>();
+                csv.WriteRecords(transportEvents);
+            }
             }
         }
         
