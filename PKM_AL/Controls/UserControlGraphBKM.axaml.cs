@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
@@ -12,6 +14,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
+using CsvHelper;
 using PKM;
 using ScottPlot;
 using ScottPlot.AutoScalers;
@@ -38,7 +41,7 @@ public partial class UserControlGraphBKM : UserControl
     
     private readonly object locker=new object();
     private List<ClassEvent> allEventsList;
-    private List<ClassEvent> lstSource;
+    private List<ClassEvent> lstSourceEvents;
     private List<CheckBox> trendCheckList;
     private List<ComboBox> combosChannelsList;
     private List<ClassEvent> eventsOnRequest;
@@ -62,7 +65,7 @@ public partial class UserControlGraphBKM : UserControl
         InitializeComponent();
         devices = MainWindow.Devices;
         allEventsList = new List<ClassEvent>();
-        lstSource = new List<ClassEvent>();
+        lstSourceEvents = new List<ClassEvent>();
         GetAllEvents();
         SetUserControlGraphBkm();
         DBegin.SelectedDate = new DateTime(2021,2,1);
@@ -81,7 +84,7 @@ public partial class UserControlGraphBKM : UserControl
     private void SetUserControlGraphBkm()
     {
         //Источник данных для таблицы событий(пока пустое).
-        GridEvents.ItemsSource = lstSource;
+        GridEvents.ItemsSource = lstSourceEvents;
         //Присваивание имени объекта.
         AreaTextBlock.Text = MainWindow.DB.InfoArea();
         //Настройка первичных параметров полей графиков.
@@ -211,7 +214,7 @@ public partial class UserControlGraphBKM : UserControl
         //Конец периода.
         DateTime.TryParse(this.TEnd.Text, out dt);
         if (DEnd.SelectedDate != null) dtEnd = DEnd.SelectedDate.Value.Add(dt.TimeOfDay);
-        if(lstSource.Count>0) lstSource.Clear();
+        if(lstSourceEvents.Count>0) lstSourceEvents.Clear();
         //Запускаем рисование графиков в каждом секторе.  
         foreach (ComboBox combo in combosChannelsList)
         {
@@ -235,14 +238,8 @@ public partial class UserControlGraphBKM : UserControl
         //Выборка списка событий по фильтру "устройство/параметр".
         eventsOnRequest=GetListEventsDevices(dtBegin,dtEnd,selectParam,KIP.SelectedItem?.ToString());
         //Добавление событий к списку-источнику данных таблицы событий.
-        lstSource.AddRange(eventsOnRequest);
-        
-        // testSource.Clear();
-        // GridEvents.ItemsSource = null;
-        // testSource = new ObservableCollection<ClassEvent>(lstSource);
-        GridEvents.ItemsSource = new ObservableCollection<ClassEvent>(lstSource);
-        
-        //GridEvents.ItemsSource = new ObservableCollection<ClassEvent>(lstSource);
+        lstSourceEvents.AddRange(eventsOnRequest);
+        GridEvents.ItemsSource = new ObservableCollection<ClassEvent>(lstSourceEvents);
         //Очистка сектора графиков, при условии, что для текущего параметра нет событий. 
         if (eventsOnRequest.Count == 0)
         {
@@ -574,7 +571,8 @@ public partial class UserControlGraphBKM : UserControl
         /// <param name="e"></param>
         private void bExcel_Click(object sender, RoutedEventArgs e)
         {
-             Task.Run(ExportExcelParam);
+             //Task.Run(ExportExcelParam);
+             Task.Run(ExportCsvParam);
         }
         private void GraphBKM_OnDoubleTapped(object sender, TappedEventArgs e)
         {
@@ -743,6 +741,34 @@ public partial class UserControlGraphBKM : UserControl
             lineParam.LineStyle.Color=Colors.Transparent;
             wpfPlot.Refresh();
         }
+
+        private void ExportCsvParam()
+        {
+            List<ClassTransportEvent> transportEvents = new List<ClassTransportEvent>();
+            List<string> lstHeader = new List<string>();
+            foreach (var header in GridEvents.Columns)
+            {
+                dispatcher.Invoke(() => lstHeader.Add(header.Header.ToString()));
+            }
+            var count = 0;
+            foreach (var ev in lstSourceEvents)
+            {
+                count++;
+                transportEvents.Add(new ClassTransportEvent()
+                {
+                   Id = count.ToString(),
+                   Date = ev.StrDT,
+                   Device = ev.NameDevice,
+                   Param = ev.Param,
+                   Value = ev.Val,
+                   TypeEvent = ev.Type.ToString()
+                });
+            }
+
+            using var writer = new StreamWriter($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv");
+            using var csv = new CsvWriter(writer,CultureInfo.CurrentCulture);
+            csv.WriteRecords((IEnumerable)transportEvents);
+        }
         
         /// <summary>
         /// Экспорт в Excel.
@@ -757,7 +783,7 @@ public partial class UserControlGraphBKM : UserControl
             Workbook book = new Workbook();
             Worksheet sheet = book.Worksheets[0];
             CellRange ranges;
-            int totalRow = lstSource.Count + 1;
+            int totalRow = lstSourceEvents.Count + 1;
             int lstColCount = GridEvents.Columns.Count;
             System.Drawing.Point startPoint = new System.Drawing.Point(1, 1);
             System.Drawing.Point endPoint = new System.Drawing.Point(totalRow, lstColCount);
@@ -777,7 +803,7 @@ public partial class UserControlGraphBKM : UserControl
                 }
                 else
                 {
-                    ClassEvent even = lstSource[j - 1];
+                    ClassEvent even = lstSourceEvents[j - 1];
                     list[0].Text = even.ID.ToString();
                     list[1].Text = even.StrDT;
                     list[2].Text = even.NameDevice;
