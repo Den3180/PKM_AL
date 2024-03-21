@@ -761,12 +761,13 @@ public partial class UserControlGraphBKM : UserControl
                    Device = ev.NameDevice,
                    Param = ev.Param,
                    Value = ev.Val,
-                   TypeEvent = ev.Type.ToString()
+                   TypeEvent = ev.Name
                 });
             }
 
             using var writer = new StreamWriter($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv");
-            using var csv = new CsvWriter(writer,CultureInfo.CurrentCulture);
+            CultureInfo.CurrentCulture = new CultureInfo("ru-RU", false);
+            using var csv = new CsvWriter(writer,CultureInfo.CurrentUICulture);
             csv.WriteRecords((IEnumerable)transportEvents);
         }
         
