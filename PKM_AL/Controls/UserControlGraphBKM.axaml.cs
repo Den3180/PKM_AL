@@ -19,6 +19,7 @@ using ScottPlot.Avalonia;
 using ScottPlot.AxisRules;
 using ScottPlot.DataSources;
 using ScottPlot.Plottables;
+using Spire.Xls;
 using Color = ScottPlot.Color;
 using Colors = ScottPlot.Colors;
 using MouseButton = Avalonia.Remote.Protocol.Input.MouseButton;
@@ -150,9 +151,7 @@ public partial class UserControlGraphBKM : UserControl
             //Выборка одного поля графика.
             AvaPlot  wpfPlot = grathic.Children[i] as AvaPlot ;
             var plt = wpfPlot?.Plot;
-            plt?.Style.Background(figure: Color.FromHex("#07263b"), data: Color.FromHex("#0b3049"));
-            plt?.Style.ColorAxes(Color.FromHex("#a0acb5"));
-            plt?.Style.ColorGrids(Color.FromHex("#0e3d54"));
+            plt?.Style.DarkMode();
             wpfPlot?.Refresh();
         }
     }
@@ -212,6 +211,7 @@ public partial class UserControlGraphBKM : UserControl
         //Конец периода.
         DateTime.TryParse(this.TEnd.Text, out dt);
         if (DEnd.SelectedDate != null) dtEnd = DEnd.SelectedDate.Value.Add(dt.TimeOfDay);
+        if(lstSource.Count>0) lstSource.Clear();
         //Запускаем рисование графиков в каждом секторе.  
         foreach (ComboBox combo in combosChannelsList)
         {
@@ -240,7 +240,7 @@ public partial class UserControlGraphBKM : UserControl
         // testSource.Clear();
         // GridEvents.ItemsSource = null;
         // testSource = new ObservableCollection<ClassEvent>(lstSource);
-        // GridEvents.ItemsSource = testSource;
+        GridEvents.ItemsSource = new ObservableCollection<ClassEvent>(lstSource);
         
         //GridEvents.ItemsSource = new ObservableCollection<ClassEvent>(lstSource);
         //Очистка сектора графиков, при условии, что для текущего параметра нет событий. 
@@ -514,9 +514,9 @@ public partial class UserControlGraphBKM : UserControl
             //Кнопка экспорта в Excel в true.
             bExcel.IsEnabled = true;
             //Кнопка отрисовки графиков в false.
-            bGrath.IsEnabled = false;
+            bGrath.IsEnabled = gTable.IsVisible;
             //Кнопка отображения таблицы событий в true.
-            bTable.IsEnabled = true;
+            bTable.IsEnabled = !gTable.IsVisible;
             //Установка всех чекбоксов отрисовки тренда в false. 
             foreach(CheckBox chb in trendCheckList)
             {
@@ -526,142 +526,291 @@ public partial class UserControlGraphBKM : UserControl
             DrawGraphs();
         }
     
+        /// <summary>
+        /// Обработчик кнопки включения графиков.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void bGrath_Click(object sender, RoutedEventArgs e)
         {
+            //Отключение панели с таблицей.
             gTable.IsVisible = false;
+            //Включение кнопки таблиц.
             bTable.IsEnabled = true;
+            //Включение кнопки графиков.
             bGrath.IsEnabled = false;
+            //Выключение кнопки больших графиков, если он отображен.
             if (wpfBigData.Plot.PlottableList.Count > 0)
             {
                 gBigData.IsVisible = false;
             }
-
+            //Включение панели графиков.
             grathic.IsVisible = true;
         }
 
+        /// <summary>
+        /// Обработчик кнопки включения таблицы с событиями.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void bTable_Click(object sender, RoutedEventArgs e)
         {
+            //Включение панели с таблицей.
             gTable.IsVisible = true;
+            //Отключение панели с графиками.
             grathic.IsVisible = false;
+            //Отключение панели с большим графиком.
             gBigData.IsVisible = false;
+            //Отключение кнопки таблиц.
             bTable.IsEnabled = false;
+            //Включение кнопки графиков.
             bGrath.IsEnabled = true;
-            //var yy= GridEvents.ItemsSource;
         }
 
+        /// <summary>
+        /// Обработчик кнопки экспорта в Excel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void bExcel_Click(object sender, RoutedEventArgs e)
-    {
-        
-    }
-        
-    private void GraphBKM_1_OnDoubleTapped(object sender, TappedEventArgs e)
-    {
-        if (e.Source is AvaPlot plot) 
-            plot.Plot.Benchmark.IsVisible = false;
-    }
-
-    private void GraphBKM_1_OnTapped(object sender, TappedEventArgs e)
-    {
-    }
-
-    /// <summary>
-    /// Переопределение кнопок мыши.
-    /// </summary>
-    /// <param name="wpfPlot"></param>
-    private void CustomBtnClick( AvaPlot wpfPlot)
-    {
-        ScottPlot.Control.InputBindings customInputBindings = new()
         {
-            DragPanButton = ScottPlot.Control.MouseButton.Middle,
-            // DragZoomRectangleButton = ScottPlot.Control.MouseButton.Right,
-            // DragZoomButton = ScottPlot.Control.MouseButton.Right,
-            // ZoomInWheelDirection = ScottPlot.Control.MouseWheelDirection.Up,
-            // ZoomOutWheelDirection = ScottPlot.Control.MouseWheelDirection.Down,
-            // ClickAutoAxisButton = ScottPlot.Control.MouseButton.Right,
-            // ClickContextMenuButton = ScottPlot.Control.MouseButton.Left,
-        };
-
-        ScottPlot.Control.Interaction interaction = new(wpfPlot)
-        {
-            Inputs = customInputBindings,
-        };
-
-        wpfPlot.Interaction = interaction;
-    }
-
-    /// <summary>
-    /// Обработчик событий перемещений курсора.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void Graph_OnPointerMoved(object sender, PointerEventArgs e)
-    {
-        if(sender is not AvaPlot wpfPlot) return;
-        var list = wpfPlot.Plot.PlottableList;
-        if(list.Count==0) return;
-        Scatter  line = (Scatter)list[0];
-        var vlList = list.Where(ch => ch.GetType() == typeof(VerticalLine)).ToList();
-        if(vlList.Count==0) return;
-        PointerPoint pp=e.GetCurrentPoint(wpfPlot);
-        Pixel mousePixel = new(pp.Position.X, pp.Position.Y);
-        Coordinates mouseLocation = wpfPlot.Plot.GetCoordinates(mousePixel);
-        DataPoint nearest = line.Data.GetNearest(mouseLocation, wpfPlot.Plot.LastRender);
-        if (!nearest.IsReal) return;
-        DrawVerticalInfoLine(vlList,nearest.Coordinates);
-        wpfPlot.Refresh();
-    }
-
-    /// <summary>
-    /// Рисование информационных линий текущих значений.
-    /// </summary>
-    /// <param name="vlList"></param>
-    /// <param name="coordinates"></param>
-    private void DrawVerticalInfoLine(List<IPlottable> vlList,Coordinates coordinates)
-    {
-        ((VerticalLine)vlList[0]).Label.Text = coordinates.Y.ToString();
-        ((VerticalLine)vlList[0]).X=coordinates.X;
-        ((VerticalLine)vlList[1]).X=coordinates.X;
-        ((VerticalLine)vlList[1]).Label.Text = DateTime.FromOADate(coordinates.X).ToShortDateString();
-        
-    }
-
-    /// <summary>
-    /// Отрисовка трендов.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void OnIsCheckedChanged(object sender, RoutedEventArgs e)
-    {
-        CheckBox checkBox = sender as CheckBox;
-        int currentIndexItem = trendCheckList.IndexOf(checkBox);
-        AvaPlot wpfPlot = gBigData.IsVisible==false ? grathic.Children[currentIndexItem] as AvaPlot : wpfBigData;
-        if(wpfPlot==null) return;
-        Plot plt = wpfPlot.Plot;
-        var plots = plt.PlottableList;
-        //Выход если нет элементов в плоте.
-        if (plots.Count == 0) return;
-        Scatter lineParam = plots.FirstOrDefault(line=>line.GetType() == typeof(Scatter)) as Scatter;
-        if (checkBox?.IsChecked == false)
-        {
-            if (lineParam != null) lineParam.LineStyle.Color=Generate.RandomColor().WithLightness();
-            var regLine = plots.FirstOrDefault(rg => rg.GetType() == typeof(LinePlot));
-            if(regLine!=null) plt.Remove(regLine);
-            wpfPlot.Refresh();
-            return;
+             Task.Run(ExportExcelParam);
         }
-        var dataList= lineParam?.Data.GetScatterPoints();
-        var xs = dataList?.Select(item => item.X).ToArray();
-        var ys = dataList?.Select(item => item.Y).ToArray();
-        if(xs==null || ys==null) return;
-        ScottPlot.Statistics.LinearRegression reg = new(xs, ys);
-        Coordinates pt1 = new(xs.First(), reg.GetValue(xs.First()));
-        Coordinates pt2 = new(xs.Last(), reg.GetValue(xs.Last()));
-        var line = plt.Add.Line(pt1, pt2);
-        line.MarkerSize = 0;
-        line.LineWidth = 2;
-        line.LinePattern = LinePattern.Dashed;
-        line.LineStyle.Color=Colors.LightGreen;
-        lineParam.LineStyle.Color=Colors.Transparent;
-        wpfPlot.Refresh();
-    }
+        private void GraphBKM_OnDoubleTapped(object sender, TappedEventArgs e)
+        {
+            if (e.Source is AvaPlot plot) 
+                plot.Plot.Benchmark.IsVisible = false;
+            AvaPlot wpfPlot = sender as AvaPlot;
+            if (wpfPlot?.Plot.PlottableList.Count == 0) return;
+            if(wpfPlot?.Name== "wpfBigData")
+            {
+                gBigData.IsVisible = false;
+                wpfBigData.Plot.Clear();
+                // wpfBigData.Configuration.LeftClickDragPan = false;
+                wpfBigData.Refresh();
+                return;
+            }
+            Scatter lpar = wpfPlot?.Plot.PlottableList[0] as Scatter;
+            int index = grathic.Children.IndexOf(wpfPlot);
+            string selectParam = combosChannelsList[index]?.SelectedItem?.ToString();
+            Plot plt;
+            plt = wpfBigData.Plot;
+            plt.Style.DarkMode();
+            double[] xs = lpar?.Data.GetScatterPoints().Select(crd => crd.X).ToArray();
+            double[] ys = lpar?.Data.GetScatterPoints().Select(crd => crd.Y).ToArray();
+            DrawBigData(xs,ys, selectParam);
+            gBigData.IsVisible = true;
+        }
+        
+        /// <summary>
+        /// Рисование большого графика.
+        /// </summary>
+        /// <param name="xs"></param>
+        /// <param name="ys"></param>
+        /// <param name="selectParam"></param>
+        private void DrawBigData(double[] xs, double[] ys, string selectParam)
+        {
+            Plot plt = wpfBigData.Plot;
+            plt?.Clear();
+            plt.XLabel("");
+            plt.YLabel(GetLabelY(selectParam));
+            plt.Title(selectParam);
+        
+            Scatter lineParam = plt.Add.Scatter(xs, ys);
+            lineParam.LineStyle.Color = Generate.RandomColor().WithLightness();
+            lineParam.LineWidth = 2.5f;
+            lineParam.MarkerStyle = new MarkerStyle(MarkerShape.FilledDiamond,12,Colors.Brown);
+            
+            switch (CheckNameParam(selectParam))
+            {
+                case ParamGraphEnum.PolarPot:
+                case ParamGraphEnum.SumPot: PotPlotLimits(plt, xs[0]);
+                    break;
+                case ParamGraphEnum.Сorrosion: CorrosionPlot(plt, xs[0]);
+                    break;
+            }
+            //Линия текущих данных.
+            DrawLineInfo(xs[0], ys[0], plt);
+            //Цвет тиков шкалы времени.
+            plt.Axes.DateTimeTicksBottom().Color(Color.FromHex("#a0acb5"));
+            plt.Axes.AutoScale();
+            plt.Axes.Zoom(fracY:0.9);
+            plt.Add.Palette=new ScottPlot.Palettes.ColorblindFriendly();
+            wpfBigData.Refresh();
+        }
+
+        private void GraphBKM_1_OnTapped(object sender, TappedEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Переопределение кнопок мыши.
+        /// </summary>
+        /// <param name="wpfPlot"></param>
+        private void CustomBtnClick( AvaPlot wpfPlot)
+        {
+            ScottPlot.Control.InputBindings customInputBindings = new()
+            {
+                DragPanButton = ScottPlot.Control.MouseButton.Middle,
+                // DragZoomRectangleButton = ScottPlot.Control.MouseButton.Right,
+                // DragZoomButton = ScottPlot.Control.MouseButton.Right,
+                // ZoomInWheelDirection = ScottPlot.Control.MouseWheelDirection.Up,
+                // ZoomOutWheelDirection = ScottPlot.Control.MouseWheelDirection.Down,
+                // ClickAutoAxisButton = ScottPlot.Control.MouseButton.Right,
+                // ClickContextMenuButton = ScottPlot.Control.MouseButton.Left,
+            };
+
+            ScottPlot.Control.Interaction interaction = new(wpfPlot)
+            {
+                Inputs = customInputBindings,
+            };
+
+            wpfPlot.Interaction = interaction;
+        }
+
+        /// <summary>
+        /// Обработчик событий перемещений курсора.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Graph_OnPointerMoved(object sender, PointerEventArgs e)
+        {
+            if(sender is not AvaPlot wpfPlot) return;
+            var list = wpfPlot.Plot.PlottableList;
+            if(list.Count==0) return;
+            Scatter  line = (Scatter)list[0];
+            var vlList = list.Where(ch => ch.GetType() == typeof(VerticalLine)).ToList();
+            if(vlList.Count==0) return;
+            PointerPoint pp=e.GetCurrentPoint(wpfPlot);
+            Pixel mousePixel = new(pp.Position.X, pp.Position.Y);
+            Coordinates mouseLocation = wpfPlot.Plot.GetCoordinates(mousePixel);
+            DataPoint nearest = line.Data.GetNearest(mouseLocation, wpfPlot.Plot.LastRender);
+            if (!nearest.IsReal) return;
+            DrawVerticalInfoLine(vlList,nearest.Coordinates);
+            wpfPlot.Refresh();
+        }
+
+        /// <summary>
+        /// Рисование информационных линий текущих значений.
+        /// </summary>
+        /// <param name="vlList"></param>
+        /// <param name="coordinates"></param>
+        private void DrawVerticalInfoLine(List<IPlottable> vlList,Coordinates coordinates)
+        {
+            ((VerticalLine)vlList[0]).Label.Text = coordinates.Y.ToString();
+            ((VerticalLine)vlList[0]).X=coordinates.X;
+            ((VerticalLine)vlList[1]).X=coordinates.X;
+            ((VerticalLine)vlList[1]).Label.Text = DateTime.FromOADate(coordinates.X).ToShortDateString();
+            
+        }
+
+        /// <summary>
+        /// Отрисовка трендов.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnIsCheckedChanged(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            int currentIndexItem = trendCheckList.IndexOf(checkBox);
+            AvaPlot wpfPlot = gBigData.IsVisible==false ? grathic.Children[currentIndexItem] as AvaPlot : wpfBigData;
+            if(wpfPlot==null) return;
+            Plot plt = wpfPlot.Plot;
+            var plots = plt.PlottableList;
+            //Выход если нет элементов в плоте.
+            if (plots.Count == 0) return;
+            Scatter lineParam = plots.FirstOrDefault(line=>line.GetType() == typeof(Scatter)) as Scatter;
+            if (checkBox?.IsChecked == false)
+            {
+                if (lineParam != null) lineParam.LineStyle.Color=Generate.RandomColor().WithLightness();
+                var regLine = plots.FirstOrDefault(rg => rg.GetType() == typeof(LinePlot));
+                if(regLine!=null) plt.Remove(regLine);
+                wpfPlot.Refresh();
+                return;
+            }
+            var dataList= lineParam?.Data.GetScatterPoints();
+            var xs = dataList?.Select(item => item.X).ToArray();
+            var ys = dataList?.Select(item => item.Y).ToArray();
+            if(xs==null || ys==null) return;
+            ScottPlot.Statistics.LinearRegression reg = new(xs, ys);
+            Coordinates pt1 = new(xs.First(), reg.GetValue(xs.First()));
+            Coordinates pt2 = new(xs.Last(), reg.GetValue(xs.Last()));
+            var line = plt.Add.Line(pt1, pt2);
+            line.MarkerSize = 0;
+            line.LineWidth = 2;
+            line.LinePattern = LinePattern.Dashed;
+            line.LineStyle.Color=Colors.LightGreen;
+            lineParam.LineStyle.Color=Colors.Transparent;
+            wpfPlot.Refresh();
+        }
+        
+        /// <summary>
+        /// Экспорт в Excel.
+        /// </summary>
+        private void ExportExcelParam()
+        {
+            List<string> lstHeader = new List<string>();
+            foreach (var header in GridEvents.Columns)
+            {
+                dispatcher.Invoke(() => lstHeader.Add(header.Header.ToString()));
+            }
+            Workbook book = new Workbook();
+            Worksheet sheet = book.Worksheets[0];
+            CellRange ranges;
+            int totalRow = lstSource.Count + 1;
+            int lstColCount = GridEvents.Columns.Count;
+            System.Drawing.Point startPoint = new System.Drawing.Point(1, 1);
+            System.Drawing.Point endPoint = new System.Drawing.Point(totalRow, lstColCount);
+            for (int j = 0; j < totalRow; j++)
+            {
+                List<CellRange> list = sheet.Range[startPoint.X + j, startPoint.Y, startPoint.X + j, endPoint.Y].CellList;
+                if (j == 0)
+                {
+                    for (int i = 0; i < lstColCount; i++)
+                    {
+                        list[i].Text = lstHeader[i].ToString();
+                        list[i].IsWrapText = true;
+                        list[i].Style.VerticalAlignment = VerticalAlignType.Center;
+                        list[i].Style.HorizontalAlignment = HorizontalAlignType.Center;
+                        list[i].Style.Font.IsBold = true;
+                    }
+                }
+                else
+                {
+                    ClassEvent even = lstSource[j - 1];
+                    list[0].Text = even.ID.ToString();
+                    list[1].Text = even.StrDT;
+                    list[2].Text = even.NameDevice;
+                    list[3].Text = even.Name;
+                    list[4].Text = even.Param;
+                    list[5].Text = even.Val;
+                    for (int i = 0; i < lstColCount; i++)
+                    {
+                        if (i == 0)
+                        {
+                            list[i].ColumnWidth = 5;
+                        }
+                        else
+                        {
+                            list[i].ColumnWidth = 22;
+                        }
+                    }
+                }
+            }
+            ranges = sheet.Range[startPoint.X, startPoint.Y, endPoint.X, endPoint.Y];
+            ranges.BorderInside(LineStyleType.Thin, System.Drawing.Color.Black);
+            ranges.BorderAround(LineStyleType.Medium, System.Drawing.Color.Black);
+            sheet.AllocatedRange.AutoFitRows();
+            try
+            {
+                book.SaveToFile($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".xls");
+            }
+            catch
+            {
+                //MessageBox.Show("Ошибка! Импорт в Excel не завершен!");
+                return;
+            }
+            //MessageBox.Show("Экспорт в Excel завершен!", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
 }
