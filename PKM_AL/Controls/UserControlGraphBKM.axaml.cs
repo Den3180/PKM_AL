@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -765,10 +766,15 @@ public partial class UserControlGraphBKM : UserControl
                 });
             }
 
-            using var writer = new StreamWriter($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv");
-            CultureInfo.CurrentCulture = new CultureInfo("ru-RU", false);
-            using var csv = new CsvWriter(writer,CultureInfo.InvariantCulture);
-            csv.WriteRecords((IEnumerable)transportEvents);
+            CultureInfo cultureInfo = Environment.OSVersion.Platform == PlatformID.Win32NT ? 
+                                       CultureInfo.CurrentCulture : CultureInfo.InvariantCulture;
+            using (FileStream SourceStream =
+                   File.Open($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv", FileMode.OpenOrCreate))
+            {
+            using var writer = new StreamWriter(SourceStream,Encoding.UTF8);
+            using var csv = new CsvWriter(writer,cultureInfo);
+            csv.WriteRecords(transportEvents);
+            }
         }
         
         /// <summary>
