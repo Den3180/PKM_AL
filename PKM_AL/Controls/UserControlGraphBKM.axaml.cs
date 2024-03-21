@@ -767,7 +767,7 @@ public partial class UserControlGraphBKM : UserControl
 
             using var writer = new StreamWriter($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv");
             CultureInfo.CurrentCulture = new CultureInfo("ru-RU", false);
-            using var csv = new CsvWriter(writer,CultureInfo.CurrentUICulture);
+            using var csv = new CsvWriter(writer,CultureInfo.InvariantCulture);
             csv.WriteRecords((IEnumerable)transportEvents);
         }
         
