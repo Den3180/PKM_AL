@@ -6,7 +6,7 @@
              xmlns:pkmAl="clr-namespace:PKM_AL"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="1000"
-             x:Class="PKM_AL.Controls.UserControlGraphBKM" Loaded="Control_OnLoaded">
+             x:Class="PKM_AL.Controls.UserControlGraphBKM">
     <Grid ColumnDefinitions="*,0.2*">
         <UniformGrid Name="grathic"  Rows="3" >
             <scottPlot:AvaPlot Name="graphBKM_1" DoubleTapped="GraphBKM_OnDoubleTapped" Tapped="GraphBKM_1_OnTapped" 

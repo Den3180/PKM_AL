@@ -685,6 +685,11 @@ namespace PKM_AL
                     ContentArea.Content = new UserControlGraphBKM(new object());
                     StatusMode.Text = "Графики трендов";
                     break;
+                case ClassItem.eType.Archive:
+                    if (currentContent is UserControlArchive) break;
+                    ContentArea.Content = new UserControlArchive();
+                    StatusMode.Text = "Графики трендов";
+                    break;
             }
         }
         else if((sender as TreeView)?.SelectedItem is TreeViewItem treeViewItem)

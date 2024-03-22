@@ -16,7 +16,9 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using CsvHelper;
+using MsBox.Avalonia.Enums;
 using PKM;
+using PKM_AL.Classes.ServiceClasses;
 using ScottPlot;
 using ScottPlot.AutoScalers;
 using ScottPlot.Avalonia;
@@ -72,11 +74,6 @@ public partial class UserControlGraphBKM : UserControl
         DBegin.SelectedDate = new DateTime(2021,2,1);
         GridEvents.ItemsSource = testSource;
         
-    }
-    
-    private void Control_OnLoaded(object sender, RoutedEventArgs e)
-    {  
-       
     }
 
     /// <summary>
@@ -137,7 +134,7 @@ public partial class UserControlGraphBKM : UserControl
     /// <returns></returns>
     private List<string> GetCurrentDeviceChannels(ClassDevice device)
     {
-        List<string> lstChans = new List<string>();
+        var lstChans = new List<string>();
         lstChans = device?.Channels.Select(x => x.Name).ToList();
         lstChans?.Sort();
         lstChans?.Insert(0,"нет");
@@ -189,7 +186,6 @@ public partial class UserControlGraphBKM : UserControl
         List<string> channelsLst = GetCurrentDeviceChannels(device);
         foreach (ComboBox box in combosChannelsList)
         {
-            //box.ItemsSource = await Task.Run(()=> GetCurrentDeviceChannels(device));
             box.ItemsSource = channelsLst;
             box.SelectedIndex = 0;
         }
@@ -201,7 +197,6 @@ public partial class UserControlGraphBKM : UserControl
         //Включаем кнопку применить.
         bApply.IsEnabled = true;
     }
-    
     
     /// <summary>
     /// Рисование графиков (обертка).
@@ -572,9 +567,14 @@ public partial class UserControlGraphBKM : UserControl
         /// <param name="e"></param>
         private void bExcel_Click(object sender, RoutedEventArgs e)
         {
-             //Task.Run(ExportExcelParam);
              Task.Run(ExportCsvParam);
         }
+        
+        /// <summary>
+        /// Обработчик двойного клика по полю графика.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GraphBKM_OnDoubleTapped(object sender, TappedEventArgs e)
         {
             if (e.Source is AvaPlot plot) 
@@ -585,7 +585,6 @@ public partial class UserControlGraphBKM : UserControl
             {
                 gBigData.IsVisible = false;
                 wpfBigData.Plot.Clear();
-                // wpfBigData.Configuration.LeftClickDragPan = false;
                 wpfBigData.Refresh();
                 return;
             }
@@ -597,6 +596,7 @@ public partial class UserControlGraphBKM : UserControl
             plt.Style.DarkMode();
             double[] xs = lpar?.Data.GetScatterPoints().Select(crd => crd.X).ToArray();
             double[] ys = lpar?.Data.GetScatterPoints().Select(crd => crd.Y).ToArray();
+            SetLimitGraph(selectParam);
             DrawBigData(xs,ys, selectParam);
             gBigData.IsVisible = true;
         }
@@ -742,7 +742,10 @@ public partial class UserControlGraphBKM : UserControl
             lineParam.LineStyle.Color=Colors.Transparent;
             wpfPlot.Refresh();
         }
-
+        
+        /// <summary>
+        /// Экспорт данных графиков в csv.
+        /// </summary>
         private void ExportCsvParam()
         {
             List<ClassTransportEvent> transportEvents = new List<ClassTransportEvent>();
@@ -765,88 +768,29 @@ public partial class UserControlGraphBKM : UserControl
                    TypeEvent = ev.Name
                 });
             }
-
             CultureInfo cultureInfo = Environment.OSVersion.Platform == PlatformID.Win32NT ? 
                                        CultureInfo.CurrentCulture : CultureInfo.InvariantCulture;
-            using (FileStream sourceStream =
-                   File.Open($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv", FileMode.OpenOrCreate))
-            {
-            using var writer = new StreamWriter(sourceStream,Encoding.UTF8);
-            using (var csv = new CsvWriter(writer, cultureInfo))
-            {
-                csv.Context.RegisterClassMap<ClassEventMap>();
-                csv.WriteRecords(transportEvents);
-            }
-            }
-        }
-        
-        /// <summary>
-        /// Экспорт в Excel.
-        /// </summary>
-        private void ExportExcelParam()
-        {
-            List<string> lstHeader = new List<string>();
-            foreach (var header in GridEvents.Columns)
-            {
-                dispatcher.Invoke(() => lstHeader.Add(header.Header.ToString()));
-            }
-            Workbook book = new Workbook();
-            Worksheet sheet = book.Worksheets[0];
-            CellRange ranges;
-            int totalRow = lstSourceEvents.Count + 1;
-            int lstColCount = GridEvents.Columns.Count;
-            System.Drawing.Point startPoint = new System.Drawing.Point(1, 1);
-            System.Drawing.Point endPoint = new System.Drawing.Point(totalRow, lstColCount);
-            for (int j = 0; j < totalRow; j++)
-            {
-                List<CellRange> list = sheet.Range[startPoint.X + j, startPoint.Y, startPoint.X + j, endPoint.Y].CellList;
-                if (j == 0)
-                {
-                    for (int i = 0; i < lstColCount; i++)
-                    {
-                        list[i].Text = lstHeader[i].ToString();
-                        list[i].IsWrapText = true;
-                        list[i].Style.VerticalAlignment = VerticalAlignType.Center;
-                        list[i].Style.HorizontalAlignment = HorizontalAlignType.Center;
-                        list[i].Style.Font.IsBold = true;
-                    }
-                }
-                else
-                {
-                    ClassEvent even = lstSourceEvents[j - 1];
-                    list[0].Text = even.ID.ToString();
-                    list[1].Text = even.StrDT;
-                    list[2].Text = even.NameDevice;
-                    list[3].Text = even.Name;
-                    list[4].Text = even.Param;
-                    list[5].Text = even.Val;
-                    for (int i = 0; i < lstColCount; i++)
-                    {
-                        if (i == 0)
-                        {
-                            list[i].ColumnWidth = 5;
-                        }
-                        else
-                        {
-                            list[i].ColumnWidth = 22;
-                        }
-                    }
-                }
-            }
-            ranges = sheet.Range[startPoint.X, startPoint.Y, endPoint.X, endPoint.Y];
-            ranges.BorderInside(LineStyleType.Thin, System.Drawing.Color.Black);
-            ranges.BorderAround(LineStyleType.Medium, System.Drawing.Color.Black);
-            sheet.AllocatedRange.AutoFitRows();
             try
             {
-                book.SaveToFile($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".xls");
+
+                using (FileStream sourceStream =
+                       File.Open($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv", FileMode.OpenOrCreate))
+                {
+                    using var writer = new StreamWriter(sourceStream, Encoding.UTF8);
+                    using (var csv = new CsvWriter(writer, cultureInfo))
+                    {
+                        csv.Context.RegisterClassMap<ClassEventMap>();
+                        csv.WriteRecords(transportEvents);
+                    }
+                }
             }
             catch
             {
-                //MessageBox.Show("Ошибка! Импорт в Excel не завершен!");
+                dispatcher.Invoke(()=>ClassMessage.ShowMessage(
+                    MainWindow.currentMainWindow,"Ошибка! Импорт в Excel не завершен!",icon:Icon.Error));
                 return;
             }
-            //MessageBox.Show("Экспорт в Excel завершен!", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);
+            dispatcher.Invoke(()=>ClassMessage.ShowMessage(
+                MainWindow.currentMainWindow,"Экспорт в Excel завершен!", icon:Icon.Success));
         }
-
 }

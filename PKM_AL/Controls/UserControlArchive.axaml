@@ -2,7 +2,107 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:pkmAl="clr-namespace:PKM_AL"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="1000"
              x:Class="PKM_AL.Controls.UserControlArchive">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style> 
+    </UserControl.Styles>
+    <Grid ColumnDefinitions="*,0.2*">
+        <DataGrid Grid.Column="0"
+            Name="GridEvents"
+            x:DataType="pkmAl:ClassEvent"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="True" 
+            CanUserReorderColumns="False"
+            IsReadOnly="True" 
+            GridLinesVisibility="All" 
+            BorderThickness="1"
+            BorderBrush="Black"
+            HorizontalGridLinesBrush="Black"
+            VerticalGridLinesBrush="Black"
+            LoadingRow="GridEvents_LoadingRow">
+            <DataGrid.Styles>
+                <Style Selector="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="SeparatorBrush" Value="Black"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="AreSeparatorsVisible" Value="True"/>
+                    <Setter Property="Background" Value="Beige"/>
+                </Style>
+            </DataGrid.Styles>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Width="60" 
+                                    Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                        AncestorType={x:Type DataGridRow}}, Path=Tag}"/>
+                <DataGridTextColumn Header="Дата/Время" Width="120" Binding="{Binding StrDT}"/>
+                <DataGridTextColumn Header="Устройство" Width="120" Binding="{Binding NameDevice}"/>
+                <DataGridTextColumn Header="Тип события" Width="180" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Параметр" Width="200" Binding="{Binding Param}"/>
+                <DataGridTextColumn Header="Значение" Width="120" Binding="{Binding Val}"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu Name="cMenu">
+                    <MenuItem Header="Экспорт данных в файл" Click="MenuItemExport_Click"></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <StackPanel Grid.Column="1" Margin="5">
+            <TextBlock Text="Критерии поиска" TextAlignment="Center"/>
+            <UniformGrid Columns="2" Margin="5">
+                <TextBlock Text="Участок" VerticalAlignment="Center"/>
+                <TextBlock Name="AreaTextBlock"  Text="Name" HorizontalAlignment="Stretch" FontWeight="Bold" />
+            </UniformGrid>
+                            <UniformGrid Columns="2" Margin="2">
+                    <TextBlock Text="КИП" VerticalAlignment="Center"/>
+                <ComboBox x:Name="KIP" MinWidth="100" SelectionChanged="KIP_SelectionChanged"/>
+            </UniformGrid>               
+                <StackPanel>
+                    <TextBlock Text="Начало периода:"/>
+                    <CalendarDatePicker Name="DTBegin" Width="130"/>
+                    <TextBlock Text="Окончание периода:"/>
+                    <CalendarDatePicker Name="DTEnd" Width="130"  SelectedDate="{x:Static sys:DateTime.Now}"/>
+                </StackPanel>
+            <TextBlock Text="Типы событий:"/>
+            <ListBox Name="ListEvents">
+                <CheckBox Content="Запуск программы"          Name="t1"  Click="CheckBox_Click"/>
+                <CheckBox Content="Завершение программы"      Name="t2"  Click="CheckBox_Click"/>
+                <CheckBox Content="Изменение параметров"      Name="t3"  Click="CheckBox_Click"/>
+                <CheckBox Content="Регистрация оператора"     Name="t4"  Click="CheckBox_Click"/>
+                <CheckBox Content="Установлена связь"         Name="t5"  Click="CheckBox_Click"/>
+                <CheckBox Content="Потеряна связь"            Name="t6"  Click="CheckBox_Click"/>
+                <CheckBox Content="Значение выше допустимого" Name="t7"  Click="CheckBox_Click"/>
+                <CheckBox Content="Значение ниже допустимого" Name="t8"  Click="CheckBox_Click"/>
+                </ListBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <Button Content="Выбрать все" Margin="5" 
+                        MinHeight="30" Click="ButtonSelectAll_Click"/>
+                <Button Content="Сбросить все" Margin="5" MinHeight="30"
+                        Click="ButtonClearAll_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                <TextBlock Text="Параметр:"/>
+                <ComboBox x:Name="TxtSearch" Width="100" Margin="5 5 0 0"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Name="Search" Content="Поиск" Margin="5 10 0 0" Padding="25 0 25 0" Height="24"
+                            Click="ButtonFind_Click"></Button>
+                    <Button Name="Print" Content="Печать" Margin="5 10 5 0" Padding="25 0 25 0" Height="24" 
+                             Click="ButtonPrint_Click"/>
+                </StackPanel>
+                    <Button Name="Excel" Margin="5 10 5 0" Padding="25 0 25 0" Height="24"  
+                            Click="Button_Excel" HorizontalAlignment="Center">
+                        <TextBlock Text="Экспорт в Excel" TextWrapping="Wrap"/>
+                    </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </UserControl>
