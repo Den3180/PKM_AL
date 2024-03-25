@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Threading;
 using CsvHelper;
 using MsBox.Avalonia.Enums;
@@ -16,11 +17,7 @@ public class ExportToCsv
            {
                Dispatcher dispatcher=Dispatcher.UIThread;
                List<ClassTransportEvent> transportEvents = new List<ClassTransportEvent>();
-               List<string> lstHeader = new List<string>();
-               foreach (var header in GridEvents.Columns)
-               {
-                   dispatcher.Invoke(() => lstHeader.Add(header.Header.ToString()));
-               }
+              
                var count = 0;
                foreach (var ev in lstSourceEvents)
                {

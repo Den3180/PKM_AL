@@ -19,5 +19,37 @@
             <CalendarDatePicker Name="dtReport" Margin="5 0 0 0"/>
             <Button Content="Новая запись" Margin="10 0 0 0" FontSize="14" Click="Add_NewNote_Btn"/>
         </StackPanel>
+    <DataGrid Grid.Row="2"  
+              Name="GridReports" 
+              AutoGenerateColumns="False" 
+              SelectionMode="Extended"
+              CanUserResizeColumns="False" 
+              CanUserReorderColumns="False"
+              CanUserSortColumns="False"
+              IsReadOnly="False"
+              BorderThickness="1"
+              BorderBrush="Black"
+              HorizontalGridLinesBrush="Black"
+              VerticalGridLinesBrush="Black"
+              GridLinesVisibility="All"
+              CellEditEnding="GridReports_CellEditEnding">
+        <DataGrid.Styles>
+            <Style Selector="DataGridColumnHeader">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="BorderBrush" Value="Black"/>
+                <Setter Property="SeparatorBrush" Value="Black"/>
+                <Setter Property="AreSeparatorsVisible" Value="True"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            </Style>
+        </DataGrid.Styles>
+    </DataGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Right">            
+            <Button x:Name="ClearBtn" IsEnabled="False" Content="Удалить все" Width="100" Margin="5" 
+                    HorizontalAlignment="Right" Click="ClearBtn_Click" />
+            <Button x:Name="DeleteBtn" IsEnabled="False" Content="Удалить запись" Width="100" Margin="5" 
+                    HorizontalAlignment="Right" Click="DeleteBtn_Click" />
+            <Button Name="SaveRepBtn" Content="Сохранить" Width="100" Margin="5" 
+                    HorizontalAlignment="Right" Click="SaveRepBtn_Click"/>            
+        </StackPanel>
     </Grid>
 </UserControl>

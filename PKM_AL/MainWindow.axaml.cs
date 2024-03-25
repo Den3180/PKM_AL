@@ -58,6 +58,7 @@ namespace PKM_AL
         public static Queue<ClassCommand> QueueCommands;
         public static ObservableCollection<ClassLink> Links;
         public static ObservableCollection<ClassMessage> Messages;
+        public static ObservableCollection<ClassReportData> Reports;
 
 
         public static ClassSettings settings;
@@ -642,6 +643,22 @@ namespace PKM_AL
     }
         private void MenuItem_Click_Reports(object sender, RoutedEventArgs e)
     {
+        MenuItem menuItem = sender as MenuItem;
+        if(menuItem?.Header==null) return;
+        //Начало периода.
+        DateTime dtBegin = DateTime.MinValue;
+        //Конец периода.
+        DateTime dtEnd = DateTime.MaxValue;
+        //Окно выбора периода отчетности.
+        WindowPeriodreports windowPeriodReports = new WindowPeriodreports();
+        windowPeriodReports.WindowShow(this);
+        dtBegin=((List<DateTime>)windowPeriodReports.Content)[0];
+        dtEnd= ((List<DateTime>)windowPeriodReports.Content)[1];
+        //Выбор типа формы отчета.          
+        EnumTypeReport typeReport = ClassReportSettings.GetEnumTypeReport(menuItem.Header?.ToString());
+        Reports = new ObservableCollection<ClassReportData>(DB.LoadReport(typeReport, dtBegin, dtEnd));
+        ContentArea.Content = new UserControlReport(typeReport);
+        StatusMode.Text = menuItem.Header?.ToString();
     }
     
         /// <summary>

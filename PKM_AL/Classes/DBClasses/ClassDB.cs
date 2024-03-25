@@ -16,8 +16,10 @@ using SQLitePCL;
 using Npgsql;
 using Org.BouncyCastle.Bcpg;
 using System.Data;
+using MsBox.Avalonia.Enums;
 using PKM_AL;
 using PKM_AL.Classes;
+using Icon = System.Drawing.Icon;
 
 namespace PKM
 {
@@ -1248,153 +1250,155 @@ namespace PKM
         #endregion
 
 
-        //#region[Отчеты]
+        #region[Отчеты]
 
-        ///// <summary>
-        ///// Сохранение отчета.
-        ///// </summary>
-        ///// <param name="itemSours"></param>
-        ///// <returns></returns>
-        //public bool SaveReport(IEnumerable itemSours,EnumTypeReport typeReport)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    string nameReportTable = GetNameReportTable(typeReport);
-        //    List<string> namesCol = GetColumnName(nameReportTable);
-        //    if (string.IsNullOrEmpty(nameReportTable) || namesCol.Count == 0) 
-        //        return false;            
-        //    string commandPart1 = $"INSERT INTO {nameReportTable}(";            
-        //    for(int i=0;i<namesCol.Count;i++)
-        //    {
-        //        if (i < namesCol.Count - 1)
-        //            commandPart1 += $"{namesCol[i]},";
-        //        else
-        //            commandPart1 += $"{namesCol[i]})";
-        //    }
-        //    IEnumerator enumer = itemSours.GetEnumerator();
-        //    while (enumer.MoveNext())
-        //    {
-        //        string commandPart2 = " VALUES(";
-        //        cmd.CommandText = commandPart1;
-        //        ObservableCollection<string> reportDataLst = (enumer.Current as ClassReportData).DateRec;
-        //        for(int i = 1; i < reportDataLst.Count; i++)
-        //        {
-        //            if(i<reportDataLst.Count-1)
-        //                commandPart2 += $"'{reportDataLst[i].ToString()}',";
-        //            else
-        //                commandPart2 += $"'{reportDataLst[i].ToString()}')";
-        //        }
-        //        cmd.CommandText += commandPart2;
-        //        try 
-        //        { 
-        //          cmd.ExecuteNonQuery(); 
-        //        }
-        //        catch 
-        //        {
-        //            MessageBox.Show("Ошибка!Отчет не сохранен!","",MessageBoxButton.OK,MessageBoxImage.Error);
-        //            return false; 
-        //        }                
-        //    }
-        //    MessageBox.Show("Отчет сохранен!","", MessageBoxButton.OK, MessageBoxImage.Information);
-        //    return true;
-        //}
-        ///// <summary>
-        ///// Получение названия таблицы с отчетом из БД.
-        ///// </summary>
-        ///// <returns></returns>
-        //private string GetNameReportTable(EnumTypeReport typeReport)
-        //{
-        //    return typeReport switch
-        //    {
-        //        EnumTypeReport.VEIyear => "vei",
-        //        EnumTypeReport.EHZ01year => "ehz1",
-        //        EnumTypeReport.EHZ04year => "ehz4",
-        //        EnumTypeReport.EHZ06year => "ehz6",
-        //        EnumTypeReport.EHZ08quarter => "ehz8q",
-        //        EnumTypeReport.F40year=> "f40year",
-        //        EnumTypeReport.F02year=> "f02year",
-        //        EnumTypeReport.F41year=> "f41year",
-        //        EnumTypeReport.F47year=> "f47year",
-        //        EnumTypeReport.F52gas=>  "f52gas",
-        //        EnumTypeReport.F141gas => "f141gas",
-        //        _ => string.Empty
-        //    };
-        //}
+        /// <summary>
+        /// Сохранение отчета.
+        /// </summary>
+        /// <param name="itemSours"></param>
+        /// <returns></returns>
+        public bool SaveReport(IEnumerable itemSours,EnumTypeReport typeReport)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            string nameReportTable = GetNameReportTable(typeReport);
+            List<string> namesCol = GetColumnName(nameReportTable);
+            if (string.IsNullOrEmpty(nameReportTable) || namesCol.Count == 0) 
+                return false;            
+            string commandPart1 = $"INSERT INTO {nameReportTable}(";            
+            for(int i=0;i<namesCol.Count;i++)
+            {
+                if (i < namesCol.Count - 1)
+                    commandPart1 += $"{namesCol[i]},";
+                else
+                    commandPart1 += $"{namesCol[i]})";
+            }
+            IEnumerator enumer = itemSours.GetEnumerator();
+            while (enumer.MoveNext())
+            {
+                string commandPart2 = " VALUES(";
+                cmd.CommandText = commandPart1;
+                ObservableCollection<string> reportDataLst = (enumer.Current as ClassReportData).DateRec;
+                for(int i = 1; i < reportDataLst.Count; i++)
+                {
+                    if(i<reportDataLst.Count-1)
+                        commandPart2 += $"'{reportDataLst[i].ToString()}',";
+                    else
+                        commandPart2 += $"'{reportDataLst[i].ToString()}')";
+                }
+                cmd.CommandText += commandPart2;
+                try 
+                { 
+                  cmd.ExecuteNonQuery(); 
+                }
+                catch
+                {
+                    ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Ошибка!Отчет не сохранен!",buttonEnum:ButtonEnum.Ok,
+                        icon: MsBox.Avalonia.Enums.Icon.Error);
+                    return false; 
+                }                
+            }
+            ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Отчет сохранен!",buttonEnum:ButtonEnum.Ok,
+                icon: MsBox.Avalonia.Enums.Icon.Success);
+            return true;
+        }
+        /// <summary>
+        /// Получение названия таблицы с отчетом из БД.
+        /// </summary>
+        /// <returns></returns>
+        private string GetNameReportTable(EnumTypeReport typeReport)
+        {
+            return typeReport switch
+            {
+                EnumTypeReport.VEIyear => "vei",
+                EnumTypeReport.EHZ01year => "ehz1",
+                EnumTypeReport.EHZ04year => "ehz4",
+                EnumTypeReport.EHZ06year => "ehz6",
+                EnumTypeReport.EHZ08quarter => "ehz8q",
+                EnumTypeReport.F40year=> "f40year",
+                EnumTypeReport.F02year=> "f02year",
+                EnumTypeReport.F41year=> "f41year",
+                EnumTypeReport.F47year=> "f47year",
+                EnumTypeReport.F52gas=>  "f52gas",
+                EnumTypeReport.F141gas => "f141gas",
+                _ => string.Empty
+            };
+        }
 
-        ///// <summary>
-        ///// Получение списка названий колонок таблицы.
-        ///// </summary>
-        ///// <returns></returns>
-        //public List<string> GetColumnName(string nameTable)
-        //{
-        //    List<string> lstName = new List<string>();
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = $"PRAGMA table_info({nameTable})";
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            lstName.Add(reader["name"].ToString());
-        //        }
-        //    }
-        //    return lstName;
-        //}
+        /// <summary>
+        /// Получение списка названий колонок таблицы.
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetColumnName(string nameTable)
+        {
+            List<string> lstName = new List<string>();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = $"PRAGMA table_info({nameTable})";
+            using (SqliteDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    lstName.Add(reader["name"].ToString());
+                }
+            }
+            return lstName;
+        }
 
-        ///// <summary>
-        ///// Загрузка отчета из БД.
-        ///// </summary>
-        ///// <param name="typeReport"></param>
-        ///// <param name="dtBegin"></param>
-        ///// <param name="dtEnd"></param>
-        ///// <returns></returns>
-        //public List<ClassReportData> LoadReport(EnumTypeReport typeReport,DateTime dtBegin, DateTime dtEnd)
-        //{
-        //    //Количество столбцов в журнале.
-        //    int countTable = (int)typeReport;
-        //    //Список с объектами-данными из БД журналов.
-        //    List<ClassReportData> list = new List<ClassReportData>();
-        //    //Выбор названия таблицы.
-        //    string table = GetNameReportTable(typeReport);           
-        //    //Проверка на существование таблицы в БД.
-        //    if (string.IsNullOrEmpty(table)) 
-        //    {
-        //        return list;
-        //    }     
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    //Создание запроса базы данных.
-        //    cmd.CommandText = $"SELECT rowid, * FROM {table}";
-        //    if(dtBegin!=DateTime.MinValue && dtEnd != DateTime.MaxValue)
-        //    {
-        //        cmd.CommandText += " WHERE daterec BETWEEN datetime ('" + dtBegin.ToString("yyyy-MM-dd HH:mm:ss") + "') " +
-        //         "AND datetime('" + dtEnd.ToString("yyyy-MM-dd HH:mm:ss") + "')";
-        //    }
-        //    cmd.CommandText+= " ORDER BY rowid ASC";
-        //    var te = cmd.CommandText;
-        //    //Считывание данных из БД.
-        //    using (SqliteDataReader reader = cmd.ExecuteReader())       
-        //    {
-        //        while (reader.Read())                                   
-        //        {
+        /// <summary>
+        /// Загрузка отчета из БД.
+        /// </summary>
+        /// <param name="typeReport"></param>
+        /// <param name="dtBegin"></param>
+        /// <param name="dtEnd"></param>
+        /// <returns></returns>
+        public List<ClassReportData> LoadReport(EnumTypeReport typeReport,DateTime dtBegin, DateTime dtEnd)
+        {
+            //Количество столбцов в журнале.
+            int countTable = (int)typeReport;
+            //Список с объектами-данными из БД журналов.
+            List<ClassReportData> list = new List<ClassReportData>();
+            //Выбор названия таблицы.
+            string table = GetNameReportTable(typeReport);           
+            //Проверка на существование таблицы в БД.
+            if (string.IsNullOrEmpty(table)) 
+            {
+                return list;
+            }     
+            SqliteCommand cmd = conn.CreateCommand();
+            //Создание запроса базы данных.
+            cmd.CommandText = $"SELECT rowid, * FROM {table}";
+            if(dtBegin!=DateTime.MinValue && dtEnd != DateTime.MaxValue)
+            {
+                cmd.CommandText += " WHERE daterec BETWEEN datetime ('" + dtBegin.ToString("yyyy-MM-dd HH:mm:ss") + "') " +
+                 "AND datetime('" + dtEnd.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+            }
+            cmd.CommandText+= " ORDER BY rowid ASC";
+            var te = cmd.CommandText;
+            //Считывание данных из БД.
+            using (SqliteDataReader reader = cmd.ExecuteReader())       
+            {
+                while (reader.Read())                                   
+                {
 
-        //            ClassReportData rep = new ClassReportData(typeReport);                   
-        //            for(int i = 0; i < countTable; i++)
-        //            {
-        //                //Нумерация, первый столбец.
-        //                if(i==0)
-        //                {
-        //                    rep.DateRec.Add((list.Count+1).ToString());
-        //                }
-        //                //Данные из остальных столбцов.
-        //                else
-        //                {
-        //                    rep.DateRec.Add(reader[reader.GetName(i)].ToString());
-        //                }
-        //            }
-        //            list.Add(rep);                                         
-        //        }
-        //    }
-        //    return list;
-        //}
-        //#endregion
+                    ClassReportData rep = new ClassReportData(typeReport);                   
+                    for(int i = 0; i < countTable; i++)
+                    {
+                        //Нумерация, первый столбец.
+                        if(i==0)
+                        {
+                            rep.DateRec.Add((list.Count+1).ToString());
+                        }
+                        //Данные из остальных столбцов.
+                        else
+                        {
+                            rep.DateRec.Add(reader[reader.GetName(i)].ToString());
+                        }
+                    }
+                    list.Add(rep);                                         
+                }
+            }
+            return list;
+        }
+        #endregion
 
         #region[Backup]
         /// <summary>

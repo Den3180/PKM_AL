@@ -15,7 +15,8 @@ namespace PKM_AL
         {
             using (var source = new CancellationTokenSource())
             {
-                this.ShowDialog(owner).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                this.ShowDialog(owner).ContinueWith(t => source.Cancel(), 
+                    TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);                
             }             
         }

@@ -2,7 +2,7 @@ using CsvHelper.Configuration;
 
 namespace PKM_AL.Classes.ServiceClasses;
 
-public class ClassEventMap: ClassMap<ClassTransportEvent>
+public sealed class ClassEventMap: ClassMap<ClassTransportEvent>
 {
     public ClassEventMap()
     {

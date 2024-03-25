@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="PKM_AL.Windows.WindowPeriodreports"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Title="Выбор периода" WindowStartupLocation="CenterScreen" CanResize="False" ShowInTaskbar="False" 
+        SizeToContent="WidthAndHeight">
+    <Grid RowDefinitions="*,*">
+        <UniformGrid Grid.Row="0" Rows="3" Columns="2">
+            <TextBlock Text="За весь период" Margin="5" TextAlignment="Left" FontSize="18" />
+            <CheckBox Name="chBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5 0 5 0" IsChecked="True" 
+                     IsCheckedChanged="ChBox_OnIsCheckedChanged"/>
+            <TextBlock Text="Начало периода" Margin="5" TextAlignment="Left" FontSize="18" />
+            <CalendarDatePicker Name="dtB" Margin="5" IsEnabled="False"/>
+            <TextBlock Text="Конец периода" Margin="5" TextAlignment="Left" FontSize="18" />
+            <CalendarDatePicker Name="dtE" Margin="5" IsEnabled="False"/>
+        </UniformGrid>
+        <Button Grid.Row="1" Content="Принять" FontSize="16" Margin="70 10 70 10"
+                HorizontalAlignment="Center" Click="Button_Click"/>
+    </Grid>
+</Window>
