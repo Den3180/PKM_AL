@@ -54,7 +54,9 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
-        <StackPanel Grid.Column="1" Margin="5">
+        <ScrollViewer Grid.Column="1">
+            
+        <StackPanel  Margin="5" >
             <TextBlock Text="Критерии поиска" TextAlignment="Center"/>
             <UniformGrid Columns="2" Margin="5">
                 <TextBlock Text="Участок" VerticalAlignment="Center"/>
@@ -104,5 +106,6 @@
                     </Button>
             </StackPanel>
         </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

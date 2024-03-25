@@ -36,9 +36,9 @@ public class ExportToCsv
                                           CultureInfo.CurrentCulture : CultureInfo.InvariantCulture;
                try
                {
-   
                    using (FileStream sourceStream =
-                          File.Open($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv", FileMode.OpenOrCreate | FileMode.Truncate))
+                          File.Open($"Параметры" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv", 
+                              FileMode.Create))
                    {
                        using var writer = new StreamWriter(sourceStream, Encoding.UTF8);
                        using (var csv = new CsvWriter(writer, cultureInfo))
@@ -48,7 +48,7 @@ public class ExportToCsv
                        }
                    }
                }
-               catch
+               catch(Exception ex)
                {
                    dispatcher.Invoke(()=>ClassMessage.ShowMessage(
                        MainWindow.currentMainWindow,"Ошибка! Импорт в Excel не завершен!",icon:Icon.Error));
