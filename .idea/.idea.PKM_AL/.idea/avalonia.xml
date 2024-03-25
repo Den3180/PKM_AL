@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="PKM_AL/App.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/UserControlAddReport.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlAlarms.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlArchive.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlChannels.axaml" value="PKM_AL/PKM_AL.csproj" />

@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using MsBox.Avalonia.Enums;
 using PKM;
+using PKM_AL.Classes.ServiceClasses;
 
 namespace PKM_AL.Controls;
 
@@ -171,7 +174,7 @@ public partial class UserControlArchive : UserControl
 
     private void Button_Excel(object sender, RoutedEventArgs e)
     {
-        
+        Task.Run(()=>ExportToCsv.ExportCsvParam(GridEvents,Events));
     }
 
     private void ButtonPrint_Click(object sender, RoutedEventArgs e)

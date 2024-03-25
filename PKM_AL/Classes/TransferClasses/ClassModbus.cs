@@ -371,7 +371,8 @@ public class ClassModbus
             //Разбиение карты регистров на группы.
             List<ClassGroupRequest> Groups = device.GetGroups();
             //Цикл запроса данных по группам регистров.
-           await Task.Run(()=>ReadGroupRegistry(Groups,device,master));               
+           await Task.Run(()=>ReadGroupRegistry(Groups,device,master));
+           Thread.Sleep(50);
         }
         
         //????????????????????????????????????????????
@@ -463,11 +464,11 @@ public class ClassModbus
     }
 
     /// <summary>
-        /// Проверка, ведет ли какое нибудь устройство опрос в текущий момент.
-        /// </summary>
-        /// <param name="devices"></param>
-        /// <param name="currentDevice"></param>
-        /// <returns></returns>
+    /// Проверка, ведет ли какое нибудь устройство опрос в текущий момент.
+    /// </summary>
+    /// <param name="devices"></param>
+    /// <param name="currentDevice"></param>
+    /// <returns></returns>
     private bool SomeDeviceInTheProcess(ObservableCollection<ClassDevice> devices, ClassDevice currentDevice)
     {
         return devices.Any(dev => dev.InProcess == true && currentDevice.ID != dev.ID);
@@ -542,10 +543,9 @@ public class ClassModbus
                     channel.BaseValue = GetDataFromBuffer(Offset, channel.Format);
                     channel.Value = GetDecimalFromBuffer(Offset, channel.Format);
                 }
-                System.Threading.Thread.Sleep(10);
+                Thread.Sleep(10);
             }
-
-
+            
             //Чтение DO/DI.
             if (group.TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput || group.TypeRegistry == ClassChannel.EnumTypeRegistry.DiscreteInput)
             {
@@ -556,7 +556,7 @@ public class ClassModbus
                     channel.Value = Convert.ToDecimal(dataBool[Offset]);
                     //channel.Value = GetDecimalFromBuffer(Offset, channel.Format);
                 }
-                System.Threading.Thread.Sleep(10);
+                Thread.Sleep(10);
             }
         }
     }
@@ -607,6 +607,7 @@ public class ClassModbus
             ClassLog.Write(Ex.Message);
         }
     }
+    
     /// <summary>
     /// Запись одного Holding Registry.
     /// </summary>

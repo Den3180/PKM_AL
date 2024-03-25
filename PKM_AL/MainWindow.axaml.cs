@@ -623,9 +623,18 @@ namespace PKM_AL
         frm.WindowShow(this);
     }
         
+        /// <summary>
+        /// Создать отчет по форме СТО Газпром.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click_Form(object sender, RoutedEventArgs e)
     {
-
+        MenuItem menuItem = sender as MenuItem;
+        if(menuItem?.Header == null) return;
+        EnumTypeReport typeReport = ClassReportSettings.GetEnumTypeReport(menuItem.Header.ToString());
+        ContentArea.Content = new UserControlAddReport(typeReport);
+        StatusMode.Text = menuItem.Header.ToString();      
     }
         private void MenuItem_Click_OBD(object sender, RoutedEventArgs e)
     {

@@ -12,7 +12,7 @@
         </Style>
         <Style Selector="Button">
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style> 
+        </Style>
     </UserControl.Styles>
     <Grid ColumnDefinitions="*,0.2*">
         <DataGrid Grid.Column="0"
@@ -62,7 +62,7 @@
             </UniformGrid>
                             <UniformGrid Columns="2" Margin="2">
                     <TextBlock Text="КИП" VerticalAlignment="Center"/>
-                <ComboBox x:Name="KIP" MinWidth="100" SelectionChanged="KIP_SelectionChanged"/>
+                <ComboBox x:Name="KIP" MinWidth="100" Width="100" SelectionChanged="KIP_SelectionChanged"/>
             </UniformGrid>               
                 <StackPanel>
                     <TextBlock Text="Начало периода:"/>

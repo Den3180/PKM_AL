@@ -22,12 +22,12 @@ namespace PKM
             string s = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss.fff") + "> " + Event;
             using (writer = new StreamWriter(FileLog, true))
             {
-            try
-            {
-                writer.WriteLine(s);
+                try
+                {
+                    writer.WriteLine(s);
                 //writer.Flush();//Очистка буфера и сброс кодировщика.
-            }
-            catch(Exception ex) 
+                }
+                catch(Exception ex) 
                 {
                 }
             }

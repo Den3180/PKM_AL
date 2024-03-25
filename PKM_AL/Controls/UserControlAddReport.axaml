@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PKM_AL.Controls.UserControlAddReport">
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style> 
+    </UserControl.Styles>
+    <Grid RowDefinitions="auto,auto,*,auto">
+        <TextBlock Grid.Row="0" Name="MainTitle" FontSize="18" HorizontalAlignment="Center"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Дата:" FontSize="14"/>
+            <CalendarDatePicker Name="dtReport" Margin="5 0 0 0"/>
+            <Button Content="Новая запись" Margin="10 0 0 0" FontSize="14" Click="Add_NewNote_Btn"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
