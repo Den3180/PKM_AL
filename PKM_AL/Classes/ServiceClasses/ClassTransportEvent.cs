@@ -1,5 +1,10 @@
+using System.Collections.Generic;
+
 namespace PKM_AL.Classes.ServiceClasses;
 
+/// <summary>
+/// Класс хранения данных для csv. События.
+/// </summary>
 public class ClassTransportEvent
 {
     public string Id { get; set; }

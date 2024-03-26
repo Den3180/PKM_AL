@@ -50,24 +50,10 @@ public partial class UserControlAddReport : UserControl
             //Объект одной колонки.
             DataGridTextColumn column = new DataGridTextColumn();
             column.Header = $"{i}";
-            //Составление шаблона заголовка.
-            // column.HeaderTemplate = new DataTemplate();
-            // column.HeaderTemplate.DataType = typeof(DataGridColumnHeader);
-            // FrameworkElementFactory spFactory = new FrameworkElementFactory(typeof(TextBlock));
-            // spFactory.SetValue(TextBlock.TextProperty, lstHeaders[i].Item1);
-            // spFactory.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
-            // spFactory.SetValue(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Center);
-            // column.HeaderTemplate.VisualTree = spFactory;
-            //Редактировать можно, с третьего столбца(номер и дату нельзя).
+            //Редактирование возможно только с 4-ой колонки.
             column.IsReadOnly = i<3;
             //Ширина колонки(при)
             column.MaxWidth = 200;
-            
-            //Шаблон данных в каждой ячейке.
-            // column.ElementStyle = new Style();
-            // column.ElementStyle.TargetType = typeof(TextBlock);
-            // column.ElementStyle.Setters.Add(new Setter(TextBlock.TextWrappingProperty, TextWrapping.Wrap));
-            // column.ElementStyle.Setters.Add(new Setter(TextBlock.MaxWidthProperty, 200D));
             //Привяка данных к ячейкам.
             column.Binding = new Binding($"DateRec[{i - 1}]");
             column.Header = lstHeaders[i].Item1;

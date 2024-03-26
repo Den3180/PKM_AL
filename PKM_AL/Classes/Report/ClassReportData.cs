@@ -14,9 +14,28 @@ namespace PKM
         {
             DateRec = new ObservableCollection<string>();            
         }
+        
         /// <summary>
         /// Список данных из отчетов.
         /// </summary>
-        public ObservableCollection<string> DateRec {get;set;}      
+        public ObservableCollection<string> DateRec {get;set;}
+
+        public override string ToString()
+        {
+            StringBuilder str=new StringBuilder();
+            for(int i=0;i<DateRec.Count;i++)
+            {
+                if (i == DateRec.Count - 1)
+                {
+                    str.Append(DateRec[i]);
+                }
+                else
+                {
+                    str.Append(DateRec[i]);
+                    str.Append(';');
+                }
+            }
+            return str.ToString();
+        }
     }
 }

@@ -2,6 +2,9 @@ using CsvHelper.Configuration;
 
 namespace PKM_AL.Classes.ServiceClasses;
 
+/// <summary>
+/// Карта для заголовков csv. События.
+/// </summary>
 public sealed class ClassEventMap: ClassMap<ClassTransportEvent>
 {
     public ClassEventMap()
