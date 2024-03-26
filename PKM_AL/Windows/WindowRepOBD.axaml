@@ -1,0 +1,99 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="800"
+        x:Class="PKM_AL.Windows.WindowRepOBD"
+        Title="Отчет ОБД" WindowStartupLocation="CenterScreen" WindowState="Maximized" SystemDecorations="Full">
+        <Border BorderBrush="LightGray" BorderThickness="3" Background="#FFF0F0F0">
+                <DockPanel VerticalAlignment="Stretch">
+                        <TextBlock DockPanel.Dock="Top" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center" 
+                                   TextWrapping="Wrap" Margin="2" TextAlignment="Center">
+                                <TextBlock.Text>
+                                        Форма предоставления в отраслевой банк данных результатов диагностических 
+                                        обследований средств противокоррозионной защиты магистральных трубопроводов ОАО 
+                                        &quot;Газпром&quot;
+                                </TextBlock.Text>    
+                        </TextBlock>
+                        <Border DockPanel.Dock="Bottom" BorderBrush="LightGray" BorderThickness="2">
+                                <TextBlock Text="Описание вкладки" FontSize="18" HorizontalAlignment="Center"/>
+                        </Border>
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <StackPanel.Styles>
+                                        <Style Selector="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                                <Setter Property="Width" Value="100"/>
+                                                <Setter Property="FontSize" Value="12"/>
+                                                <Setter Property="FontFamily" Value="Century Gothic"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </Style>
+                                </StackPanel.Styles>
+                                        <Button x:Name="save" Margin="5" IsEnabled="True" 
+                                                Click="Save_Click">
+                                                <TextBlock Text="Сохранить"/>
+                                        </Button>
+                                        <Button x:Name="saveSend" Margin="5" IsEnabled="True" 
+                                                Click="SaveSend_Click">
+                                                <TextBlock Text="Сохранить и отправить" />
+                                        </Button>
+                                        <Button x:Name="load" Margin="5" IsEnabled="False" 
+                                                Click="Load_OnClick">
+                                                <TextBlock Text="Загрузить"/>
+                                        </Button>
+                                        <Button Margin="5" IsDefault="True" Click="Button_Click">
+                                                <TextBlock Text="Отмена"/>
+                                        </Button>
+                        </StackPanel>
+                        <Border DockPanel.Dock="Top"  BorderBrush="LightGray" BorderThickness="2" >
+                        <TabControl Name="TabC"  Background="LightYellow" SelectionChanged="TabControl_SelectionChanged">
+                                <TabItem>
+                                        <TabItem.Header>
+                                                <TextBlock Text="Начало"/>    
+                                        </TabItem.Header>
+                                </TabItem>
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Справочные данные"/>
+                                        </TabItem.Header>                        
+                                </TabItem>
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Договор"/>
+                                        </TabItem.Header>
+                                </TabItem>
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Участок"/>
+                                        </TabItem.Header>
+                                </TabItem>
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Дефекты"/>
+                                        </TabItem.Header>
+                                </TabItem>
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Точечные измерения"/>
+                                        </TabItem.Header>
+                                </TabItem>                    
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Ситуация на трассе"/>
+                                        </TabItem.Header>
+                                </TabItem>
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Выводы"/>
+                                        </TabItem.Header>
+                                </TabItem>
+                                <TabItem>
+                                        <TabItem.Header >
+                                                <TextBlock Text="Рекомендации"/>
+                                        </TabItem.Header>
+                                </TabItem>
+                        </TabControl>
+                        </Border>
+                </DockPanel>
+        </Border>
+</Window>

@@ -100,22 +100,8 @@
 						<Setter Property="Orientation" Value="Horizontal"/>
 					</Style>
 				</StackPanel.Styles>
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="auto"/>
-						<ColumnDefinition Width="auto"/>
-						<ColumnDefinition Width="auto"/>
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-					</Grid.RowDefinitions>
+				<Grid ColumnDefinitions="auto,auto,auto" 
+				      RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto">
 					<StackPanel Grid.Row="0" Grid.Column="0">
 						<TextBlock Classes="T1" Text="Номинальное напряжение питания,В"/>
 						<TextBox x:Name="Unom_supply" Text="0"/>

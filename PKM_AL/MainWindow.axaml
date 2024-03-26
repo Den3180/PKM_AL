@@ -80,7 +80,8 @@
 				<MenuItem Header="О программе..." Click="MenuItem_Click"></MenuItem>
 			</MenuItem>
 		</Menu>
-			<Grid DockPanel.Dock="Bottom" ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,Auto,180" 
+			<Grid DockPanel.Dock="Bottom" 
+			      ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,Auto,180" 
 				  Background="LightGray" Height="30">
 			<Grid.Styles>
 				<Style Selector="TextBlock" >

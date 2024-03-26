@@ -637,10 +637,18 @@ namespace PKM_AL
         ContentArea.Content = new UserControlAddReport(typeReport);
         StatusMode.Text = menuItem.Header.ToString();      
     }
+        
+        /// <summary>
+        /// Создать отчет ОБД.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click_OBD(object sender, RoutedEventArgs e)
     {
-
+        var form = new WindowRepOBD();
+        form.Show(this);
     }
+        
         private void MenuItem_Click_Reports(object sender, RoutedEventArgs e)
     {
         MenuItem menuItem = sender as MenuItem;

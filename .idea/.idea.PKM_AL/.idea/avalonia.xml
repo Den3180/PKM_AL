@@ -29,6 +29,7 @@
         <entry key="PKM_AL/Windows/WindowLink.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowMassage.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowPeriodreports.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Windows/WindowRepOBD.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowValue.axaml" value="PKM_AL/PKM_AL.csproj" />
       </map>
     </option>
