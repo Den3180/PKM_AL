@@ -4,7 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="800"
         x:Class="PKM_AL.Windows.WindowRepOBD"
-        Title="Отчет ОБД" WindowStartupLocation="CenterScreen" WindowState="Maximized" SystemDecorations="Full">
+        Title="Отчет ОБД" WindowStartupLocation="CenterScreen" WindowState="Maximized" SystemDecorations="Full"
+        Loaded="Control_OnLoaded">
         <Border BorderBrush="LightGray" BorderThickness="3" Background="#FFF0F0F0">
                 <DockPanel VerticalAlignment="Stretch">
                         <TextBlock DockPanel.Dock="Top" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center" 
@@ -16,7 +17,7 @@
                                 </TextBlock.Text>    
                         </TextBlock>
                         <Border DockPanel.Dock="Bottom" BorderBrush="LightGray" BorderThickness="2">
-                                <TextBlock Text="Описание вкладки" FontSize="18" HorizontalAlignment="Center"/>
+                                <TextBlock Name="statusBarOBD" Text="Описание вкладки" FontSize="18" HorizontalAlignment="Center"/>
                         </Border>
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <StackPanel.Styles>
@@ -47,6 +48,13 @@
                         </StackPanel>
                         <Border DockPanel.Dock="Top"  BorderBrush="LightGray" BorderThickness="2" >
                         <TabControl Name="TabC"  Background="LightYellow" SelectionChanged="TabControl_SelectionChanged">
+                                <TabControl.Styles>
+                                        <Style Selector="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="FontSize" Value="18"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </Style>
+                                </TabControl.Styles>
                                 <TabItem>
                                         <TabItem.Header>
                                                 <TextBlock Text="Начало"/>    

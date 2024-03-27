@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PKM_AL.Controls.OBDControls._MainTag.UserControlDeffects">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Обнаруженные дефекты" Margin="5" FontSize="20" FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+                <Border BorderBrush="Gray" BorderThickness="3">
+                    <TabControl Name="tabC" Margin="3" Background="LightYellow" SelectionChanged="TabControl_SelectionChanged_Deffects">
+                        <TabItem>                    
+                            <TabItem.Header >
+                                <TextBlock Text="Зона перезащиты"/>
+                            </TabItem.Header>                                                 
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Зона недозащиты"/>
+                            </TabItem.Header>                    
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Места с дефектами методом ИИ"/>
+                            </TabItem.Header>                    
+                        </TabItem> 
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Места с дефектами методом ИПИ"/>
+                            </TabItem.Header>                    
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Зона ВКО,ПКО"/>
+                            </TabItem.Header>                    
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Зона блуждающих токов"/>
+                            </TabItem.Header>                    
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Зона высоковольтных влияний"/>
+                            </TabItem.Header>                    
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Зона непроходимых участков"/>
+                            </TabItem.Header>                    
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <TextBlock Text="Результаты обследования в шурфе"/>
+                            </TabItem.Header>                    
+                        </TabItem> 
+                    </TabControl>
+                </Border>
+            </DockPanel>
+</UserControl>

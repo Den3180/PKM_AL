@@ -83,11 +83,9 @@
 
 
   <ItemGroup>
-    <Folder Include="Controls\OBDControls\DeffectsTag\" />
     <Folder Include="Controls\OBDControls\Dr_PointTag\" />
     <Folder Include="Controls\OBDControls\FindingsTag\" />
     <Folder Include="Controls\OBDControls\RecommendationTag\" />
     <Folder Include="Controls\OBDControls\Trace_SituationTag\" />
-    <Folder Include="Controls\OBDControls\_MainTag\" />
   </ItemGroup>
 </Project>

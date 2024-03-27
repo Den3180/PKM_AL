@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PKM_AL.Controls.OBDControls._MainTag.UserControlBegin">
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Начало" Margin="5" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <Border BorderBrush="Gray" BorderThickness="3">
+            <Grid Margin="5" RowDefinitions="auto,auto,auto">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="18">
+                        <Run>Дата</Run>
+                        <Run Foreground="Red">*</Run>
+                        <Run>:</Run>
+                    </TextBlock>
+                    <CalendarDatePicker FontSize="18" SelectedDate="{x:Static sys:DateTime.Now}" Background="White"/>
+                </StackPanel>
+                <CheckBox Name="XML_RELOAD" Grid.Row="1" Content="Повторная загрузка" HorizontalAlignment="Left" HorizontalContentAlignment="Left" 
+                          VerticalContentAlignment="Center" FontSize="18" IsChecked="False" Margin="0 5"/>
+                <TextBlock Grid.Row="2" Margin="5" HorizontalAlignment="Left" MaxWidth="300" FontWeight="Normal">                         
+                    <Run Foreground="Red">*</Run>
+                    <Run FontStyle="Italic"  FontSize="14">поля, обязательные к заполнению</Run>
+                </TextBlock>
+            </Grid>
+        </Border>
+    </DockPanel>
+</UserControl>

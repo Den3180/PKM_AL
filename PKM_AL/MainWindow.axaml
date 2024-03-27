@@ -69,7 +69,7 @@
 					<MenuItem Header="СКЗ" ToolTip.Tip="Станция катодной защиты"/>
 					<MenuItem Header="БСЗЭ" IsEnabled="False" ToolTip.Tip="Блок совместной защиты электронный"/>
 				</MenuItem>
-				<MenuItem Header="Изоляция" IsEnabled="False"/>
+				<MenuItem Header="Изоляция" IsEnabled="False" />
 				<MenuItem Header="АЗ" ToolTip.Tip="Анодное заземление"/>
 				<MenuItem Header="ПЗ" IsEnabled="False" ToolTip.Tip="Протекторная защиты"/>
 				<MenuItem Header="МСЭС" IsEnabled="False" ToolTip.Tip="Медно-сульфатный электрод сравнения"/>

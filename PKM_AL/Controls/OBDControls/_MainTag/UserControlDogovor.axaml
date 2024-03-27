@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
+             x:Class="PKM_AL.Controls.OBDControls._MainTag.UserControlDogovor">
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="MaxHeight" Value="25"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <!-- <EventSetter Event="LostFocus" Handler="TextBox_LostFocus"/> -->
+            <!-- <EventSetter Event="GotFocus" Handler="TextBox_GotFocus"/> -->
+            <!-- <EventSetter Event="TextChanged" Handler="TextBox_TextChanged"/> -->
+        </Style>
+        <Style Selector="CalendarDatePicker">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>        
+        </Style>
+    </UserControl.Styles>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Данные договора" Margin="5" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <Border BorderBrush="Gray" BorderThickness="3">
+        <ScrollViewer>
+        <Grid RowDefinitions="auto,auto">
+            <UniformGrid Grid.Row="0" Rows="7" Columns="2">
+            <TextBlock>
+                <Run>Локальный идентификатор загружаемого объекта</Run>
+                <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+                        <TextBox Name="ID_XML" Tag="INTEGER*" />
+                <TextBlock>
+                  <Run>Идентификатор договора в ОБД ПКЗ. Справочник</Run>
+                </TextBlock>
+                        <TextBox Name="ID_OBJ" Tag="INTEGER" />
+                <TextBlock>
+                    <Run>Код исполнителя в ОБД ПКЗ. Справочник</Run>
+                    <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="ID_ORG_ISPOLN" Tag="INTEGER*" />
+                <TextBlock>
+                    <Run>Код предприятия в ОБД ПКЗ. Справочник</Run>
+                    <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="ID_DP" Tag="INTEGER*" />
+                <TextBlock>
+                    <Run>Номер договора</Run>
+                    <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="NAME" Tag="CDATA*" />
+                <TextBlock>
+                    <Run>Стоимость договора, руб</Run>
+                </TextBlock>
+                        <TextBox Name="STOIMOST" Tag="DOUBLE"/>
+                <TextBlock>
+                    <Run>Дата заключения договора</Run>
+                    <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <!--<TextBox Name="DATE_DOGOVOR" Tag="DATE*"/>-->
+                        <CalendarDatePicker Name="DATE_DOGOVOR" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" 
+                                            Tag="DATE*">                            
+                        </CalendarDatePicker>
+                    </UniformGrid>
+            <TextBlock Grid.Row="1" HorizontalAlignment="Left">
+                    <Run Foreground="Red" FontWeight="Bold">*</Run>
+                    <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+            </TextBlock>
+        </Grid>
+    </ScrollViewer>
+        </Border>
+    </DockPanel>
+
+</UserControl>
