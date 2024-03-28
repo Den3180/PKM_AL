@@ -40,6 +40,11 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
+    
+    <Style Selector="TextBox.CP">
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+    
     <Style Selector="Button">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
@@ -48,7 +53,7 @@
             <Setter.Value>                    
                 <DataTemplate DataType="local:DataListUserControl">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>
+                        <TextBlock>33
                             <Run Text="{Binding Number}" FontWeight="Bold"/><Run Text=". " FontWeight="Bold"/>
                             <Run Text="{Binding FirstName}"/>
                             <Run Text="{Binding SecondName}" FontStyle="Italic"/>

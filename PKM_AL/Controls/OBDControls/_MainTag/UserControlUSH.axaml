@@ -2,7 +2,103 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="800"
              x:Class="PKM_AL.Controls.OBDControls._MainTag.UserControlUSH">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+    <DockPanel>            
+        <TextBlock DockPanel.Dock="Top" Text="Описание участка газопровода" Margin="5" FontSize="20" 
+                   HorizontalAlignment="Center" FontWeight="Bold"/>
+        <Border BorderBrush="Gray" BorderThickness="3">
+                    <Grid RowDefinitions="auto,auto">
+                            <UniformGrid Grid.Row="0" Rows="14" Columns="2">
+                <TextBlock>
+              <Run>Локальный идентификатор загружаемого объекта</Run>
+              <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="ID_XML" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged" />
+                <TextBlock>
+                <Run>Код участка в ОБД ПКЗ. Справочник</Run>
+                </TextBlock>
+                        <TextBox Name="ID_OBJ" Tag="INTEGER"  LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
+                <TextBlock>
+                  <Run>Код ЛПУ МГ в ОБД ПКЗ. Справочник</Run>
+                  <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="ID_LPU" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged" />
+                <TextBlock>
+                  <Run>Идентификатор ЛЧ в ОБД ПКЗ. Справочник</Run>
+                  <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="ID_LCH" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged" />
+                <TextBlock>
+                  <Run>Идентификатор метода обследования в ОБД ПКЗ. Справочник</Run>
+                  <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="ID_METOD_OBSL" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged" />
+                <TextBlock>
+                  <Run>Километр начала участка обследования</Run>
+                   <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="L1" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
+                <TextBlock>
+                  <Run>Километр окончания участка обследования</Run>
+                  <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="L2" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
+                <TextBlock>
+                   <Run>Длина участка обследования</Run>
+                </TextBlock>
+                        <TextBox Name="L" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
+                <TextBlock>
+                   <Run>Фактическая длина участка обследования</Run>
+                </TextBlock>
+                        <TextBox Name="L_FACT" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
+                <TextBlock>
+                   <Run>Дата начала обследования</Run>
+                   <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <!--<TextBox Name="DATE_START" Tag="DATE*"/>-->
+                        <CalendarDatePicker Name="DATE_START" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" Tag="DATE*"/>                        
+                <TextBlock>
+                   <Run>Дата окончания обследования</Run>
+                   <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <!--<TextBox Name="DATE_END" Tag="DATE*"/>-->
+                        <CalendarDatePicker Name="DATE_END" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" Tag="DATE*"/>
+                        <TextBlock>
+                   <Run>Признак выборочного обследования</Run>
+                </TextBlock>
+                        <TextBox Name="SELECTIVE" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
+                <TextBlock>
+                   <Run>Ответственный исполнитель</Run>
+                   <Run Foreground="Red" FontWeight="Bold">*</Run>
+                </TextBlock>
+                        <TextBox Name="RESPONS" Tag="CDATA*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
+                <TextBlock>
+                   <Run>Примечание</Run>
+                </TextBlock>
+                        <TextBox Name="REM" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>                
+            </UniformGrid>
+            <TextBlock Grid.Row="1">
+                  <Run Foreground="Red" FontWeight="Bold">*</Run>
+                  <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+            </TextBlock>
+        </Grid>
+        </Border>
+        </DockPanel>
 </UserControl>

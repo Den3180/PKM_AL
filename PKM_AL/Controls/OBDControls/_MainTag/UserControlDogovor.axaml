@@ -45,30 +45,36 @@
                 <Run>Локальный идентификатор загружаемого объекта</Run>
                 <Run Foreground="Red" FontWeight="Bold">*</Run>
             </TextBlock>
-                        <TextBox Name="ID_XML" Tag="INTEGER*" />
+                        <TextBox Name="ID_XML" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                 <TextBlock>
                   <Run>Идентификатор договора в ОБД ПКЗ. Справочник</Run>
                 </TextBlock>
-                        <TextBox Name="ID_OBJ" Tag="INTEGER" />
+                        <TextBox Name="ID_OBJ" Tag="INTEGER" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                 <TextBlock>
                     <Run>Код исполнителя в ОБД ПКЗ. Справочник</Run>
                     <Run Foreground="Red" FontWeight="Bold">*</Run>
                 </TextBlock>
-                        <TextBox Name="ID_ORG_ISPOLN" Tag="INTEGER*" />
+                        <TextBox Name="ID_ORG_ISPOLN" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                 <TextBlock>
                     <Run>Код предприятия в ОБД ПКЗ. Справочник</Run>
                     <Run Foreground="Red" FontWeight="Bold">*</Run>
                 </TextBlock>
-                        <TextBox Name="ID_DP" Tag="INTEGER*" />
+                        <TextBox Name="ID_DP" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                 <TextBlock>
                     <Run>Номер договора</Run>
                     <Run Foreground="Red" FontWeight="Bold">*</Run>
                 </TextBlock>
-                        <TextBox Name="NAME" Tag="CDATA*" />
+                        <TextBox Name="NAME" Tag="CDATA*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                 <TextBlock>
                     <Run>Стоимость договора, руб</Run>
                 </TextBlock>
-                        <TextBox Name="STOIMOST" Tag="DOUBLE"/>
+                        <TextBox Name="STOIMOST" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                 <TextBlock>
                     <Run>Дата заключения договора</Run>
                     <Run Foreground="Red" FontWeight="Bold">*</Run>

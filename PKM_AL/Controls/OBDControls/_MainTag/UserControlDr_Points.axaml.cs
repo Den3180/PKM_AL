@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using PKM_AL.Classes.ServiceClasses;
 using PKM_AL.Controls.OBDControls.Dr_PointTag;
 using PKM_AL.Windows;
@@ -18,6 +20,7 @@ public partial class UserControlDr_Points : UserControl
     private List<Button> buttons;
     public List<XElement> lstTypeObj;
     public List<TextBox> lstTextBox;
+    readonly ClassEventResource classEventResource = new ClassEventResource();
 
     public UserControlDr_Points()
     {
@@ -57,9 +60,35 @@ public partial class UserControlDr_Points : UserControl
         }
     }
 
-
     private void tabC_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        
+        tabControl = e.Source as TabControl;
+        if (tabControl == null) return;
+        TextBlock selectedText = (tabControl.SelectedItem as TabItem).Header as TextBlock;
+        selectedText.FontWeight = FontWeight.ExtraBold;
+        selectedText.Foreground = Brushes.Green;
+        foreach (var item in tabControl.Items)
+        {
+            if (!item.Equals(tabControl.SelectedItem))
+            {
+                ((item as TabItem).Header as TextBlock).FontWeight = FontWeight.SemiBold;
+                ((item as TabItem).Header as TextBlock).Foreground = Brushes.Black;
+            }
+        }
+    }
+    
+    private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+    {
+        classEventResource.TextBox_LostFocus(sender,e);
+    }
+  
+    private void TextBox_GotFocus(object sender, GotFocusEventArgs e)
+    {
+        classEventResource.TextBox_GotFocus(sender,e);
+    }
+
+    private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        classEventResource.TextBox_TextChanged(sender,e);
     }
 }

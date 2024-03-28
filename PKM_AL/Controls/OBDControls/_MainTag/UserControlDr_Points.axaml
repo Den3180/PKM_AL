@@ -13,33 +13,40 @@
                         <Run>Локальный идентификатор загружаемого объекта</Run>
                         <Run Foreground="Red" FontWeight="Bold">*</Run>
                     </TextBlock>
-                        <TextBox x:Name="ID_XML" Tag="INTEGER*"/>
+                        <TextBox x:Name="ID_XML" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                     <TextBlock>
                       <Run>Значение локального идентификатора измерения в родительской точке( для КИП на УКЗ, на АЖД, и воздушных переходах и т.д.) </Run>
                     </TextBlock>
-                        <TextBox x:Name="ID_PARENT" Tag="INTEGER"/>
+                        <TextBox x:Name="ID_PARENT" Tag="INTEGER" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                     <TextBlock>
                         <Run>Километр точки измерения, км</Run>
                         <Run Foreground="Red" FontWeight="Bold">*</Run>
                     </TextBlock>
-                        <TextBox x:Name="L1" Tag="DOUBLE*"/>
+                        <TextBox x:Name="L1" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                     <TextBlock>
                         <Run>Описание точки измерения</Run>
                     </TextBlock>
-                        <TextBox x:Name="OPIENTIR1" Tag="CDATA"/>
+                        <TextBox x:Name="OPIENTIR1" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                     <TextBlock>
                         <Run>Широта точки измерения, ГГ&#176;ММ.ММММ</Run>
                     </TextBlock>
-                        <TextBox x:Name="GPS_LAT1" Tag="GPS"/>
+                        <TextBox x:Name="GPS_LAT1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                     <TextBlock>
                         <Run>Долгота точки измерения, ГГ&#176;ММ.ММММ</Run>
                     </TextBlock>
-                        <TextBox x:Name="GPS_LONG1" Tag="GPS"/>
+                        <TextBox x:Name="GPS_LONG1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
                     <TextBlock>
                         <Run>Код типа точки измерения в ОБД ПКЗ. Справочник</Run>
                         <Run Foreground="Red" FontWeight="Bold">*</Run>
                     </TextBlock>
-                        <TextBox x:Name="ID_TIP_IZM" Tag="INTEGER*"/>
+                        <TextBox x:Name="ID_TIP_IZM" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                                 TextChanged="TextBox_TextChanged"/>
             </UniformGrid>
             <TextBlock Grid.Row="1">
                     <Run Foreground="Red" FontWeight="Bold">*</Run>

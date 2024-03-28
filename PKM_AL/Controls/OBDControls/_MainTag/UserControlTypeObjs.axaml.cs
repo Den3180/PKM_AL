@@ -15,6 +15,7 @@ public partial class UserControlTypeObjs : UserControl
 {
     public List<TextBox> lstTextBox;
     public List<XElement> lstTypeObj; 
+    readonly ClassEventResource classEventResource = new ClassEventResource();
 
     public UserControlTypeObjs()
     {
@@ -44,22 +45,8 @@ public partial class UserControlTypeObjs : UserControl
     private void TextBox_LostFocus(object sender, RoutedEventArgs e)
     {
         classEventResource.TextBox_LostFocus(sender,e);
-        // if ((sender as DatePicker) != null) return;
-        // TextBox textBox = sender as TextBox;
-        // if (!string.IsNullOrEmpty(textBox.Text) && !Regex.IsMatch(textBox.Text, ClassControlManager.GetPatternOBDData(textBox.Tag)))
-        // {
-        //     Brush brushRed = new SolidColorBrush(Color.FromRgb(252, 170, 178));
-        //     textBox.Background = brushRed;
-        //     textBox.Foreground = Brushes.White;
-        //     textBox.FontStyle = FontStyle.Italic;
-        // }
-        // else if(!string.IsNullOrEmpty(textBox.Text))
-        // {
-        //     textBox.Background = new SolidColorBrush(Color.FromRgb(217, 250, 205));
-        // }
     }
 
-    readonly ClassEventResource classEventResource = new ClassEventResource();
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         classEventResource.Button_Click(sender,e);
