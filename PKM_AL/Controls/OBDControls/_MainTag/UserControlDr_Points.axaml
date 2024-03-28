@@ -2,7 +2,99 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.OBDControls._MainTag.UserControlDr_Points">
-    Welcome to Avalonia!
+            <UserControl.Styles>
+                <StyleInclude Source="/Styles/StylesOBD.axaml" />
+            </UserControl.Styles>
+    <Grid RowDefinitions="auto,auto,auto,auto,auto,auto">
+            <UniformGrid  Grid.Row="0" Rows="7" Columns="2">
+                    <TextBlock>
+                        <Run>Локальный идентификатор загружаемого объекта</Run>
+                        <Run Foreground="Red" FontWeight="Bold">*</Run>
+                    </TextBlock>
+                        <TextBox x:Name="ID_XML" Tag="INTEGER*"/>
+                    <TextBlock>
+                      <Run>Значение локального идентификатора измерения в родительской точке( для КИП на УКЗ, на АЖД, и воздушных переходах и т.д.) </Run>
+                    </TextBlock>
+                        <TextBox x:Name="ID_PARENT" Tag="INTEGER"/>
+                    <TextBlock>
+                        <Run>Километр точки измерения, км</Run>
+                        <Run Foreground="Red" FontWeight="Bold">*</Run>
+                    </TextBlock>
+                        <TextBox x:Name="L1" Tag="DOUBLE*"/>
+                    <TextBlock>
+                        <Run>Описание точки измерения</Run>
+                    </TextBlock>
+                        <TextBox x:Name="OPIENTIR1" Tag="CDATA"/>
+                    <TextBlock>
+                        <Run>Широта точки измерения, ГГ&#176;ММ.ММММ</Run>
+                    </TextBlock>
+                        <TextBox x:Name="GPS_LAT1" Tag="GPS"/>
+                    <TextBlock>
+                        <Run>Долгота точки измерения, ГГ&#176;ММ.ММММ</Run>
+                    </TextBlock>
+                        <TextBox x:Name="GPS_LONG1" Tag="GPS"/>
+                    <TextBlock>
+                        <Run>Код типа точки измерения в ОБД ПКЗ. Справочник</Run>
+                        <Run Foreground="Red" FontWeight="Bold">*</Run>
+                    </TextBlock>
+                        <TextBox x:Name="ID_TIP_IZM" Tag="INTEGER*"/>
+            </UniformGrid>
+            <TextBlock Grid.Row="1">
+                    <Run Foreground="Red" FontWeight="Bold">*</Run>
+                    <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+            </TextBlock>
+            <TextBlock Grid.Row="2" Text="Результаты точечных измерений" Margin="5" FontSize="20" FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+            <Border BorderBrush="Gray" BorderThickness="3" Grid.Row="3">
+                    <TabControl Name="tabC" Margin="3" Background="LightYellow" SelectionChanged="tabC_SelectionChanged" >
+                    <TabItem>
+                        <TabItem.Header >
+                            <TextBlock x:Name="ttt" Text="Произвольная точка участка ЛЧ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат обследования КИП"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат обследования УКЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат обследования УДЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат обследования УПЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат обследования ВЭИ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат обследования АД перехода"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат обследования воздушного перехода"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Результат измерения в грунте"/>
+                        </TabItem.Header>
+                    </TabItem>
+                </TabControl>
+            </Border>
+    </Grid>
 </UserControl>

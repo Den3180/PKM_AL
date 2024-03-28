@@ -98,6 +98,5 @@ public partial class WindowRepOBD : Window
         (TabC.Items[7] as TabItem).Content = new UserControlFindings() { Name = "FINDINGS" };
         (TabC.Items[8] as TabItem).Content = new UserControlRecommendations() { Name = "RECOMMENDATIONS" };
         AllTextBox = (new ClassControlManager()).GetTextBox(TabC);
-        // if (statusBarOBD != null) statusBarOBD.Text = ((TabC.Items[0] as TabItem).Header as TextBlock).Text;
     }
 }

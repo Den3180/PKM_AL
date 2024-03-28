@@ -75,7 +75,12 @@
                 </TextBlock>
                         <!--<TextBox Name="DATE_DOGOVOR" Tag="DATE*"/>-->
                         <CalendarDatePicker Name="DATE_DOGOVOR" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" 
-                                            Tag="DATE*">                            
+                                            Tag="DATE*">
+                            <CalendarDatePicker.Styles>
+                                <Style Selector="TextBox">
+                                    <Setter Property="IsReadOnly" Value="True"/>
+                                </Style>
+                            </CalendarDatePicker.Styles>                            
                         </CalendarDatePicker>
                     </UniformGrid>
             <TextBlock Grid.Row="1" HorizontalAlignment="Left">

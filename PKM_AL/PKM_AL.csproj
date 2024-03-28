@@ -83,9 +83,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Controls\OBDControls\Dr_PointTag\" />
     <Folder Include="Controls\OBDControls\FindingsTag\" />
-    <Folder Include="Controls\OBDControls\RecommendationTag\" />
     <Folder Include="Controls\OBDControls\Trace_SituationTag\" />
   </ItemGroup>
 </Project>

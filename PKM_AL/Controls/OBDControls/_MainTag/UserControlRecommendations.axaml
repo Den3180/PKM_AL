@@ -2,7 +2,109 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.OBDControls._MainTag.UserControlRecommendations">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Рекомендации обследования" HorizontalAlignment="Center" Margin="5" FontSize="20" 
+                   FontWeight="Bold"/>
+        <Border BorderBrush="Gray" BorderThickness="3">
+            <Grid x:Name="scroll">
+                <TabControl x:Name="tabC" Margin="3" Background="LightYellow" SelectionChanged="tabC_SelectionChanged">
+                                        <TabItem>
+                        <TabItem.Header >
+                            <TextBlock Text="Рекомендации по УКЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по УДЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по УПЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по КИП"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по вставкам"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по А(Ж)Д переходам"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по шурфованию"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по ремонту изоляционного покрытия"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по углублению(засыпке) ТП"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по расчистке просеки"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по ремонту трубопровода"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по проведению очередных обследований"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации прочие"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по добавлению новых УКЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по добавлению новых УДЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по добавлению новых УПЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по добавлению новых КИП"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по добавлению новых изолирующих вставок"/>
+                        </TabItem.Header>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+        </DockPanel>
 </UserControl>

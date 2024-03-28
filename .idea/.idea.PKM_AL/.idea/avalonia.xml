@@ -13,6 +13,33 @@
         <entry key="PKM_AL/Controls/OBDControls/DeffectsTag/UserControl_ZKO.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/OBDControls/DeffectsTag/UserControl_ZNU.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/OBDControls/DeffectsTag/UserControl_ZVV.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_AD_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_KIP_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_PM_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_PM_REG_GR.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_UDZ_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_UKZ_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_UPZ_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_VP_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/Dr_PointTag/UserControl_VST_REG.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_NEW_KIP.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_NEW_UDZ.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_NEW_UKZ.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_NEW_UPZ.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_NEW_VST.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_AJD.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_KIP.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_OBSL.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_OTHER.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_PROS.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_REM_IP.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_REM_TP.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_SHURF.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_UDZ.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_UKZ.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_UPZ.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_VST.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/OBDControls/RecommendationTag/UserControl_RECOM_ZAS.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/OBDControls/_MainTag/UserControlBegin.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/OBDControls/_MainTag/UserControlDeffects.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/OBDControls/_MainTag/UserControlDogovor.axaml" value="PKM_AL/PKM_AL.csproj" />
@@ -34,6 +61,7 @@
         <entry key="PKM_AL/Controls/UserControlMessages.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlReport.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/MainWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Styles/StylesOBD.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/Window1.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowChannel.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowColomns.axaml" value="PKM_AL/PKM_AL.csproj" />
