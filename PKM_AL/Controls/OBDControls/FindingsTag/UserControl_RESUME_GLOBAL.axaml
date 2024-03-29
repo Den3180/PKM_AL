@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="600"
+             x:Class="PKM_AL.Controls.OBDControls.FindingsTag.UserControl_RESUME_GLOBAL">
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+        <Grid Name="scroll" RowDefinitions="auto,auto">
+            <UniformGrid Columns="4">
+            <TextBlock>
+                     <Run>Локальный идентификатор загружаемого объекта</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_XML" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Защищенность участка во времени, %</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ZASCH_T"  Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Защищено в однониточном исполнении, км</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ZASCH_L" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Защищенность участка по протяженности до оптимизации, %</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ZASCH_L_PR" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Защищенность участка по протяженности после оптимизации, %</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ZASCH_L_PR_OPT" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Защищенность участка по защитному потенциалу без омической составляющей до оптимизации, %</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ZASCH_B_OM" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Защищенность участка по защитному потенциалу без омической составляющей после оптимизации, %</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ZASCH_B_OM_OPT" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Ожидаемое время обеспечения системой ЭХЗ еффективной защиты участка, лет </Run>
+            </TextBlock>
+            <TextBox x:Name="T_ZASCH" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Общая оценка состояния ИП в ОБД ПКЗ. Справочник</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_SOST_IP" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Общая оценка состояния ПКЗ в ОБД ПКЗ. Справочник</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_SOST_PKZ" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Примечание</Run>
+            </TextBlock>
+            <TextBox x:Name="REM" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+        </UniformGrid>
+        <TextBlock Grid.Row="1">
+            <Run Foreground="Red" FontWeight="Bold">*</Run>
+            <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+        </TextBlock>
+    </Grid>
+</UserControl>

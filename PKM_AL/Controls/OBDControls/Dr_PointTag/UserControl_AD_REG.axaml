@@ -2,7 +2,128 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="600"
              x:Class="PKM_AL.Controls.OBDControls.Dr_PointTag.UserControl_AD_REG">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+                
+        <Grid Name="scroll" RowDefinitions="auto,auto,auto,auto">
+            
+            <UniformGrid Columns="4">
+            <TextBlock>
+                     <Run>Локальный идентификатор загружаемого объекта</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_XML" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Код объекта в ОДБ ПКЗ. Справочник. С указание типа дороги: 0-автомобильная, 1-железная дорога</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_OBJ" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Техническое состояние трубопровода в ОДБ ПКЗ. Справочник.</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_STATUS" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Выявленное нарушение в ОДБ ПКЗ. Справочник.</Run>
+            </TextBlock>
+            <TextBox x:Name="DEF" Tag="INTEGER" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Наличие контакта стального кожуха с трубой. Справочник в ОДБ ПКЗ. </Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="N_KON_PATR" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Идентификатор состояния ЭХЗ патрона в ОДБ ПКЗ(при наличии ЭХЗ патрона). Справочник </Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_STATUS_PATR" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Обязательное сопротивление &quot;труба-кожух&quot;(при наличии стального кожуха), Ом</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="R_TR_K" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Разность потенциалов &quot;кожух-земля&quot;в начале перехода, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_T_Z_N" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Разность потенциалов &quot;кожух-земля&quot;в конце перехода, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_T_Z_K" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Значение поляризационного потенциала кожуха в начале перехода, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="UP_N" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Значение поляризационного потенциала кожуха в конце перехода, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="UP_K" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Значение естественного потенциала кожуха, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="UEST" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Смещение потенциала патрона, В</Run>
+            </TextBlock>
+            <TextBox x:Name="SM_U" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Удельное сопротивление грунта в начале перехода, Ом&#183;м</Run>
+            </TextBlock>
+            <TextBox x:Name="R_UD_N" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Удельное сопротивление грунта в конце перехода, Ом&#183;м</Run>
+            </TextBlock>
+            <TextBox x:Name="R_UD_K" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Наличие влаги внутри кожуха(при наличии датчиков влаги)</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="VLAGA" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Примечание</Run>
+            </TextBlock>
+            <TextBox x:Name="REM" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+        </UniformGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1"  HorizontalAlignment="Right">
+            <Button Content="Добавить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+          Name="b_Add"  Click="Button_Click"/>
+            <Button  Content="Удалить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_Del" Click="Button_Click"/>
+            <Button  Content="Удалить все" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_DelAll" Click="Button_Click"/>
+        </StackPanel>
+        <ListBox Name="lstObjs" Grid.Row="2" Margin="3" MinHeight="50">
+        </ListBox>
+        <TextBlock Grid.Row="3">
+            <Run Foreground="Red" FontWeight="Bold">*</Run>
+            <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+        </TextBlock>
+            
+    </Grid>
+
 </UserControl>

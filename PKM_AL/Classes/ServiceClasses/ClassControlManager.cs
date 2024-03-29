@@ -229,7 +229,8 @@ namespace PKM_AL
             if (buttons==null || buttons.Count == 0) return false;
             foreach (var box in textBoxes)
             {
-                if(string.IsNullOrEmpty(box.Text)) continue;
+                if(string.IsNullOrEmpty(box.Text)) 
+                    box.Text=String.Empty;
                 //Если поле обязательное и не соответствует паттерну.
                 if (box.Tag.ToString().Contains("*") && !Regex.IsMatch(box.Text,GetPatternOBDData(box.Tag)))
                 {

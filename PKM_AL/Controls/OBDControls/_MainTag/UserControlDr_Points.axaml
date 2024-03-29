@@ -7,6 +7,8 @@
             <UserControl.Styles>
                 <StyleInclude Source="/Styles/StylesOBD.axaml" />
             </UserControl.Styles>
+    <ScrollViewer>
+        
     <Grid RowDefinitions="auto,auto,auto,auto,auto,auto">
             <UniformGrid  Grid.Row="0" Rows="7" Columns="2">
                     <TextBlock>
@@ -55,7 +57,7 @@
             <TextBlock Grid.Row="2" Text="Результаты точечных измерений" Margin="5" FontSize="20" FontWeight="Bold"
                        HorizontalAlignment="Center"/>
             <Border BorderBrush="Gray" BorderThickness="3" Grid.Row="3">
-                    <TabControl Name="tabC" Margin="3" Background="LightYellow" SelectionChanged="tabC_SelectionChanged" >
+                <TabControl Name="tabC" Margin="3" Background="LightYellow" SelectionChanged="tabC_SelectionChanged" >
                     <TabItem>
                         <TabItem.Header >
                             <TextBlock x:Name="ttt" Text="Произвольная точка участка ЛЧ"/>
@@ -102,6 +104,8 @@
                         </TabItem.Header>
                     </TabItem>
                 </TabControl>
+                
             </Border>
     </Grid>
+    </ScrollViewer>
 </UserControl>

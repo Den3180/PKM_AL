@@ -80,10 +80,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>
   </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Controls\OBDControls\FindingsTag\" />
-    <Folder Include="Controls\OBDControls\Trace_SituationTag\" />
-  </ItemGroup>
 </Project>

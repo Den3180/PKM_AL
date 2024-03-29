@@ -5,13 +5,13 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using PKM_AL.Classes.ServiceClasses;
 
-namespace PKM_AL.Controls.OBDControls.Dr_PointTag;
+namespace PKM_AL.Controls.OBDControls.FindingsTag;
 
-public partial class UserControl_AD_REG : UserControl
+public partial class UserControl_SIP_RP : UserControl
 {
-    readonly ClassEventResource classEventResource = new ClassEventResource();
     public List<TextBox> lstTextBox;
-    public UserControl_AD_REG()
+    readonly ClassEventResource classEventResource = new ClassEventResource();
+    public UserControl_SIP_RP()
     {
         InitializeComponent();
         lstTextBox = (new ClassControlManager()).GetTextBox(this);
@@ -22,12 +22,7 @@ public partial class UserControl_AD_REG : UserControl
     {
         classEventResource.TextBox_LostFocus(sender,e);
     }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        classEventResource.Button_Click(sender,e);
-    }
-
+  
     private void TextBox_GotFocus(object sender, GotFocusEventArgs e)
     {
         classEventResource.TextBox_GotFocus(sender,e);

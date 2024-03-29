@@ -86,7 +86,8 @@ public class ClassEventResource
             //Если окно тега DR_POINT открыто: ищем поля в этой форме.
             if (dr_Point != null)
             {
-               dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
+                dr_Point_lstTBox = new ClassControlManager().GetTextBox(dr_Point);
+                // dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
             }
             lstTBox = ClassControlManager.GetUIElem<TextBox>(currentControl, new List<TextBox>());
             //Отключение вкладок для тега DR_POINT(когда выбрана одна, остальные не доступны).
@@ -146,7 +147,8 @@ public class ClassEventResource
                     case "UserControl_PM_REG_GR":
                         lstElem = (dr_Point as UserControlDr_Points).lstTypeObj;
                         lstElem.Add(GetDR_POINTElem(dr_Point,elem));
-                        List<TextBox> dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
+                        List<TextBox> dr_Point_lstTBox = new ClassControlManager().GetTextBox(dr_Point);
+                        // List<TextBox> dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
                         foreach (TextBox box in dr_Point_lstTBox)
                         {
                             box.Text = string.Empty;

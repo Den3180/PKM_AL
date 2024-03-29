@@ -2,7 +2,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="800"
              x:Class="PKM_AL.Controls.OBDControls._MainTag.UserControlFindings">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Выводы обследований" Margin="5" FontSize="20" FontWeight="Bold" 
+                   HorizontalAlignment="Center"/>
+        <Border BorderBrush="Gray" BorderThickness="3">
+            <Grid>
+                <TabControl x:Name="tabC" Margin="3" Background="LightYellow" 
+                            SelectionChanged="TabControl_SelectionChanged">
+                    <TabItem>
+                        <TabItem.Header >
+                            <TextBlock Text="Общий вывод по сотоянию ПКЗ"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Общее состояние ИП по переходному сопротивлению"/>
+                        </TabItem.Header>
+                    </TabItem>                    
+                </TabControl>
+            </Grid>
+        </Border>
+    </DockPanel>
 </UserControl>

@@ -53,7 +53,7 @@
             <Setter.Value>                    
                 <DataTemplate DataType="local:DataListUserControl">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>33
+                        <TextBlock>
                             <Run Text="{Binding Number}" FontWeight="Bold"/><Run Text=". " FontWeight="Bold"/>
                             <Run Text="{Binding FirstName}"/>
                             <Run Text="{Binding SecondName}" FontStyle="Italic"/>

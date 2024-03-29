@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="650"
+             x:Class="PKM_AL.Controls.OBDControls.Trace_SituationTag.UserControl_CROSSING">
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+        <Grid Name="scroll" RowDefinitions="auto,auto">
+            <UniformGrid Columns="4">
+            <TextBlock>
+                     <Run>Локальный идентификатор загружаемого объекта</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_XML"  Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Километр начала зоны, км</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="L1" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Описание точки начала зоны</Run>
+            </TextBlock>
+            <TextBox x:Name="OPIENTIR1" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Широта точки начала зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LAT1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Долгота точки начала зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LONG1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Высота точки начала зоны над уровнем моря, м </Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_ALT1" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Километр окончания зоны, км</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="L2" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Описание точки окончания зоны</Run>
+            </TextBlock>
+            <TextBox x:Name="OPIENTIR2" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Широта точки окончания зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LAT2" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Долгота точки окончания зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LONG2" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Высота точки окончания зоны над уровнем моря, м </Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_ALT2" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Протяженность зоны, км </Run>
+            </TextBlock>
+            <TextBox x:Name="L" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Кратчайшее расстояние, м </Run>
+            </TextBlock>
+            <TextBox x:Name="SHORT_DISTANCE" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Идентификатор положения коммуникации в ОБД ПКЗ. Справочник </Run>
+            </TextBlock>
+            <TextBox x:Name="ID_PLACE" Tag="INTEGER" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Идентификатор типа коммуникации в ОБД ПКЗ. Справочник </Run>
+            </TextBlock>
+            <TextBox x:Name="ID_TYPE_O" Tag="INTEGER" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Идентификатор типа совместной защиты в ОБД ПКЗ. Справочник </Run>
+            </TextBlock>
+            <TextBox x:Name="ID_TYPE_Z" Tag="INTEGER" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+            <TextBlock>
+                     <Run>Примечание</Run>
+            </TextBlock>
+            <TextBox x:Name="REM" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged"/>
+        </UniformGrid>
+        <TextBlock Grid.Row="1">
+            <Run Foreground="Red" FontWeight="Bold">*</Run>
+            <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+        </TextBlock>
+    </Grid>
+</UserControl>
