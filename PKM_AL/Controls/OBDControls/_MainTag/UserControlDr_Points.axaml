@@ -7,8 +7,6 @@
             <UserControl.Styles>
                 <StyleInclude Source="/Styles/StylesOBD.axaml" />
             </UserControl.Styles>
-    <ScrollViewer>
-        
     <Grid RowDefinitions="auto,auto,auto,auto,auto,auto">
             <UniformGrid  Grid.Row="0" Rows="7" Columns="2">
                     <TextBlock>
@@ -104,8 +102,6 @@
                         </TabItem.Header>
                     </TabItem>
                 </TabControl>
-                
             </Border>
     </Grid>
-    </ScrollViewer>
 </UserControl>

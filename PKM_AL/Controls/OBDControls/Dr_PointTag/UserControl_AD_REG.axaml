@@ -7,9 +7,7 @@
     <UserControl.Styles>
         <StyleInclude Source="/Styles/StylesOBD.axaml" />
     </UserControl.Styles>
-                
         <Grid Name="scroll" RowDefinitions="auto,auto,auto,auto">
-            
             <UniformGrid Columns="4">
             <TextBlock>
                      <Run>Локальный идентификатор загружаемого объекта</Run>
@@ -123,7 +121,5 @@
             <Run Foreground="Red" FontWeight="Bold">*</Run>
             <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
         </TextBlock>
-            
     </Grid>
-
 </UserControl>
