@@ -86,8 +86,8 @@ public class ClassEventResource
             //Если окно тега DR_POINT открыто: ищем поля в этой форме.
             if (dr_Point != null)
             {
-                dr_Point_lstTBox = new ClassControlManager().GetTextBox(dr_Point);
-                // dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
+                 dr_Point_lstTBox = new ClassControlManager().GetTextBox(dr_Point);
+                 //dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
             }
             lstTBox = ClassControlManager.GetUIElem<TextBox>(currentControl, new List<TextBox>());
             //Отключение вкладок для тега DR_POINT(когда выбрана одна, остальные не доступны).
@@ -148,7 +148,6 @@ public class ClassEventResource
                         lstElem = (dr_Point as UserControlDr_Points).lstTypeObj;
                         lstElem.Add(GetDR_POINTElem(dr_Point,elem));
                         List<TextBox> dr_Point_lstTBox = new ClassControlManager().GetTextBox(dr_Point);
-                        // List<TextBox> dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
                         foreach (TextBox box in dr_Point_lstTBox)
                         {
                             box.Text = string.Empty;
@@ -301,7 +300,7 @@ public class ClassEventResource
             var parent = current.GetLogicalParent();// LogicalTreeHelper.GetParent(current);
             if (parent is UserControlDr_Points dr_Points)
             {
-                dr_Point = parent as UserControlDr_Points;
+                dr_Point = dr_Points;
                 List<TabItem> tabs = ClassControlManager.GetUIElem<TabItem>(dr_Points,new List<TabItem>());
                 foreach(var tab in tabs)
                 {
@@ -317,7 +316,7 @@ public class ClassEventResource
             }
             if (parent != null)
             {
-                GetParent(parent as ILogical);
+                GetParent(parent);
             }
         }
 
@@ -328,7 +327,8 @@ public class ClassEventResource
         private void ConvertDegreeToFormatOBD(TextBox textBox)
         {
             if (string.IsNullOrEmpty(textBox.Text)) return;
-            double coord = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator( textBox.Text, NumberFormatInfo.CurrentInfo.NumberDecimalSeparator));
+            double coord = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator( textBox.Text, 
+                                            NumberFormatInfo.CurrentInfo.NumberDecimalSeparator));
             int deg = (int)coord;
             double min = ((coord - deg) * 60);
             min = Math.Round(min, 4);

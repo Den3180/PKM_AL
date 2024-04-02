@@ -123,6 +123,10 @@ namespace PKM_AL
             }
             foreach (var elem in childs)
             {
+                if((elem as TabItem)!=null && !(elem as TabItem).IsSelected)
+                {
+                    continue;
+                }
                 if (elem is TextBox box)
                 {
                     textBoxes.Add(box);
@@ -152,9 +156,9 @@ namespace PKM_AL
                 {
                     continue;
                 }
-                if (elem is T)
+                if (elem is T elem1)
                 {
-                    lst.Add((T)elem);
+                    lst.Add(elem1);
                 }
                 else if((elem as Button)==null)
                 {
@@ -232,7 +236,8 @@ namespace PKM_AL
                 if(string.IsNullOrEmpty(box.Text)) 
                     box.Text=String.Empty;
                 //Если поле обязательное и не соответствует паттерну.
-                if (box.Tag.ToString().Contains("*") && !Regex.IsMatch(box.Text,GetPatternOBDData(box.Tag)))
+                if ((box.Tag.ToString().Contains("*") && string.IsNullOrEmpty(box.Text)) 
+                                                     && !Regex.IsMatch(box.Text,GetPatternOBDData(box.Tag)))
                 {
                     //Доступ к кнопке "Добавить" запрещен.
                     buttons[0].IsEnabled = false;
