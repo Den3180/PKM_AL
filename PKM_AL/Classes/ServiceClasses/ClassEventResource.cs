@@ -89,7 +89,8 @@ public class ClassEventResource
                  dr_Point_lstTBox = new ClassControlManager().GetTextBox(dr_Point);
                  //dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
             }
-            lstTBox = ClassControlManager.GetUIElem<TextBox>(currentControl, new List<TextBox>());
+            //lstTBox = ClassControlManager.GetUIElem<TextBox>(currentControl, new List<TextBox>());
+            lstTBox=new ClassControlManager().GetTextBox(currentControl);
             //Отключение вкладок для тега DR_POINT(когда выбрана одна, остальные не доступны).
             ClassControlManager.CancelTabsControl(currentControl,lstTBox);
             //Поиск кнопок "Добавить"/"Удалить запись"/"Удалить все".
@@ -107,7 +108,8 @@ public class ClassEventResource
             Button button = sender as Button;
             if (button.Name == "PART_Button" || button.Name == "PART_NextButton" || button.Name == "PART_PreviousButton") return;
             GetParent(button);
-            List<TextBox> lstTBox = ClassControlManager.GetUIElem<TextBox>(currentControl, new List<TextBox>());
+            // List<TextBox> lstTBox = ClassControlManager.GetUIElem<TextBox>(currentControl, new List<TextBox>());
+            List<TextBox> lstTBox = new ClassControlManager().GetTextBox(currentControl);
 
             List<CalendarDatePicker> datePickers= ClassControlManager.GetUIElem<CalendarDatePicker>
                                                   (currentControl, new List<CalendarDatePicker>());

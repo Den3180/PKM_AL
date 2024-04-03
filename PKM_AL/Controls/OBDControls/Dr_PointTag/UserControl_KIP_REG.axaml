@@ -7,6 +7,7 @@
     <UserControl.Styles>
         <StyleInclude Source="/Styles/StylesOBD.axaml" />
     </UserControl.Styles>
+    <ScrollViewer>
         <Grid Name="scroll" RowDefinitions="auto,auto,auto,auto">
             <UniformGrid Columns="4" >
             <TextBlock>
@@ -126,5 +127,5 @@
             <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
         </TextBlock>
     </Grid>
-
+    </ScrollViewer>
 </UserControl>

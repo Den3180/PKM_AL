@@ -4,5 +4,121 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.OBDControls.Dr_PointTag.UserControl_UDZ_REG">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+    <ScrollViewer>
+            <Grid Name="scroll" RowDefinitions="auto,auto,auto,auto">
+                <UniformGrid Columns="4">
+            <TextBlock>
+                     <Run>Локальный идентификатор загружаемого объекта</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_XML" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Код объекта в ОДБ ПКЗ. Справочник</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_OBJ" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Ток дренирования максимальный, А</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="I_DR_MAX" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Ток дренирования минимальный, А</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="I_DR_MIN" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Ток дренирования средний, А</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="I_DR_SR" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Сопротивление дренажной цепи, Ом</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="R_DR" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Сопротивление растеканию защитного заземления дренажной установки, Ом</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="R_ZZ" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Максимальная разность потенциалов &quot;труба-земля&quot;, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_T_Z_MAX" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Минимальная разность потенциалов &quot;труба-земля&quot;, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_T_Z_MIN"  Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Средняя разность потенциалов &quot;труба-земля&quot;, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_T_Z_SR" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Максимальная разность потенциалов &quot;рельс-земля&quot;, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_R_Z_MAX" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Минимальная разность потенциалов &quot;рельс-земля&quot;, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_R_Z_MIN" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Средняя разность потенциалов &quot;рельс-земля&quot;, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_R_Z_SR" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Идентификатор состояния УДЗ в ОБД ПКЗ. Справочник </Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_STATUS" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Причина неудовлетворительного состояния УДЗ</Run>
+            </TextBlock>
+            <TextBox x:Name="UN_REASON" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Примечание</Run>
+            </TextBlock>
+            <TextBox x:Name="REM" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+        </UniformGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1"  HorizontalAlignment="Right">
+            <Button Content="Добавить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+          Name="b_Add" Click="Button_Click"/>
+            <Button  Content="Удалить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_Del" Click="Button_Click"/>
+            <Button  Content="Удалить все" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_DelAll" Click="Button_Click"/>
+        </StackPanel>
+        <ListBox Name="lstObjs" Grid.Row="2" Margin="3" MinHeight="50">
+        </ListBox>
+        <TextBlock Grid.Row="3">
+            <Run Foreground="Red" FontWeight="Bold">*</Run>
+            <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+        </TextBlock>
+    </Grid>
+    </ScrollViewer>
 </UserControl>
