@@ -138,6 +138,7 @@ namespace PKM_AL
             }
             return textBoxes;
         }
+      
         
         /// <summary>
         /// Получение графических элементов из формы(ограничение - кнопки).
@@ -149,7 +150,11 @@ namespace PKM_AL
         public static List<T> GetUIElem<T>(ILogical obj, List<T>lst)
         {
             if (obj is null) return null;
-            System.Collections.IEnumerable childs = obj.GetLogicalChildren(); //LogicalTreeHelper.GetChildren(obj);
+            var childs = obj.GetLogicalChildren().ToList(); //LogicalTreeHelper.GetChildren(obj);
+            if (obj is TabControl) 
+            {
+                childs.RemoveAt(childs.Count-1);
+            }
             foreach (var elem in childs)
             {
                 if((elem as TabItem)!=null && !(elem as TabItem).IsSelected)

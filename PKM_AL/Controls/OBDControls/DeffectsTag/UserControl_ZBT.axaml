@@ -4,5 +4,124 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.OBDControls.DeffectsTag.UserControl_ZBT">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+    <ScrollViewer>
+            <Grid Name="scroll" RowDefinitions="auto,auto,auto,auto">
+                <UniformGrid Columns="4">
+            <TextBlock>
+                     <Run>Локальный идентификатор загружаемого объекта</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_XML" Tag="INTEGER*"  LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Километр начала зоны, км</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="L1" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Описание точки начала зоны</Run>
+            </TextBlock>
+            <TextBox x:Name="OPIENTIR1" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Широта точки начала зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LAT1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Долгота точки начала зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LONG1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Высота точки начала зоны над уровнем моря, м</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_ALT1" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Километр окончания зоны, км</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="L2" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Описание точк окончания зоны, км</Run>
+            </TextBlock>
+            <TextBox x:Name="OPIENTIR2" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Широта точки окончания зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LAT2" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Долгота точки окончания зоны, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LONG2" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Высота точки окончания зоны над уровнем моря, м</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_ALT2" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Максимальный(по абсолютной величине) потенциал в точке наибольших колебаний потенциала, В </Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_MAX" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Минимальный(по абсолютной величине) потенциал в точке наибольших колебаний потенциала, В </Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_MIN" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run >Средний потенциал в точке наибольших колебаний потенциала, В </Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_SR" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run >Суточная суммарная продолжительность анодного смещения потенциала относительно естественного потенциала, мин </Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="SM_T" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Широта точки наибольших колебаний потенциала, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_POINT_LAT"  Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Долгота точки наибольших колебаний потенциала, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_POINT_LONG" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Примечание</Run>
+            </TextBlock>
+            <TextBox x:Name="REM" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+        </UniformGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1"  HorizontalAlignment="Right">
+            <Button Content="Добавить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+          Name="b_Add" Click="Button_Click"/>
+            <Button  Content="Удалить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_Del" Click="Button_Click"/>
+            <Button  Content="Удалить все" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_DelAll" Click="Button_Click"/>
+        </StackPanel>
+        <ListBox Name="lstObjs" Grid.Row="2" Margin="3" MinHeight="50">
+        </ListBox>
+        <TextBlock Grid.Row="3">
+            <Run Foreground="Red" FontWeight="Bold">*</Run>
+            <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+        </TextBlock>
+    </Grid>
+    </ScrollViewer>
 </UserControl>

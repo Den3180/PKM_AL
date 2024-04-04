@@ -87,11 +87,9 @@ public class ClassEventResource
             if (dr_Point != null)
             {
                  dr_Point_lstTBox = new ClassControlManager().GetTextBox(dr_Point);
-                 //dr_Point_lstTBox = ClassControlManager.GetUIElem<TextBox>(dr_Point, new List<TextBox>());
             }
             //lstTBox = ClassControlManager.GetUIElem<TextBox>(currentControl, new List<TextBox>());
             lstTBox=new ClassControlManager().GetTextBox(currentControl);
-            //Отключение вкладок для тега DR_POINT(когда выбрана одна, остальные не доступны).
             ClassControlManager.CancelTabsControl(currentControl,lstTBox);
             //Поиск кнопок "Добавить"/"Удалить запись"/"Удалить все".
             _=dr_Point==null? ClassControlManager.CheckFillingTboxes(lstTBox, buttons) : 
@@ -119,7 +117,7 @@ public class ClassEventResource
             List<XElement> lstElem=new List<XElement>();
             foreach(CalendarDatePicker picker in datePickers)
             {
-                lstTBox.Add(new TextBox { Text=picker.Text, Name=picker.Name});
+                lstTBox.Add(new TextBox { Text=picker.SelectedDate.Value.ToString("dd.MM.yyyy"), Name=picker.Name});
             }            
             list[0].ItemsSource = listTemplData;
 
@@ -284,7 +282,7 @@ public class ClassEventResource
             }
             foreach (var tbox in lstTBox)
             {
-                if (tbox.Tag.ToString().Contains("GPS"))
+                if (tbox.Tag!=null && tbox.Tag.ToString().Contains("GPS"))
                 {
                     ConvertDegreeToFormatOBD(tbox);
                 }

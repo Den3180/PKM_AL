@@ -40,7 +40,12 @@
                     </TabItem>
                     <TabItem>
                         <TabItem.Header>
-                            <TextBlock Text="Рекомендации по А(Ж)Д переходам"/>
+                            <TextBlock Text="Рекомендации по АД переходам"/>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Рекомендации по ЖД переходам"/>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem>

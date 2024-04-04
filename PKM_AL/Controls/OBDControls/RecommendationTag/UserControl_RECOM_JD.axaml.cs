@@ -7,12 +7,11 @@ using PKM_AL.Classes.ServiceClasses;
 
 namespace PKM_AL.Controls.OBDControls.RecommendationTag;
 
-public partial class UserControl_RECOM_AD : UserControl
+public partial class UserControl_RECOM_JD : UserControl
 {
     public List<TextBox> lstTextBox;
     readonly ClassEventResource classEventResource = new ClassEventResource();
-    
-    public UserControl_RECOM_AD()
+    public UserControl_RECOM_JD()
     {
         InitializeComponent();
         lstTextBox = (new ClassControlManager()).GetTextBox(this);

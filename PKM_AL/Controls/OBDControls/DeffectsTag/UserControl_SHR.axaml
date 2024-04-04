@@ -2,7 +2,194 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.OBDControls.DeffectsTag.UserControl_SHR">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/StylesOBD.axaml" />
+    </UserControl.Styles>
+    <ScrollViewer>
+            <Grid Name="scroll" RowDefinitions="auto,auto,auto,auto">
+                <UniformGrid Columns="4">
+            <TextBlock>
+                     <Run>Локальный идентификатор загружаемого объекта</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_XML" Tag="INTEGER*"  LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Километр места шурфования, км</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="L1" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Описание места шурфования</Run>
+            </TextBlock>
+            <TextBox x:Name="OPIENTIR1" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Широта места шурфования, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LAT1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Долгота места шурфования, ГГ&#176;ММ.ММММ</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_LONG1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Высота места шурфования над уровнем моря, м</Run>
+            </TextBlock>
+            <TextBox x:Name="GPS_ALT1" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Номер акта шурфовки</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="NAME_SHR" Tag="CDATA*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Дата проведения шурфовки</Run>                     
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <!--<TextBox x:Name="DATE_SHR" Tag="DATE*"/>-->
+            <CalendarDatePicker Name="DATE_SHR" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" Tag="DATE*"/>
+            <TextBlock>
+                     <Run>Код местности в ОБД ПКЗ. Справочник</Run>                     
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_MST" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />            
+            <TextBlock>
+                     <Run>Глубина заложения газопровода от верхней образующей до поверхности, м</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="GL" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Длина шурфа, м</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="DL" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Код типа грунта в ОБД ПКЗ. Справочник</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_TYPE_O" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Удельное электрическое сопротивление грунта на глубине нижней образующей трубы, Ом&#183;м</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="R_UD_GR_DOWN" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Удельное электрическое сопротивление грунта на глубине верхней образующей трубы, Ом&#183;м</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="R_UD_GR_UP" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Наличие влаги в шурфе. Справочник в ОБД ПКЗ</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="N_VL" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Код адгезии ИП к поверхности в ОБД ПКЗ. Справочник</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_AGD_IP" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Наличие влаги под изоляцией. Справочник в ОБД ПКЗ</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="N_VL_IP"
+                 Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                 TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Код характера повреждений ИП в ОБД ПКЗ. Справочник</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_HAR_DEF_IP" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Места сквозных повреждений ИП (по циферблату часов)</Run>
+            </TextBlock>
+            <TextBox x:Name="HUR_IP" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Суммарная площадь сквозных повреждений, см&#178;</Run>
+            </TextBlock>
+            <TextBox x:Name="S_DEF_IP" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Глубина коррозионного дефекта, мм</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="GL_DEF" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Длина коррозионного дефекта(в продольном направлении трубы), мм</Run>
+            </TextBlock>
+            <TextBox x:Name="GL_DEF_PR" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Ширина коррозионного дефекта(в поперечном направлении трубы), мм</Run>
+            </TextBlock>
+            <TextBox x:Name="GL_DEF_POP" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Общее состояние ИП</Run>
+            </TextBlock>
+            <TextBox x:Name="REM_IP"  Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Потенциал &quot;труба-земля&quot; в шурфе, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="U_SH" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Поляризационный потециал трубопровода в шурфе, В</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="POL_SH" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Плотность защитного тока на вспомогательном электроде(датчике потенциалов), А/м&#178;</Run>
+                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+            </TextBlock>
+            <TextBox x:Name="ID_SH" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Ориентировочная скорость коррозии, мм/год</Run>
+            </TextBlock>
+            <TextBox x:Name="C_VELOCITY" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+            <TextBlock>
+                     <Run>Примечание</Run>
+            </TextBlock>
+            <TextBox x:Name="REM" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+                     TextChanged="TextBox_TextChanged" />
+        </UniformGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1"  HorizontalAlignment="Right">
+            <Button Content="Добавить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+          Name="b_Add" Click="Button_Click"/>
+            <Button  Content="Удалить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_Del" Click="Button_Click"/>
+            <Button  Content="Удалить все" FontSize="14" Margin="5" Width="130" IsEnabled="False"
+         Name="b_DelAll" Click="Button_Click"/>
+        </StackPanel>
+        <ListBox Name="lstObjs" Grid.Row="2" Margin="3" MinHeight="50">
+        </ListBox>
+        <TextBlock Grid.Row="3">
+            <Run Foreground="Red" FontWeight="Bold">*</Run>
+            <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
+        </TextBlock>
+    </Grid>
+    </ScrollViewer>
 </UserControl>

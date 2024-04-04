@@ -2,8 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="PKM_AL.Controls.OBDControls.DeffectsTag.UserControl_NZ">
+             x:Class="PKM_AL.Controls.OBDControls.RecommendationTag.UserControl_RECOM_JD">
     <UserControl.Styles>
         <StyleInclude Source="/Styles/StylesOBD.axaml" />
     </UserControl.Styles>
@@ -17,81 +18,53 @@
             <TextBox x:Name="ID_XML" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run>Километр начала зоны, км</Run>
+                     <Run>Километр точки монтажа, км</Run>
                      <Run Foreground="Red" FontWeight="Bold">*</Run>
             </TextBlock>
             <TextBox x:Name="L1" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run>Описание точки начала зоны</Run>
+                     <Run>Описание точки монтажа</Run>
             </TextBlock>
             <TextBox x:Name="OPIENTIR1" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run>Широта точки начала зоны, ГГ&#176;ММ.ММММ</Run>
+                     <Run>Широта точки монтажа, ГГ&#176;ММ.ММММ</Run>
             </TextBlock>
             <TextBox x:Name="GPS_LAT1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run>Долгота точки начала зоны, ГГ&#176;ММ.ММММ</Run>
+                     <Run>Долгота точки монтажа, ГГ&#176;ММ.ММММ</Run>
             </TextBlock>
             <TextBox x:Name="GPS_LONG1" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run>Высота точки начала зоны, м</Run>
+                     <Run>Высота точки монтажа над уровнем моря, м </Run>
             </TextBlock>
             <TextBox x:Name="GPS_ALT1" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run>Километр окончания зоны, км</Run>
+                     <Run>Срок выполнения рекомендации(не позднее даты)</Run>
                      <Run Foreground="Red" FontWeight="Bold">*</Run>
             </TextBlock>
-            <TextBox x:Name="L2" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
-                     TextChanged="TextBox_TextChanged"/>
+            <!--<TextBox x:Name="DATE_VIPOL" Tag="DATE*"/>-->
+            <CalendarDatePicker x:Name="DATE_VIPOL" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" Tag="DATE*"/>
             <TextBlock>
-                     <Run>Описание точк окончания зоны, км</Run>
-            </TextBlock>
-            <TextBox x:Name="OPIENTIR2" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
-                     TextChanged="TextBox_TextChanged"/>
-            <TextBlock>
-                     <Run>Широта точки окончания зоны, ГГ&#176;ММ.ММММ</Run>
-            </TextBlock>
-            <TextBox x:Name="GPS_LAT2" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
-                     TextChanged="TextBox_TextChanged"/>
-            <TextBlock>
-                     <Run>Долгота точки окончания зоны, ГГ&#176;ММ.ММММ</Run>
-            </TextBlock>
-            <TextBox x:Name="GPS_LONG2" Tag="GPS" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
-                     TextChanged="TextBox_TextChanged"/>
-            <TextBlock>
-                     <Run>Высота точки окончания зоны, м</Run>
-            </TextBlock>
-            <TextBox x:Name="GPS_ALT2" Tag="DOUBLE" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
-                     TextChanged="TextBox_TextChanged"/>
-            <TextBlock>
-                     <Run>Минимальное(по абсолютной величине) значение защитного потенциала в зоне, В </Run>
+                     <Run>Код КИП в ОБД ПКЗ. Справочник</Run>
                      <Run Foreground="Red" FontWeight="Bold">*</Run>
             </TextBlock>
-            <TextBox x:Name="U_MIN" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+            <TextBox x:Name="ID_OBJ" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run >Минимальное(по абсолютной величине) значение поляризационного потенциала в зоне, В </Run>
+                     <Run>Код вида работ на КИП в ОБД ПКЗ. Справочник</Run>
                      <Run Foreground="Red" FontWeight="Bold">*</Run>
             </TextBlock>
-            <TextBox x:Name="U_MIN_P" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+            <TextBox x:Name="ID_EFFORT" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
-                     <Run>Значение естественного потенциала в точке измерения минимального(по абсолютной величине) 
-                         поляризационного потенциала, В </Run>
-                     <Run Foreground="Red" FontWeight="Bold">*</Run>
+                     <Run>Наименование дороги</Run>
             </TextBlock>
-            <TextBox x:Name="U_EST" Tag="DOUBLE*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
-                     TextChanged="TextBox_TextChanged"/>
-            <TextBlock>
-                     <Run>Признак измерения после оптимизации режимов УКЗ: 0-до оптимизации, 1-после оптимизации</Run>
-                     <Run Foreground="Red" FontWeight="Bold">*</Run>
-            </TextBlock>
-            <TextBox x:Name="OPT" Tag="INTEGER*" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
+            <TextBox x:Name="NAME" Tag="CDATA" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus"
                      TextChanged="TextBox_TextChanged"/>
             <TextBlock>
                      <Run>Примечание</Run>
@@ -101,7 +74,7 @@
         </UniformGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="1"  HorizontalAlignment="Right">
             <Button Content="Добавить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
-          Name="b_Add"  Click="Button_Click"/>
+         Name="b_Add" Click="Button_Click"/>
             <Button  Content="Удалить запись" FontSize="14" Margin="5" Width="130" IsEnabled="False"
          Name="b_Del" Click="Button_Click"/>
             <Button  Content="Удалить все" FontSize="14" Margin="5" Width="130" IsEnabled="False"
@@ -114,5 +87,6 @@
             <Run FontStyle="Italic">поля, обязательные к заполнению</Run>
         </TextBlock>
     </Grid>
+
     </ScrollViewer>
 </UserControl>

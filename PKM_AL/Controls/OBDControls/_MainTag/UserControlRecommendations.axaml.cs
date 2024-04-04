@@ -34,19 +34,20 @@ public partial class UserControlRecommendations : UserControl
             (tabC.Items[2] as TabItem).Content = new UserControl_RECOM_UPZ() { Name = "RECOM_UPZ" };
             (tabC.Items[3] as TabItem).Content = new UserControl_RECOM_KIP() { Name = "RECOM_KIP" };
             (tabC.Items[4] as TabItem).Content = new UserControl_RECOM_VST() { Name = "RECOM_VST" };
-            (tabC.Items[5] as TabItem).Content = new UserControl_RECOM_AJD() { Name = "RECOM_AJD" };
-            (tabC.Items[6] as TabItem).Content = new UserControl_RECOM_SHURF() { Name = "RECOM_SHURF" };
-            (tabC.Items[7] as TabItem).Content = new UserControl_RECOM_REM_IP() { Name = "RECOM_REM_IP" };
-            (tabC.Items[8] as TabItem).Content = new UserControl_RECOM_ZAS() { Name = "RECOM_ZAS" };
-            (tabC.Items[9] as TabItem).Content = new UserControl_RECOM_PROS() { Name = "RECOM_PROS" };
-            (tabC.Items[10] as TabItem).Content = new UserControl_RECOM_REM_TP() { Name = "RECOM_REM_TP" };
-            (tabC.Items[11] as TabItem).Content = new UserControl_RECOM_OBSL() { Name = "RECOM_OBSL" };
-            (tabC.Items[12] as TabItem).Content = new UserControl_RECOM_OTHER() { Name = "RECOM_OTHER" };
-            (tabC.Items[13] as TabItem).Content = new UserControl_NEW_UKZ() { Name = "RECOM_NEW_UKZ" };
-            (tabC.Items[14] as TabItem).Content = new UserControl_NEW_UDZ() { Name = "RECOM_NEW_UDZ" };
-            (tabC.Items[15] as TabItem).Content = new UserControl_NEW_UPZ() { Name = "RECOM_NEW_UPZ" };
-            (tabC.Items[16] as TabItem).Content = new UserControl_NEW_KIP() { Name = "RECOM_NEW_KIP" };
-            (tabC.Items[17] as TabItem).Content = new UserControl_NEW_VST() { Name = "RECOM_NEW_VST" };
+            (tabC.Items[5] as TabItem).Content = new UserControl_RECOM_AD() { Name = "RECOM_AD" };
+            (tabC.Items[6] as TabItem).Content = new UserControl_RECOM_JD() { Name = "RECOM_JD" };
+            (tabC.Items[7] as TabItem).Content = new UserControl_RECOM_SHURF() { Name = "RECOM_SHURF" };
+            (tabC.Items[8] as TabItem).Content = new UserControl_RECOM_REM_IP() { Name = "RECOM_REM_IP" };
+            (tabC.Items[9] as TabItem).Content = new UserControl_RECOM_ZAS() { Name = "RECOM_ZAS" };
+            (tabC.Items[10] as TabItem).Content = new UserControl_RECOM_PROS() { Name = "RECOM_PROS" };
+            (tabC.Items[11] as TabItem).Content = new UserControl_RECOM_REM_TP() { Name = "RECOM_REM_TP" };
+            (tabC.Items[12] as TabItem).Content = new UserControl_RECOM_OBSL() { Name = "RECOM_OBSL" };
+            (tabC.Items[13] as TabItem).Content = new UserControl_RECOM_OTHER() { Name = "RECOM_OTHER" };
+            (tabC.Items[14] as TabItem).Content = new UserControl_NEW_UKZ() { Name = "RECOM_NEW_UKZ" };
+            (tabC.Items[15] as TabItem).Content = new UserControl_NEW_UDZ() { Name = "RECOM_NEW_UDZ" };
+            (tabC.Items[16] as TabItem).Content = new UserControl_NEW_UPZ() { Name = "RECOM_NEW_UPZ" };
+            (tabC.Items[17] as TabItem).Content = new UserControl_NEW_KIP() { Name = "RECOM_NEW_KIP" };
+            (tabC.Items[18] as TabItem).Content = new UserControl_NEW_VST() { Name = "RECOM_NEW_VST" };
         }
 
     private void tabC_SelectionChanged(object sender, SelectionChangedEventArgs e)
