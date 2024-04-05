@@ -56,6 +56,7 @@ namespace PKM_AL
             if (control == null) return;
             ClassControlManager controlManagement = new ClassControlManager();
             TabItem owner = control.Parent as TabItem;
+            if(owner==null) return;
             TabControl tabC = owner.Parent as TabControl;
             if(tabC.Name != "tabC")
             {
