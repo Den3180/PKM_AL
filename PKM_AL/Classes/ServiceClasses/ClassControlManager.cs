@@ -129,11 +129,42 @@ namespace PKM_AL
                 }
                 if (elem is TextBox box)
                 {
+                    box.Text ??= string.Empty;
                     textBoxes.Add(box);
                 }
                 else
                 {
                     GetTextBox((ILogical)elem);
+                }
+            }
+            return textBoxes;
+        }
+
+        /// <summary>
+        /// Выборка всех TextBox.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public List<TextBox> GetAllTextBox(ILogical obj)
+        {
+            if (obj is null) return null;
+            textBoxes ??= new List<TextBox>();
+            var childs = obj.GetLogicalChildren().ToList();
+            //Если элемент TabControl - удаляем последний элемент коллекции потомков.
+            if (obj is TabControl) 
+            {
+                //childs.RemoveAt(childs.Count-1);
+            }
+            foreach (var elem in childs)
+            {
+                if (elem is TextBox box)
+                {
+                    box.Text ??= string.Empty;
+                    textBoxes.Add(box);
+                }
+                else
+                {
+                    GetAllTextBox((ILogical)elem);
                 }
             }
             return textBoxes;

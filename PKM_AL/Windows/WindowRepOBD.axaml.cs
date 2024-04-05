@@ -44,20 +44,82 @@ public partial class WindowRepOBD : Window
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
-        
+        // if (!CheckFillingFields())
+        // {
+        //     ClassMessage.ShowMessage(MainWindow.currentMainWindow,"Заполните все обязательные поля!", 
+        //         buttonEnum:ButtonEnum.Ok, icon:MsBox.Avalonia.Enums.Icon.Error);
+        //     return;
+        // }
+        if (ReportOBD.Root != null)
+        {
+            ReportOBD.Elements().Remove();
+        }            
+        foreach (TabItem tab in TabC.Items)
+        {
+            var t= (tab as TabItem).Content as UserControl;
+            switch (t.Name)
+            {
+                case "EHZ_EXHG":
+                    (t as UserControlBegin).TagAssembly();
+                    break;
+                case "TYPEOBJS":
+                    (t as UserControlTypeObjs).TagAssembly();
+                    break;
+                case "DOGOVOR":
+                    (t as UserControlDogovor).TagAssembly();
+                    break;
+                case "USH":
+                    (t as UserControlUSH).TagAssembly();
+                    break;
+                case "DEFECTS":
+                    (t as UserControlDeffects).TagAssembly();
+                    break;
+                case "DR_POINTS":
+                    (t as UserControlDr_Points).TagAssembly();
+                    break;
+                case "TRACE_SITUATION":
+                    (t as UserControlTrace_Situation).TagAssembly();
+                    break;
+                case "FINDINGS":
+                    (t as UserControlFindings).TagAssembly();
+                    break;
+                case "RECOMMENDATIONS":
+                    (t as UserControlRecommendations).TagAssembly();
+                    break;
+            }
+        }
+        UCH.Add(DEFECTS);
+        UCH.Add(DR_POINTS);
+        UCH.Add(TRACE_SITUATION);
+        UCH.Add(FINDINGS);
+        UCH.Add(RECOMMENDATIONS);
+        DOGOVOR.Add(UCH);
+        EHZ_EXHG.Add(TYPEOBJS);
+        EHZ_EXHG.Add(DOGOVOR);
+        ReportOBD.Add(EHZ_EXHG);
+        ReportOBD.Save("ReportOBD.xml");
     }
 
     private void SaveSend_Click(object sender, RoutedEventArgs e)
+    {
+        if (!CheckFillingFields())
+        {
+                ClassMessage.ShowMessage(MainWindow.currentMainWindow,"Отчет не отправлен!\nЗаполните все обязательные поля!", 
+                    buttonEnum:ButtonEnum.Ok, icon:MsBox.Avalonia.Enums.Icon.Error);
+                return;
+        }
+    }
+
+    private bool CheckFillingFields()
     {
         foreach (TextBox box in AllTextBox)
         {
             if (box.Tag.ToString().Contains("*") && string.IsNullOrEmpty(box.Text))
             {
-                ClassMessage.ShowMessage(MainWindow.currentMainWindow,"Отчет не отправлен!\nЗаполните все обязательные поля!", 
-                    buttonEnum:ButtonEnum.Ok, icon:MsBox.Avalonia.Enums.Icon.Error);
-                return;
+                return false;
             }
         }
+        return true;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -97,6 +159,6 @@ public partial class WindowRepOBD : Window
         (TabC.Items[6] as TabItem).Content = new UserControlTrace_Situation() { Name = "TRACE_SITUATION" };
         (TabC.Items[7] as TabItem).Content = new UserControlFindings() { Name = "FINDINGS" };
         (TabC.Items[8] as TabItem).Content = new UserControlRecommendations() { Name = "RECOMMENDATIONS" };
-        AllTextBox = (new ClassControlManager()).GetTextBox(TabC);
+        AllTextBox = (new ClassControlManager()).GetAllTextBox(TabC);
     }
 }

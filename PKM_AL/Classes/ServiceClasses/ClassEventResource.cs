@@ -165,6 +165,10 @@ public class ClassEventResource
                     SecondName = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")
                 }
                    );
+                foreach (TextBox box in lstTBox)
+                {
+                    box.Text = string.Empty;
+                } 
                 buttons[1].IsEnabled=true;
                 buttons[2].IsEnabled=true;
             }
@@ -328,11 +332,11 @@ public class ClassEventResource
         {
             if (string.IsNullOrEmpty(textBox.Text)) return;
             double coord = Convert.ToDouble(ClassControlManager.CheckCurrentSeparator( textBox.Text, 
-                                            NumberFormatInfo.CurrentInfo.NumberDecimalSeparator));
+                                            "."));
             int deg = (int)coord;
             double min = ((coord - deg) * 60);
             min = Math.Round(min, 4);
-            string strMin = min.ToString("0.0000");
+            string strMin = min.ToString("0.0000",CultureInfo.InvariantCulture);
             textBox.Text = deg+"°"+strMin;
         }
 
