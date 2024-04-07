@@ -339,5 +339,4 @@ public class ClassEventResource
             string strMin = min.ToString("0.0000",CultureInfo.InvariantCulture);
             textBox.Text = deg+"°"+strMin;
         }
-
 }
