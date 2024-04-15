@@ -5,6 +5,7 @@ using PKM;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -72,6 +73,11 @@ namespace PKM_AL
             _assembly=Assembly.GetEntryAssembly()?.GetName().Name;
         }
 
+        private bool CheckSha512(bool firstStart)
+        {
+            return true;
+        }
+
         /// <summary>
         /// Загрузка основного окна.
         /// </summary>
@@ -81,6 +87,15 @@ namespace PKM_AL
         {
             ClassLog.Write("Запуск приложения");
             settings = ClassSettings.Load();
+            if (settings.FirstStart)
+            {
+                var curDir=Directory.GetParent(Process.GetCurrentProcess().MainModule.FileName);
+                // ProcessStartInfo processStartInfo = new ProcessStartInfo();
+                // processStartInfo.Arguments = "15";
+                // processStartInfo.UseShellExecute = true;
+                // processStartInfo.FileName = @"D:\Projects\CheckAppSHA-512\CheckAppSHA-512\bin\Debug\net6.0\CheckAppSHA-512-1.exe.lnk";
+                // var proc = Process.Start(processStartInfo);
+            }
             switch (settings.TypeDB)
             {
                 case ClassSettings.EnumTypeDB.SQLite: DB = new ClassDB(); break;

@@ -6,8 +6,7 @@ using System.IO;
 using System.Xml.Serialization;
 
 namespace PKM
-{     
-
+{ 
     public class ClassSettings
     {
 
@@ -44,6 +43,8 @@ namespace PKM
         public int StartWindow { get; set; }
         public bool ModbusSlave { get; set; }
         public int PeriodUSIKP { get; set; }
+        //Первый старт.
+        public bool FirstStart { get; set; }
 
         public ClassSettings()
         {
@@ -63,10 +64,14 @@ namespace PKM
             Interface = false;
             StartWindow = 0;
             ModbusSlave = false;
+            FirstStart = true;
             DevicesColumns = new List<string>();
             ChannelsColumns = new List<string> ();            
         }
 
+        /// <summary>
+        /// Сохранение настроек.
+        /// </summary>
         public void Save()
         {
             TextWriter writer = new StreamWriter(FileName);
@@ -74,6 +79,7 @@ namespace PKM
             serializer.Serialize(writer, this);
             writer.Close();
         }
+        
         /// <summary>
         /// Загрузка настроек из файла.
         /// </summary>
