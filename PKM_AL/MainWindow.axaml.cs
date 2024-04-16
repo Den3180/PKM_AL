@@ -12,6 +12,7 @@ using Avalonia.Threading;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using Avalonia.Platform.Storage;
 using Microsoft.Extensions.Logging;
@@ -75,7 +76,25 @@ namespace PKM_AL
 
         private bool CheckSha512(bool firstStart)
         {
-            return true;
+            CancellationTokenSource source = new CancellationTokenSource();
+             Process process = Process.GetCurrentProcess();
+             string pathExecutableFile = process.MainModule.FileName;
+             var dirPkm = Directory.GetParent(pathExecutableFile).Parent.FullName;
+             string pathSha = dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.lnk";
+             if (!File.Exists(pathSha))
+                 return false;
+             if ( firstStart == false || string.IsNullOrEmpty(pathExecutableFile)) 
+                 return false;
+             ProcessStartInfo processStartInfo = new ProcessStartInfo
+             {
+                 UseShellExecute = true,
+                 FileName = pathSha
+             };
+             Process.Start(processStartInfo);
+             var res = process.WaitForExitAsync(source.Token);
+             res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+             Dispatcher.UIThread.MainLoop(source.Token);
+             return true;
         }
 
         /// <summary>
@@ -89,12 +108,7 @@ namespace PKM_AL
             settings = ClassSettings.Load();
             if (settings.FirstStart)
             {
-                var curDir=Directory.GetParent(Process.GetCurrentProcess().MainModule.FileName);
-                // ProcessStartInfo processStartInfo = new ProcessStartInfo();
-                // processStartInfo.Arguments = "15";
-                // processStartInfo.UseShellExecute = true;
-                // processStartInfo.FileName = @"D:\Projects\CheckAppSHA-512\CheckAppSHA-512\bin\Debug\net6.0\CheckAppSHA-512-1.exe.lnk";
-                // var proc = Process.Start(processStartInfo);
+                settings.FirstStart= CheckSha512(settings.FirstStart);
             }
             switch (settings.TypeDB)
             {
