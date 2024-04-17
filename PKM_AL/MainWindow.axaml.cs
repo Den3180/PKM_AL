@@ -82,7 +82,9 @@ namespace PKM_AL
              Process process = Process.GetCurrentProcess();
              string pathExecutableFile = process.MainModule.FileName;
              var dirPkm = Directory.GetParent(pathExecutableFile).Parent.FullName;
-             string pathSha = dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.lnk";
+             string pathSha = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                 ? dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.lnk":
+                 dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.dll.desktop";
              if (!File.Exists(pathSha))
                  return false;
              if ( firstStart == false || string.IsNullOrEmpty(pathExecutableFile)) 
