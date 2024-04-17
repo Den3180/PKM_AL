@@ -72,6 +72,8 @@ namespace PKM_AL
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
             _assembly=Assembly.GetEntryAssembly()?.GetName().Name;
+            settings = ClassSettings.Load();
+            CheckSha512(settings.FirstStart);
         }
 
         private bool CheckSha512(bool firstStart)
@@ -91,7 +93,7 @@ namespace PKM_AL
                  FileName = pathSha
              };
              Process.Start(processStartInfo);
-             var res = process.WaitForExitAsync(source.Token);
+             var res = process.WaitForExitAsync();
              res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
              Dispatcher.UIThread.MainLoop(source.Token);
              return true;
@@ -106,10 +108,10 @@ namespace PKM_AL
         {
             ClassLog.Write("Запуск приложения");
             settings = ClassSettings.Load();
-            if (settings.FirstStart)
-            {
-                settings.FirstStart= CheckSha512(settings.FirstStart);
-            }
+            // if (settings.FirstStart)
+            // {
+            //     settings.FirstStart= CheckSha512(settings.FirstStart);
+            // }
             switch (settings.TypeDB)
             {
                 case ClassSettings.EnumTypeDB.SQLite: DB = new ClassDB(); break;
