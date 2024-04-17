@@ -35,7 +35,7 @@ public class ClassGSM
         }
 
         private string PortNumber;
-        // private int PortNumber;
+        // private int portNumber;
         private SerialPort port;
         private int CountSMS;
         private int StartNumberSMS;
@@ -80,7 +80,7 @@ public class ClassGSM
         /// Включение модема.
         /// </summary>
         /// <param name="PortNumber"></param>
-        //public void Start(int PortNumber)
+        //public void Start(int portNumber)
         public void Start(string PortNumber)
         {
             this.PortNumber = PortNumber;
@@ -90,20 +90,20 @@ public class ClassGSM
         /// <summary>
         /// Открытие порта и включение прослушки для GSM.
         /// </summary>
-        /// <param name="PortNumber"></param>
+        /// <param name="portNumber"></param>
         /// <returns></returns>
-        public bool PortOpen(string PortNumber)
+        public bool PortOpen(string portNumber)
         {
+            if (string.IsNullOrEmpty(portNumber))
+                return false;
             if (port is { IsOpen: true })
             {
-                if (port.PortName == PortNumber) 
+                if (port.PortName == portNumber) 
                     port.Close();
                 else 
                     port = null;
             }
-            
-            //port = new SerialPort("COM" + PortNumber);
-            port = new SerialPort(PortNumber);
+            port = new SerialPort(portNumber);
             port.BaudRate = 9600;
             port.DataBits = 8;
             port.Parity = Parity.None;

@@ -24,7 +24,6 @@ using Avalonia.LogicalTree;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-// using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PKM_AL.Classes;
 using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
@@ -71,15 +70,18 @@ namespace PKM_AL
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
             _assembly=Assembly.GetEntryAssembly()?.GetName().Name;
-            settings = ClassSettings.Load();
-            CheckSha512(settings.FirstStart);
             InitializeComponent();
         }
 
-        readonly CancellationTokenSource _source = new CancellationTokenSource();
+        /// <summary>
+        /// Запуск модуля проверки контрольных сумм.
+        /// </summary>
+        /// <param name="firstStart"></param>
+        /// <returns></returns>
         private bool CheckSha512(bool firstStart)
         {
             
+             CancellationTokenSource _source = new CancellationTokenSource();
              Process process = Process.GetCurrentProcess();
              string pathExecutableFile = process.MainModule.FileName;
              var dirPkm = Directory.GetParent(pathExecutableFile).Parent.FullName;
@@ -100,7 +102,7 @@ namespace PKM_AL
              var res = processSha.WaitForExitAsync();
              res.ContinueWith(t => _source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
              Dispatcher.UIThread.MainLoop(_source.Token);
-             return true;
+             return false;
         }
 
         /// <summary>
@@ -112,20 +114,20 @@ namespace PKM_AL
         {
             ClassLog.Write("Запуск приложения");
             settings = ClassSettings.Load();
-            // if (settings.FirstStart)
-            // {
-            //     settings.FirstStart= CheckSha512(settings.FirstStart);
-            // }
+            if (settings.FirstStart)
+            {
+                settings.FirstStart= CheckSha512(settings.FirstStart);
+                settings.Save();
+            }
             switch (settings.TypeDB)
             {
                 case ClassSettings.EnumTypeDB.SQLite: DB = new ClassDB(); break;
                 default:
                 break;
             }
-
+            
             WindowIntro frmIntro = new WindowIntro();
             frmIntro.WindowShow(this);
-
 
             if (!File.Exists(settings.DB))
             {
@@ -145,13 +147,13 @@ namespace PKM_AL
                         ClassMessage.ShowMessage(this, "База данных не создана.\nПриложение будет закрыто.",
                                                 icon: MsBox.Avalonia.Enums.Icon.Stop);
                         Environment.Exit(0);
+                      
                     }
                 }
                 else
-                {
-                    ClassMessage.ShowMessage(this, "База данных не создана.\nПриложение будет закрыто.",
-                         icon: MsBox.Avalonia.Enums.Icon.Stop);
-                    Environment.Exit(0);
+                { 
+                    WindowDB windowDb = new WindowDB();
+                    windowDb.WindowShow(this);
                 }
             }
             if (!DB.Open(settings))
@@ -620,6 +622,9 @@ namespace PKM_AL
             WindowDB windowDb = new WindowDB();
             windowDb.WindowShow(this);
             break;
+            case "Проверка целостности...":
+                CheckSha512(true);
+                break;
             case "Параметры...":
                 WindowConfig windowConfig = new WindowConfig();
                 windowConfig.WindowShow(this);

@@ -34,6 +34,7 @@
 			<MenuItem Header="Сервис" Name="menuService">
 				<MenuItem Header="Создать БД..." Click="MenuItem_Click"></MenuItem>
 				<MenuItem Header="GSM модем..." Click="MenuItemGSM_Click"></MenuItem>
+				<MenuItem Header="Проверка целостности..." Click="MenuItem_Click"></MenuItem>
 			</MenuItem>
 			<MenuItem Header="Отчеты">
 				<MenuItem Header="Добавить отчет">
