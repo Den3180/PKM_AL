@@ -67,24 +67,26 @@ namespace PKM_AL
 
         public MainWindow()
         {
-            InitializeComponent();
             currentMainWindow = this;
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
             _assembly=Assembly.GetEntryAssembly()?.GetName().Name;
             settings = ClassSettings.Load();
             CheckSha512(settings.FirstStart);
+            InitializeComponent();
         }
 
+        readonly CancellationTokenSource _source = new CancellationTokenSource();
         private bool CheckSha512(bool firstStart)
         {
-            CancellationTokenSource source = new CancellationTokenSource();
+            
              Process process = Process.GetCurrentProcess();
              string pathExecutableFile = process.MainModule.FileName;
              var dirPkm = Directory.GetParent(pathExecutableFile).Parent.FullName;
              string pathSha = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                  ? dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.lnk":
-                 dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.dll.desktop";
+                 dirPkm + @"/CheckAppSHA-512/CheckAppSHA-512";
+            
              if (!File.Exists(pathSha))
                  return false;
              if ( firstStart == false || string.IsNullOrEmpty(pathExecutableFile)) 
@@ -94,10 +96,10 @@ namespace PKM_AL
                  UseShellExecute = true,
                  FileName = pathSha
              };
-             Process.Start(processStartInfo);
-             var res = process.WaitForExitAsync();
-             res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-             Dispatcher.UIThread.MainLoop(source.Token);
+             var processSha=Process.Start(processStartInfo);
+             var res = processSha.WaitForExitAsync();
+             res.ContinueWith(t => _source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+             Dispatcher.UIThread.MainLoop(_source.Token);
              return true;
         }
 
