@@ -273,10 +273,10 @@ namespace PKM_AL
             StatusTime.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss.fff");
             
             //Если в настройках стоит запрос пользователя.
-            // if (settings.RequestLogin && (User == null))
-            // {
-            //     UserLogin();
-            // }
+            if (settings.RequestLogin && (User == null))
+            {
+                UserLogin();
+            }
             
             //Если не подключено устройство.
             if (modbus.Mode == ClassModbus.eMode.None)
@@ -585,6 +585,7 @@ namespace PKM_AL
             Close();
             break;
             case "Смена пользователя...":
+                UserLogin();
             break;
             case "Устройства...":
                 if (currentContent is UserControlDevices) break; 
@@ -636,6 +637,8 @@ namespace PKM_AL
                 }
                 break;
             case "Пользователи...":
+                this.ContentArea.Content = new UserControlUsers();
+                this.StatusMode.Text = "Пользователи";
             break;
             case "Шаблоны...":
             break;
@@ -808,6 +811,30 @@ namespace PKM_AL
             };
             Groups[0].SubGroups.Add(item);
             (currentMainWindow.treeView.Items[0] as TreeViewItem)?.Items.Add(ClassBuildControl.MakeContentTreeViewItem(item));
+        }
+        
+        /// <summary>
+        /// Добавление пользователя.
+        /// </summary>
+        private void UserLogin()
+        {
+            WindowLogin frm = new WindowLogin();
+            frm.WindowShow(currentMainWindow);
+            //frm.ShowDialog(currentMainWindow);
+            User = frm.User;
+            if(User==null) return;
+            this.StatusUser.Text = string.IsNullOrEmpty(User.Name)? "Пользователь" : User.Name;
+            DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Login, Param = User.Name });
+            if (User.GrantConfig)
+            {
+                this.menuConfig.IsEnabled = true;
+                this.menuService.IsEnabled = true;
+            }
+            else
+            {
+                this.menuConfig.IsEnabled = false;
+                this.menuService.IsEnabled = false;
+            }
         }
 
         private void TreeView_OnTapped(object sender, TappedEventArgs e)

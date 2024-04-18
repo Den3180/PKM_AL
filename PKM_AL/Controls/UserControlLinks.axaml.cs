@@ -27,11 +27,9 @@ public partial class UserControlLinks : UserControl
 
     private void сMenu_OnOpened(object sender, RoutedEventArgs e)
     {
-        // bool FlagEnabled = false;
-        // if (MainWindow.User == null || MainWindow.User.GrantConfig)
-        //     FlagEnabled = true;
-        // foreach (object item in cMenu.Items)
-        //     if (item is MenuItem) ((MenuItem)item).IsEnabled = FlagEnabled;
+        bool FlagEnabled = MainWindow.User == null || MainWindow.User.GrantConfig;
+        foreach (object item in cMenu.Items)
+            if (item is MenuItem) ((MenuItem)item).IsEnabled = FlagEnabled;
     }
 
     private void MenuItemAdd_Click(object sender, RoutedEventArgs e)

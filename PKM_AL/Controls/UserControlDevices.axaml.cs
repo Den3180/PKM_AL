@@ -30,10 +30,6 @@ public partial class UserControlDevices : UserControl
         GridDevices.ItemsSource = MainWindow.Devices;
     }
 
-    private void UserControl_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-    }
-
     /// <summary>
     /// Нумерация строк datagrid и привязка к свойству background.
     /// </summary>
@@ -68,6 +64,9 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void cMenu_Opened(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        bool FlagEnabled = MainWindow.User == null || MainWindow.User.GrantConfig;
+        foreach (object item in cMenu.Items)
+            if (item is MenuItem) ((MenuItem)item).IsEnabled = FlagEnabled;
     }
 
     /// <summary>
@@ -167,7 +166,13 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemSave_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
- 
+        ClassDevice obj = this.GridDevices.SelectedItem as ClassDevice;
+        if (obj == null) return;
+        var path= ClassDialogWindows.SaveDialog(MainWindow.currentMainWindow);
+        if (string.IsNullOrEmpty(path)) return;
+        bool ret = obj.SaveProfile(path);
+        ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Сохранение завершено", "Сохранить", 
+            ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Success);
     }
 
     /// <summary>
@@ -177,7 +182,37 @@ public partial class UserControlDevices : UserControl
     /// <param name="e"></param>
     private void MenuItemLoad_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-
+        var path= ClassDialogWindows.ChooseDialog(MainWindow.currentMainWindow);
+        if (string.IsNullOrEmpty(path)) return;
+       //Загрузка устройства из файла.
+        ClassDevice device = ClassDevice.Load(path);           
+        if (device == null)
+        {
+            ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Недопустимый формат файла", "Загрузить", 
+                ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error);
+            return;
+        }
+        bool resD = MainWindow.DB.DeviceAdd(device);
+        MainWindow.Devices.Add(device);
+        device.CountNumber = MainWindow.Devices[^1].CountNumber + 1;
+        //Занесение в дерево устройств.
+        ClassItem item = new ClassItem()
+        {
+            ID = device.ID,
+            NameCh = device.Name,
+            IconUri = "hardware.png",
+            Group = MainWindow.Groups[0],
+            ItemType = ClassItem.eType.Device
+        };
+        MainWindow.Groups[0].SubGroups.Add(item);
+        (MainWindow.currentMainWindow.treeView.Items[0] as TreeViewItem)?.Items.Add(ClassBuildControl.MakeContentTreeViewItem(item));
+       //Загрузка канала в базу данных(асинхронно) и в список каналов.
+        foreach (ClassChannel channel in device.Channels)
+        {
+            channel.Device = device;
+            Task.Run(() => MainWindow.DB.RegistryAdd(channel));
+            MainWindow.Channels.Add(channel);
+        }           
     }
 
     /// <summary>
@@ -190,9 +225,5 @@ public partial class UserControlDevices : UserControl
         WindowColumns frm = new WindowColumns(this.GridDevices);
         frm.WindowShow(MainWindow.currentMainWindow);
     }
-
-    private void GridDevices_OnDoubleTapped(object sender, TappedEventArgs e)
-    {
-        
-    }
+   
 }

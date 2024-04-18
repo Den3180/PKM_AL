@@ -67,6 +67,7 @@
         <entry key="PKM_AL/Controls/UserControlLinks.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlMessages.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlReport.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Controls/UserControlUsers.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/MainWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Styles/StylesOBD.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/Window1.axaml" value="PKM_AL/PKM_AL.csproj" />
@@ -80,9 +81,11 @@
         <entry key="PKM_AL/Windows/WindowGSM.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowIntro.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowLink.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Windows/WindowLogin.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowMassage.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowPeriodreports.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowRepOBD.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Windows/WindowUser.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowValue.axaml" value="PKM_AL/PKM_AL.csproj" />
       </map>
     </option>

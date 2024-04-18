@@ -358,7 +358,7 @@ namespace PKM_AL
                 {
                     EnumLink.LinkNo => Brushes.Red,
                     EnumLink.LinkYes => Brushes.Chartreuse,
-                    _ => Brushes.Beige
+                    _ => Brushes.Transparent
                 };
                 return _bColorLine;
             }

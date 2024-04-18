@@ -35,6 +35,7 @@
                     <Setter Property="BorderBrush" Value="Black"/>
                     <Setter Property="AreSeparatorsVisible" Value="True"/>
                     <Setter Property="Background" Value="Beige"/>
+                    <Setter Property="FontWeight" Value="SemiBold"></Setter>
                 </Style>
                 <Style Selector="DataGridCell.DGC_Left">
                     <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>

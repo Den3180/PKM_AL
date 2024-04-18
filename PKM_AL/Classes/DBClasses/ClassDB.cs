@@ -1248,7 +1248,76 @@ namespace PKM
         // }
 
         #endregion
+        
+        #region [Users]
 
+         public virtual List<ClassUser> UsersLoad()
+         {
+             List<ClassUser> lst = new List<ClassUser>();
+             SqliteCommand cmd = conn.CreateCommand();
+             cmd.CommandText = "SELECT rowid, * FROM user ORDER BY name";
+             using (SqliteDataReader reader = cmd.ExecuteReader())
+             {
+                 while (reader.Read())
+                 {
+                     ClassUser obj = new ClassUser();
+                     obj.ID = Convert.ToInt32(reader["rowid"]);
+                     obj.Name = (string)reader["name"];
+                     obj.Login = Convert.ToString(reader["login"]);
+                     obj.Pass = Convert.ToString(reader["pass"]);
+                     obj.Grant = Convert.ToInt32(reader["grant"]);
+                     lst.Add(obj);
+                 }
+             }
+             return lst;
+         }
+
+         public virtual bool UserAdd(ClassUser obj)
+         {
+             SqliteCommand cmd = conn.CreateCommand();
+             cmd.CommandText = "INSERT INTO user (name, login, pass, grant)"
+                 + " VALUES(@Name, @Login, @Pass, @Grant)";
+             cmd.Parameters.AddWithValue("@Name", obj.Name);
+             cmd.Parameters.AddWithValue("@Login", obj.Login);
+             cmd.Parameters.AddWithValue("@Pass", obj.Pass);
+             cmd.Parameters.AddWithValue("@Grant", obj.Grant);
+             try { cmd.ExecuteNonQuery(); }
+             catch { return false; }
+             cmd.CommandText = "SELECT last_insert_rowid()";
+             obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+             return true;
+         }
+
+         public virtual bool UserEdit(ClassUser obj)
+         {
+             SqliteCommand cmd = conn.CreateCommand();
+             cmd.CommandText = "UPDATE user SET name = @Name, login = @Login, pass = @Pass, grant = @Grant"
+                 + " WHERE rowid = @ID";
+             cmd.Parameters.AddWithValue("@Name", obj.Name);
+             cmd.Parameters.AddWithValue("@Login", obj.Login);
+             cmd.Parameters.AddWithValue("@Pass", obj.Pass);
+             cmd.Parameters.AddWithValue("@Grant", obj.Grant);
+             cmd.Parameters.AddWithValue("@ID", obj.ID);
+             try { cmd.ExecuteNonQuery(); }
+             catch (Exception Ex)
+             {
+                 ClassLog.Write(Ex.Message);
+                 return false;
+             }
+             return true;
+         }
+
+         public virtual bool UserDel(ClassUser obj)
+         {
+             SqliteCommand cmd = conn.CreateCommand();
+             cmd.CommandText = "DELETE FROM user WHERE rowid = @ID";
+             cmd.Parameters.AddWithValue("@ID", obj.ID);
+             try { cmd.ExecuteNonQuery(); }
+             catch { return false; }
+             return true;
+         }
+
+         #endregion
 
         #region[Отчеты]
 

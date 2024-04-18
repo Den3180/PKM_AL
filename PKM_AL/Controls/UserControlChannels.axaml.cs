@@ -50,7 +50,8 @@ public partial class UserControlChannels : UserControl
             if (settings.ChannelsColumns.FirstOrDefault(x => x == col.Header?.ToString()) != null)
                 col.IsVisible = false;
         }
-        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
+        Channels=new ObservableCollection<ClassChannel>(FilterItems());
+        GridChannels.ItemsSource = Channels;
     }
     
     /// <summary>
@@ -110,23 +111,23 @@ public partial class UserControlChannels : UserControl
             e.Handled=true;
             return;
         }
-        // bool FlagEnabled = MainWindow.User == null || MainWindow.User.GrantConfig;
-        // foreach (object item in cMenu.Items)
-        // {
-        //     if (item is MenuItem)
-        //     {
-        //         ((MenuItem)item).IsEnabled = FlagEnabled;
-        //         if (((MenuItem)item).Name == "Write")
-        //         {
-        //             ClassChannel obj = this.GridChannels.SelectedItem as ClassChannel;
-        //             if (obj == null) continue;
-        //             if (obj.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry
-        //                 || obj.TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
-        //                 ((MenuItem)item).IsEnabled = FlagEnabled;
-        //             else ((MenuItem)item).IsEnabled = false;
-        //         }
-        //     }
-        // }
+        bool FlagEnabled = MainWindow.User == null || MainWindow.User.GrantConfig;
+        foreach (object item in cMenu.Items)
+        {
+            if (item is MenuItem)
+            {
+                ((MenuItem)item).IsEnabled = FlagEnabled;
+                if (((MenuItem)item).Name == "Write")
+                {
+                    ClassChannel obj = this.GridChannels.SelectedItem as ClassChannel;
+                    if (obj == null) continue;
+                    if (obj.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry
+                        || obj.TypeRegistry == ClassChannel.EnumTypeRegistry.CoilOutput)
+                        ((MenuItem)item).IsEnabled = FlagEnabled;
+                    else ((MenuItem)item).IsEnabled = false;
+                }
+            }
+        }
         //Отключение возможности конвертации карты из TikModScan при наличии сущ. карты у устройства.
         this.convertFromTMS.IsEnabled = _Device?.Channels.Count == 0;
     }
@@ -278,35 +279,40 @@ public partial class UserControlChannels : UserControl
     private void MenuItemDI_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.DI;
-        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
+        Channels=new ObservableCollection<ClassChannel>(FilterItems());
+        GridChannels.ItemsSource = Channels;
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAI_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AI;
-        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
+        Channels=new ObservableCollection<ClassChannel>(FilterItems());
+        GridChannels.ItemsSource = Channels;
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemDO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.DO;
-        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
+        Channels=new ObservableCollection<ClassChannel>(FilterItems());
+        GridChannels.ItemsSource = Channels;
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAO_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.AO;
-        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
+        Channels=new ObservableCollection<ClassChannel>(FilterItems());
+        GridChannels.ItemsSource = Channels;
         GridChannels.Height = _actualHeightUserControl;
     }
 
     private void MenuItemAll_Click(object sender, RoutedEventArgs e)
     {
         Filter = eFilter.All;
-        GridChannels.ItemsSource = new ObservableCollection<ClassChannel>(FilterItems());
+        Channels=new ObservableCollection<ClassChannel>(FilterItems());
+        GridChannels.ItemsSource = Channels;
         GridChannels.Height = _actualHeightUserControl;
     }
 

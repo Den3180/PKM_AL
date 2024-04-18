@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:PKM_AL"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="PKM_AL.UserControlDevices" Loaded="UserControl_Loaded">
+             x:Class="PKM_AL.UserControlDevices">
 	<Design.DataContext>
 		<vm:ClassDevice/>
 	</Design.DataContext>
@@ -22,8 +22,11 @@
 			  ColumnHeaderHeight="50"
 			  HorizontalGridLinesBrush="Black"
 			  VerticalGridLinesBrush="Black"
-			  LoadingRow="DataGrid_LoadingRow" DoubleTapped="GridDevices_OnDoubleTapped">
+			  LoadingRow="DataGrid_LoadingRow">
 		<DataGrid.Styles>
+			<Style Selector="Label">
+				<Setter Property="HorizontalAlignment" Value="Center"></Setter>
+			</Style>
 			<Style Selector="DataGridColumnHeader">
 				<Setter Property="HorizontalContentAlignment" Value="Center"/>
 				<Setter Property="SeparatorBrush" Value="Black"/>
@@ -31,10 +34,12 @@
 				<Setter Property="BorderBrush" Value="Black"/>
 				<Setter Property="AreSeparatorsVisible" Value="True"/>
 				<Setter Property="Background" Value="Beige"/>
+				<Setter Property="FontWeight" Value="SemiBold"></Setter>
 			</Style>
 		</DataGrid.Styles>
 		<DataGrid.Columns>
-			<DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Tag}" />
+			<DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+			                    AncestorType={x:Type DataGridRow}}, Path=Tag}" />
 			<DataGridTextColumn Header="Устройство" Binding="{Binding Name}"/>
 			<DataGridTextColumn Header="Модель" Binding="{Binding ModelName}" />
 			<DataGridTextColumn Header="Пикет" Binding="{Binding Picket}" />

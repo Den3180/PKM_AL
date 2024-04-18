@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="PKM_AL.Windows.WindowUser"
+        Title="Пользователь" SizeToContent="WidthAndHeight" CanResize="False" WindowStartupLocation="CenterScreen">
+        <Grid Margin="10" RowDefinitions="30,30,30,30,80,*" ColumnDefinitions="120,*">
+                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Пользователь:"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="" HorizontalAlignment="Left" Width="150"
+                         Margin="5" Name="UserName"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Имя входа:"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="" HorizontalAlignment="Left" Width="150" 
+                         Margin="5" Name="Login"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Пароль:"/>
+                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Width="150" Name="Pass"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Подтвердить:"/>
+                <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Width="150" Name="PassConfirm"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Полномочия:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ListBox Grid.Row="4" Grid.Column="1" Margin="5" >
+                        <CheckBox Content="Подтверждение событий" Name="Grant1"/>
+                        <CheckBox Content="Управление устройствами" Name="Grant2"/>
+                        <CheckBox Content="Настройка конфигурации" Name="Grant3"/>
+                </ListBox>
+                <Button Grid.Row="5" Grid.Column="1" Content="Применить" Height="30" Width="100"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+        </Grid>
+</Window>
