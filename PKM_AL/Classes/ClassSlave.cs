@@ -15,14 +15,17 @@ namespace PKM_AL
         private ModbusTcpSlave _Slave;
         public ClassSlave()
         {
+            //Порт прослушки.
             int port = 50502;
-
+            //Объект-слушатель.
             TcpListener listener = new TcpListener(IPAddress.Any, port);
+            //Обертка из ModbusTcpSlave для объекта-слушателя.
             _Slave = ModbusTcpSlave.CreateTcp(1, listener);
+            //Объект хранилища данных.
             _Slave.DataStore = DataStoreFactory.CreateDefaultDataStore();
-            //Обработка входящих.
+            //Обработка входящих комманд.
             _Slave.ModbusSlaveRequestReceived += _Slave_ModbusSlaveRequestReceived;
-            //Прослушивание входящих.
+            //Запуск прослушивания входящих команд.
             try
             {
                 _Slave.Listen();
@@ -33,15 +36,27 @@ namespace PKM_AL
             }
         }
 
+        /// <summary>
+        /// Метод обработки входящих команд.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _Slave_ModbusSlaveRequestReceived(object sender, ModbusSlaveRequestEventArgs e)
         {
             var t = _Slave.Masters;
+            //Адрес запрашиваемого слэйва.
             byte slaveID = e.Message.SlaveAddress;
+            //Код команды.
             byte fCode = e.Message.FunctionCode;
+            //PDU запроса от мастера.
             byte[] data = e.Message.MessageFrame;
+            //Адрес стартового регистра.
             byte[] byteStartAddress = new byte[] { data[3], data[2] };
+            //Количество запрошенных регистров для чтения.
             byte[] byteNum = new byte[] { data[5], data[4] };
+            //Конвертация старового адреса из hex в десятичные.
             short StartAddress = BitConverter.ToInt16(byteStartAddress, 0);
+            //Конвертация количества регистров из hex в десятичные.
             short NumOfPoint = BitConverter.ToInt16(byteNum, 0);
             if (slaveID == 250) //devices 
             {
