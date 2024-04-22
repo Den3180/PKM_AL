@@ -4,10 +4,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="150"
         x:Class="PKM_AL.Windows.WindowLogin"
-        Title="Регистрация" Height="150" SizeToContent="Width" WindowStartupLocation="CenterOwner" CanResize="False">
+        Title="Регистрация" Height="150" SizeToContent="Width" WindowStartupLocation="CenterOwner" CanResize="False"
+        Loaded="Control_OnLoaded">
         <Grid Margin="10" RowDefinitions="30,30,*" ColumnDefinitions="170,*">
                 <Label Grid.Row="0" Grid.Column="0" Content="Имя пользователя:"/>
-                <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="150"
+                <TextBox Grid.Row="0" Grid.Column="1" Text="имя" HorizontalAlignment="Left" Width="150"
                          Margin="5" Name="Login"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="Пароль:"/>
                 <TextBox PasswordChar="*" RevealPassword="False" 

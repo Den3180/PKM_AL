@@ -13,12 +13,10 @@ public partial class WindowLogin : ClassWindowPKM
     public WindowLogin()
     {
         InitializeComponent();
-        Users = MainWindow.DB.UsersLoad();
-        this.Login.Focus();
     }
-
     private void Button_Click(object sender, RoutedEventArgs e)
     {
+        Users = MainWindow.DB.UsersLoad();
         foreach (ClassUser item in Users)
         {
             if (this.Login.Text == item.Login && this.Pass.Text == item.Pass)
@@ -38,5 +36,12 @@ public partial class WindowLogin : ClassWindowPKM
         {
             this.Close();
         }
+    }
+
+    private void Control_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        Login.Focus();
+        this.Login.SelectAll();
+        
     }
 }
