@@ -221,7 +221,7 @@ public class ClassGSM
                         MainWindow.Slave.SetValue(Number, uValue);
                     }
                 }
-            return;
+                return;
             }
 
             //Перехват ошибки модема.

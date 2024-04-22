@@ -270,7 +270,7 @@ namespace PKM_AL
         }
         
         /// <summary>
-        /// Адрес шлюза.
+        /// Шлюз.
         /// </summary>
         [XmlIgnore]
         public int? Ext

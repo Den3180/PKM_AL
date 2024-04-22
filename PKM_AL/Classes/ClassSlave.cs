@@ -58,9 +58,12 @@ namespace PKM_AL
             short StartAddress = BitConverter.ToInt16(byteStartAddress, 0);
             //Конвертация количества регистров из hex в десятичные.
             short NumOfPoint = BitConverter.ToInt16(byteNum, 0);
-            if (slaveID == 250) //devices 
+            //Обработка запроса о состоянии устройства(подключено/не подключено),
+            //количество отправленных/полученых пакетов.
+            if (slaveID == 250)  
             {
-                short devAddress = (short)(NumOfPoint - 3);
+                // short devAddress = (short)(NumOfPoint - 3);
+                short devAddress = (short)(StartAddress);
                 ClassDevice device = MainWindow.Devices.FirstOrDefault(x => x.Address == devAddress);
                 if (device == null) return;
                 _Slave.DataStore.HoldingRegisters[StartAddress + 1] = (ushort)device.LinkState;
@@ -71,13 +74,15 @@ namespace PKM_AL
                 _Slave.DataStore.InputRegisters[StartAddress + 2] = (ushort)device.PacketTxCount;
                 _Slave.DataStore.InputRegisters[StartAddress + 3] = (ushort)device.PacketRxCount;
             }
-            else if (slaveID == 1 && MainWindow.settings.ModbusSlave) //addresses 1 и шлюз
+            // Если пришел запрос на первый адрес и выбран шлюз в модбас.
+            else if (slaveID == 1 && MainWindow.settings.ModbusSlave)
             {
-                //slaveID = (byte)(StartAddress / 100);
-                //StartAddress = (short)(StartAddress % 100);
+                slaveID = (byte)(StartAddress / 100);
+                StartAddress = (short)(StartAddress % 100);
                 RequestData(slaveID, StartAddress, NumOfPoint);
             }
-            else //channels
+            //Если запросы идут просто с переносного АРМ(ноута), например
+            else
             {
                 RequestData(slaveID, StartAddress, NumOfPoint);
             }
@@ -87,14 +92,12 @@ namespace PKM_AL
         {
             ClassDevice device = MainWindow.Devices.FirstOrDefault(x => x.Address == slaveID);
             if (device == null) return;
-            ClassChannel.EnumTypeRegistry enumType = ClassChannel.EnumTypeRegistry.HoldingRegistry;
-            int countIndex = 0;
             for (int i = 0; i < NumOfPoint; i++)
             {
+                int countIndex = 0;
                 int RegistryAddress = StartAddress + i;
                 ClassChannel channel = device.Channels.FirstOrDefault(x => x.Address == RegistryAddress);
                 if (channel == null) continue;
-                enumType = channel.TypeRegistry;
                 ushort uValue = 0;
                 if (channel.Value < 0)
                 {
@@ -102,29 +105,20 @@ namespace PKM_AL
                     uValue = BitConverter.ToUInt16(BitConverter.GetBytes(Value), 0);
                 }
                 else uValue = Convert.ToUInt16(channel.Value);
-                if (channel.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry)
+                switch (channel.TypeRegistry)
                 {
-                    countIndex = StartAddress + i + 1;
-                    _Slave.DataStore.HoldingRegisters[countIndex] = uValue;
+                    case ClassChannel.EnumTypeRegistry.HoldingRegistry:
+                        countIndex = StartAddress + i + 1;
+                        _Slave.DataStore.HoldingRegisters[countIndex] = uValue;
+                        break;
+                    case ClassChannel.EnumTypeRegistry.InputRegistry:
+                        countIndex = StartAddress + i + 1;
+                        _Slave.DataStore.InputRegisters[countIndex] = uValue;
+                        break;
                 }
-
-                else if (channel.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry)
-                {
-                    countIndex = StartAddress + i + 1;
-                    _Slave.DataStore.InputRegisters[countIndex] = uValue;
-                }
-                if (enumType == ClassChannel.EnumTypeRegistry.HoldingRegistry)
-                {
-                    _Slave.DataStore.HoldingRegisters[countIndex + 1] = (ushort)device.LinkState;
-                }
-                else if (enumType == ClassChannel.EnumTypeRegistry.InputRegistry)
-                {
-                    _Slave.DataStore.InputRegisters[countIndex + 1] = (ushort)device.LinkState;
-
-                }
-
             }
         }
+        
         /// <summary>
         /// Заполнение хранилища AI.
         /// </summary>
