@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Avalonia.Threading;
 using MsBox.Avalonia.Enums;
 
 namespace PKM_AL.Classes;
@@ -44,6 +45,7 @@ public class ClassDeviceArchive
                  if (countList >= countNoteMax) break;
                  //ClassChannel ch = lstDevCh[countList];
                  ClassChannel ch = lstDevCh.FirstOrDefault(c=>c.Address==countList);
+                 if(ch==null) continue;
                  ev.Param = ch.Name;
                  ev.Val = note[i].ToString();
                  ev.DT = date;
@@ -51,14 +53,17 @@ public class ClassDeviceArchive
                  countList++;
              }
          }
-         SaveArchiveToFile(archive);
      }
-     catch
+     catch(Exception ex)
      {
-
+         Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage
+         (MainWindow.currentMainWindow, ex.Message, "Сохранение архива",
+             icon: Icon.Error));
      }
-     ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Архив сохранен в БД!", "Сохранение архива",
-         icon: Icon.Success);
+     SaveArchiveToFile(archive);
+     Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage
+     (MainWindow.currentMainWindow, "Архив сохранен в БД!", "Сохранение архива",
+         icon: Icon.Success));
  }
 
  /// <summary>
@@ -82,8 +87,11 @@ public class ClassDeviceArchive
      }
      catch (Exception ex)
      {
-         ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Ошибка!Архив не сохранен в файл!", "Сохранение архива",
-             icon: Icon.Error);
+         Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Ошибка!Архив не сохранен в файл!", "Сохранение архива",
+             icon: Icon.Error));
      }
+     Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Архив сохранен в файл!",
+         "Сохранение архива",
+         icon: Icon.Success));
  }
 }
