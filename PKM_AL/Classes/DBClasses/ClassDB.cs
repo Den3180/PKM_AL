@@ -1514,60 +1514,60 @@ namespace PKM
         }
             #endregion
 
-        //public void SaveArchiveToDB(List<int[]> archive,object nmDev)
-        //{
+        public void SaveArchiveToDB(List<int[]> archive,object nmDev)
+        {
 
-        //    string devName = (nmDev as ClassDevice).Name;
-        //    List<ClassChannel> lstDevCh = MainWindow.Devices.FirstOrDefault(x => x.Name == devName).Channels.
-        //            Where(x => x.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry).ToList();
-        //    try
-        //    {
-        //        foreach (var note in archive)
-        //        {
-        //            int centuryNow = (DateTime.Now.Year / 100)*100;
-        //            DateTime date = new DateTime(centuryNow+note[58], note[59], note[60], note[61], note[62], note[63]);
-        //            string dateTime = date.ToString("yyyy-MM-dd HH:mm:ss");
-        //            int countNoteMax = note[15];
-        //            //Временно всегда бкм5.
-        //            ClassEvent ev = new ClassEvent() { Type=ClassEvent.EnumType.Measure, NameDevice=devName};
-        //            int countList=0;
-        //            for(int i=39;i<note.Length;i++)
-        //            {
-        //                if (countList >= countNoteMax) break;                   
-        //                    ClassChannel ch = lstDevCh[countList];
-        //                    ev.Param = ch.Name;
-        //                    ev.Val = note[i].ToString();
-        //                    ev.DT = date;
-        //                    EventAddArchive(ev);
-        //                    countList++;                    
-        //            }
-        //        }
-        //    }
-        //    catch
-        //    {
+            string devName = (nmDev as ClassDevice).Name;
+            List<ClassChannel> lstDevCh = MainWindow.Devices.FirstOrDefault(x => x.Name == devName).Channels.
+                    Where(x => x.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry).ToList();
+            try
+            {
+                foreach (var note in archive)
+                {
+                    int centuryNow = (DateTime.Now.Year / 100)*100;
+                    DateTime date = new DateTime(centuryNow+note[58], note[59], note[60], note[61], note[62], note[63]);
+                    string dateTime = date.ToString("yyyy-MM-dd HH:mm:ss");
+                    int countNoteMax = note[15];
+                    //Временно всегда бкм5.
+                    ClassEvent ev = new ClassEvent() { Type=ClassEvent.EnumType.Measure, NameDevice=devName};
+                    int countList=0;
+                    for(int i=39;i<note.Length;i++)
+                    {
+                        if (countList >= countNoteMax) break;                   
+                            ClassChannel ch = lstDevCh[countList];
+                            ev.Param = ch.Name;
+                            ev.Val = note[i].ToString();
+                            ev.DT = date;
+                            EventAddArchive(ev);
+                            countList++;                    
+                    }
+                }
+            }
+            catch
+            {
 
-        //    }        
+            }        
 
-        //}
+        }
 
-        //public virtual bool EventAddArchive(ClassEvent obj)
-        //{
-        //    SqliteCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "INSERT INTO log (type, dt, param, val,namdev)"
-        //        + " VALUES(@Type, @Datetime, @Param, @Val,@NameDevice)";
-        //    cmd.Parameters.AddWithValue("@Type", (int)obj.Type);
-        //    cmd.Parameters.AddWithValue("@Param", obj.Param);
-        //    cmd.Parameters.AddWithValue("@Datetime", obj.DT);
-        //    cmd.Parameters.AddWithValue("@Val", obj.Val);
-        //    obj.NameDevice ??= string.Empty;
-        //    cmd.Parameters.AddWithValue("@NameDevice", obj.NameDevice);
-        //    try { cmd.ExecuteNonQuery(); }
-        //    catch { return false; }
-        //    //Извлекаем номер(rowID) последнего события.
-        //    cmd.CommandText = "SELECT last_insert_rowid()";
-        //    //Присваиваем ID объекта события ID последней вставленой строки в таблицу событий.  
-        //    obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
-        //    return true;
-        //}
+        public virtual bool EventAddArchive(ClassEvent obj)
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "INSERT INTO log (type, dt, param, val,namdev)"
+                + " VALUES(@Type, @Datetime, @Param, @Val,@NameDevice)";
+            cmd.Parameters.AddWithValue("@Type", (int)obj.Type);
+            cmd.Parameters.AddWithValue("@Param", obj.Param);
+            cmd.Parameters.AddWithValue("@Datetime", obj.DT);
+            cmd.Parameters.AddWithValue("@Val", obj.Val);
+            obj.NameDevice ??= string.Empty;
+            cmd.Parameters.AddWithValue("@NameDevice", obj.NameDevice);
+            try { cmd.ExecuteNonQuery(); }
+            catch { return false; }
+            //Извлекаем номер(rowID) последнего события.
+            cmd.CommandText = "SELECT last_insert_rowid()";
+            //Присваиваем ID объекта события ID последней вставленой строки в таблицу событий.  
+            obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+            return true;
+        }
     }
 }

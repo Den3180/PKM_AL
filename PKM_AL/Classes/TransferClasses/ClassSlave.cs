@@ -104,7 +104,8 @@ namespace PKM_AL
                     short Value = Convert.ToInt16(channel.Value);
                     uValue = BitConverter.ToUInt16(BitConverter.GetBytes(Value), 0);
                 }
-                else uValue = Convert.ToUInt16(channel.Value);
+                else 
+                    uValue = Convert.ToUInt16(channel.Value);
                 switch (channel.TypeRegistry)
                 {
                     case ClassChannel.EnumTypeRegistry.HoldingRegistry:

@@ -49,6 +49,7 @@ namespace PKM_AL
         public static ClassModbus modbus;
         public static CancellationTokenSource cts;//Токен отмены.
         public static ClassUser User;
+        public static ServerClass serverClass;
 
         public static ObservableCollection<ClassGroup> Groups;
         public static ObservableCollection<ClassDevice> Devices;
@@ -206,6 +207,11 @@ namespace PKM_AL
             Commands = new ObservableCollection<ClassCommand>(DB.CommandsLoad());
             QueueCommands = new Queue<ClassCommand>();
             Links = new ObservableCollection<ClassLink>(DB.LinksLoad());
+            serverClass = new ServerClass();
+            
+            //Отображение IP сервера и порта приема сообщений от ММСД.
+            StatusIP.Text = serverClass.GetIPHost();
+            StatusPortServer.Text ="Порт:" + serverClass.GetPortServer();
 
             //Заполнение списка каналов для каждого устройства.
             foreach (var item in Channels)
