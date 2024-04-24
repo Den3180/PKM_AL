@@ -24,6 +24,10 @@ public class ServerClass
         SetServer();
     }        
 
+    /// <summary>
+    /// Получение порта сервера для передачи архива.
+    /// </summary>
+    /// <returns></returns>
     public int GetPortServer()
     {
         return port;
