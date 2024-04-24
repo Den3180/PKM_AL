@@ -51,7 +51,6 @@ public class ServerClass
         return !string.IsNullOrEmpty(ipText) ? "IP: " + ipText : "не известно";
     }
 
-
     /// <summary>
     /// Настройка и запуск сервера.
     /// </summary>

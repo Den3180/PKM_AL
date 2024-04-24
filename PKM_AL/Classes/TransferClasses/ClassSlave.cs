@@ -88,6 +88,12 @@ namespace PKM_AL
             }
         }
 
+        /// <summary>
+        /// Подготовить и отправить данные в ответ на запрос.
+        /// </summary>
+        /// <param name="slaveID">Адрес устройства</param>
+        /// <param name="StartAddress">Начальный адрес регистра</param>
+        /// <param name="NumOfPoint">Количество запрашиваемых регистров</param>
         private void RequestData(byte slaveID, short StartAddress, short NumOfPoint)
         {
             ClassDevice device = MainWindow.Devices.FirstOrDefault(x => x.Address == slaveID);

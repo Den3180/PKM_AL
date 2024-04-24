@@ -5,7 +5,8 @@
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
-		<FluentTheme />
+		<FluentTheme DensityStyle="Compact" />
 		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+		<StyleInclude Source="/Styles/StylesBase.axaml" />
 	</Application.Styles>
 </Application>

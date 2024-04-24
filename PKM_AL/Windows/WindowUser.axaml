@@ -2,10 +2,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
         x:Class="PKM_AL.Windows.WindowUser"
-        Title="Пользователь" SizeToContent="WidthAndHeight" CanResize="False" WindowStartupLocation="CenterScreen">
-        <Grid Margin="10" RowDefinitions="30,30,30,30,80,*" ColumnDefinitions="120,*">
+        Title="Пользователь" SizeToContent="WidthAndHeight" CanResize="False" WindowStartupLocation="CenterScreen"
+        Loaded="Control_OnLoaded">
+    <Window.Styles>
+        <!-- <StyleInclude Source="/Styles/StylesButtons.axaml" /> -->
+    </Window.Styles>
+    <Border Margin="5" BorderBrush="Gray" BorderThickness="1" ZIndex="0">
+        <Grid Margin="10" RowDefinitions="30,30,30,30,*,Auto" ColumnDefinitions="120,*">
                 <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Пользователь:"/>
                 <TextBox Grid.Row="0" Grid.Column="1" Text="" HorizontalAlignment="Left" Width="150"
                          Margin="5" Name="UserName"/>
@@ -13,16 +18,20 @@
                 <TextBox Grid.Row="1" Grid.Column="1" Text="" HorizontalAlignment="Left" Width="150" 
                          Margin="5" Name="Login"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Пароль:"/>
-                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Width="150" Name="Pass"/>
+                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Width="150" 
+                         Name="Pass" PasswordChar="*" RevealPassword="True"/>
                 <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Подтвердить:"/>
-                <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Width="150" Name="PassConfirm"/>
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Полномочия:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <ListBox Grid.Row="4" Grid.Column="1" Margin="5" >
+                <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Width="150" 
+                         Name="PassConfirm" PasswordChar="*" RevealPassword="True"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Полномочия:" HorizontalAlignment="Left" 
+                           VerticalAlignment="Center"/>
+                <ListBox Grid.Row="4" Grid.Column="1" Margin="5" MinHeight="150" Background="Transparent">
                         <CheckBox Content="Подтверждение событий" Name="Grant1"/>
                         <CheckBox Content="Управление устройствами" Name="Grant2"/>
                         <CheckBox Content="Настройка конфигурации" Name="Grant3"/>
                 </ListBox>
                 <Button Grid.Row="5" Grid.Column="1" Content="Применить" Height="30" Width="100"
-                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom" IsDefault="True" Click="Button_Click"/>
         </Grid>
+    </Border>
 </Window>

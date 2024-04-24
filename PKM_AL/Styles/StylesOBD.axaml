@@ -27,9 +27,6 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="MaxHeight" Value="25"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <!-- <EventSetter Event="LostFocus" Handler="TextBox_LostFocus"/> -->
-        <!-- <EventSetter Event="GotFocus" Handler="TextBox_GotFocus"/> -->
-        <!-- <EventSetter Event="TextChanged" Handler="TextBox_TextChanged"/> -->
     </Style>
     <Style Selector="CalendarDatePicker">
         <Setter Property="FontSize" Value="14"/>

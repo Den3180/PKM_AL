@@ -40,7 +40,9 @@ public partial class WindowLogin : ClassWindowPKM
 
     private void Control_OnLoaded(object sender, RoutedEventArgs e)
     {
+        //Фокус на поле с логином.
         Login.Focus();
+        //Выбрать все в поле с логином.
         this.Login.SelectAll();
         
     }

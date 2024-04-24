@@ -23,6 +23,11 @@ public partial class UserControlUsers : UserControl
         e.Row.Tag = (e.Row.GetIndex() + 1).ToString();
     }
 
+    /// <summary>
+    /// Добавить нового пользователя.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
     {
         ClassUser obj = new ClassUser();
@@ -32,6 +37,11 @@ public partial class UserControlUsers : UserControl
             _Users.Add(obj);  
     }
 
+    /// <summary>
+    /// Редактировать данные пользователя.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
     {
         ClassUser obj = this.GridUsers.SelectedItem as ClassUser;
@@ -39,6 +49,11 @@ public partial class UserControlUsers : UserControl
         frm.WindowShow(MainWindow.currentMainWindow);
     }
 
+    /// <summary>
+    /// Удалить пользователя.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
     {
         ClassUser obj = this.GridUsers.SelectedItem as ClassUser;

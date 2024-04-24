@@ -69,7 +69,10 @@
         <entry key="PKM_AL/Controls/UserControlReport.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Controls/UserControlUsers.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/MainWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Styles/StyleTextblocks.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Styles/StylesButtons.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Styles/StylesOBD.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Windows/TestWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/Window1.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowChannel.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowColomns.axaml" value="PKM_AL/PKM_AL.csproj" />

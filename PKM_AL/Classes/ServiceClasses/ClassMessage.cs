@@ -11,6 +11,8 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MsBox.Avalonia.Dto;
+using MsBox.Avalonia.Models;
 
 namespace PKM_AL
 {
@@ -61,22 +63,56 @@ namespace PKM_AL
         }
 
 
-        public static Task<ButtonResult> ShowMessage(Window owner, string text = "", string title = "", ButtonEnum buttonEnum = ButtonEnum.Ok,
-                                       Icon icon = Icon.Info, WindowStartupLocation location = WindowStartupLocation.CenterScreen )
+        public static Task<ButtonResult> ShowMessage (Window owner, string text = "", string title = "", 
+            ButtonEnum buttonEnum = ButtonEnum.Ok, Icon icon = Icon.Info, WindowStartupLocation location = WindowStartupLocation.CenterScreen )
         {
             Task<ButtonResult> res;
             using (var source = new CancellationTokenSource())
             {
-                IMsBox <ButtonResult> messageWindow = MessageBoxManager.GetMessageBoxStandard(new MsBox.Avalonia.Dto.MessageBoxStandardParams
+                IMsBox <ButtonResult> messageWindow = MessageBoxManager.GetMessageBoxStandard(new MessageBoxStandardParams
                 {
                     ContentTitle = title,
                     ContentMessage = text,
                     WindowStartupLocation=location,
                     ButtonDefinitions=buttonEnum,
                     Icon=icon,
-                    SystemDecorations = SystemDecorations.None                    
+                    SystemDecorations = SystemDecorations.Full
                 }) ;
                 res=messageWindow.ShowWindowDialogAsync(owner);
+                res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+            }
+            return res;
+        }
+        
+        public static Task<string> ShowMessageCustom (Window owner, string text = "", string title = "", 
+            ButtonEnum buttonEnum = ButtonEnum.Ok, Icon icon = Icon.Info, WindowStartupLocation location = WindowStartupLocation.CenterScreen )
+        {
+            Task<string> res;
+            using (var source = new CancellationTokenSource())
+            {
+                var messageWindow = MessageBoxManager.GetMessageBoxCustom(new MessageBoxCustomParams()
+                {
+                    ButtonDefinitions = new List<ButtonDefinition>
+                    {
+                        new ButtonDefinition { Name = "Да", },
+                        new ButtonDefinition { Name = "Нет", },
+                        new ButtonDefinition { Name = "Отмена", }
+                    },
+                    ContentTitle = "title",
+                    ContentMessage = "Informative note:" +
+                                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut pulvinar est, eget porttitor magna. Maecenas nunc elit, pretium nec mauris vel, cursus faucibus leo. Mauris consequat magna vel mi malesuada semper. Donec nunc justo, rhoncus vel viverra a, ultrices vel nibh. Praesent ut libero a nunc placerat vulputate. Morbi ullamcorper pharetra lectus, ut lobortis ex consequat sit amet. Vestibulum pellentesque quam at justo hendrerit, et tincidunt nisl mattis. Curabitur eu nibh enim.\n",
+                    Icon = MsBox.Avalonia.Enums.Icon.Question,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    CanResize = false,
+                    MaxWidth = 500,
+                    MaxHeight = 800,
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    ShowInCenter = true,
+                    Topmost = false
+                }) ;
+                res = messageWindow.ShowWindowDialogAsync(owner);
+                
                 res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);
             }

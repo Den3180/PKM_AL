@@ -562,6 +562,8 @@ namespace PKM_AL
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, WindowClosingEventArgs e)
         {
+            // var str= ClassMessage.ShowMessageCustom(this, "Закрыть программу", "", ButtonEnum.YesNo,
+            //     icon: MsBox.Avalonia.Enums.Icon.Question);
             Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу", "", ButtonEnum.YesNo,
                                                                        icon: MsBox.Avalonia.Enums.Icon.Question);
             if (buttonResult.Result == ButtonResult.No)

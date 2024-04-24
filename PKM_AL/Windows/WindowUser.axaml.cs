@@ -1,10 +1,14 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using MsBox.Avalonia.Enums;
 using PKM_AL.Classes;
+using Brushes = Avalonia.Media.Brushes;
 
 namespace PKM_AL.Windows;
 
@@ -44,6 +48,7 @@ public partial class WindowUser : ClassWindowPKM
                 }
             }
         }
+        
         User.Name = UserName.Text;
         User.Login =Login.Text;
         User.Pass = Pass.Text;
@@ -63,5 +68,10 @@ public partial class WindowUser : ClassWindowPKM
             Tag = false;
         }
         this.Close();
+    }
+
+    private void Control_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UserName.Focus();
     }
 }
