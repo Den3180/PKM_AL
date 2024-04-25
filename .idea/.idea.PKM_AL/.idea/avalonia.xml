@@ -74,6 +74,7 @@
         <entry key="PKM_AL/Styles/StylesOBD.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/TestWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/Window1.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Windows/WindowAbout.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowChannel.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowColomns.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/WindowColumns.axaml" value="PKM_AL/PKM_AL.csproj" />

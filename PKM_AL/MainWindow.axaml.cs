@@ -571,8 +571,17 @@ namespace PKM_AL
                 e.Cancel = true;
                 return;
             }
-            DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Finish });
-            DB.Backup(new FileInfo("pkm.exe").DirectoryName);
+
+            var processModule = Process.GetCurrentProcess().MainModule;
+            ClassMessage.ShowMessage(this,processModule.ModuleName );
+            if (processModule != null)
+            {
+                var pathMainFile = processModule.FileName;
+                ClassMessage.ShowMessage(this,pathMainFile );
+                DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Finish });
+                if (pathMainFile != null) DB.Backup(new FileInfo(pathMainFile).DirectoryName);
+            }
+
             DB.Close();
             ClassLog.Write("Завершение приложения");
             Environment.Exit(0);
@@ -658,6 +667,8 @@ namespace PKM_AL
             }
             break;
             case "О программе...":
+                WindowAbout windowAbout = new WindowAbout();
+                windowAbout.WindowShow(currentMainWindow);
             break;
             default:
             break;

@@ -16,6 +16,7 @@ using SQLitePCL;
 using Npgsql;
 using Org.BouncyCastle.Bcpg;
 using System.Data;
+using Avalonia.Threading;
 using MsBox.Avalonia.Enums;
 using PKM_AL;
 using PKM_AL.Classes;
@@ -1476,10 +1477,14 @@ namespace PKM
         /// <param name="appDataDirectory"></param>
         public void Backup(string appDataDirectory) 
         {
-            var now = DateTime.UtcNow;
+            Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow,appDataDirectory ));
+            var now = DateTime.Now;
             var backupDir = Path.Combine(appDataDirectory, "Backup");
             if (!Directory.Exists(backupDir))
+            {
+                Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow,backupDir ));
                 Directory.CreateDirectory(backupDir);
+            }
             var numbFiles = Directory.GetFiles(backupDir);            
             if (numbFiles.Length > 0)
             {
@@ -1495,10 +1500,18 @@ namespace PKM
             var backupFile = (now.ToString("yyyy-MM-dd_hh-mm-ss"))+".back";
             backupFile = Path.Combine(backupDir, backupFile);
             string backupConnectionString = $"data source={backupFile}";
-            using (var backupConnection = new SqliteConnection(backupConnectionString))
+            try
             {
-                backupConnection.Open();
-                conn.BackupDatabase(backupConnection);
+
+                using (var backupConnection = new SqliteConnection(backupConnectionString))
+                {
+                    backupConnection.Open();
+                    conn.BackupDatabase(backupConnection);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow,ex.Message ));
             }
         }
         /// <summary>
