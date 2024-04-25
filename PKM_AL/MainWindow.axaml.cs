@@ -571,16 +571,9 @@ namespace PKM_AL
                 e.Cancel = true;
                 return;
             }
-
-            var processModule = Process.GetCurrentProcess().MainModule;
-            ClassMessage.ShowMessage(this,processModule.ModuleName );
-            if (processModule != null)
-            {
-                var pathMainFile = processModule.FileName;
-                ClassMessage.ShowMessage(this,pathMainFile );
-                DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Finish });
-                if (pathMainFile != null) DB.Backup(new FileInfo(pathMainFile).DirectoryName);
-            }
+            DB.EventAdd(new ClassEvent() { Type = ClassEvent.EnumType.Finish });
+            DB.Backup(new FileInfo("pkm.xml").DirectoryName);
+           
 
             DB.Close();
             ClassLog.Write("Завершение приложения");

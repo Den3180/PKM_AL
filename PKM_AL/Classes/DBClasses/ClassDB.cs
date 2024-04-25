@@ -1477,13 +1477,11 @@ namespace PKM
         /// <param name="appDataDirectory"></param>
         public void Backup(string appDataDirectory) 
         {
-            Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow,appDataDirectory ));
             var now = DateTime.Now;
             var backupDir = Path.Combine(appDataDirectory, "Backup");
             if (!Directory.Exists(backupDir))
             {
-                Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow,backupDir ));
-                Directory.CreateDirectory(backupDir);
+                var ddd= Directory.CreateDirectory(backupDir);
             }
             var numbFiles = Directory.GetFiles(backupDir);            
             if (numbFiles.Length > 0)
@@ -1500,20 +1498,14 @@ namespace PKM
             var backupFile = (now.ToString("yyyy-MM-dd_hh-mm-ss"))+".back";
             backupFile = Path.Combine(backupDir, backupFile);
             string backupConnectionString = $"data source={backupFile}";
-            try
-            {
 
                 using (var backupConnection = new SqliteConnection(backupConnectionString))
                 {
                     backupConnection.Open();
                     conn.BackupDatabase(backupConnection);
                 }
-            }
-            catch (Exception ex)
-            {
-                Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow,ex.Message ));
-            }
         }
+        
         /// <summary>
         /// Проверка сохранялась ли сегодня база данных.
         /// </summary>
