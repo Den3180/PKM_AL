@@ -1367,7 +1367,7 @@ namespace PKM
                     return false; 
                 }                
             }
-            ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Отчет сохранен!",buttonEnum:ButtonEnum.Ok,
+            ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Отчет сохранен!",buttonEnum:ButtonEnum.Ok,
                 icon: MsBox.Avalonia.Enums.Icon.Success);
             return true;
         }

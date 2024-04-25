@@ -36,7 +36,7 @@ public partial class UserControlChannels : UserControl
     public UserControlChannels()
     {
         InitializeComponent();
-        GridChannels.ItemsSource=MainWindow.Channels;
+        // GridChannels.ItemsSource=MainWindow.Channels;
     }
     
     public UserControlChannels(ClassDevice newDevice)
@@ -182,17 +182,20 @@ public partial class UserControlChannels : UserControl
 /// <param name="e"></param>
     private void MenuItemDeleteAll_Click(object sender, RoutedEventArgs e)
     {
-        if (_Device.Channels.Count == 0) return;
-        foreach (ClassChannel ch in _Device.Channels)
+        if (_Device.Channels.Count == 0) return; 
+        
+        for (int i=0; i< MainWindow.Channels.Count;i++)
         {
-            ClassChannel channel = Channels.FirstOrDefault(c => c.Address == ch.Address && c.Name == ch.Name
-                && c.Device.ID == ch.Device.ID);
-            MainWindow.Channels.Remove(channel);
+            if (MainWindow.Channels[i].Device.ID == _Device.ID)
+            {
+                MainWindow.Channels.Remove(MainWindow.Channels[i]);
+                i--;
+            }
         }
         Task.Run(() => MainWindow.DB.RegistryDelDev(_Device.ID));
         Channels.Clear();
         _Device.Channels.Clear();
-       GridChannels.Height = _actualHeightUserControl;
+        GridChannels.Height = _actualHeightUserControl;
     }
 
     /// <summary>
@@ -343,9 +346,9 @@ public partial class UserControlChannels : UserControl
         ClassChannel ob = this.GridChannels.SelectedItems[0] as ClassChannel;
         if(ob==null) return;
         string mes = GridChannels.SelectedItems.Count > 1 ? $"Удалить каналы?" : $"Удалить канал '{ob.Name}'?";
-        var res= ClassMessage.ShowMessage(MainWindow.currentMainWindow,mes,buttonEnum:ButtonEnum.OkCancel,
+        var res= ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow,mes,buttonEnum:ButtonEnum.OkCancel,
             icon:MsBox.Avalonia.Enums.Icon.Question);
-        if (res.Result == ButtonResult.Cancel) return;
+        if (res.Result == "Отмена") return;
         int countItems = GridChannels.SelectedItems.Count;
         while ( countItems > 0)
         {

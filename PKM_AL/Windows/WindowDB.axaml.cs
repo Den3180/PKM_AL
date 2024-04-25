@@ -43,7 +43,7 @@ public partial class WindowDB : ClassWindowPKM
         settings.Login = this.TxtLogin.Text;
         settings.Password = this.Pass.Text;
         settings.Save();
-        ClassMessage.ShowMessage(this, "Подключение к базе данных будет выполнено после перезапуска программы.",
+        ClassMessage.ShowMessageCustom(this, "Подключение к базе данных будет выполнено после перезапуска программы.",
                                 "", 
                                 ButtonEnum.Ok,icon: MsBox.Avalonia.Enums.Icon.Info);
         this.Close();

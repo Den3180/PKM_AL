@@ -106,7 +106,7 @@ public partial class UserControlAddReport : UserControl
         }
         if (!string.IsNullOrEmpty(cellText.Text) && !Regex.IsMatch(cellText.Text,pattern))
         {
-            ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Неверный ввод!",buttonEnum:ButtonEnum.Ok,
+            ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Неверный ввод!",buttonEnum:ButtonEnum.Ok,
                 icon: MsBox.Avalonia.Enums.Icon.Error);
             cellText.Text = "";
         }

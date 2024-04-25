@@ -104,7 +104,7 @@ public partial class WindowRepOBD : Window
     {
         if (!CheckFillingFields())
         {
-                ClassMessage.ShowMessage(MainWindow.currentMainWindow,"Отчет не отправлен!\nЗаполните все обязательные поля!", 
+                ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow,"Отчет не отправлен!\nЗаполните все обязательные поля!", 
                     buttonEnum:ButtonEnum.Ok, icon:MsBox.Avalonia.Enums.Icon.Error);
                 return;
         }

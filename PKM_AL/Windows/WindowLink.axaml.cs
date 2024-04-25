@@ -35,7 +35,7 @@ public partial class WindowLink : ClassWindowPKM
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         var button = sender as Button;
-        if (button?.IsCancel == true)
+        if (button?.IsCancel == true || MainWindow.Commands.Count==0)
         {
             Close();
             return;

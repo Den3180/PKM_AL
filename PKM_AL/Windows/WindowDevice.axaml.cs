@@ -150,12 +150,12 @@ public partial class WindowDevice : ClassWindowPKM
         ClassDevice device = MainWindow.Devices.FirstOrDefault(x => (x.Address == Convert.ToInt32(this.Address.Text) && x.ProtocolName == _Device.ProtocolName));
         if (string.IsNullOrEmpty(_Device.Name))
         {
-            ClassMessage.ShowMessage(text: "Введите имя устройства!", owner: MainWindow.currentMainWindow,icon: MsBox.Avalonia.Enums.Icon.Error);
+            ClassMessage.ShowMessageCustom(text: "Введите имя устройства!", owner: MainWindow.currentMainWindow,icon: MsBox.Avalonia.Enums.Icon.Error);
             return false;
         }
         if (device != null && _Device.ID != device.ID && _Device.Address != Convert.ToInt32(Address.Text))
         {
-            ClassMessage.ShowMessage(text: "Адреса устройств протокола ModbusRTU не должны совпадать!", owner: MainWindow.currentMainWindow, icon: MsBox.Avalonia.Enums.Icon.Error);
+            ClassMessage.ShowMessageCustom(text: "Адреса устройств протокола ModbusRTU не должны совпадать!", owner: MainWindow.currentMainWindow, icon: MsBox.Avalonia.Enums.Icon.Error);
             return false;
         }
         return true;

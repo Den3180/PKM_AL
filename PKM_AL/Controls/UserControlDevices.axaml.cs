@@ -92,7 +92,7 @@ public partial class UserControlDevices : UserControl
             s += Environment.NewLine + "Год выпуска: " + device.FactoryYear.ToString();
             s += Environment.NewLine + "Заводской номер: " + device.FactoryNumber.ToString();
         }
-        ClassMessage.ShowMessage(MainWindow.currentMainWindow, s, "Состояние");
+        ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, s, "Состояние");
     }
 
     /// <summary>
@@ -137,9 +137,9 @@ public partial class UserControlDevices : UserControl
     {
         ClassDevice obj = this.GridDevices.SelectedItem as ClassDevice;
         if (obj == null) return;
-        Task<ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить устройство {obj.Name}?", owner: MainWindow.currentMainWindow,
+        Task<string> res = ClassMessage.ShowMessageCustom(text: $"Удалить устройство {obj.Name}?", owner: MainWindow.currentMainWindow,
                                  buttonEnum: ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
-        if (res.Result == ButtonResult.No) return;
+        if (res.Result == "Нет") return;
         //Удаление регистров из БД.
         Task.Run(() => MainWindow.DB.RegistryDelDev(obj.ID));
         for (int i = MainWindow.Channels.Count - 1; i >= 0; i--)
@@ -171,7 +171,7 @@ public partial class UserControlDevices : UserControl
         var path= ClassDialogWindows.SaveDialog(MainWindow.currentMainWindow);
         if (string.IsNullOrEmpty(path)) return;
         bool ret = obj.SaveProfile(path);
-        ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Сохранение завершено", "Сохранить", 
+        ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Сохранение завершено", "Сохранить", 
             ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Success);
     }
 
@@ -188,7 +188,7 @@ public partial class UserControlDevices : UserControl
         ClassDevice device = ClassDevice.Load(path);           
         if (device == null)
         {
-            ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Недопустимый формат файла", "Загрузить", 
+            ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Недопустимый формат файла", "Загрузить", 
                 ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error);
             return;
         }

@@ -58,11 +58,11 @@ public class ExportToCsv
                }
                catch(Exception ex)
                {
-                   dispatcher.Invoke(()=>ClassMessage.ShowMessage(
+                   dispatcher.Invoke(()=>ClassMessage.ShowMessageCustom(
                        MainWindow.currentMainWindow,"Ошибка! Импорт в Excel не завершен!",icon:Icon.Error));
                    return;
                }
-               dispatcher.Invoke(()=>ClassMessage.ShowMessage(
+               dispatcher.Invoke(()=>ClassMessage.ShowMessageCustom(
                    MainWindow.currentMainWindow,"Экспорт в Excel завершен!", icon:Icon.Success));
            }
 
@@ -107,11 +107,11 @@ public class ExportToCsv
                }
                catch(Exception ex)
                {
-                   dispatcher.Invoke(()=>ClassMessage.ShowMessage(
+                   dispatcher.Invoke(()=>ClassMessage.ShowMessageCustom(
                        MainWindow.currentMainWindow,"Ошибка! Импорт в Excel не завершен!",icon:Icon.Error));
                    return;
                }
-               dispatcher.Invoke(()=>ClassMessage.ShowMessage(
+               dispatcher.Invoke(()=>ClassMessage.ShowMessageCustom(
                    MainWindow.currentMainWindow,"Экспорт в Excel завершен!", icon:Icon.Success));
            }
 }

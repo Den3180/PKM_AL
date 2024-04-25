@@ -40,6 +40,7 @@ public partial class UserControlCommands : UserControl
     private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
     {
         ClassCommand obj = GridCommands.SelectedItem as ClassCommand;
+        if(obj==null) return;
         WindowCommand frm = new WindowCommand(obj);
         frm.WindowShow(MainWindow.currentMainWindow);
     }
@@ -48,9 +49,9 @@ public partial class UserControlCommands : UserControl
     {
         ClassCommand obj = this.GridCommands.SelectedItem as ClassCommand;
         if (obj == null) return;
-        Task<ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить команду\' {obj.Name}\'?", owner: MainWindow.currentMainWindow,
+        Task<string> res = ClassMessage.ShowMessageCustom(text: $"Удалить команду\' {obj.Name}\'?", owner: MainWindow.currentMainWindow,
             buttonEnum: ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
-        if (res.Result == ButtonResult.No) return;
+        if (res.Result == "Нет") return;
         if (MainWindow.DB.CommandDel(obj)) MainWindow.Commands.Remove(obj);
     }
 

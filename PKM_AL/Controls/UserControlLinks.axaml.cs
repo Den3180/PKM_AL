@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
+using Microsoft.CodeAnalysis;
 using MsBox.Avalonia.Enums;
 using PKM_AL.Classes;
 using PKM_AL.Windows;
@@ -41,6 +42,7 @@ public partial class UserControlLinks : UserControl
     private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
     {
         ClassLink obj = this.GridLinks.SelectedItem as ClassLink;
+        if(obj==null) return;
         WindowLink frm = new WindowLink(obj);
         frm.WindowShow(MainWindow.currentMainWindow);
     }
@@ -49,9 +51,9 @@ public partial class UserControlLinks : UserControl
     {
         ClassLink obj = this.GridLinks.SelectedItem as ClassLink;
         if (obj == null) return;
-        Task<ButtonResult> res = ClassMessage.ShowMessage(text: $"Удалить связь?", owner: MainWindow.currentMainWindow,
+        Task<string> res = ClassMessage.ShowMessageCustom(text: $"Удалить связь?", owner: MainWindow.currentMainWindow,
             buttonEnum: ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
-        if (res.Result == ButtonResult.No) return;
+        if (res.Result == "Нет") return;
         if (MainWindow.DB.LinkDel(obj)) MainWindow.Links.Remove(obj);
     }
 

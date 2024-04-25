@@ -27,7 +27,7 @@ public partial class WindowLogin : ClassWindowPKM
         }
         if (User == null)
         {
-            ClassMessage.ShowMessage(this, "Вход не разрешен", "Регистрация",icon:MsBox.Avalonia.Enums.Icon.Error);
+            ClassMessage.ShowMessageCustom(this, "Вход не разрешен", "Регистрация",icon:MsBox.Avalonia.Enums.Icon.Error);
             this.Login.Text = "";
             this.Pass.Text = "";
             this.Login.Focus();

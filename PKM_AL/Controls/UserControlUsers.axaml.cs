@@ -58,10 +58,10 @@ public partial class UserControlUsers : UserControl
     {
         ClassUser obj = this.GridUsers.SelectedItem as ClassUser;
         if (obj == null) return;
-        var res = ClassMessage.ShowMessage
+        var res = ClassMessage.ShowMessageCustom
             (MainWindow.currentMainWindow, "Удалить пользователя '" + obj.Name + "'?", "Удалить", 
             ButtonEnum.YesNo,Icon.Question).Result;
-        if (res == ButtonResult.No) return;
+        if (res == "Нет") return;
         if (MainWindow.DB.UserDel(obj)) _Users.Remove(obj);
     }
 }

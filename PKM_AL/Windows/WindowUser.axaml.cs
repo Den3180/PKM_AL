@@ -42,7 +42,7 @@ public partial class WindowUser : ClassWindowPKM
             {
                 if (string.IsNullOrEmpty(box.Text))
                 {
-                    ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Заполните все поля!", "", 
+                    ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Заполните все поля!", "", 
                         ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Warning);
                     return;
                 }

@@ -132,9 +132,9 @@ namespace PKM_AL
 
             if (!File.Exists(settings.DB))
             {
-                Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "База данных не доступна.\nСоздать базу данных?"
+                Task<string> buttonResult = ClassMessage.ShowMessageCustom(this, "База данных не доступна.\nСоздать базу данных?"
                       , "", ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
-                if (buttonResult.Result == ButtonResult.Yes)
+                if (buttonResult.Result == "Да")
                 {
                     string path = ClassDialogWindows.CreateDbDialog(this);
                     if (!string.IsNullOrEmpty(path))
@@ -145,10 +145,9 @@ namespace PKM_AL
                     }
                     else
                     {
-                        ClassMessage.ShowMessage(this, "База данных не создана.\nПриложение будет закрыто.",
+                        ClassMessage.ShowMessageCustom(this, "База данных не создана.\nПриложение будет закрыто.",
                                                 icon: MsBox.Avalonia.Enums.Icon.Stop);
                         Environment.Exit(0);
-                      
                     }
                 }
                 else
@@ -159,7 +158,7 @@ namespace PKM_AL
             }
             if (!DB.Open(settings))
             {
-                ClassMessage.ShowMessage(this, "База данных не доступна.\nПроверьте конфигурацию!"
+                ClassMessage.ShowMessageCustom(this, "База данных не доступна.\nПроверьте конфигурацию!"
                                          , "", ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
                 WindowDB windowDb = new WindowDB();
                 windowDb.WindowShow(this);
@@ -167,18 +166,18 @@ namespace PKM_AL
             }
             else
             {
-                ClassMessage.ShowMessage(this, "База данных подключена.", "", ButtonEnum.Ok,
+                ClassMessage.ShowMessageCustom(this, "База данных подключена.", "", ButtonEnum.Ok,
                                          icon: MsBox.Avalonia.Enums.Icon.Success);
             }
             int VersionDB = DB.InfoLoad();
             if (VersionDB != ClassDB.Version)
             {
-                var buttonResault = ClassMessage.ShowMessage(this, "Версия базы данных не поддерживается." +
+                var buttonResault = ClassMessage.ShowMessageCustom(this, "Версия базы данных не поддерживается." +
                                                                    "\nВыполнить обновление?", "", ButtonEnum.YesNo, 
                                                                     icon: MsBox.Avalonia.Enums.Icon.Error);
-                if (buttonResault.Result == ButtonResult.No)
+                if (buttonResault.Result == "Нет")
                 {
-                    ClassMessage.ShowMessage(this, "База данных не обновлена.\nПриложение будет закрыто.",
+                    ClassMessage.ShowMessageCustom(this, "База данных не обновлена.\nПриложение будет закрыто.",
                          icon: MsBox.Avalonia.Enums.Icon.Stop);
                     Environment.Exit(0);
                 }
@@ -186,13 +185,13 @@ namespace PKM_AL
                 {
                     if (!DB.Update(VersionDB))
                     {
-                        ClassMessage.ShowMessage(this, "Ошибка обновления базы данных.\nПриложение будет закрыто.", "",
+                        ClassMessage.ShowMessageCustom(this, "Ошибка обновления базы данных.\nПриложение будет закрыто.", "",
                                                  ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
                         Environment.Exit(0);
                     }
                     else
                     {
-                        ClassMessage.ShowMessage(this, "База данных обновлена!", "", ButtonEnum.Ok,
+                        ClassMessage.ShowMessageCustom(this, "База данных обновлена!", "", ButtonEnum.Ok,
                                         icon: MsBox.Avalonia.Enums.Icon.Success);
                     }
                 }
@@ -417,7 +416,7 @@ namespace PKM_AL
             {
                 EventsAlarm.Add(eventLostPort);
             }
-            Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessage(currentMainWindow, settings.PortModbus.ToString() + 
+            Dispatcher.UIThread.Invoke(()=> ClassMessage.ShowMessageCustom(currentMainWindow, settings.PortModbus.ToString() + 
                 " не доступен" + Environment.NewLine + ErrorMessage + Environment.NewLine + 
                 "Проверьте настройки конфигурации","Инициализация",ButtonEnum.Ok,MsBox.Avalonia.Enums.Icon.Error));
         }
@@ -564,9 +563,9 @@ namespace PKM_AL
         {
             // var str= ClassMessage.ShowMessageCustom(this, "Закрыть программу", "", ButtonEnum.YesNo,
             //     icon: MsBox.Avalonia.Enums.Icon.Question);
-            Task<ButtonResult> buttonResult = ClassMessage.ShowMessage(this, "Закрыть программу", "", ButtonEnum.YesNo,
+            Task<string> buttonResult = ClassMessage.ShowMessageCustom(this, "Закрыть программу", "", ButtonEnum.YesNo,
                                                                        icon: MsBox.Avalonia.Enums.Icon.Question);
-            if (buttonResult.Result == ButtonResult.No)
+            if (buttonResult.Result == "Нет")
             {
                 e.Cancel = true;
                 return;

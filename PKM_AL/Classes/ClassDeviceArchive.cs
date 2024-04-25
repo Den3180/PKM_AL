@@ -56,12 +56,12 @@ public class ClassDeviceArchive
      }
      catch(Exception ex)
      {
-         Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage
+         Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessageCustom
          (MainWindow.currentMainWindow, ex.Message, "Сохранение архива",
              icon: Icon.Error));
      }
      SaveArchiveToFile(archive);
-     Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage
+     Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessageCustom
      (MainWindow.currentMainWindow, "Архив сохранен в БД!", "Сохранение архива",
          icon: Icon.Success));
  }
@@ -87,10 +87,10 @@ public class ClassDeviceArchive
      }
      catch (Exception ex)
      {
-         Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Ошибка!Архив не сохранен в файл!", "Сохранение архива",
+         Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Ошибка!Архив не сохранен в файл!", "Сохранение архива",
              icon: Icon.Error));
      }
-     Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Архив сохранен в файл!",
+     Dispatcher.UIThread.Invoke(()=>ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Архив сохранен в файл!",
          "Сохранение архива",
          icon: Icon.Success));
  }

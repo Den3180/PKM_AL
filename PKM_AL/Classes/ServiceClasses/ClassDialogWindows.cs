@@ -61,8 +61,8 @@ namespace PKM_AL.Classes.ServiceClasses
                     AllowMultiple=false,
                     FileTypeFilter = new List<FilePickerFileType>()
                     {
-                        new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } },
-                        new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
+                        new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } },
+                        new FilePickerFileType("База данных") { Patterns=new[] { "*.db" } }
                     }
                 });
             files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());

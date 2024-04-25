@@ -32,7 +32,7 @@ namespace PKM_AL
             }
             catch (Exception ex)
             {
-                ClassMessage.ShowMessage(MainWindow.currentMainWindow,ex.Message);
+                ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow,ex.Message);
             }
         }
 

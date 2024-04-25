@@ -73,7 +73,7 @@ public class ServerClass
                 tcpListener.Stop();
                 using MemoryStream msD = new MemoryStream(bytesArray.ToArray());
                 deviceArchive = (List<int[]>)xmlSerializer.Deserialize(msD);
-                await ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Архив получен!", "Сохранение архива",
+                await ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Архив получен!", "Сохранение архива",
                     icon: Icon.Success);
                 WindowDeviceToArchive deviceToArchive = new WindowDeviceToArchive();
                 deviceToArchive.WindowShow(MainWindow.currentMainWindow);

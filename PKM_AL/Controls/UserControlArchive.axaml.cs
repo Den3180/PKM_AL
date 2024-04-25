@@ -54,7 +54,7 @@ public partial class UserControlArchive : UserControl
         else
         {
             Excel.IsEnabled = false;
-            dispatcher.Invoke(()=>ClassMessage.ShowMessage(
+            dispatcher.Invoke(()=>ClassMessage.ShowMessageCustom(
                 MainWindow.currentMainWindow,"Нет данных!",icon:Icon.Error));
         } 
         GridEvents.ItemsSource = Events;

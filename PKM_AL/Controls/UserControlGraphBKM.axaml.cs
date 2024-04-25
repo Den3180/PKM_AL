@@ -239,7 +239,7 @@ public partial class UserControlGraphBKM : UserControl
         //Очистка сектора графиков, при условии, что для текущего параметра нет событий. 
         if (eventsOnRequest.Count == 0)
         {
-            ClassMessage.ShowMessage(MainWindow.currentMainWindow, $"Нет данных для параметра {selectParam}!");
+            ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, $"Нет данных для параметра {selectParam}!");
             AvaPlot wpf = (grathic.Children[indexCombo] as AvaPlot);
             wpf?.Plot.Clear();
             wpf?.Refresh();
@@ -501,7 +501,7 @@ public partial class UserControlGraphBKM : UserControl
             //Проверка, что в комбобоксах выбран парметр отличный от "нет".
             if (!CheckChannelBoxes())
             {
-                ClassMessage.ShowMessage(MainWindow.currentMainWindow, "Не найдены регистры устройств!");
+                ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Не найдены регистры устройств!");
                 return;
             }
             //Кнопка экспорта в Excel в true.
