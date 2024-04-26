@@ -747,6 +747,7 @@ namespace PKM_AL
                 case ClassItem.eType.Device:
                     ClassDevice obj = Devices.FirstOrDefault(x => x.ID == subGroup.ID);
                     ContentArea.Content = new UserControlChannels(obj);
+                    StatusMode.Text = $"{subGroup.NameCh}";
                     break;
                 case ClassItem.eType.Log:
                     if (currentContent is UserControlEvents) break; 
@@ -796,6 +797,7 @@ namespace PKM_AL
                     case ClassGroup.eType.Devices:
                         if (currentContent is UserControlDevices) break; 
                         ContentArea.Content = new UserControlDevices();
+                        StatusMode.Text = "Устройства";
                         break;
                 }
         }

@@ -31,11 +31,13 @@
     <PackageReference Include="System.IO.Ports" Version="8.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
 	<AvaloniaResource Include="Resources\**" />
+	<AvaloniaResource Remove="bin\**" />
   </ItemGroup>
 
 
   <ItemGroup>
     <AvaloniaXaml Remove="Windows\WindowColomns.axaml" />
+    <AvaloniaXaml Remove="bin\**" />
   </ItemGroup>
 
 
@@ -44,6 +46,7 @@
     <Compile Update="Windows\WindowCommand.axaml.cs">
       <DependentUpon>WindowCommand.axaml</DependentUpon>
     </Compile>
+    <Compile Remove="bin\**" />
   </ItemGroup>
 
 
@@ -67,6 +70,7 @@
     <None Remove="Resources\tags.png" />
     <None Remove="Resources\TPLogoM.png" />
     <None Remove="Resources\wave.png" />
+    <None Remove="bin\**" />
   </ItemGroup>
 
 
@@ -80,5 +84,25 @@
     <AvaloniaResource Update="Resources\iconfinder_inventory_categories_44826.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net6.0\Tasks.xlsx" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\net6.0\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Remove="bin\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <AdditionalFiles Remove="bin\**" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -172,7 +173,7 @@ public partial class UserControlChannels : UserControl
     /// <exception cref="NotImplementedException"></exception>
     private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
     {
-        DeleteOneOrMoreRegistryAsync();
+        DeleteOneOrMoreRegistry();
     }
     
     /// <summary>
@@ -281,6 +282,7 @@ public partial class UserControlChannels : UserControl
 
     private void MenuItemDI_Click(object sender, RoutedEventArgs e)
     {
+        if(Filter==eFilter.DI) return;
         Filter = eFilter.DI;
         Channels=new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.ItemsSource = Channels;
@@ -289,6 +291,7 @@ public partial class UserControlChannels : UserControl
 
     private void MenuItemAI_Click(object sender, RoutedEventArgs e)
     {
+        if(Filter==eFilter.AI) return;
         Filter = eFilter.AI;
         Channels=new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.ItemsSource = Channels;
@@ -297,6 +300,7 @@ public partial class UserControlChannels : UserControl
 
     private void MenuItemDO_Click(object sender, RoutedEventArgs e)
     {
+        if(Filter==eFilter.DO) return;
         Filter = eFilter.DO;
         Channels=new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.ItemsSource = Channels;
@@ -305,6 +309,7 @@ public partial class UserControlChannels : UserControl
 
     private void MenuItemAO_Click(object sender, RoutedEventArgs e)
     {
+        if(Filter==eFilter.AO) return;
         Filter = eFilter.AO;
         Channels=new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.ItemsSource = Channels;
@@ -313,6 +318,7 @@ public partial class UserControlChannels : UserControl
 
     private void MenuItemAll_Click(object sender, RoutedEventArgs e)
     {
+        if(Filter==eFilter.All) return;
         Filter = eFilter.All;
         Channels=new ObservableCollection<ClassChannel>(FilterItems());
         GridChannels.ItemsSource = Channels;
@@ -340,24 +346,27 @@ public partial class UserControlChannels : UserControl
     /// <summary>
     /// Удаление одного или более регистров.
     /// </summary>
-    private async void DeleteOneOrMoreRegistryAsync()
+    private void DeleteOneOrMoreRegistry()
     {
         if (GridChannels.SelectedItems.Count == 0) return;
         ClassChannel ob = this.GridChannels.SelectedItems[0] as ClassChannel;
         if(ob==null) return;
-        string mes = GridChannels.SelectedItems.Count > 1 ? $"Удалить каналы?" : $"Удалить канал '{ob.Name}'?";
+        string mes = GridChannels.SelectedItems.Count > 1 ? "Удалить каналы?" : $"Удалить канал '{ob.Name}'?";
         var res= ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow,mes,buttonEnum:ButtonEnum.OkCancel,
             icon:MsBox.Avalonia.Enums.Icon.Question);
         if (res.Result == "Отмена") return;
-        int countItems = GridChannels.SelectedItems.Count;
-        while ( countItems > 0)
+        //Создание и заполнение временного списка попавших в выделение элементов.
+        List <ClassChannel> listDelChannels = new List<ClassChannel>();
+        foreach (var elem in GridChannels.SelectedItems)
         {
-            ClassChannel obj = GridChannels.SelectedItems[0] as ClassChannel;
-            await Task.Run(() => MainWindow.DB.RegistryDel(obj.ID));
+          listDelChannels.Add(elem as ClassChannel);   
+        }
+        foreach (var obj in listDelChannels)
+        {
+            Task.Run(() => MainWindow.DB.RegistryDel(obj.ID));
             Channels.Remove(obj);
             MainWindow.Channels.Remove(obj);
             _Device.Channels.Remove(obj);
-            countItems--;
         }
     }
 
@@ -369,7 +378,7 @@ public partial class UserControlChannels : UserControl
     private void GridChannels_OnKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key != Key.Delete) return;
-            DeleteOneOrMoreRegistryAsync();
+            DeleteOneOrMoreRegistry();
     }
 
     /// <summary>

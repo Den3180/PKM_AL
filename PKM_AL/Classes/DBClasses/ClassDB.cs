@@ -1519,6 +1519,7 @@ namespace PKM
         }
             #endregion
 
+        #region[Сохранить архив]
         public void SaveArchiveToDB(List<int[]> archive,object nmDev)
         {
 
@@ -1574,5 +1575,6 @@ namespace PKM
             obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
             return true;
         }
+        #endregion
     }
 }

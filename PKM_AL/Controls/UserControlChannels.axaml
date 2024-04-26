@@ -23,6 +23,7 @@
             ColumnHeaderHeight="50"
             HorizontalGridLinesBrush="Black"
             VerticalGridLinesBrush="Black"
+            SelectionMode="Extended"
             LoadingRow="DataGrid_LoadingRow" KeyDown="GridChannels_OnKeyDown" CellEditEnded="GridChannels_OnCellEditEnded">
         <DataGrid.Styles>
             <Style Selector="DataGridCell">

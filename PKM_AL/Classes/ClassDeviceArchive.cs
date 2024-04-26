@@ -43,7 +43,7 @@ public class ClassDeviceArchive
              for (int i = positionStartData; i < note.Length; i++)
              {
                  if (countList >= countNoteMax) break;
-                 //ClassChannel ch = lstDevCh[countList];
+                 //Ищем в списке регистров канал совпадающий по адресу с текущем в архиве. 
                  ClassChannel ch = lstDevCh.FirstOrDefault(c=>c.Address==countList);
                  if(ch==null) continue;
                  ev.Param = ch.Name;
