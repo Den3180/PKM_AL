@@ -1,15 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using MsBox.Avalonia.Enums;
 using PKM;
@@ -280,6 +275,7 @@ public partial class UserControlChannels : UserControl
         frm.WindowShow(MainWindow.currentMainWindow);
     }
 
+    #region [Видимость регистров]
     private void MenuItemDI_Click(object sender, RoutedEventArgs e)
     {
         if(Filter==eFilter.DI) return;
@@ -325,8 +321,10 @@ public partial class UserControlChannels : UserControl
         GridChannels.Height = _actualHeightUserControl;
     }
 
+    #endregion
+    
     /// <summary>
-    /// окончательная загрузка контрола.
+    /// Окончательная загрузка контрола.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

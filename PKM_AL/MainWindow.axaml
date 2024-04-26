@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:vm="using:PKM_AL"
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         x:Class="PKM_AL.MainWindow"
         Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized"
@@ -82,7 +81,7 @@
 			</MenuItem>
 		</Menu>
 			<Grid DockPanel.Dock="Bottom" 
-			      ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,Auto,180" 
+			      ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,Auto,200" 
 				  Background="LightGray" Height="30">
 			<Grid.Styles>
 				<Style Selector="TextBlock" >
@@ -114,7 +113,7 @@
 			<Image Grid.Column="12" Source="Resources/bullet-grey-32.png" Name="ImageRx" ToolTip.Tip="RxD"></Image>
 			<Border Grid.Column="13"/>
 			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
-                           Margin="0 0 10 0" HorizontalAlignment="Left"/>
+                           Margin="5 0 10 0" HorizontalAlignment="Left"/>
 		</Grid>		
 		<Grid ColumnDefinitions="200,auto,*">
 			<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"

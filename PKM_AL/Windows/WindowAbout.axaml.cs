@@ -12,7 +12,7 @@ public partial class WindowAbout : ClassWindowPKM
     {
         InitializeComponent();
         Version ver = Assembly.GetExecutingAssembly().GetName().Version;
-        var sVersion = ver != null ? ver.ToString() : "нет данных";
+        var sVersion = ver != null ? $"{ver.Major}.{ver.Minor}.{ver.Build}" : "нет данных";
         this.lblVersion.Text += " " + sVersion;
     }
 }

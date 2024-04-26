@@ -7,7 +7,7 @@
         Title="О программе" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" CanResize="False"
         ShowInTaskbar="False">
         <Grid>
-                <Border Margin="5" BorderBrush="Gray" BorderThickness="2">
+                <Border Margin="5" BorderBrush="LightGray" BorderThickness="2">
                 <StackPanel Margin="3">
                         <Image HorizontalAlignment="Center" Margin="15" VerticalAlignment="Top"
                                Width="240" Height="45" Source="/Resources/TPLogoM.png"/>

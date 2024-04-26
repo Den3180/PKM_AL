@@ -41,7 +41,7 @@
 		</Style>
 	</Window.Styles>
 	<Grid ColumnDefinitions="auto,auto">
-		<Border Name="main_Border" Grid.Column="0" Margin="5 5 2.5 5" BorderBrush="LightGray" BorderThickness="1">
+		<Border Name="main_Border" Grid.Column="0" Margin="5 5 2.5 5" BorderBrush="LightGray" BorderThickness="2">
 			<UniformGrid Columns="2">
 				<Label Content="Наименование:"/>
 				<TextBox Text="БКМ" Name="DeviceName"/>
