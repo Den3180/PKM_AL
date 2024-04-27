@@ -7,10 +7,13 @@ using PKM_AL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using MsBox.Avalonia.Dto;
 using MsBox.Avalonia.Models;
 
@@ -94,6 +97,7 @@ namespace PKM_AL
             Task<string> res;
             using (var source = new CancellationTokenSource())
             {
+                var _assembly = Assembly.GetEntryAssembly()?.GetName().Name;
                 var messageWindow = MessageBoxManager.GetMessageBoxCustom(new MessageBoxCustomParams()
                 {
                     ButtonDefinitions = GetButtonDefinition(buttonEnum),
@@ -104,7 +108,10 @@ namespace PKM_AL
                     CanResize = false,
                     SizeToContent = SizeToContent.WidthAndHeight,
                     ShowInCenter = true,
-                    Topmost = false
+                    Topmost = false,
+                    WindowIcon = new WindowIcon(
+                        new Bitmap(AssetLoader.Open(
+                            new Uri($"avares://{_assembly}/Resources/"+"iconfinder_inventory_categories_44826.ico"))))
                 }) ;
                 res = messageWindow.ShowWindowDialogAsync(owner);
                 res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());

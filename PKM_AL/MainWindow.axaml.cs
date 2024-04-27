@@ -371,7 +371,7 @@ namespace PKM_AL
         {
             _TxCount++;
             if (_TxCount > 9999) _TxCount = 0;
-            StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
+            StatusFrames.Text = _TxCount + "/" + _RxCount;
             ImageTx.Source = new Bitmap
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }
@@ -383,7 +383,7 @@ namespace PKM_AL
         {
             _RxCount++;
             if (_RxCount > 9999) _RxCount = 0;
-            StatusFrames.Text = _TxCount.ToString() + "/" + _RxCount.ToString();
+            StatusFrames.Text = _TxCount + "/" + _RxCount;
             ImageRx.Source = new Bitmap
                 (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
         }

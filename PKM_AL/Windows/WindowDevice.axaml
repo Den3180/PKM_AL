@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
         x:Class="PKM_AL.WindowDevice"
-        Title="Устройство" WindowStartupLocation="CenterScreen" 
+        Title="Устройство" WindowStartupLocation="CenterScreen" SystemDecorations="None"
 		SizeToContent="WidthAndHeight" CanResize="False">
 	<Window.Styles>
 		<Style Selector="Button">
@@ -40,119 +40,127 @@
 			<Setter Property="Margin" Value="2"/>
 		</Style>
 	</Window.Styles>
-	<Grid ColumnDefinitions="auto,auto">
-		<Border Name="main_Border" Grid.Column="0" Margin="5 5 2.5 5" BorderBrush="LightGray" BorderThickness="2">
-			<UniformGrid Columns="2">
-				<Label Content="Наименование:"/>
-				<TextBox Text="БКМ" Name="DeviceName"/>
-				<Label Content="Пикет"/>
-				<StackPanel Orientation="Horizontal">
-					<TextBox Text="0" Width="40" HorizontalAlignment="Left" Name="Picket_km"/>
-					<TextBlock Text="+" VerticalAlignment="Center" Width="10"/>
-					<TextBox Text="0" Width="40" HorizontalAlignment="Left" Name="Picket_m"/>
-				</StackPanel>
-				<Label Content="Широта точки монтажа:"/>
-				<TextBox Text="00.000000" Name="Latitude"/>
-				<Label Content="Долгота точки монтажа:"/>
-				<TextBox Text="00.000000" Name="Longitude"/>
-				<Label Content="Высота точки монтажа,м:"/>
-				<TextBox Text="0" Name="Elevation"/>
-				<Label Content="Модель:"/>
-				<ComboBox Name ="Model" SelectionChanged="ComboBox_SelectionChanged">
-					<ComboBoxItem Content="БКМ"/>
-					<ComboBoxItem Content="БКМ-3"/>
-					<ComboBoxItem Content="БКМ-4"/>
-					<ComboBoxItem Content="СКЗ"/>
-					<ComboBoxItem Content="СКЗ-ИП"/>
-					<ComboBoxItem Content="БСЗЭ"/>
-					<ComboBoxItem Content="УСИКП"/>
-					<ComboBoxItem Content="БКМ-5"/>
-					<ComboBoxItem Content="КИП"/>
-					<ComboBoxItem Content="ММПР"/>
-				</ComboBox>
-				<Label Content="Протокол:" />
-				<ComboBox Name ="Protocol">
-					<ComboBoxItem Content="Modbus RTU"/>
-					<ComboBoxItem Content="Modbus TCP"/>
-					<ComboBoxItem Content="GSM SMS"/>
-					<ComboBoxItem Content="GPRS"/>
-					<ComboBoxItem Content="GPRS SMS"/>
-				</ComboBox>
-				<Label Content="IP адрес:"/>
-				<TextBox ToolTip.Tip="Пример:192.168.0.1" Name="IPAddress"/>
-				<Label Content="IP порт:"/>
-				<TextBox ToolTip.Tip="Пример:502" Name="IPPort"/>
-				<Label Content="Адрес устройства:"/>
-				<TextBox Text="1" Name="Address"/>
-				<Label Content="Номер SIM карты:"/>
-				<TextBox ToolTip.Tip="Пример:+79991234567" Name="txtSIM"/>
-				<Label Content="Период опроса, с:"/>
-				<TextBox Text="1" Name="Period"/>
-				<Button Content="Применить" Width="100" Click="Button_Click"/>
-				<Button Content="Отмена" IsDefault="True" Width="100" HorizontalAlignment="Left"  Click="Button_Cancel"/>
-			</UniformGrid>			
-		</Border>			
-		<Border Name="Panel_SKZ" IsVisible="False" Grid.Column="1" Margin="2.5 5 5 5" 
-				BorderBrush="LightGray" BorderThickness="1">
-			<StackPanel>
-				<StackPanel.Styles>
-					<Style Selector="StackPanel">
-						<Setter Property="Orientation" Value="Horizontal"/>
-					</Style>
-				</StackPanel.Styles>
-				<Grid ColumnDefinitions="auto,auto,auto" 
-				      RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto">
-					<StackPanel Grid.Row="0" Grid.Column="0">
-						<TextBlock Classes="T1" Text="Номинальное напряжение питания,В"/>
-						<TextBox x:Name="Unom_supply" Text="0"/>
-					</StackPanel>
-					<StackPanel  Grid.Row="0" Grid.Column="1">
-						<TextBlock Classes="T1" Text="Активная потребляемая мощность(не более),Вт"/>
-						<TextBox x:Name="Nactiv" Text="0"/>
-					</StackPanel>
-					<StackPanel Grid.Row="1" Grid.Column="0">
-						<TextBlock Classes="T1" Text="Полная потребляемая мощность(не более),Вт"/>
-						<TextBox x:Name="Nfull" Text="0"/>
-					</StackPanel>
-					<StackPanel Grid.Row="1" Grid.Column="1">
-						<TextBlock Classes="T1" Text="Номинальное выходное напряжение,Вт" />
-						<TextBox x:Name="Unom_output" Text="0" />
-					</StackPanel>
-					<StackPanel Grid.Row="2" Grid.Column="0">
-						<TextBlock Classes="T1" Text="Номинальный выходной ток при ном .вых. напряжении,А"/>
-						<TextBox x:Name="Inom_output" Text="0"/>
-					</StackPanel>
-					<StackPanel Grid.Row="2" Grid.Column="1">
-						<TextBlock Classes="T1" Text="Номинальная выходная активная мощность,кВт"/>
-						<TextBox x:Name="Nnom_output" Text="0"/>
-					</StackPanel>
-					<StackPanel Grid.Row="3" Grid.Column="0">
-						<TextBlock Classes="T1" Text="Число модулей,шт"/>
-						<TextBox x:Name="ModulesCount" Text="0"/>
-					</StackPanel>
-					<StackPanel Grid.Row="3" Grid.Column="1">
-						<TextBlock Classes="T1" Text="Заводской номер"/>
-						<TextBox x:Name="FactoryNumber" Text="0"/>
-					</StackPanel>
-					<StackPanel Grid.Row="4" Grid.Column="0">
-						<TextBlock Classes="T1" Text="Код предприятия"/>
-						<TextBox x:Name="FactoryCode" Text="0"/>
-					</StackPanel>
-					<StackPanel Grid.Row="4" Grid.Column="1">
-						<TextBlock Classes="T1" Text="Год производства"/>
-						<ComboBox x:Name="FactoryYear"/>
-					</StackPanel>
-					<StackPanel Grid.Row="5" Grid.Column="0">
-						<TextBlock Classes="T1" Text="Дата ввода в эксплуатацию" VerticalAlignment="Center" TextWrapping="Wrap"
-                                   Margin="2"/>
-						<CalendarDatePicker x:Name="DateStart" Margin="5" SelectedDate="{x:Static sys:DateTime.Now}"/>
-					</StackPanel>
-					<StackPanel Grid.Row="5" Grid.Column="1">
-						<TextBlock Classes="T1" Text="Срок службы, лет"/>
-						<TextBox x:Name="Resource" Text="20"/>
-					</StackPanel>
-				</Grid>
+	<Border BorderBrush="Gray" BorderThickness="1">
+		<Grid RowDefinitions="Auto,*">
+			<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+				<Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" />
+				<TextBlock Text="Устройства" FontSize="15" FontWeight="Regular" Margin="5 0 0 0"/>
 			</StackPanel>
-		</Border>
-	</Grid>
+			<Border Grid.Row="1" Margin="5 5 5 5" BorderBrush="LightGray" BorderThickness="1">
+	           <Grid ColumnDefinitions="auto,auto">
+					<UniformGrid Grid.Column="0" Columns="2">
+						<Label Content="Наименование:"/>
+						<TextBox Text="БКМ" Name="DeviceName"/>
+						<Label Content="Пикет"/>
+						<StackPanel Orientation="Horizontal">
+							<TextBox Text="0" Width="40" HorizontalAlignment="Left" Name="Picket_km"/>
+							<TextBlock Text="+" VerticalAlignment="Center" Width="10"/>
+							<TextBox Text="0" Width="40" HorizontalAlignment="Left" Name="Picket_m"/>
+						</StackPanel>
+						<Label Content="Широта точки монтажа:"/>
+						<TextBox Text="00.000000" Name="Latitude"/>
+						<Label Content="Долгота точки монтажа:"/>
+						<TextBox Text="00.000000" Name="Longitude"/>
+						<Label Content="Высота точки монтажа,м:"/>
+						<TextBox Text="0" Name="Elevation"/>
+						<Label Content="Модель:"/>
+						<ComboBox Name ="Model" SelectionChanged="ComboBox_SelectionChanged">
+							<ComboBoxItem Content="БКМ"/>
+							<ComboBoxItem Content="БКМ-3"/>
+							<ComboBoxItem Content="БКМ-4"/>
+							<ComboBoxItem Content="СКЗ"/>
+							<ComboBoxItem Content="СКЗ-ИП"/>
+							<ComboBoxItem Content="БСЗЭ"/>
+							<ComboBoxItem Content="УСИКП"/>
+							<ComboBoxItem Content="БКМ-5"/>
+							<ComboBoxItem Content="КИП"/>
+							<ComboBoxItem Content="ММПР"/>
+						</ComboBox>
+						<Label Content="Протокол:" />
+						<ComboBox Name ="Protocol">
+							<ComboBoxItem Content="Modbus RTU"/>
+							<ComboBoxItem Content="Modbus TCP"/>
+							<ComboBoxItem Content="GSM SMS"/>
+							<ComboBoxItem Content="GPRS"/>
+							<ComboBoxItem Content="GPRS SMS"/>
+						</ComboBox>
+						<Label Content="IP адрес:"/>
+						<TextBox ToolTip.Tip="Пример:192.168.0.1" Name="IPAddress"/>
+						<Label Content="IP порт:"/>
+						<TextBox ToolTip.Tip="Пример:502" Name="IPPort"/>
+						<Label Content="Адрес устройства:"/>
+						<TextBox Text="1" Name="Address"/>
+						<Label Content="Номер SIM карты:"/>
+						<TextBox ToolTip.Tip="Пример:+79991234567" Name="txtSIM"/>
+						<Label Content="Период опроса, с:"/>
+						<TextBox Text="1" Name="Period"/>
+						<Button Content="Применить" Width="100" Click="Button_Click"/>
+						<Button Content="Отмена" IsDefault="True" Width="100" HorizontalAlignment="Left"  Click="Button_Cancel"/>
+					</UniformGrid>
+				    <Border  Grid.Column="1" Name="Panel_SKZ" IsVisible="False" Margin="2.5 5 5 5" 
+						BorderBrush="LightGray" BorderThickness="1">
+					<StackPanel>
+						<StackPanel.Styles>
+							<Style Selector="StackPanel">
+								<Setter Property="Orientation" Value="Horizontal"/>
+							</Style>
+						</StackPanel.Styles>
+						<Grid ColumnDefinitions="auto,auto,auto" 
+						      RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto">
+							<StackPanel Grid.Row="0" Grid.Column="0">
+								<TextBlock Classes="T1" Text="Номинальное напряжение питания,В"/>
+								<TextBox x:Name="Unom_supply" Text="0"/>
+							</StackPanel>
+							<StackPanel  Grid.Row="0" Grid.Column="1">
+								<TextBlock Classes="T1" Text="Активная потребляемая мощность(не более),Вт"/>
+								<TextBox x:Name="Nactiv" Text="0"/>
+							</StackPanel>
+							<StackPanel Grid.Row="1" Grid.Column="0">
+								<TextBlock Classes="T1" Text="Полная потребляемая мощность(не более),Вт"/>
+								<TextBox x:Name="Nfull" Text="0"/>
+							</StackPanel>
+							<StackPanel Grid.Row="1" Grid.Column="1">
+								<TextBlock Classes="T1" Text="Номинальное выходное напряжение,Вт" />
+								<TextBox x:Name="Unom_output" Text="0" />
+							</StackPanel>
+							<StackPanel Grid.Row="2" Grid.Column="0">
+								<TextBlock Classes="T1" Text="Номинальный выходной ток при ном .вых. напряжении,А"/>
+								<TextBox x:Name="Inom_output" Text="0"/>
+							</StackPanel>
+							<StackPanel Grid.Row="2" Grid.Column="1">
+								<TextBlock Classes="T1" Text="Номинальная выходная активная мощность,кВт"/>
+								<TextBox x:Name="Nnom_output" Text="0"/>
+							</StackPanel>
+							<StackPanel Grid.Row="3" Grid.Column="0">
+								<TextBlock Classes="T1" Text="Число модулей,шт"/>
+								<TextBox x:Name="ModulesCount" Text="0"/>
+							</StackPanel>
+							<StackPanel Grid.Row="3" Grid.Column="1">
+								<TextBlock Classes="T1" Text="Заводской номер"/>
+								<TextBox x:Name="FactoryNumber" Text="0"/>
+							</StackPanel>
+							<StackPanel Grid.Row="4" Grid.Column="0">
+								<TextBlock Classes="T1" Text="Код предприятия"/>
+								<TextBox x:Name="FactoryCode" Text="0"/>
+							</StackPanel>
+							<StackPanel Grid.Row="4" Grid.Column="1">
+								<TextBlock Classes="T1" Text="Год производства"/>
+								<ComboBox x:Name="FactoryYear"/>
+							</StackPanel>
+							<StackPanel Grid.Row="5" Grid.Column="0">
+								<TextBlock Classes="T1" Text="Дата ввода в эксплуатацию" VerticalAlignment="Center" TextWrapping="Wrap"
+		                                   Margin="2"/>
+								<CalendarDatePicker x:Name="DateStart" Margin="5" SelectedDate="{x:Static sys:DateTime.Now}"/>
+							</StackPanel>
+							<StackPanel Grid.Row="5" Grid.Column="1">
+								<TextBlock Classes="T1" Text="Срок службы, лет"/>
+								<TextBox x:Name="Resource" Text="20"/>
+							</StackPanel>
+						</Grid>
+					</StackPanel>
+				</Border>
+	        </Grid>
+			</Border>
+		</Grid>
+	</Border>
 </Window>
