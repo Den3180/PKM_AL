@@ -111,7 +111,8 @@ namespace PKM_AL
                     Topmost = false,
                     WindowIcon = new WindowIcon(
                         new Bitmap(AssetLoader.Open(
-                            new Uri($"avares://{_assembly}/Resources/"+"iconfinder_inventory_categories_44826.ico"))))
+                            new Uri($"avares://{_assembly}/Resources/iconfinder_inventory_categories_44826.ico")))
+                        )
                 }) ;
                 res = messageWindow.ShowWindowDialogAsync(owner);
                 res.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());

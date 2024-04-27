@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="450"
         x:Class="PKM_AL.Windows.WindowConfig"
         Title="Параметры" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight"
-         CanResize="False" ShowInTaskbar="False">
+         CanResize="False" ShowInTaskbar="False" SystemDecorations="None">
     <Window.Styles>
         <Style Selector="Label">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
@@ -14,6 +14,13 @@
             <Setter Property="FontSize" Value="14"></Setter>
         </Style>
     </Window.Styles>
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <Grid RowDefinitions="Auto,*">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                <Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" />
+                <TextBlock Text="Параметры" FontSize="15" FontWeight="Regular" Margin="5 0 0 0"/>
+            </StackPanel>
+            <Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
     <Grid Height="450" Width="450">
       <TabControl Margin="5" TabStripPlacement="Top">
           <TabItem Header="Параметры связи">
@@ -97,11 +104,14 @@
                 </Grid>
           </TabItem>
       </TabControl>
-          <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-              <Button Content="Применить" HorizontalContentAlignment="Center" Height="30" Width="100" Margin="2"
+          <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
+              <Button Content="Применить" HorizontalContentAlignment="Center" Height="30" Width="100" Margin="1"
                 VerticalAlignment="Center" Click="Button_Click"/>
-              <Button Content="Отмена" Height="30" Width="100" Margin="2" HorizontalContentAlignment="Center"
+              <Button Content="Отмена" Height="30" Width="100" Margin="1" HorizontalContentAlignment="Center"
                       VerticalAlignment="Center" Click="Button_Click" IsCancel="True" IsDefault="True"/>
           </StackPanel>
     </Grid>
+                </Border>
+            </Grid>
+        </Border>
 </Window>

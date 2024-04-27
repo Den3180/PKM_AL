@@ -2,19 +2,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="450"
         x:Class="PKM_AL.WindowColumns"
-        Title="Столбцы" SizeToContent="Height" Width="380" MaxHeight="500" WindowStartupLocation="CenterScreen"
-		CanResize="False" ShowInTaskbar="False">
-	<Border Margin="5" BorderBrush="LightGray" BorderThickness="2">
-		<Grid Margin="10" RowDefinitions="*,100">
-			<ListBox Name="lstColumns" Margin="5">
-				<CheckBox Content="Столбец 1" Name="Column1"/>
-				<CheckBox Content="Столбец 2" Name="Column2"/>
-				<CheckBox Content="Столбец 3" Name="Column3"/>
-			</ListBox>
-			<Button Grid.Row="1" Content="Сохранить" Height="30" Width="100"
-					HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+        Title="Столбцы" SizeToContent="Height" MaxWidth="380" MaxHeight="500" WindowStartupLocation="CenterScreen"
+		CanResize="False" ShowInTaskbar="False" SystemDecorations="None">
+	<Border BorderBrush="Gray" BorderThickness="1">
+		<Grid RowDefinitions="Auto,*">
+				<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+					<Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" />
+					<TextBlock Text="Столбцы" FontSize="15" FontWeight="Regular" Margin="5 0 0 0"/>
+				</StackPanel>
+					<Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
+						<Grid Margin="10" RowDefinitions="*,100">
+							<ListBox Name="lstColumns" Margin="5">
+								<CheckBox Content="Столбец 1" Name="Column1"/>
+								<CheckBox Content="Столбец 2" Name="Column2"/>
+								<CheckBox Content="Столбец 3" Name="Column3"/>
+							</ListBox>
+							<StackPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+							            Orientation="Horizontal" >
+							<Button  Content="Сохранить" Height="30" Width="100" 
+							        HorizontalContentAlignment="Center" Margin="1"  VerticalContentAlignment="Center"
+							         Click="Button_Click"/>
+							<Button  Content="Отмена" Height="30" Width="100" VerticalContentAlignment="Center" 
+							         HorizontalContentAlignment="Center" Margin="1" IsCancel="True"
+							         Click="Button_Click"/>
+							</StackPanel>
+						</Grid>
+					</Border>
 		</Grid>
 	</Border>
 </Window>

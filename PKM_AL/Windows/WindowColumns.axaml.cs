@@ -46,6 +46,12 @@ public partial class WindowColumns : ClassWindowPKM
     /// <param name="e"></param>
     private void Button_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        Button button=sender as Button;
+        if (button?.IsCancel == true)
+        {
+            Close();
+            return;
+        }
         ClassSettings settings = ClassSettings.Load();
         List<string> lst = null;
         if (_Grid.Name == "GridDevices") lst = settings.DevicesColumns;

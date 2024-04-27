@@ -5,9 +5,14 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PKM_AL.Windows.WindowAbout"
         Title="О программе" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" CanResize="False"
-        ShowInTaskbar="False">
-        <Grid>
-                <Border Margin="5" BorderBrush="LightGray" BorderThickness="2">
+        ShowInTaskbar="False" SystemDecorations="None">
+        <Border BorderBrush="Gray" BorderThickness="1">
+                <Grid RowDefinitions="Auto,*">
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                                <Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" />
+                                <TextBlock Text="О программе" FontSize="15" FontWeight="Regular" Margin="5 0 0 0"/>
+                        </StackPanel>
+                        <Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
                 <StackPanel Margin="3">
                         <Image HorizontalAlignment="Center" Margin="15" VerticalAlignment="Top"
                                Width="240" Height="45" Source="/Resources/TPLogoM.png"/>
@@ -16,5 +21,6 @@
                         <TextBlock Margin="2" Text="ООО НПК 'ТехноПром', 2024" HorizontalAlignment="Center"/>
                 </StackPanel>
                 </Border>
-        </Grid>
+                </Grid>
+        </Border>
 </Window>

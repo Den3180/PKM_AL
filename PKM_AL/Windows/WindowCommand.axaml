@@ -4,8 +4,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PKM_AL.Windows.WindowCommand"
-        Title="Команда" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" CanResize="False" >
-        <Grid Margin="10" RowDefinitions="30,30,30,30,30,30,Auto" ColumnDefinitions="120,Auto">
+        Title="Команда" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" CanResize="False"  
+        SystemDecorations="None">
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <Grid RowDefinitions="Auto,*">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                <Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" />
+                <TextBlock Text="Команда" FontSize="15" FontWeight="Regular" Margin="5 0 0 0"/>
+            </StackPanel>
+            <Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
+    <Grid Margin="10" RowDefinitions="30,30,30,30,30,30,Auto" ColumnDefinitions="120,Auto">
                 <Label Grid.Row="0" Grid.Column="0" Content="Наименование:"/>
                 <TextBox Grid.Row="0" Grid.Column="1" Text="Команда 1" HorizontalAlignment="Left" Width="150"
                          Margin="5" Name="CommandName"/>
@@ -28,10 +36,13 @@
                 <TextBox Grid.Row="5" Grid.Column="1" Text="0" HorizontalAlignment="Left" Width="70"
                          Margin="5" Name="Period"/>
                 <StackPanel Grid.Row="6" Grid.Column="1"  Orientation="Horizontal">
-                <Button Content="Сохранить" Height="30" Width="100"
+                <Button Content="Сохранить" Height="30" Width="100" Margin="1"
                         HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click"/>
-                <Button Content="Отмена" Height="30" Width="100" IsCancel="True"
+                <Button Content="Отмена" Height="30" Width="100" IsCancel="True" Margin="1"
                         HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click"/>
                 </StackPanel>
         </Grid>
+                </Border>
+            </Grid>
+        </Border>
 </Window>
