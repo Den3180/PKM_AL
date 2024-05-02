@@ -5,7 +5,14 @@
         mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="240"
         x:Class="PKM_AL.WindowDB"
         Title="База данных" SizeToContent="Height" Width="380" WindowStartupLocation="CenterScreen" 
-		CanResize="False" ShowInTaskbar="False">
+		CanResize="False" ShowInTaskbar="False" SystemDecorations="None">
+	<Border BorderBrush="Gray" BorderThickness="1">
+		<Grid RowDefinitions="Auto,*">
+			<StackPanel Grid.Row="0" Orientation="Horizontal"  >
+				<Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" Margin="5"/>
+				<TextBlock Text="База данных" FontSize="15" FontWeight="Regular" Margin="5 5 0 0"/>
+			</StackPanel>
+			<Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
 	<Grid Margin="10" RowDefinitions="30,auto,30,30,30,30" ColumnDefinitions="80,*">
 		<Label Grid.Row="0" Content="СУБД:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 		<ComboBox Grid.Row="0" Grid.Column="1" Width="120" HorizontalAlignment="Left" Margin="5"
@@ -27,7 +34,11 @@
 		<Label Grid.Row="4" Grid.Column="0" Content="Пароль:" VerticalAlignment="Center"/>
 		<TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="100" PasswordChar="*"
                      Margin="5" Name="Pass"/>			
-		<Button Grid.Row="5" Grid.Column="1" Content="Применить" Height="30" Width="100"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Click="Button_Click"/>
+		<Button Grid.Row="5" Grid.Column="1" Content="Применить" Height="30" Width="100" HorizontalContentAlignment="Center"
+		        VerticalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" 
+		        Click="Button_Click"/>
 	</Grid>
+				</Border>
+				</Grid>
+				</Border>
 </Window>

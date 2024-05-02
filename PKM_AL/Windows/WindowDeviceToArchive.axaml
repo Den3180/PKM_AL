@@ -2,10 +2,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="180"
         x:Class="PKM_AL.Windows.WindowDeviceToArchive"
         Title="Сохранение архива" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        Loaded="Control_OnLoaded">
+        Loaded="Control_OnLoaded" SystemDecorations="None">
+        <Border BorderBrush="Gray" BorderThickness="1">
+                <Grid RowDefinitions="Auto,*">
+                        <StackPanel Grid.Row="0" Orientation="Horizontal"  >
+                                <Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" Margin="5"/>
+                                <TextBlock Text="Архив" FontSize="15" FontWeight="Regular" Margin="5 5 0 0"/>
+                        </StackPanel>
+                        <Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
         <StackPanel Orientation="Vertical" Margin="10">
                 <TextBlock Text="Принадлежность архива" VerticalAlignment="Center" 
                            HorizontalAlignment="Center" FontWeight="SemiBold"/>
@@ -13,6 +20,9 @@
                         <TextBlock Text="Устройство: " VerticalAlignment="Center" FontWeight="SemiBold"/>
                         <ComboBox Name="devCombo" Margin="10" Width="100"/>
                 </StackPanel>
-                <Button Content="Применить" Margin="10" Width="100" Click="Button_Click"/>
+                <Button Content="Применить" Margin="10" Width="100" HorizontalAlignment="Center" Click="Button_Click"/>
         </StackPanel>
+                                </Border>
+                                </Grid>
+                                </Border>
 </Window>

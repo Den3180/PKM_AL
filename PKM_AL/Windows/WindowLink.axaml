@@ -5,7 +5,14 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PKM_AL.Windows.WindowLink"
         Title="Связь события" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" CanResize="False"
-        ShowInTaskbar="False">
+        ShowInTaskbar="False" SystemDecorations="None">
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <Grid RowDefinitions="Auto,*">
+            <StackPanel Grid.Row="0" Orientation="Horizontal"  >
+                <Image Source="/Resources/iconfinder_inventory_categories_44826.ico" Height="16" Margin="5"/>
+                <TextBlock Text="Связь события" FontSize="15" FontWeight="Regular" Margin="5 5 0 0"/>
+            </StackPanel>
+            <Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
     <Grid Margin="10" RowDefinitions="30,30,30,*" ColumnDefinitions="80,*">
         <Label Grid.Row="0" Grid.Column="0" Content="Событие:"/>
         <ComboBox Grid.Row="0" Grid.Column="1" Width="190" HorizontalAlignment="Left" Margin="5"
@@ -19,10 +26,12 @@
         </ComboBox>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
         <Button Content="Сохранить" Height="30" Width="100" HorizontalContentAlignment="Center"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3" Click="Button_Click"/>
         <Button Content="Отмена" Height="30" Width="100" HorizontalContentAlignment="Center" IsCancel="True"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click"/>
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3" Click="Button_Click"/>
         </StackPanel>
     </Grid>
-
+                </Border>
+                </Grid>
+            </Border>
 </Window>
