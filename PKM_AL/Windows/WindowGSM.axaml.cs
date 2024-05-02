@@ -64,5 +64,13 @@ public partial class WindowGSM : ClassWindowPKM
         GSM.SendReadSMS(1);
     }
 
-
+    /// <summary>
+    /// Закрыть окно GSM
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Button_Close(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
 }

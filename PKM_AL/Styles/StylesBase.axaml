@@ -9,6 +9,8 @@
     <Style Selector="Button">
         <Setter Property="Background" Value="MediumBlue" />
         <Setter Property="Foreground" Value="White" />
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <Style Selector="Button:pointerover /template/ ContentPresenter">

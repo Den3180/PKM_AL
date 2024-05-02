@@ -13,21 +13,26 @@
                                 <TextBlock Text="GSM" FontSize="15" FontWeight="Regular" Margin="5 5 0 0"/>
                         </StackPanel>
                         <Border Grid.Row="1" Margin="5" BorderBrush="LightGray" BorderThickness="1">
-        <Grid Margin="10 5 10 10" ColumnDefinitions="*,150">
+        <Grid Margin="1" ColumnDefinitions="*,150">
                 <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1">
                         <ScrollViewer>
                                 <TextBlock x:Name="txtInfo" Margin="5"></TextBlock>
                         </ScrollViewer>
                 </Border>
-                <StackPanel Grid.Column="1" Margin="5 0 0 5">
-                        <Button Content="Опрос" Margin="5 10 0 5" Click="ButtonPoll_Click"></Button>
-                        <Button Content="Инициализация" Margin="5 10 0 5" Click="ButtonInit_Click"></Button>
-                        <Button Content="Уровень сигнала" Margin="5 10 0 5" Click="ButtonSignal_Click"></Button>
-                        <Button Content="Наличие SMS" Margin="5 10 0 5" Click="ButtonMemory_Click"></Button>
-                        <Button Content="Чтение SMS" Margin="5 10 0 5" Click="ButtonSMS_Click"></Button>
+                <Grid Grid.Column="1" RowDefinitions="Auto,*" HorizontalAlignment="Center">
+                        
+                <StackPanel Margin="5">
+                        <Button Content="Опрос" Margin="5 10 0 5"  Width="130" Click="ButtonPoll_Click"></Button>
+                        <Button Content="Инициализация" Margin="5 10 0 5" Width="130" Click="ButtonInit_Click"></Button>
+                        <Button Content="Уровень сигнала" Margin="5 10 0 5" Width="130" Click="ButtonSignal_Click"></Button>
+                        <Button Content="Наличие SMS" Margin="5 10 0 5" Width="130" Click="ButtonMemory_Click"></Button>
+                        <Button Content="Чтение SMS" Margin="5 10 0 5" Width="130" Click="ButtonSMS_Click"></Button>
                 </StackPanel>
+                        <Button Grid.Row="1" Content="Закрыть" Width="130" HorizontalAlignment="Center" 
+                                VerticalAlignment="Bottom" Click="Button_Close" Margin="5"/>
+                </Grid>
         </Grid>
-                                </Border>
+                        </Border>
                                 </Grid>
 </Border>
 </Window>

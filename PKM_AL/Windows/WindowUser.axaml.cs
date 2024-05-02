@@ -35,6 +35,12 @@ public partial class WindowUser : ClassWindowPKM
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
+        Button button=sender as Button;
+        if (button?.IsCancel == true)
+        {
+            Close();
+            return;
+        }
         var childs= ClassControlManager.GetUIElem<TextBox>(this, new List<TextBox>());
         foreach (var elem in childs)
         {
