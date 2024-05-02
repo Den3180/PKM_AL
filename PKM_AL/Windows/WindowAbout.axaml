@@ -19,6 +19,9 @@
                         <TextBlock Margin="2" Text="Система оперативной телеметрии и комплексного анализа" HorizontalAlignment="Center"/>
                         <TextBlock Margin="2" Text="Версия" HorizontalAlignment="Center" Name="lblVersion"/>
                         <TextBlock Margin="2" Text="ООО НПК 'ТехноПром', 2024" HorizontalAlignment="Center"/>
+                        <Button Margin="5" Height="30" Width="100" Content="Закрыть" VerticalAlignment="Center"
+                                HorizontalAlignment="Center" VerticalContentAlignment="Center" 
+                                HorizontalContentAlignment="Center" Click="Button_OnClick"/>
                 </StackPanel>
                 </Border>
                 </Grid>

@@ -660,7 +660,7 @@ namespace PKM_AL
             break;
             case "О программе...":
                 WindowAbout windowAbout = new WindowAbout();
-                windowAbout.WindowShow(currentMainWindow);
+                windowAbout.Show();
             break;
             default:
             break;
