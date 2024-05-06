@@ -151,10 +151,12 @@ public class ClassGSM
                 //Обход карты регистров устройства.
                 while (pos < s.Length && currentAddres<maxAddressReg)
                 {
-                    ClassChannel classChannel = device.Channels.FirstOrDefault(ch => ch.Address == currentAddres);
-                    if (classChannel == null || classChannel.TypeRegistry!=ClassChannel.EnumTypeRegistry.InputRegistry)
+                    ClassChannel classChannel = device.Channels.FirstOrDefault(ch => ch.Address == currentAddres &&
+                        ch.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry);
+                    if (classChannel == null)
                     {
                         currentAddres++;
+                        pos += 4;
                         continue;
                     }
                     string sHex = string.Empty;
