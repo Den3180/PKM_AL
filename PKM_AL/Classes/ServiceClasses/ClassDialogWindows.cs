@@ -99,8 +99,8 @@ namespace PKM_AL.Classes.ServiceClasses
                         new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
                     }
                 });
-                // files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-                // Dispatcher.UIThread.MainLoop(source.Token);
+                files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
             }
             var dialogResult = files.Result;
             if (!string.IsNullOrEmpty(dialogResult?.Name))
@@ -131,8 +131,8 @@ namespace PKM_AL.Classes.ServiceClasses
                         new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
                     }
                 });
-                // files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-                // Dispatcher.UIThread.MainLoop(source.Token);
+                files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
             }
             if (files.Result.Count > 0)
             {
