@@ -532,6 +532,11 @@ namespace PKM_AL
             OnPropertyChanged(nameof(ColorLineDevice));
         }
         
+        /// <summary>
+        ///Сохранение профиля устройства в файл. 
+        /// </summary>
+        /// <param name="FileName">Путь к файлу</param>
+        /// <returns></returns>
         public bool SaveProfile(string FileName)
         {
             TextWriter writer = new StreamWriter(FileName);
