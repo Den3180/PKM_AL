@@ -240,6 +240,9 @@ namespace PKM_AL
             }
         }
 
+       /// <summary>
+       /// Данные в необработанном виде(массив байтов), полученные с устройств.
+       /// </summary>
         [XmlIgnore]
         public ushort[] BaseValue
         {
@@ -367,6 +370,10 @@ namespace PKM_AL
                 return DTAct.ToString("dd.MM.yyyy HH:mm:ss");
             }
         }
+        
+        /// <summary>
+        /// Отображение полученных данных в формате hex.
+        /// </summary>
         public string StrBaseValue
         {
             get
