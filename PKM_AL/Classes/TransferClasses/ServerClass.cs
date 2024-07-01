@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -71,8 +73,61 @@ public class ServerClass
                     bytesArray.Add((byte)stream.ReadByte());
                 }
                 tcpListener.Stop();
-                using MemoryStream msD = new MemoryStream(bytesArray.ToArray());
-                deviceArchive = (List<int[]>)xmlSerializer.Deserialize(msD);
+                try
+                {
+                    using MemoryStream msD = new MemoryStream(bytesArray.ToArray());
+                    deviceArchive = (List<int[]>)xmlSerializer.Deserialize(msD);
+
+                }
+                catch (Exception ex)
+                {
+                   Console.WriteLine(ex.Message); 
+                }
+                if (deviceArchive == null)
+                {
+                    deviceArchive = new List<int[]>();
+                    List<int> ttList = new List<int>();
+                    IEnumerable<byte[]> tt = bytesArray.Chunk(4);
+                    foreach (var item in tt)
+                    {
+                        Array.Reverse(item);
+                        ttList.Add(BitConverter.ToInt32(item, 0));
+                    }
+
+                    List<int> startNotes = new List<int>();
+                    for(int i=0;i<ttList.Count;i++)
+                    {
+                        if (ttList[i]==10 && ttList[i + 1] == 31)
+                        {
+                            startNotes.Add(i);
+                        }
+                    }
+
+
+                    for (int i = 0; i < startNotes.Count; i++)
+                    {
+                        int startNote = startNotes[i];
+                        int endNote = 0;
+                        int lenghtNote = 0;
+                        if (i == startNotes.Count - 1)
+                        {
+                            endNote = ttList.Count;
+                            lenghtNote = endNote - startNotes[i];
+                        }
+                        else
+                        {
+                            endNote = startNotes[i + 1];
+                            lenghtNote= endNote-startNote;
+                        }
+
+                        int[] nt=new int[lenghtNote];
+                        for (int j = startNote, k=0; j < endNote; j++,k++)
+                        {
+                            nt[k] = ttList[j];
+                        }
+                        deviceArchive.Add(nt);                       
+                    }
+                }
                 await ClassMessage.ShowMessageCustom(MainWindow.currentMainWindow, "Архив получен!", "Сохранение архива",
                     icon: Icon.Success);
                 WindowDeviceToArchive deviceToArchive = new WindowDeviceToArchive();
@@ -80,7 +135,7 @@ public class ServerClass
                 object obj = deviceToArchive.Tag;
                 _ =Task.Run(() => ClassDeviceArchive.SaveArchiveToDB(deviceArchive, obj));
             }
-            catch
+            catch(Exception ex)
             {
                 port++;
                 tcpListener = new TcpListener(IPAddress.Any, port);
