@@ -135,7 +135,7 @@ public class ClassGSM
             if (s.StartsWith("B5"))
             {
                 ClassDevice device = MainWindow.Devices.FirstOrDefault(x =>((x.Protocol == ClassDevice.EnumProtocol.SMS) ||
-                    (x.Protocol == ClassDevice.EnumProtocol.GPRS_SMS)) && (x.SIM == ActivePhone));
+                    (x.Protocol == ClassDevice.EnumProtocol.GPRS_SMS)) && (x.SIM == ActivePhone) && !String.IsNullOrEmpty(ActivePhone));
                 if (device == null) return;
                 ClassLog.WriteSMSLog(device?.Name + "-->" + s);
                 //Вызов метода отслеживания факта получения пакета в основном потоке.
@@ -325,7 +325,11 @@ public class ClassGSM
                 {
                     if (s[i] == ')') break;
                     if (s[i] == ',') continue;
-                    PositionSMSList.Add(Convert.ToInt32(s[i].ToString()));
+                    if (Char.IsDigit(s[i]))
+                    {
+                        PositionSMSList.Add(Convert.ToInt32(s[i].ToString()));
+                        break;
+                    }
                 }
                 return;
             }
@@ -456,7 +460,11 @@ public class ClassGSM
         public void SendDeleteSMS()
         {
             ActiveCommand = EnumCommand.DeleteSMS;
-            Send("AT+CMGD=1,3");           
+            Send("AT+CMGD=1,3");
+            if (ActiveIndex == 1)
+            {
+                Send("AT+CMGD=1,4");
+            }
             ActiveIndex = 0;
         }
 

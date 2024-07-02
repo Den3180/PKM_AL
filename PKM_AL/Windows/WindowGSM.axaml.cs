@@ -26,8 +26,8 @@ public partial class WindowGSM : ClassWindowPKM
     
     private void GSM_EventSendCommand(string Command)
     {
-            this.txtInfo.Text = DateTime.Now.ToString("HH:mm:ss.fff") + " > " + Command
-                                + Environment.NewLine + this.txtInfo.Text;
+        Dispatcher.UIThread.Invoke(()=> this.txtInfo.Text = DateTime.Now.ToString("HH:mm:ss.fff") + " > " + Command
+                                                       + Environment.NewLine + this.txtInfo.Text);
     }
     /// <summary>
     /// Запись полученного сообщения от модема в окно GSM.
@@ -71,6 +71,8 @@ public partial class WindowGSM : ClassWindowPKM
     /// <param name="e"></param>
     private void Button_Close(object sender, RoutedEventArgs e)
     {
+        this.GSM.EventSendCommand -= GSM_EventSendCommand;
+        this.GSM.EventReceivedMessage -= GSM_EventReceivedMessage;
         Close();
     }
 }
