@@ -860,6 +860,11 @@ namespace PKM
         /// <returns></returns>
         public virtual List<ClassEvent> EventsLoad(DateTime dt1, DateTime dt2, List<int> types, string str, string nameDev = "")
         {
+            if (dt1.Date.Equals(dt2.Date))
+            {
+                dt1 = new DateTime(dt1.Year, dt1.Month, dt1.Day, 0, 0, 0);
+                dt2 = new DateTime(dt1.Year, dt1.Month, dt1.Day, 23, 59, 59);
+            }
             string sIN = "";
             if (types != null)//Если тип события не null.
             {

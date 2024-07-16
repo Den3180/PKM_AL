@@ -692,6 +692,29 @@ namespace PKM_AL
             // }
             return DateTime.Now.Subtract(DTAct).TotalSeconds > Period;
         }
+        
+        /// <summary>
+        /// Конвертация данных от ММПР. 
+        /// </summary>
+        /// <param name="_value"></param>
+        /// <param name="typeRegistry"></param>
+        /// <returns></returns>
+        public static decimal ConvertMMPRData(decimal _value, ClassChannel channel)
+        {
+            if(channel.TypeRegistry==ClassChannel.EnumTypeRegistry.CoilOutput || channel.TypeRegistry == ClassChannel.EnumTypeRegistry.DiscreteInput)
+            {
+                return _value;
+            }
+            decimal res= channel.Address switch
+            {
+                0 => (decimal)((_value / 4095) * 75),
+                1=> (decimal)((_value/4095)*100),
+                2=> (decimal)(5-(_value*10)/4095),
+                3=> (decimal)((_value/4095)*10),
+                _=>_value
+            };
+            return Decimal.Round(res, 2);
+        }
 
         public decimal GetParam(int Param)
         {

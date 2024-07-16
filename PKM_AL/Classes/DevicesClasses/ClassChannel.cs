@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Avalonia.Threading;
 using PKM_AL.Classes;
 
 namespace PKM_AL
@@ -118,6 +119,12 @@ namespace PKM_AL
                     //Конвертация значений в знаковые величины.
                     _Value = ConvertMinus(_Value);
                 }
+                
+                if (this.Device.Model == ClassDevice.EnumModel.MMPR)
+                {
+                    _Value = ClassDevice.ConvertMMPRData(_Value,this);
+                }
+                
                 //Умножение на коэффициент.
                 if (_Koef != 1) _Value = _Value * (decimal)_Koef;
                 //Округление значений.
@@ -158,6 +165,7 @@ namespace PKM_AL
                         NameDevice = DeviceName
                     };
                     ClassEvent.SaveNewEvent(ev, _Archive);
+                    Dispatcher.UIThread.Invoke(() => MainWindow.Events.Add(ev));
                 }
                 //Если задано минимальное ограничение величины и оно пройдено.
                 else if (_Min.HasValue && _Value < _Min.Value)
@@ -172,6 +180,7 @@ namespace PKM_AL
                         NameDevice = DeviceName
                     };
                     ClassEvent.SaveNewEvent(ev, _Archive);
+                    Dispatcher.UIThread.Invoke(() => MainWindow.Events.Add(ev));
                 }
                 //Если величина в пределах допуска и границы заданы.
                 else if (_Max.HasValue || _Min.HasValue)

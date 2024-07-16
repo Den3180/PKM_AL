@@ -44,7 +44,7 @@ public partial class UserControlArchive : UserControl
         }
         //Если не выбрано устройство и не выбраны параметры поиска.
         if (KIP.SelectedIndex == 0 && types.Count==0) return;            
-        Events = MainWindow.DB.EventsLoad(DTBegin.SelectedDate.Value,DTEnd.SelectedDate.Value.AddDays(1), types,
+        Events = MainWindow.DB.EventsLoad(DTBegin.SelectedDate.Value,DTEnd.SelectedDate.Value, types,
             TxtSearch.SelectedItem.ToString(),nameDev);
         if (Events.Count > 0)
         {
