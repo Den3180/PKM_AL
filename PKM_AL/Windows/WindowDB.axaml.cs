@@ -36,6 +36,12 @@ public partial class WindowDB : ClassWindowPKM
 
     private void Button_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        Button button = (Button)sender;
+        if (button?.IsCancel==true)
+        {
+            Close();
+            return;
+        }
         ClassSettings settings = ClassSettings.Load();
         settings.TypeDB = (ClassSettings.EnumTypeDB)this.TypeDB.SelectedIndex;
         settings.DB = this.TxtDB.Text;

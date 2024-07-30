@@ -33,10 +33,18 @@
                     Margin="5" Name="TxtLogin"/>
 		<Label Grid.Row="4" Grid.Column="0" Content="Пароль:" VerticalAlignment="Center"/>
 		<TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="100" PasswordChar="*"
-                     Margin="5" Name="Pass"/>			
-		<Button Grid.Row="5" Grid.Column="1" Content="Применить" Height="30" Width="100" HorizontalContentAlignment="Center"
+                     Margin="5" Name="Pass"/>
+		<StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
+		            Orientation="Horizontal" HorizontalAlignment="Right">
+		<Button Content="Применить" Height="30" Width="100" HorizontalContentAlignment="Center" Margin="2"
 		        VerticalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" 
 		        Click="Button_Click"/>
+		<Button Content="Отмена" Height="30" Width="100" HorizontalContentAlignment="Center" Margin="2"
+		        VerticalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" IsCancel="True"
+		        Click="Button_Click"/>
+		</StackPanel>
+		
+		
 	</Grid>
 				</Border>
 				</Grid>

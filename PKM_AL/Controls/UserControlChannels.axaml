@@ -26,6 +26,9 @@
             SelectionMode="Extended"
             LoadingRow="DataGrid_LoadingRow" KeyDown="GridChannels_OnKeyDown" CellEditEnded="GridChannels_OnCellEditEnded">
         <DataGrid.Styles>
+            <Style Selector="DataGridRow">
+                <Setter Property="Background" Value="{Binding ColorLineChannel}"></Setter>
+            </Style>
             <Style Selector="DataGridCell">
                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
             </Style>

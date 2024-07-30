@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using MsBox.Avalonia.Enums;
 using PKM;
@@ -91,7 +94,14 @@ public partial class UserControlChannels : UserControl
     /// <param name="e"></param>
     private void DataGrid_LoadingRow(object sender, Avalonia.Controls.DataGridRowEventArgs e)
     {
-        e.Row.Tag = (e.Row.GetIndex() + 1).ToString();
+        DataGridRow gridRow = e.Row;
+        gridRow.Tag = (e.Row.GetIndex() + 1).ToString();
+        // var binding = new Binding()
+        // {
+        //     Source = (gridRow.DataContext as ClassChannel),
+        //     Path = nameof(ClassChannel.ColorLineChannel)
+        // };
+        // gridRow.Bind(DataGridRow.BackgroundProperty, binding);
     }
 
     /// <summary>
@@ -339,6 +349,7 @@ public partial class UserControlChannels : UserControl
         {
           _actualHeightUserControl=double.NaN;  
         }
+        
     }
 
     /// <summary>

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Avalonia.Media;
 using Avalonia.Threading;
 using PKM_AL.Classes;
 
@@ -166,6 +168,7 @@ namespace PKM_AL
                     };
                     ClassEvent.SaveNewEvent(ev, _Archive);
                     Dispatcher.UIThread.Invoke(() => MainWindow.Events.Add(ev));
+                    OnPropertyChanged(nameof(ColorLineChannel));
                 }
                 //Если задано минимальное ограничение величины и оно пройдено.
                 else if (_Min.HasValue && _Value < _Min.Value)
@@ -181,16 +184,19 @@ namespace PKM_AL
                     };
                     ClassEvent.SaveNewEvent(ev, _Archive);
                     Dispatcher.UIThread.Invoke(() => MainWindow.Events.Add(ev));
+                    OnPropertyChanged(nameof(ColorLineChannel));
                 }
                 //Если величина в пределах допуска и границы заданы.
                 else if (_Max.HasValue || _Min.HasValue)
                 {
                     if (State != EnumState.Norma) State = EnumState.Norma;
+                    OnPropertyChanged(nameof(ColorLineChannel));
                 }
                 //Во всех других случаях.
                 else
                 {
                     if (State != EnumState.Unknown) State = EnumState.Unknown;
+                    OnPropertyChanged(nameof(ColorLineChannel));
                 }
             }
         }
@@ -464,6 +470,28 @@ namespace PKM_AL
                 return val - ushort.MaxValue - 1;
             }
             return val;
+        }
+
+        private Avalonia.Media.IBrush _bColorLine = Brushes.Transparent;
+        [XmlIgnore]
+        public Avalonia.Media.IBrush ColorLineChannel
+        {
+            get
+            {
+                _bColorLine= State switch
+                {
+                    EnumState.Less => Brushes.Red,
+                    EnumState.Over => Brushes.Red,
+                    EnumState.Norma => Brushes.Chartreuse,
+                    _ => Brushes.Transparent
+                };
+                return _bColorLine;
+            }
+            set
+            {
+                _bColorLine = value;
+                OnPropertyChanged(prop:nameof(ColorLineChannel));
+            } 
         }
 
 

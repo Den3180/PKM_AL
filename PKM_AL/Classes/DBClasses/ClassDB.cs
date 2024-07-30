@@ -2,25 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Microsoft.Data.Sqlite;
-using MySql.Data.MySqlClient;
-using MySql.Data;
-using SQLitePCL;
-using Npgsql;
-using Org.BouncyCastle.Bcpg;
-using System.Data;
-using Avalonia.Threading;
 using MsBox.Avalonia.Enums;
 using PKM_AL;
 using PKM_AL.Classes;
-using Icon = System.Drawing.Icon;
+
 
 namespace PKM
 {
@@ -586,6 +574,9 @@ namespace PKM
             cmd.Parameters.AddWithValue("@ID", obj.ID);
             try { cmd.ExecuteNonQuery(); }
             catch { return false; }
+            //Актуализация данных, на случай добавления/снятия граничных значений.
+            var tempVal= obj.Value;
+            obj.Value = tempVal;
             return true;
         }
 
