@@ -46,8 +46,25 @@ public partial class UserControlDevices : UserControl
         };
         gridRow.Bind(DataGridRow.BackgroundProperty, binding);
         gridRow.DoubleTapped += DataGridRow_DoubleTapped;
+        gridRow.Tapped += DataGridRow_Tapped;
     }
 
+    /// <summary>
+    /// Еденичный клик по строке DataGrid.
+    /// </summary>
+    /// <param name="sender">object</param>
+    /// <param name="e">TappedEventArgs</param>
+    /// <returns>void</returns>
+    private void DataGridRow_Tapped(object sender, TappedEventArgs e)
+    {
+        if(sender is not DataGridRow row) return;
+        var selectedItem = row.DataContext as ClassDevice;
+        if(GridDevices.CurrentColumn is DataGridCheckBoxColumn hh && (hh.Header.ToString()=="Опрос"))
+        {
+            if (selectedItem != null) selectedItem.IsPoll = !selectedItem.IsPoll;
+        }
+    }
+    
     private void DataGridRow_DoubleTapped(object sender, TappedEventArgs e)
     {
         if(sender is not DataGridRow row) return;

@@ -638,7 +638,7 @@ namespace PKM_AL
             case "Параметры...":
                 WindowConfig windowConfig = new WindowConfig();
                 windowConfig.WindowShow(this);
-                if (windowConfig.Tag != null && ((bool)windowConfig.Tag) == true)
+                if (windowConfig.Tag != null && ((bool)windowConfig.Tag))
                 {
                     settings = ClassSettings.Load();
                     modbus.Mode = ClassModbus.eMode.None;

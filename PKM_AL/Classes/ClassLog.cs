@@ -33,8 +33,9 @@ namespace PKM
             }
         }
 
-        public static void WriteSMSLog(string smsText)
+        public static void WriteSMSLog(string smsText, bool isWrite)
         {
+            if(!isWrite) return;
             string message =DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss.fff") + " --> " + smsText+"\n";
             using StreamWriter streamWriter = new StreamWriter("sms.log",true);
             try

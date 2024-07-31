@@ -368,6 +368,8 @@ public class ClassModbus
             if (device.CountGroups > 0) continue;
             //Проверка на занятость порта каким либо устройством.
             if (SomeDeviceInTheProcess(MainWindow.Devices, device)) continue;
+            //Проверка на разрешения опроса. 
+            if(!device.IsPoll) continue;
             //Разбиение карты регистров на группы.
             List<ClassGroupRequest> Groups = device.GetGroups();
             //Цикл запроса данных по группам регистров.
@@ -482,9 +484,16 @@ public class ClassModbus
     /// <param name="master">Мастер Modbus</param>
     private void ReadGroupRegistry(List<ClassGroupRequest> Groups, ClassDevice device, ModbusMaster master)
     {
+        //TODO Доделать индикацию в связи с IsPoll.
         device.InProcess = true;
         foreach (ClassGroupRequest group in Groups)
         {
+            //Если приостановлено пользователем.
+            if (!device.IsPoll)
+            {
+                device.CountGroups = 0;
+                return;
+            }
             //Индикация отправки пакета.
             device.PacketSended();
             Dispatcher.UIThread.Invoke(()=>SendRequestEvent?.Invoke());
@@ -531,6 +540,7 @@ public class ClassModbus
             }
             //Индикация получения пакета.
             device.PacketReceived();
+            
             Dispatcher.UIThread.Invoke(()=>ReceivedAnswerEvent?.Invoke()); 
             
             if(group.TypeRegistry == ClassChannel.EnumTypeRegistry.HoldingRegistry || group.TypeRegistry == ClassChannel.EnumTypeRegistry.InputRegistry)

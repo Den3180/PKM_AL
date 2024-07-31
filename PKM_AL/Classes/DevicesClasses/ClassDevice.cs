@@ -28,7 +28,8 @@ namespace PKM_AL
             Unknown = 0,
             LinkNo = 1,
             LinkYes = 2,
-            LinkConnect = 3
+            LinkConnect = 3,
+            LinkSuspended=4
         }
         /// <summary>
         /// Перечисление протоколов подключения.
@@ -79,6 +80,7 @@ namespace PKM_AL
         private double _Longitude = 00.000000D;
         private double _Elevation;
         private string commParam;
+        private bool isPoll;
         private Avalonia.Media.IBrush _bColorLine = Brushes.Beige; //Цвет линии таблицы устройств.
         //private BitmapImage _bitmap;
         // private double _UnomInSKZ;
@@ -161,7 +163,31 @@ namespace PKM_AL
                 OnPropertyChanged(nameof(Name));
             }
         }
-        //Адрес.
+        
+        /// <summary>
+        /// Разрешение на опрос.
+        /// </summary>
+        [XmlIgnore]
+        public bool IsPoll
+        {
+            get => isPoll;
+            set
+            {
+                isPoll = value;
+                _LinkState = isPoll switch
+                {
+                    true=>EnumLink.Unknown,
+                    _=>EnumLink.LinkSuspended
+                };
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(LinkStateName));
+                OnPropertyChanged(nameof(ColorLineDevice));
+            }
+        }
+        
+        ///<summary>
+        ///Адрес устройства.
+        /// </summary>
         public int Address
         {
             get { return _Address; }
@@ -379,6 +405,7 @@ namespace PKM_AL
                     EnumLink.LinkNo => "Нет связи",
                     EnumLink.LinkYes => "На связи",
                     EnumLink.LinkConnect => "Подключение",
+                    EnumLink.LinkSuspended=>"Приостановлено",
                     _ => "Неизвестно"
                 };
                 return _LinkStateName;
@@ -454,7 +481,9 @@ namespace PKM_AL
             _Picket = string.Empty;
             CountGroups = 0;
             InProcess = false;
+            isPoll = false;
         }
+
 
         /// <summary>
         /// Подсчет отправленных пакетов.

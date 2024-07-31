@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:PKM_AL"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
              x:Class="PKM_AL.UserControlDevices">
 	<Design.DataContext>
 		<vm:ClassDevice/>
@@ -52,7 +52,8 @@
 			<DataGridTextColumn Header="SIM карта" Binding="{Binding SIM}" />
 			<DataGridTextColumn Header="Период опроса" Binding="{Binding Period}" />
 			<DataGridTextColumn Header="Пакетов" Binding="{Binding PacketStatistics}" />
-			<DataGridTextColumn Header="Наличие связи" Binding="{Binding LinkStateName}" />			
+			<DataGridTextColumn Header="Наличие связи" Binding="{Binding LinkStateName}" />
+			<DataGridCheckBoxColumn Header="Опрос" MinWidth="120" IsReadOnly="False" Binding="{Binding IsPoll}"/>
 		</DataGrid.Columns>
 		<DataGrid.ContextMenu>
 			<ContextMenu Name="cMenu" Opened="cMenu_Opened">

@@ -391,7 +391,7 @@ public partial class UserControlChannels : UserControl
     }
 
     /// <summary>
-    /// Редактирование ячеек регистров.
+    /// Редактирование ячеек регистров. Происходит при смене фокуса.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

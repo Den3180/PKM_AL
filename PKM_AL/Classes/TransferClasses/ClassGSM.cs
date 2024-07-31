@@ -137,7 +137,7 @@ public class ClassGSM
                 ClassDevice device = MainWindow.Devices.FirstOrDefault(x =>((x.Protocol == ClassDevice.EnumProtocol.SMS) ||
                     (x.Protocol == ClassDevice.EnumProtocol.GPRS_SMS)) && (x.SIM == ActivePhone) && !String.IsNullOrEmpty(ActivePhone));
                 if (device == null) return;
-                ClassLog.WriteSMSLog(device?.Name + "-->" + s);
+                ClassLog.WriteSMSLog(device?.Name + "-->" + s,false);
                 //Вызов метода отслеживания факта получения пакета в основном потоке.
                 device.PacketReceived();
                 //Фиксация стартового адреса.
@@ -231,7 +231,7 @@ public class ClassGSM
             {
                 ClassDevice device = MainWindow.Devices.FirstOrDefault(x => ((x.Protocol == ClassDevice.EnumProtocol.SMS) ||
                                     (x.Protocol == ClassDevice.EnumProtocol.GPRS_SMS)) && (x.SIM == ActivePhone));
-                ClassLog.WriteSMSLog(device?.Name+"-->" + s);
+                ClassLog.WriteSMSLog(device?.Name+"-->" + s,false);
                 if ((ActiveCommand == EnumCommand.GetMemory || ActiveCommand == EnumCommand.ReadSMS) && CountSMS>0)
                 {
                     ActiveIndex++;

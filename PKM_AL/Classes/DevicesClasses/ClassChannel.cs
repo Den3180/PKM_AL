@@ -377,6 +377,7 @@ namespace PKM_AL
         /// <summary>
         /// Актуальная дата в строковом формате(использована в табличном представлении регистров).
         /// </summary>
+        /// <returns>string</returns>
         public string StrDTAct
         {
             get
