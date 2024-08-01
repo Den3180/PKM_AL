@@ -3,15 +3,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:PKM_AL"
+             xmlns:cres="using:PKM_AL.Classes.ServiceClasses"
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
-             x:Class="PKM_AL.UserControlDevices">
+             x:Class="PKM_AL.UserControlDevices"
+             Background="Azure">
+	<UserControl.Resources>
+		<cres:ClassStaticResoursUserControlDevice x:Key="ResKey" IsDevAll="True"/>
+	</UserControl.Resources>
 	<Design.DataContext>
 		<vm:ClassDevice/>
 	</Design.DataContext>
 	<Grid>		
 	<DataGrid Name="GridDevices" 
 			  x:DataType="vm:ClassDevice" 
-			  AutoGenerateColumns="false"
+			  AutoGenerateColumns="False"
 			  IsReadOnly="True"
 			  GridLinesVisibility="All"
 			  BorderThickness="1"
@@ -28,18 +33,27 @@
 				<Setter Property="HorizontalAlignment" Value="Center"></Setter>
 			</Style>
 			<Style Selector="DataGridColumnHeader">
-				<Setter Property="HorizontalContentAlignment" Value="Center"/>
+				<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+				<Setter Property="HorizontalAlignment" Value="Stretch"/>
 				<Setter Property="SeparatorBrush" Value="Black"/>
 				<Setter Property="Foreground" Value="Black"/>
 				<Setter Property="BorderBrush" Value="Black"/>
 				<Setter Property="AreSeparatorsVisible" Value="True"/>
-				<Setter Property="Background" Value="Beige"/>
-				<Setter Property="FontWeight" Value="SemiBold"></Setter>
+				<Setter Property="Background" Value="LightSkyBlue"/>
+				<Setter Property="FontWeight" Value="SemiBold"/>
 			</Style>
+			<!-- <Style Selector="DataGridColumnHeader/template/Grid"> -->
+			<!-- 	<Setter Property="Background" Value="YellowGreen"></Setter> -->
+			<!-- 	<Setter Property="ColumnSpan" Value="2"></Setter> -->
+			<!-- </Style> -->
+			<!-- <Style Selector="DataGridColumnHeader/template/ContentPresenter"> -->
+			<!-- 	<Setter Property="Background" Value="Red"></Setter> -->
+			<!-- </Style> -->
 		</DataGrid.Styles>
 		<DataGrid.Columns>
 			<DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-			                    AncestorType={x:Type DataGridRow}}, Path=Tag}" />
+			                    AncestorType={x:Type DataGridRow}}, Path=Tag}" >
+			</DataGridTextColumn>
 			<DataGridTextColumn Header="Устройство" Binding="{Binding Name}"/>
 			<DataGridTextColumn Header="Модель" Binding="{Binding ModelName}" />
 			<DataGridTextColumn Header="Пикет" Binding="{Binding Picket}" />
@@ -53,7 +67,20 @@
 			<DataGridTextColumn Header="Период опроса" Binding="{Binding Period}" />
 			<DataGridTextColumn Header="Пакетов" Binding="{Binding PacketStatistics}" />
 			<DataGridTextColumn Header="Наличие связи" Binding="{Binding LinkStateName}" />
-			<DataGridCheckBoxColumn Header="Опрос" MinWidth="120" IsReadOnly="False" Binding="{Binding IsPoll}"/>
+			<DataGridCheckBoxColumn Header="Опрос" MinWidth="120" IsReadOnly="False" Binding="{Binding IsPoll}">
+				<DataGridCheckBoxColumn.HeaderTemplate>
+					<DataTemplate>
+							<Grid HorizontalAlignment="Stretch" ColumnDefinitions="Auto,Auto">
+							<TextBlock Grid.Column="0" Text="Опрос" VerticalAlignment="Center" 
+							           TextAlignment="Left" Margin="3"/> 
+							<CheckBox Grid.Column="1"  
+							          HorizontalAlignment="Center" 
+							          Margin="3" IsChecked="{Binding Source={StaticResource ResKey}, 
+							          Path=IsDevAll}"/>
+						</Grid>
+					</DataTemplate>
+				</DataGridCheckBoxColumn.HeaderTemplate>
+			</DataGridCheckBoxColumn>
 		</DataGrid.Columns>
 		<DataGrid.ContextMenu>
 			<ContextMenu Name="cMenu" Opened="cMenu_Opened">

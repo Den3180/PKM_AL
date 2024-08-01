@@ -62,7 +62,6 @@ namespace PKM_AL
         public static ObservableCollection<ClassMessage> Messages;
         public static ObservableCollection<ClassReportData> Reports;
 
-
         public static ClassSettings settings;
 
         public MainWindow()
@@ -166,7 +165,7 @@ namespace PKM_AL
             }
             else
             {
-                ClassMessage.ShowMessageCustom(this, "База данных подключена.", "", ButtonEnum.Ok,
+               ClassMessage.ShowMessageCustom(this, "База данных подключена.", "", ButtonEnum.Ok,
                                          icon: MsBox.Avalonia.Enums.Icon.Success);
             }
             int VersionDB = DB.InfoLoad();
@@ -196,6 +195,8 @@ namespace PKM_AL
                     }
                 }
             }
+            
+            
 
             Events = new ObservableCollection<ClassEvent>();
             EventsAlarm = new ObservableCollection<ClassEvent>();

@@ -38,7 +38,7 @@
                     <Setter Property="Foreground" Value="Black"/>
                     <Setter Property="BorderBrush" Value="Black"/>
                     <Setter Property="AreSeparatorsVisible" Value="True"/>
-                    <Setter Property="Background" Value="Beige"/>
+                    <Setter Property="Background" Value="LightSkyBlue"/>
                     <Setter Property="FontWeight" Value="SemiBold"></Setter>
                 </Style>
                 <Style Selector="DataGridCell.DGC_Left">

@@ -502,6 +502,7 @@ namespace PKM_AL
         public void PacketReceived()
         {
             _WaitAnswer = false;
+            if(!IsPoll) return;
             _RxCounter++;
             if (_RxCounter > 10000) _RxCounter = 0;
             OnPropertyChanged(nameof(PacketStatistics));
@@ -530,6 +531,7 @@ namespace PKM_AL
             int PACKET_LOST_ALARM = 3;
             if (_Model == EnumModel.BKM_3) PACKET_LOST_ALARM = 5;
             _WaitAnswer = false;
+            if(!IsPoll) return;
             if (_PacketLost < PACKET_LOST_MAX) _PacketLost++;
             if (_PacketLost < PACKET_LOST_ALARM) return;
             if (_LinkState != EnumLink.LinkNo)
