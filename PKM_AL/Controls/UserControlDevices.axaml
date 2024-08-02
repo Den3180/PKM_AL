@@ -6,29 +6,14 @@
              xmlns:cres="using:PKM_AL.Classes.ServiceClasses"
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
              x:Class="PKM_AL.UserControlDevices"
-             Background="Azure">
+             Background="LightSteelBlue">
 	<UserControl.Resources>
 		<cres:ClassStaticResoursUserControlDevice x:Key="ResKey" IsDevAll="True"/>
 	</UserControl.Resources>
 	<Design.DataContext>
 		<vm:ClassDevice/>
 	</Design.DataContext>
-	<Panel>
-		
-	
-	<Panel ZIndex="0">
-		<ExperimentalAcrylicBorder IsHitTestVisible="False">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="LightCyan"
-					TintOpacity="1"
-					MaterialOpacity="0.65" />
-			</ExperimentalAcrylicBorder.Material>
-		</ExperimentalAcrylicBorder>
-	</Panel>
-	
-	<Grid ZIndex="1">	
+	<Grid>	
 	<DataGrid Name="GridDevices" 
 			  x:DataType="vm:ClassDevice" 
 			  AutoGenerateColumns="False"
@@ -57,7 +42,9 @@
 				<Setter Property="Background" Value="LightSkyBlue"/>
 				<Setter Property="FontWeight" Value="SemiBold"/>
 			</Style>
-			
+			<Style Selector="DataGridCell">
+				<Setter Property="FontWeight" Value="DemiBold"></Setter>
+			</Style>
 		</DataGrid.Styles>
 		<DataGrid.Columns>
 			<DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
@@ -109,6 +96,6 @@
 	</DataGrid>
 	</Grid>
 		
-		</Panel>
+		
 	
 </UserControl>
