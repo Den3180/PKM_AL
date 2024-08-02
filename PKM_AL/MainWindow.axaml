@@ -5,7 +5,9 @@
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         x:Class="PKM_AL.MainWindow"
         Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized"
-		Icon="/Resources/iconfinder_inventory_categories_44826.ico">
+		Icon="/Resources/iconfinder_inventory_categories_44826.ico"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent">
 	<DockPanel>
 		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="LightGray">
 			<MenuItem Header="Файл">
