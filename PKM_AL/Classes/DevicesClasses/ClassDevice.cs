@@ -405,7 +405,7 @@ namespace PKM_AL
                     EnumLink.LinkNo => "Нет связи",
                     EnumLink.LinkYes => "На связи",
                     EnumLink.LinkConnect => "Подключение",
-                    EnumLink.LinkSuspended=>"Приостановлено",
+                    EnumLink.LinkSuspended=>"Отключено",
                     _ => "Неизвестно"
                 };
                 return _LinkStateName;

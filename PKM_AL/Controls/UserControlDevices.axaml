@@ -6,7 +6,7 @@
              xmlns:cres="using:PKM_AL.Classes.ServiceClasses"
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
              x:Class="PKM_AL.UserControlDevices"
-             Background="LightSteelBlue">
+             Background="Azure">
 	<UserControl.Resources>
 		<cres:ClassStaticResoursUserControlDevice x:Key="ResKey" IsDevAll="True"/>
 	</UserControl.Resources>
@@ -48,7 +48,7 @@
 		</DataGrid.Styles>
 		<DataGrid.Columns>
 			<DataGridTextColumn Header="№" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-			                    AncestorType={x:Type DataGridRow}}, Path=Tag}" >
+			                    AncestorType={x:Type DataGridRow}}, Path=Tag}">
 			</DataGridTextColumn>
 			<DataGridTextColumn Header="Устройство" Binding="{Binding Name}"/>
 			<DataGridTextColumn Header="Модель" Binding="{Binding ModelName}" />
@@ -95,7 +95,4 @@
 		</DataGrid.ContextMenu>
 	</DataGrid>
 	</Grid>
-		
-		
-	
 </UserControl>

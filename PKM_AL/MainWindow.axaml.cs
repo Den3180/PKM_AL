@@ -24,6 +24,7 @@ using Avalonia.LogicalTree;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Google.Protobuf.Compiler;
 using PKM_AL.Classes;
 using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
@@ -85,18 +86,45 @@ namespace PKM_AL
              Process process = Process.GetCurrentProcess();
              string pathExecutableFile = process.MainModule.FileName;
              var dirPkm = Directory.GetParent(pathExecutableFile).Parent.FullName;
-             string pathSha = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                 ? dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.lnk":
-                 dirPkm + @"/CheckAppSHA-512/CheckAppSHA-512";
+             // string pathSha = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+             //     ? dirPkm + @"\CheckAppSHA-512\CheckAppSHA-512.lnk":
+             //     dirPkm + @"/CheckAppSHA-512/CheckAppSHA-512";
             
-             if (!File.Exists(pathSha))
+             var temp = new DirectoryInfo(dirPkm);
+             var dirs= temp.GetDirectories();
+             DirectoryInfo dirSHA512=null;
+             foreach (var d in dirs)
+             {
+                 if (d.Name.Contains("CheckAppSHA-512"))
+                 {
+                     dirSHA512 = d;
+                 }
+             }
+
+             if (dirSHA512 == null) return false;
+             var listFiles = dirSHA512.GetFiles();
+             string pathsha512=String.Empty;
+             foreach (var f in listFiles)
+             {
+                 if (f.Name.Contains("CheckAppSHA-512.exe") && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                 {
+                     pathsha512 = f.FullName;
+                 }
+                 else if (f.Name.Contains("CheckAppSHA-512.dll"))
+                 {
+                     pathsha512 = f.FullName;
+                 }
+             }
+             
+            
+             if (!File.Exists(pathsha512))
                  return false;
              if ( firstStart == false || string.IsNullOrEmpty(pathExecutableFile)) 
                  return false;
              ProcessStartInfo processStartInfo = new ProcessStartInfo
              {
                  UseShellExecute = true,
-                 FileName = pathSha
+                 FileName = pathsha512
              };
              var processSha=Process.Start(processStartInfo);
              var res = processSha.WaitForExitAsync();
