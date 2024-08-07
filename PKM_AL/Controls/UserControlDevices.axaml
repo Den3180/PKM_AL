@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:PKM_AL"
              xmlns:cres="using:PKM_AL.Classes.ServiceClasses"
+             xmlns:pkmAl="clr-namespace:PKM_AL"
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
              x:Class="PKM_AL.UserControlDevices"
-             Background="Azure">
+             Background="Azure"
+             x:DataType="pkmAl:ClassDevice">
 	<UserControl.Resources>
-		<cres:ClassStaticResoursUserControlDevice x:Key="ResKey" IsDevAll="True"/>
+		<cres:ClassStaticResoursUserControlDevice x:Key="ResKey"/>
 	</UserControl.Resources>
 	<Design.DataContext>
 		<vm:ClassDevice/>
@@ -27,7 +29,7 @@
 			  ColumnHeaderHeight="50"
 			  HorizontalGridLinesBrush="Black"
 			  VerticalGridLinesBrush="Black"
-			  LoadingRow="DataGrid_LoadingRow" SelectionMode="Single">
+			  LoadingRow="DataGrid_LoadingRow" SelectionMode="Single" Loaded="GridDevices_OnLoaded">
 		<DataGrid.Styles>
 			<Style Selector="Label">
 				<Setter Property="HorizontalAlignment" Value="Center"></Setter>
@@ -65,13 +67,13 @@
 			<DataGridTextColumn Header="Наличие связи" Binding="{Binding LinkStateName}" />
 			<DataGridCheckBoxColumn Header="Опрос" MinWidth="120" IsReadOnly="False" Binding="{Binding IsPoll}">
 				<DataGridCheckBoxColumn.HeaderTemplate>
-					<DataTemplate>
+					<DataTemplate >
 							<Grid HorizontalAlignment="Stretch" ColumnDefinitions="*,Auto">
 							<TextBlock Grid.Column="0" Text="Опрос" VerticalAlignment="Center" 
 							           TextAlignment="Left" Margin="3"/> 
-							<CheckBox Grid.Column="1"  
-							          HorizontalAlignment="Stretch" 
-							          Margin="3" IsChecked="{Binding Source={StaticResource ResKey}, 
+							<CheckBox Grid.Column="1"
+							          HorizontalAlignment="Stretch"
+							          Margin="3" IsChecked="{Binding Source={StaticResource ResKey},
 							          Path=IsDevAll}"/>
 						</Grid>
 					</DataTemplate>

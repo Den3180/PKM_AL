@@ -27,7 +27,13 @@ public partial class UserControlDevices : UserControl
             if (settings.DevicesColumns.FirstOrDefault(x => x == col.Header?.ToString()) != null)
                 col.IsVisible = false;
         }
+        this.Loaded += Loaded_UserControlDevices;
         GridDevices.ItemsSource = MainWindow.Devices;
+    }
+
+    private void Loaded_UserControlDevices(object sender, RoutedEventArgs e)
+    {
+      
     }
 
     /// <summary>
@@ -39,9 +45,18 @@ public partial class UserControlDevices : UserControl
     {
         DataGridRow gridRow = e.Row;
         gridRow.Tag = (e.Row.GetIndex() + 1).ToString();
+        var tempDev = gridRow.DataContext as ClassDevice;
+        if(tempDev==null) return;
+        // foreach (ClassDevice dev in MainWindow.Devices)
+        // {
+        //     if (dev.ID == tempDev.ID)
+        //     {
+        //         tempDev.IsPoll=dev.IsPoll;
+        //     }
+        // }
         var binding = new Binding()
         {
-            Source = (gridRow.DataContext as ClassDevice),
+            Source = tempDev,
             Path = nameof(ClassDevice.ColorLineDevice)
         };
         gridRow.Bind(DataGridRow.BackgroundProperty, binding);
@@ -61,7 +76,21 @@ public partial class UserControlDevices : UserControl
         var selectedItem = row.DataContext as ClassDevice;
         if(GridDevices.CurrentColumn is DataGridCheckBoxColumn hh && (hh.Header.ToString()=="Опрос"))
         {
-            if (selectedItem != null) selectedItem.IsPoll = !selectedItem.IsPoll;
+            if (selectedItem != null)
+            {
+                selectedItem.IsPoll = !selectedItem.IsPoll;
+                if (selectedItem.IsPoll == false)
+                {
+                    //resourseCheckBox.IsDevAll = false;
+                }
+                // foreach (ClassDevice dev in MainWindow.Devices)
+                // {
+                //     if (dev.ID == selectedItem.ID)
+                //     {
+                //         dev.IsPoll=selectedItem.IsPoll;
+                //     }
+                // }
+            }
         }
     }
     
@@ -242,5 +271,11 @@ public partial class UserControlDevices : UserControl
         WindowColumns frm = new WindowColumns(this.GridDevices);
         frm.WindowShow(MainWindow.currentMainWindow);
     }
-   
+
+    private ClassStaticResoursUserControlDevice resourseCheckBox;
+    private void GridDevices_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        var found2 = this.TryFindResource("ResKey", this.ActualThemeVariant, out var result2);
+        if (result2!=null) resourseCheckBox = result2 as ClassStaticResoursUserControlDevice;
+    }
 }
