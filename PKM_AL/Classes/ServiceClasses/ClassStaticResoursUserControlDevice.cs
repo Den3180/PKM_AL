@@ -1,9 +1,15 @@
 namespace PKM_AL.Classes.ServiceClasses;
+
+/// <summary>
+/// Класс-ресурс для чекбокса в заголовке столбца "Опрос" таблицы "Устройства".
+/// </summary>
     public class ClassStaticResoursUserControlDevice : MyPropertyChanged
     {
         private bool isDevAll;
-        //private bool firstTime = true;
-
+        
+        /// <summary>
+        /// Флаг чекбокса в заголовке столбца "Опрос" таблицы "Устройства".
+        /// </summary>
         public bool IsDevAll
         {
             get=>isDevAll;
@@ -15,11 +21,9 @@ namespace PKM_AL.Classes.ServiceClasses;
                 {
                     foreach (var device in MainWindow.Devices)
                     {
-                        //if (firstTime && device.IsPoll) value = true;
                         device.IsPoll = value;
                     }
                 }
-                //if (firstTime) firstTime = false;
             }
         }
     }
