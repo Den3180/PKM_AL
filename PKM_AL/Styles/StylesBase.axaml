@@ -2,7 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <Border Padding="20">
-            <!-- Add Controls for Previewer Here -->
+            <StackPanel>
+            <Button Content="Button"/>
+            </StackPanel>
         </Border>
     </Design.PreviewWith>
     
