@@ -13,6 +13,7 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Skia;
 using Avalonia.Styling;
+using PKM_AL;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -133,13 +134,13 @@ public class TitleUnit : TextBlock
    {
       if(sender is not MenuItem menuItem) return;
       var tt = Parent as ItemsControl;
-      var grid = tt?.Parent as Grid;
-      var wnd=grid?.Parent as Window;
-      if (wnd == null) return;
+      // var grid = tt?.Parent as Grid;
+      // var wnd=grid?.Parent as Window;
+      // if (wnd == null) return;
       switch (menuItem.Header)
       {
          case "Копировать" :
-            MainViewModel.BufferCopiedOneUnit = new TitleUnit(_settings, Bounds);
+            CanvasViewModel.BufferCopiedOneUnit = new TitleUnit(_settings, Bounds);
             break;
          case "Удалить":
             (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
@@ -150,7 +151,7 @@ public class TitleUnit : TextBlock
             break;
          case "Изменить":
             WindowPropertyTitle propertyMap=new WindowPropertyTitle(_settings);
-            await propertyMap.ShowDialog(wnd);
+            await propertyMap.ShowDialog(MainWindow.currentMainWindow);
             if(propertyMap.Tag is not null) RefreshTitle((SettingsUnitObject)propertyMap.Tag);
             //TODO Поворот надписи.
             break;

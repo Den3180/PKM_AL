@@ -7,7 +7,8 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using TestGrathic.Enums;
+using PKM_AL;
+using PKM_AL.Mnemoscheme.Enums;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -141,13 +142,13 @@ public class PanelUnit : Rectangle
     {
         if(sender is not MenuItem menuItem) return;
         var tt = Parent as ItemsControl;
-        var grid = tt?.Parent as Grid;
-        var wnd=grid?.Parent as Window;
-        if (wnd == null) return;
+        // var grid = tt?.Parent as Grid;
+        // var wnd=grid?.Parent as Window;
+        // if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать" :
-                MainViewModel.BufferCopiedOneUnit = new PanelUnit(Bounds);
+                CanvasViewModel.BufferCopiedOneUnit = new PanelUnit(Bounds);
                 break;
             case "Удалить":
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
@@ -162,7 +163,7 @@ public class PanelUnit : Rectangle
                 if (Fill != null) 
                     _settingsUnitObject.Value.FontBrushUnit = Avalonia.Media.Color.Parse(Fill.ToString() ?? throw new InvalidOperationException());
                 WindowPropertyPanel propertyPanel = new WindowPropertyPanel(_settingsUnitObject.Value);
-                await propertyPanel.ShowDialog(wnd);
+                await propertyPanel.ShowDialog(MainWindow.currentMainWindow);
                 if(propertyPanel.Tag is not null) RefreshTitle((SettingsUnitObject)propertyPanel.Tag);
                 break;
         }

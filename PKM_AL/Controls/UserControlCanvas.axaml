@@ -6,7 +6,7 @@
              xmlns:model="using:TestGrathic.ModelMap"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.UserControlCanvas"
-             x:DataType="vmodel:MainViewModel" 
+             x:DataType="vmodel:CanvasViewModel" 
              x:CompileBindings="True">
      <UserControl.Styles>
                 <!--Шаблон для кнопки-->

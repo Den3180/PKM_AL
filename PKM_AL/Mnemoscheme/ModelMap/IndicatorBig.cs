@@ -10,8 +10,8 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
-using TestGrathic.AbstractUnit;
-using TestGrathic.Enums;
+using PKM_AL;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -26,7 +26,6 @@ public class IndicatorBig : AbstractControl
 
     public IndicatorBig()
     {
-        //_ = new TestCount();
         CreateIndicatorBig();
         DataContext = this; 
     }
@@ -66,13 +65,10 @@ public class IndicatorBig : AbstractControl
     {
         if(sender is not MenuItem menuItem) return;
         var tt = Parent as ItemsControl;
-        var grid = tt?.Parent as Grid;
-        var wnd=grid?.Parent as Window;
-        if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать" :
-                MainViewModel.BufferCopiedOneUnit = new IndicatorBig(Bounds);
+                CanvasViewModel.BufferCopiedOneUnit = new IndicatorBig(Bounds);
                 break;
             case "Удалить":
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
@@ -83,7 +79,7 @@ public class IndicatorBig : AbstractControl
                 break;
             case "Свойства":
                 WindowPopertyIndicatorBig windowPropertyIndicatorBig = new WindowPopertyIndicatorBig();
-                await windowPropertyIndicatorBig.ShowDialog(wnd);
+                await windowPropertyIndicatorBig.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyIndicatorBig.Tag is not null) 
                     RefreshIndicatorSmall((SettingsUnitObject)windowPropertyIndicatorBig.Tag);
                 //TODO Поворот надписи.

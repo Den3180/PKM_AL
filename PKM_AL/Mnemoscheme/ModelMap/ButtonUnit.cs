@@ -16,7 +16,8 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
-using TestGrathic.Enums;
+using PKM_AL;
+using PKM_AL.Mnemoscheme.Enums;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -171,14 +172,14 @@ public class ButtonUnit : Button
     private async void MenuItem_Click(object? sender, RoutedEventArgs e)
     {
         if(sender is not MenuItem menuItem) return;
-        var tt = Parent as ItemsControl;
-        var grid = tt?.Parent as Grid;
-        var wnd=grid?.Parent as Window;
-        if (wnd == null) return;
+         var tt = Parent as ItemsControl;
+        // var grid = tt?.Parent as Grid;
+        // var wnd=grid?.Parent as Window;
+        //if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать":
-                MainViewModel.BufferCopiedOneUnit = new ButtonUnit(Bounds);
+                CanvasViewModel.BufferCopiedOneUnit = new ButtonUnit(Bounds);
                 break;
             case "Удалить":
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
@@ -189,7 +190,7 @@ public class ButtonUnit : Button
                 break;
             case "Свойства":
                 WindowPropertyButton windowPropertyButton = new WindowPropertyButton(_settingsUnitObject.Value);
-                await windowPropertyButton.ShowDialog(wnd);
+                await windowPropertyButton.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyButton.Tag is not null) 
                     RefreshButton((SettingsUnitObject)windowPropertyButton.Tag);
                 //TODO Поворот надписи.

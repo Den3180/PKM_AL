@@ -11,7 +11,8 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
-using TestGrathic.Enums;
+using PKM_AL;
+using PKM_AL.Mnemoscheme.Enums;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -189,13 +190,13 @@ public class ImageUnit : Image
     {
         if(sender is not MenuItem menuItem) return;
         var tt = Parent as ItemsControl;
-        var grid = tt?.Parent as Grid;
-        var wnd=grid?.Parent as Window;
-        if (wnd == null) return;
+        //var grid = tt?.Parent as Grid;
+        //var wnd=grid?.Parent as Window;
+        //if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать" :
-                MainViewModel.BufferCopiedOneUnit=new ImageUnit(Bounds,_enumUnit);
+                CanvasViewModel.BufferCopiedOneUnit=new ImageUnit(Bounds,_enumUnit);
                 break;
             case "Удалить":
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
@@ -208,7 +209,7 @@ public class ImageUnit : Image
                 _settingsUnitObject.Value.WidthUnit = Width;
                 _settingsUnitObject.Value.HeightUnit = Height;
                 WindowImageProperty windowImageProperty = new WindowImageProperty(_settingsUnitObject.Value);
-                await windowImageProperty.ShowDialog(wnd);
+                await windowImageProperty.ShowDialog(MainWindow.currentMainWindow);
                 if(windowImageProperty.Tag is not null) 
                     RefreshImage((SettingsUnitObject)windowImageProperty.Tag);
                 break;

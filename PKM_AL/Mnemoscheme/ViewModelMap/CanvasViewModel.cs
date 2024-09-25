@@ -8,18 +8,18 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using TestGrathic.Enums;
+using PKM_AL.Mnemoscheme.Enums;
 using TestGrathic.ModelMap;
 
 namespace TestGrathic.ViewModelMap;
 
-public sealed class MainViewModel :INotifyPropertyChanged
+public sealed class CanvasViewModel :INotifyPropertyChanged
 {
     public static ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
     public static List<object> BufferСopiedUnits { get; set; } = new();
     public static object? BufferCopiedOneUnit { get; set; }
     
-    public MainViewModel()
+    public CanvasViewModel()
     {
     }
     public void InsertUnit(object obj)

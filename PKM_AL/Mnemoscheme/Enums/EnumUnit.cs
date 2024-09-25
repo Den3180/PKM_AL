@@ -1,4 +1,4 @@
-namespace TestGrathic.Enums;
+namespace PKM_AL.Mnemoscheme.Enums;
 
 public enum EnumUnit
 {

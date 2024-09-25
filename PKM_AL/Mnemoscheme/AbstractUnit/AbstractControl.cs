@@ -3,13 +3,11 @@ using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using TestGrathic.Enums;
-using Tmds.DBus.Protocol;
+using PKM_AL.Mnemoscheme.Enums;
 
-namespace TestGrathic.AbstractUnit;
+namespace PKM_AL.Mnemoscheme.AbstractUnit;
 public abstract class AbstractControl : ContentControl, INotifyPropertyChanged
 {
     protected bool IsBlocked;

@@ -11,8 +11,8 @@ using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Markup.Xaml.MarkupExtensions.CompiledBindings;
 using Avalonia.Media;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using TestGrathic.AbstractUnit;
-using TestGrathic.Enums;
+using PKM_AL;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -59,13 +59,13 @@ public class IndicatorSmall : AbstractControl
     {
         if(sender is not MenuItem menuItem) return;
         var tt = Parent as ItemsControl;
-        var grid = tt?.Parent as Grid;
-        var wnd=grid?.Parent as Window;
-        if (wnd == null) return;
+        // var grid = tt?.Parent as Grid;
+        // var wnd=grid?.Parent as Window;
+        // if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать" :
-                MainViewModel.BufferCopiedOneUnit = new IndicatorSmall(Bounds,SizeUnit);
+                CanvasViewModel.BufferCopiedOneUnit = new IndicatorSmall(Bounds,SizeUnit);
                 break;
             case "Удалить":
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
@@ -77,7 +77,7 @@ public class IndicatorSmall : AbstractControl
             case "Свойства":
                 _settingsUnitObject.Value.FontSizeUnit = _sizeUnit;
                 WindowPropertyIndicatorSmall windowPropertyIndicatorSmall = new WindowPropertyIndicatorSmall(_settingsUnitObject.Value);
-                await windowPropertyIndicatorSmall.ShowDialog(wnd);
+                await windowPropertyIndicatorSmall.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyIndicatorSmall.Tag is not null) 
                     RefreshIndicatorSmall((SettingsUnitObject)windowPropertyIndicatorSmall.Tag);
                 break;

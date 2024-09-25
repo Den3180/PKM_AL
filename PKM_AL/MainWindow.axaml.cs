@@ -258,7 +258,7 @@ namespace PKM_AL
 
             //Блок генерации дерева.
             BuildContentMainTreeItems();
-            MakeTreeViewItem(Groups);
+            MakeTreeViewItem();
 
             //Блок настроек и запуска таймера.
             TimerSec = new DispatcherTimer();
@@ -473,6 +473,9 @@ namespace PKM_AL
         private void BuildContentMainTreeItems()
         {
             ClassGroup d;
+
+            #region [Узел устройств]
+
             //Добаваить узел устройств.
             d = new ClassGroup();
             d.ID = Groups.Count + 1;
@@ -491,8 +494,13 @@ namespace PKM_AL
                     ItemType = ClassItem.eType.Device
                 });
             }
+
             Groups.Add(d);
-            
+
+            #endregion
+
+            #region [Узел мнемосхем] 
+
             //Добавить узел мнемосхем.
             d = new ClassGroup();
             d.ID = Groups.Count + 1;
@@ -507,12 +515,16 @@ namespace PKM_AL
                 {
                     ID = item.ID,
                     NameCh = item.Name,
-                    IconUri = "Resources/design.png",
+                    IconUri = "design.png",
                     Group = d,
                     ItemType = ClassItem.eType.Map
                 });
             }
             Groups.Add(d);
+
+            #endregion
+
+            #region [Узел журналов]
 
             //Добавить узел журналов.
             d = new ClassGroup();
@@ -536,6 +548,10 @@ namespace PKM_AL
                 ItemType = ClassItem.eType.Alarms
             });
             Groups.Add(d);
+
+            #endregion
+
+            #region [Узел сценариев]
 
             //Добавить узел сценариев.
             if (settings.Interface)
@@ -562,6 +578,11 @@ namespace PKM_AL
                 });
                 Groups.Add(d);
             }
+
+                #endregion
+
+            #region [Узел архив]
+
                 //Узел архив.
                 d = new ClassGroup();
                 d.ID = Groups.Count + 1;
@@ -586,14 +607,16 @@ namespace PKM_AL
                     Group = d
                 });
                 Groups.Add(d);
+
+                #endregion
         }
 
         /// <summary>
         /// Построение элементов основного дерева приложения.
         /// </summary>
-        /// <param name="Groups"></param>
+        /// <param></param>
         /// <returns></returns>
-        private void MakeTreeViewItem(ObservableCollection<ClassGroup> Groups)
+        private void MakeTreeViewItem()
         {
             foreach (var group in Groups)
             {
@@ -777,10 +800,10 @@ namespace PKM_AL
     }
     
         /// <summary>
-    /// Выбор элемента дерева.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+        /// Выбор элемента дерева.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TreeView_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
         {
             var currentContent = ContentArea.Content;
@@ -831,6 +854,11 @@ namespace PKM_AL
                     if (currentContent is UserControlArchive) break;
                     ContentArea.Content = new UserControlArchive();
                     StatusMode.Text = "Графики трендов";
+                    break;
+                case ClassItem.eType.Map:
+                    if (currentContent is UserControlCanvas) break;
+                    ContentArea.Content=new UserControlCanvas();
+                    StatusMode.Text = "Мнемосхема";
                     break;
             }
         }
