@@ -6,7 +6,7 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-    <ApplicationIcon>Resources\iconfinder_inventory_categories_44826.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\iconfinder_inventory_categories_44826.ico</ApplicationIcon>
     <Version>2.0.1</Version>
     <AssemblyVersion></AssemblyVersion>
   </PropertyGroup>
@@ -31,7 +31,7 @@
     <PackageReference Include="Spire.XLS" Version="14.3.3" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
-	<AvaloniaResource Include="Resources\**" />
+	<AvaloniaResource Include="Assets\**" />
 	<AvaloniaResource Remove="bin\**" />
   </ItemGroup>
 
@@ -72,6 +72,7 @@
     <None Remove="Resources\TPLogoM.png" />
     <None Remove="Resources\wave.png" />
     <None Remove="bin\**" />
+    <None Remove="Tasks.xlsx" />
   </ItemGroup>
 
 

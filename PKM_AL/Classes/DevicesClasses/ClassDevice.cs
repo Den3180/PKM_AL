@@ -549,7 +549,7 @@ namespace PKM_AL
                 }
             }
             //Изменение маркера на карте.
-            //Bitmap = new BitmapImage(new Uri(@"/Resources/Markers/Marker_gray.png", UriKind.Relative));
+            //Bitmap = new BitmapImage(new Uri(@"/Assets/Markers/Marker_gray.png", UriKind.Relative));
         }
 
         /// <summary>

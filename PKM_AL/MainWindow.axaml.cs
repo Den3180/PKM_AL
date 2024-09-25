@@ -351,9 +351,9 @@ namespace PKM_AL
             else
             {
                 ImageTx.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-grey-32.png")));
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Assets/"+"bullet-grey-32.png")));
                 ImageRx.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-grey-32.png")));
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Assets/"+"bullet-grey-32.png")));
             }
             if (DateTime.Now.Second % 10 == 0)
             {
@@ -402,7 +402,7 @@ namespace PKM_AL
             if (_TxCount > 9999) _TxCount = 0;
             StatusFrames.Text = _TxCount + "/" + _RxCount;
             ImageTx.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Assets/"+"bullet-green-32.png")));
         }
         
         /// <summary>
@@ -414,7 +414,7 @@ namespace PKM_AL
             if (_RxCount > 9999) _RxCount = 0;
             StatusFrames.Text = _TxCount + "/" + _RxCount;
             ImageRx.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-green-32.png")));
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Assets/"+"bullet-green-32.png")));
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace PKM_AL
         private void Modbus_ReceivedNotAnswerEvent()
         {
             ImageRx.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"bullet-red-32.png")));
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Assets/"+"bullet-red-32.png")));
         }
         
         /// <summary>
@@ -458,10 +458,10 @@ namespace PKM_AL
         {
             if (State)
                 Dispatcher.UIThread.Invoke(()=> ImageDB.Source = new Bitmap
-                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"database_green.png"))));
+                    (AssetLoader.Open(new Uri($"avares://{_assembly}/Assets/"+"database_green.png"))));
             else 
                 Dispatcher.UIThread.Invoke(()=> ImageDB.Source = new Bitmap
-                (AssetLoader.Open(new Uri($"avares://{_assembly}/Resources/"+"database_blue.png"))));
+                (AssetLoader.Open(new Uri($"avares://{_assembly}/Assets/"+"database_blue.png"))));
         }
 
         /// <summary>

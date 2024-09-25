@@ -36,7 +36,7 @@ namespace PKM_AL.Classes.ServiceClasses
 
             Image image = new Image()
             {
-                Source = new Bitmap(AssetLoader.Open(new Uri($"avares://{assembly}/Resources/{sourcePath}")))
+                Source = new Bitmap(AssetLoader.Open(new Uri($"avares://{assembly}/Assets/{sourcePath}")))
             };
             stackPanel.Children.Add(image);
             stackPanel.Children.Add(label);

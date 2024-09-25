@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         x:Class="PKM_AL.MainWindow"
         Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized"
-		Icon="/Resources/iconfinder_inventory_categories_44826.ico">
+		Icon="/Assets/iconfinder_inventory_categories_44826.ico">
 	<DockPanel>
 		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="LightGray">
 			<MenuItem Header="Файл">
@@ -96,7 +96,7 @@
 			<TextBlock Grid.Column="0" Name="StatusUser" Text="Пользователь" Margin="10 0 0 0" 
 			           VerticalAlignment="Center"/>
 			<Border Grid.Column="1"/>
-			<Image  Grid.Column="2" Source="Resources\database_blue.png" Name="ImageDB" Height="16" ></Image>
+			<Image  Grid.Column="2" Source="Assets\database_blue.png" Name="ImageDB" Height="16" ></Image>
 			<TextBlock Grid.Column="3" Name="StatusItem" Text="GSM" VerticalAlignment="Center"/>
 			<Border Grid.Column="4"/>
 			<StackPanel Grid.Column="5" Orientation="Horizontal" Margin="3">
@@ -109,8 +109,8 @@
 			<Border Grid.Column="8"/>
 				<TextBlock Grid.Column="9" Name="StatusFrames" Text="0/0" HorizontalAlignment="Center"/>
 			<Border Grid.Column="10"/>
-			<Image Grid.Column="11" Source="Resources/bullet-grey-32.png" Name="ImageTx" ToolTip.Tip="TxD"></Image>
-			<Image Grid.Column="12" Source="Resources/bullet-grey-32.png" Name="ImageRx" ToolTip.Tip="RxD"></Image>
+			<Image Grid.Column="11" Source="Assets/bullet-grey-32.png" Name="ImageTx" ToolTip.Tip="TxD"></Image>
+			<Image Grid.Column="12" Source="Assets/bullet-grey-32.png" Name="ImageRx" ToolTip.Tip="RxD"></Image>
 			<Border Grid.Column="13"/>
 			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
                            Margin="5 0 10 0" HorizontalAlignment="Left"/>
