@@ -1,0 +1,66 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vmodel="using:TestGrathic.ViewMap"
+        xmlns:converter="using:TestGrathic.ServiceClasses"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+        x:Class="TestGrathic.ViewMap.WindowPropertyTitle"
+        Title="Свойства" WindowStartupLocation="CenterOwner" SystemDecorations="None"
+        SizeToContent="WidthAndHeight" CanResize="False"
+        x:DataType="vmodel:WindowPropertyTitle"
+        x:CompileBindings="True">
+        <Window.Styles>
+                <StyleInclude Source="/Styles/StylesWindowProperty.axaml" />
+        </Window.Styles>
+        <Window.Resources>
+                <converter:ConverterTitleText x:Key="ConverterTitleText"/>
+        </Window.Resources>
+        <Border BorderBrush="Gray" BorderThickness="1">
+                <Grid RowDefinitions="Auto,*">
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                                <Image Source="/Assets/iconfinder_inventory_categories_44826.ico" Height="16" />
+                                <TextBlock Text="Надпись" FontSize="15" FontWeight="Regular" Margin="5 0 0 0"/>
+                        </StackPanel>
+                        <Border Grid.Row="1" Margin="5 5 5 5" BorderBrush="LightGray" BorderThickness="1">
+                                <Grid Margin="10" RowDefinitions="35,35,35,35,35,*" ColumnDefinitions="100,*">
+                                       <TextBlock Grid.Row="0" Grid.Column="0" Classes="T1" Text="Цвет:" FontSize="14"/>
+                                       <ColorPicker Name="Dicker" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"
+                                                    ColorSpectrumComponents="SaturationValue" Margin="5"
+                                                    Color="{Binding FontColor}"
+                                                    Width="80"/>
+                                       <TextBlock Classes="T1" Grid.Row="1" Grid.Column="0" Text="Текст:"/>
+                                       <TextBox Name="Text" Grid.Row="1" Grid.Column="1" 
+                                                Text="{Binding TextTitle}"
+                                                />
+                                       <TextBlock Classes="T1" Grid.Row="2" Grid.Column="0" Text="Шрифт:"/>
+                                       <ComboBox Name="TextFamily" Grid.Row="2" Grid.Column="1"
+                                                 ItemsSource="{Binding FontFamilyList}" 
+                                                 SelectedItem="{Binding FontStyleTitle}"
+                                                 Width="{Binding ElementName=Text,Path=Width}"/>
+                                       <TextBlock Classes="T1" Grid.Row="3" Grid.Column="0" Text="Начертание:"/>
+                                       <ComboBox Name="TextWeight" Grid.Row="3" Grid.Column="1"
+                                                 ItemsSource="{Binding FontWeightList}"
+                                                 SelectedItem="{Binding FontWeightTitle}"
+                                                 Width="{Binding ElementName=Text,Path=Width}"/>
+                                       <TextBlock Classes="T1" Grid.Row="4" Grid.Column="0" Text="Размер:"/>
+                                       <ComboBox Name="TextSize" Grid.Row="4" Grid.Column="1"
+                                                 ItemsSource="{Binding FontSizeList}"
+                                                 SelectedItem="{Binding FontSizeTitle,  
+                                                 Converter={StaticResource ConverterTitleText}
+                                                 }"
+                                                 Width="80"/>
+                                       <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" 
+                                                   Margin="0 20 0 0" HorizontalAlignment="Center">
+                                               <Button Name="SaveBtn" Content="Принять" Height="30" Width="100"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                                       Click="Button_Click"/>
+                                               <Button Content="Отмена" IsCancel="True" Height="30" Width="100"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Bottom" IsDefault="True" 
+                                                       Click="Button_Click"/>
+                                       </StackPanel>
+                                </Grid>
+                        </Border>
+                </Grid>
+        </Border>
+</Window>

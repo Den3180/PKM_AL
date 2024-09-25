@@ -28,6 +28,7 @@ using Google.Protobuf.Compiler;
 using PKM_AL.Classes;
 using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
+using PKM_AL.Mnemoscheme;
 using PKM_AL.Windows;
 
 namespace PKM_AL
@@ -62,6 +63,7 @@ namespace PKM_AL
         public static ObservableCollection<ClassLink> Links;
         public static ObservableCollection<ClassMessage> Messages;
         public static ObservableCollection<ClassReportData> Reports;
+        public static ObservableCollection<ClassMap> Maps;
 
         public static ClassSettings settings;
 
@@ -236,6 +238,7 @@ namespace PKM_AL
             QueueCommands = new Queue<ClassCommand>();
             Links = new ObservableCollection<ClassLink>(DB.LinksLoad());
             serverClass = new ServerClass();
+            Maps = new ObservableCollection<ClassMap>(DB.MapsLoad());
             
             //Отображение IP сервера и порта приема сообщений от ММСД.
             StatusIP.Text = serverClass.GetIPHost();
@@ -486,6 +489,27 @@ namespace PKM_AL
                     IconUri = "hardware.png",
                     Group = d,
                     ItemType = ClassItem.eType.Device
+                });
+            }
+            Groups.Add(d);
+            
+            //Добавить узел мнемосхем.
+            d = new ClassGroup();
+            d.ID = Groups.Count + 1;
+            d.Name = "Мнемосхемы";
+            d.IconUri = "folders_explorer.png";
+            d.GroupType = ClassGroup.eType.Map;
+            //Добавить подузел мнемосхем.
+            //Если в коллекции мнемосхем есть хоть одна мнемосхема.
+            foreach (ClassMap item in Maps)
+            {
+                d.SubGroups.Add(new ClassItem()
+                {
+                    ID = item.ID,
+                    NameCh = item.Name,
+                    IconUri = "Resources/design.png",
+                    Group = d,
+                    ItemType = ClassItem.eType.Map
                 });
             }
             Groups.Add(d);

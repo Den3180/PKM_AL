@@ -8,6 +8,7 @@ using Microsoft.Data.Sqlite;
 using MsBox.Avalonia.Enums;
 using PKM_AL;
 using PKM_AL.Classes;
+using PKM_AL.Mnemoscheme;
 
 
 namespace PKM
@@ -1572,5 +1573,87 @@ namespace PKM
             return true;
         }
         #endregion
+        
+         #region [Maps]
+
+ public virtual List<ClassMap> MapsLoad()
+ {
+     List<ClassMap> lst = new List<ClassMap>();
+     SqliteCommand cmd = conn.CreateCommand();
+     cmd.CommandText = "SELECT rowid, * FROM map ORDER BY name";
+     using (SqliteDataReader reader = cmd.ExecuteReader())
+     {
+         while (reader.Read())
+         {
+             ClassMap obj = new ClassMap();
+             obj.ID = Convert.ToInt32(reader["rowid"]);
+             obj.Name = (string)reader["name"];
+             if (reader["json"] != DBNull.Value)
+             {
+                 string json = Convert.ToString(reader["json"]);
+                 obj.ForeColor = ClassMap.GetObject(json).ForeColor;
+             }
+             lst.Add(obj);
+         }
+     }
+     return lst;
+ }
+
+ public virtual ClassMap MapLoad(int ID)
+ {
+     ClassMap obj = new ClassMap();
+     SqliteCommand cmd = conn.CreateCommand();
+     cmd.CommandText = "SELECT rowid, * FROM map WHERE rowid = @ID";
+     cmd.Parameters.AddWithValue("@ID", ID);
+     using (SqliteDataReader reader = cmd.ExecuteReader())
+     {
+         reader.Read();
+         obj.ID = Convert.ToInt32(reader["rowid"]);
+         obj.Name = (string)reader["name"];
+         if (reader["json"] != DBNull.Value)
+         {
+             string json = Convert.ToString(reader["json"]);
+             obj.ForeColor = ClassMap.GetObject(json).ForeColor;
+         }
+     }
+     return obj;
+ }
+
+ public virtual bool MapAdd(ClassMap obj)
+ {
+     SqliteCommand cmd = conn.CreateCommand();
+     cmd.CommandText = "INSERT INTO map (name, json) VALUES(@Name, @Json)";
+     cmd.Parameters.AddWithValue("@Name", obj.Name);
+     cmd.Parameters.AddWithValue("@Json", obj.GetJson());
+     try { cmd.ExecuteNonQuery(); }
+     catch { return false; }
+     cmd.CommandText = "SELECT last_insert_rowid()";
+     obj.ID = Convert.ToInt32(cmd.ExecuteScalar());
+     return true;
+ }
+
+ public virtual bool MapEdit(ClassMap obj)
+ {
+     SqliteCommand cmd = conn.CreateCommand();
+     cmd.CommandText = "UPDATE map SET name = @Name, json = @Json WHERE rowid = @ID";
+     cmd.Parameters.AddWithValue("@Name", obj.Name);
+     cmd.Parameters.AddWithValue("@Json", obj.GetJson());
+     cmd.Parameters.AddWithValue("@ID", obj.ID);
+     try { cmd.ExecuteNonQuery(); }
+     catch { return false; }
+     return true;
+ }
+
+ public virtual bool MapDel(int ID)
+ {
+     SqliteCommand cmd = conn.CreateCommand();
+     cmd.CommandText = "DELETE FROM map WHERE rowid = @ID";
+     cmd.Parameters.AddWithValue("@ID", ID);
+     try { cmd.ExecuteNonQuery(); }
+     catch { return false; }
+     return true;
+ }
+
+ #endregion
     }
 }

@@ -1,0 +1,179 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vmodel="clr-namespace:TestGrathic.ViewModelMap"
+             xmlns:model="using:TestGrathic.ModelMap"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PKM_AL.Controls.UserControlCanvas"
+             x:DataType="vmodel:MainViewModel" 
+             x:CompileBindings="True">
+     <UserControl.Styles>
+                <!--Шаблон для кнопки-->
+                <Style Selector=":is(model|ButtonUnit)">
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="model:ButtonUnit">
+                                                <ControlTemplate.Content>
+                                                        <Image x:DataType="model:ButtonUnit"
+                                                                Margin="5" Source="{CompiledBinding Image.Source}">
+                                                        </Image> 
+                                                </ControlTemplate.Content>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect Color="DimGray" BlurRadius="2"/>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+                <!--Шаблон большого индикатора с названием параметра-->
+                <Style Selector=":is(model|IndicatorBig)">
+                        <Setter Property="MaxWidth" Value="200"/>
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                <ControlTemplate TargetType="model:IndicatorBig">
+                                        <ControlTemplate.Content>
+                                                <Border x:DataType="model:IndicatorBig"
+                                                                BorderBrush="Black" 
+                                                                BorderThickness="2">
+                                                        <Border.Background>
+                                                                <LinearGradientBrush StartPoint="10%,0%" EndPoint="100%,100%">
+                                                                        <GradientStop Offset="0" Color="LightBlue"/>
+                                                                        <GradientStop Offset="0.5" Color="SeaShell"/>
+                                                                        <GradientStop Offset="1" Color="LightBlue"/>
+                                                                </LinearGradientBrush>
+                                                        </Border.Background>
+                                                                <StackPanel>
+                                                                        <Border Margin="3" 
+                                                                                BorderBrush="Black" 
+                                                                                BorderThickness="1"
+                                                                                Background="DarkSlateBlue"
+                                                                                Width="65" Height="30">
+                                                                                <Border Background="CornflowerBlue" Margin="2" VerticalAlignment="Center">
+                                                                                <TextBlock 
+                                                                                        VerticalAlignment="Center"
+                                                                                        HorizontalAlignment="Center"
+                                                                                        FontWeight="Bold"
+                                                                                        Text="{CompiledBinding ParamValue}"
+                                                                                        FontSize="16"
+                                                                                        Padding="2"
+                                                                                        Foreground="Beige"/>
+                                                                                </Border>
+                                                                        </Border>
+                                                                        <TextBlock 
+                                                                                VerticalAlignment="Center"
+                                                                                HorizontalAlignment="Center"
+                                                                                FontSize="14"
+                                                                                TextWrapping="Wrap"
+                                                                                Margin="3" 
+                                                                                TextAlignment="Center"
+                                                                                Text="{CompiledBinding ParamName}">
+                                                                        </TextBlock>
+                                                                </StackPanel>
+                                                </Border>
+                                        </ControlTemplate.Content>
+                                </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect Color="DimGray" BlurRadius="2"/>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+                <!--Шаблон малого индикатора-->
+                <Style Selector=":is(model|IndicatorSmall)">
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="model:IndicatorSmall">
+                                              <Border x:DataType="model:IndicatorSmall"
+                                                                BorderBrush="Black" 
+                                                                BorderThickness="1.5">
+                                                        <Border.Background>
+                                                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                                                                        <GradientStop Offset="0" Color="RoyalBlue"/>
+                                                                        <GradientStop Offset="0.5" Color="RoyalBlue"/>
+                                                                        <GradientStop Offset="1" Color="DodgerBlue"/>
+                                                                </LinearGradientBrush>
+                                                        </Border.Background>
+                                                        <TextBlock 
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        FontWeight="Bold"
+                                                        Text="0.00"
+                                                        FontSize="{Binding SizeUnit}"
+                                                        Padding="2"
+                                                        Foreground="Gainsboro">
+                                                                <TextBlock.Effect>
+                                                                        <DropShadowEffect/>
+                                                                </TextBlock.Effect>
+                                                        </TextBlock>
+                                                </Border>  
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect Color="DimGray" BlurRadius="2"/>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+        </UserControl.Styles>
+         <!--Основное поле мнемосхемы-->
+        <Grid RowDefinitions="*,Auto">
+                <ItemsControl Grid.Row="0" Name="ItesControl" ItemsSource="{Binding GraphicUnitObjects}">
+                        <ItemsControl.ItemsPanel>
+                                <!--Шаблон поля мнемосхемы-->
+                                <ItemsPanelTemplate>
+                                        <Canvas Name="Canvas" Background="LightBlue">
+                                                <Canvas.ContextMenu>
+                                                        <ContextMenu>
+                                                                <MenuItem Header="Новая мнемосхема"/>
+                                                                <MenuItem Header="Загрузить мнемосхему"/>
+                                                                <MenuItem Header="Сохранить мнемосхему"/>
+                                                                <MenuItem Header="Вставить" 
+                                                                          Command="{Binding  InsertUnit}"/>
+                                                                <MenuItem Header="Удалить все" 
+                                                                          Command="{Binding DeleteAllShape}"/>
+                                                                <Separator Foreground="Black"/>
+                                                                <MenuItem Header="Объекты">
+                                                                        <MenuItem Header="Надпись" 
+                                                                                  Command="{Binding AddShape}"
+                                                                                  CommandParameter="0"/>
+                                                                        <MenuItem Header="Изображение">
+                                                                                <MenuItem Header="КИП" Command="{Binding AddShape}"
+                                                                                        CommandParameter="2">
+                                                                                        <MenuItem.Icon>
+                                                                                                <Image Width="75" Height="405" Source="/Assets/kip2.png" />
+                                                                                        </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Header="Труба" Command="{Binding AddShape}"
+                                                                                        CommandParameter="3">
+                                                                                        <MenuItem.Icon>
+                                                                                                <Image Width="32" Height="32" Source="/Assets/Pipe Blue Horz.png" />
+                                                                                        </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                        </MenuItem>
+                                                                        <MenuItem Header="Панель"
+                                                                                  Command="{Binding AddShape}"
+                                                                                  CommandParameter="1"/>
+                                                                        <MenuItem Header="Индикатор" Command="{Binding AddShape}"
+                                                                                  CommandParameter="4"/>
+                                                                        <MenuItem Header="Составной индикатор" Command="{Binding AddShape}"
+                                                                                  CommandParameter="5"/>
+                                                                        <MenuItem Header="Кнопка" Command="{Binding AddShape}"
+                                                                                  CommandParameter="6"/>
+                                                                </MenuItem>
+                                                        </ContextMenu>
+                                                </Canvas.ContextMenu>
+                                        </Canvas>
+                                </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                </ItemsControl>
+        </Grid>
+    
+    
+</UserControl>
