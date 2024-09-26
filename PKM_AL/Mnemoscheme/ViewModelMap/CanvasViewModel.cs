@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using PKM_AL.Mnemoscheme;
 using PKM_AL.Mnemoscheme.Enums;
 using TestGrathic.ModelMap;
 
@@ -18,6 +19,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     public static ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
     public static List<object> BufferСopiedUnits { get; set; } = new();
     public static object? BufferCopiedOneUnit { get; set; }
+    public ClassMap Map { get; set; } = new ClassMap();
     
     public CanvasViewModel()
     {
@@ -57,6 +59,12 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     public void DeleteAllShape(object obj)
     {
         GraphicUnitObjects.Clear();
+    }
+
+    public void SaveMnemoScheme()
+    {
+        Map.Widgets.Add(GraphicUnitObjects);
+        var ss = Map.GetJson();
     }
 
     /// <summary>

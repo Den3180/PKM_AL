@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using Avalonia.Media;
 using PKM;
@@ -12,26 +13,36 @@ public class ClassMap
 {
     [XmlIgnore] 
     public int ID { get; set; }
- 
+    
     public string Name { get; set; }
  
     public Color ForeColor { get; set; }
 
-    //public List<ClassWidget> Widgets { get; set; }
+   // [JsonIgnore]
+    public List<object> Widgets { get; set; }
 
     public ClassMap()
     {
         ID = 0;
         Name = "";
         ForeColor = Colors.Blue;
-        //Widgets = new List<ClassWidget>();
+        Widgets = new List<object>();
     }
 
     public string GetJson()
     {
-        JsonSerializerOptions options = new JsonSerializerOptions();
+        JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            //DefaultIgnoreCondition=JsonIgnoreCondition.WhenWritingNull
+        };
         options.IgnoreReadOnlyProperties = true;
+        options.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+        options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        
         string s = JsonSerializer.Serialize<ClassMap>(this, options);
+        
+        ClassMap obj = JsonSerializer.Deserialize<ClassMap>(s);
+        
         return s;
     }
 

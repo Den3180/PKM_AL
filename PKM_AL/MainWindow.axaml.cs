@@ -622,6 +622,39 @@ namespace PKM_AL
             {
                 TreeViewItem item = new TreeViewItem();
                 item.Header =ClassBuildControl.MakeContentTreeViewItem(group);
+                if (group.Name.Equals("Мнемосхемы"))
+                {
+                    item.ContextMenu = new ContextMenu();
+                    MenuItem mi = new MenuItem()
+                    {
+                        Header = "Новая мнемосхема..."
+                    };
+                    mi.Click += (s, e) =>
+                    {
+                        ContentArea.Content = new UserControlCanvas();
+                        StatusMode.Text = "Мнемосхема";
+                    };
+                    item.ContextMenu.Items.Add(mi);
+                    
+                    mi = new MenuItem()
+                    {
+                        Header = "Загрузить..."
+                    };
+                    mi.Click += (s, e) =>
+                    {
+                    };
+                    item.ContextMenu.Items.Add(mi);
+                    
+                    mi = new MenuItem()
+                    {
+                        Header = "Удалить..."
+                    };
+                    mi.Click += (s, e) =>
+                    {
+                    };
+                    item.ContextMenu.Items.Add(mi);
+                    
+                }
                 foreach (var subGr in group.SubGroups)
                 {
                     item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(subGr));

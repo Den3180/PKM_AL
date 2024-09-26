@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -35,7 +36,7 @@ public class ImageUnit : Image
     private readonly Lazy<SettingsUnitObject> _settingsUnitObject = new Lazy<SettingsUnitObject>();
     private readonly Dictionary<EnumUnit,string> _unitsPath = new Dictionary<EnumUnit, string>
     {
-        { EnumUnit.ImageKip ,"kip2.png"},
+        { EnumUnit.ImageKip ,"kip3.png"},
         { EnumUnit.ImagePipe ,"Pipe Yellow Horz.png"}
     };
     public ImageUnit(EnumUnit enumUnit)

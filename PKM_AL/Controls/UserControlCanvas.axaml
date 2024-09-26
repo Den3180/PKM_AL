@@ -133,7 +133,8 @@
                                                         <ContextMenu>
                                                                 <MenuItem Header="Новая мнемосхема"/>
                                                                 <MenuItem Header="Загрузить мнемосхему"/>
-                                                                <MenuItem Header="Сохранить мнемосхему"/>
+                                                                <MenuItem Header="Сохранить мнемосхему"
+                                                                          Command="{Binding SaveMnemoScheme}"/>
                                                                 <MenuItem Header="Вставить" 
                                                                           Command="{Binding  InsertUnit}"/>
                                                                 <MenuItem Header="Удалить все" 
