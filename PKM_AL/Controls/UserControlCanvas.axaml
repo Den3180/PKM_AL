@@ -4,18 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vmodel="clr-namespace:TestGrathic.ViewModelMap"
              xmlns:model="using:TestGrathic.ModelMap"
+             xmlns:modelMap="clr-namespace:PKM_AL.Mnemoscheme.ModelMap"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.UserControlCanvas"
              x:DataType="vmodel:CanvasViewModel" 
              x:CompileBindings="True">
      <UserControl.Styles>
                 <!--Шаблон для кнопки-->
-                <Style Selector=":is(model|ButtonUnit)">
+                <Style Selector=":is(modelMap|ButtonUnit)">
                         <Setter Property="Template">
                                 <Setter.Value>
-                                        <ControlTemplate TargetType="model:ButtonUnit">
+                                        <ControlTemplate TargetType="modelMap:ButtonUnit">
                                                 <ControlTemplate.Content>
-                                                        <Image x:DataType="model:ButtonUnit"
+                                                        <Image x:DataType="modelMap:ButtonUnit"
                                                                 Margin="5" Source="{CompiledBinding Image.Source}">
                                                         </Image> 
                                                 </ControlTemplate.Content>
@@ -29,14 +30,14 @@
                         </Setter>
                 </Style>
                 <!--Шаблон большого индикатора с названием параметра-->
-                <Style Selector=":is(model|IndicatorBig)">
+                <Style Selector=":is(modelMap|IndicatorBig)">
                         <Setter Property="MaxWidth" Value="200"/>
                         <Setter Property="MinWidth" Value="100"/>
                         <Setter Property="Template">
                                 <Setter.Value>
-                                <ControlTemplate TargetType="model:IndicatorBig">
+                                <ControlTemplate TargetType="modelMap:IndicatorBig">
                                         <ControlTemplate.Content>
-                                                <Border x:DataType="model:IndicatorBig"
+                                                <Border x:DataType="modelMap:IndicatorBig"
                                                                 BorderBrush="Black" 
                                                                 BorderThickness="2">
                                                         <Border.Background>

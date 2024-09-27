@@ -13,6 +13,7 @@ using Avalonia.Media;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PKM_AL;
 using PKM_AL.Mnemoscheme.AbstractUnit;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -21,8 +22,9 @@ namespace TestGrathic.ModelMap;
 
 public class IndicatorSmall : AbstractControl
 {
-    private readonly Lazy<SettingsUnitObject> _settingsUnitObject = new Lazy<SettingsUnitObject>();
+    private readonly Lazy<ClassWidget> _settingsUnitObject = new Lazy<ClassWidget>();
     private double _sizeUnit;
+    private ClassWidget _settings;
     public BindingObject BindingObject { get; set; }
 
     public double SizeUnit
@@ -50,6 +52,7 @@ public class IndicatorSmall : AbstractControl
 
     private void CreateIndicatorD()
     {
+        _settings = new ClassWidget();
         _sizeUnit = 24;
         ContextMenu=CreateContextMenu();
         DataContext = this; 
@@ -59,9 +62,6 @@ public class IndicatorSmall : AbstractControl
     {
         if(sender is not MenuItem menuItem) return;
         var tt = Parent as ItemsControl;
-        // var grid = tt?.Parent as Grid;
-        // var wnd=grid?.Parent as Window;
-        // if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать" :
@@ -79,12 +79,12 @@ public class IndicatorSmall : AbstractControl
                 WindowPropertyIndicatorSmall windowPropertyIndicatorSmall = new WindowPropertyIndicatorSmall(_settingsUnitObject.Value);
                 await windowPropertyIndicatorSmall.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyIndicatorSmall.Tag is not null) 
-                    RefreshIndicatorSmall((SettingsUnitObject)windowPropertyIndicatorSmall.Tag);
+                    RefreshIndicatorSmall((ClassWidget)windowPropertyIndicatorSmall.Tag);
                 break;
         }
     }
 
-    private void RefreshIndicatorSmall(SettingsUnitObject tag)
+    private void RefreshIndicatorSmall(ClassWidget tag)
     {
         SizeUnit = tag.FontSizeUnit;
         if (tag.BindingObjectUnit != null) BindingObject = tag.BindingObjectUnit;

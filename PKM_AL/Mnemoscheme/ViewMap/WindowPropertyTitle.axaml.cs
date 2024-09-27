@@ -12,6 +12,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 
 
@@ -19,7 +20,7 @@ namespace TestGrathic.ViewMap;
 
 public partial class WindowPropertyTitle : Window, INotifyPropertyChanged
 {
-    private readonly SettingsUnitObject? _settingsUnitObject;
+    private readonly ClassWidget? _settingsUnitObject;
     public IFontCollection? FontFamilyList { get; set; }
     public List<string> FontSizeList { get; set; } = new List<string>() { 
         "8", "9", "10", "11", "12", "13", "14", "16", 
@@ -37,7 +38,7 @@ public partial class WindowPropertyTitle : Window, INotifyPropertyChanged
     {
         InitializeComponent();
     }
-    public WindowPropertyTitle(SettingsUnitObject? settingsUnitObject):this()
+    public WindowPropertyTitle(ClassWidget? settingsUnitObject):this()
     {
         _settingsUnitObject = settingsUnitObject;
         //Источники данных комбобоксов.

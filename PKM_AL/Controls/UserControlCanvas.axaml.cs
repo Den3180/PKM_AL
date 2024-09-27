@@ -12,5 +12,12 @@ public partial class UserControlCanvas : UserControl
     {
         InitializeComponent();
         DataContext = Dispatcher.UIThread.Invoke(()=> new CanvasViewModel());
+        DetachedFromVisualTree += UserControl_Detached;
+    }
+
+    private void UserControl_Detached(object sender, VisualTreeAttachmentEventArgs e)
+    {
+       CanvasViewModel.GraphicUnitObjects.Clear();
+       var tt= CanvasViewModel.Map;
     }
 }

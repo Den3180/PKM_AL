@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 
 namespace TestGrathic.ViewMap;
@@ -15,7 +16,7 @@ public partial class WindowImageProperty : Window, INotifyPropertyChanged
     private double _widthUnit = 0;
     private double _heightUnit = 0;
     
-    private readonly Lazy<SettingsUnitObject> _settingsUnitObject=new Lazy<SettingsUnitObject>();
+    private readonly Lazy<ClassWidget> _settingsUnitObject=new Lazy<ClassWidget>();
 
     public double ScaleUnit
     {
@@ -55,10 +56,10 @@ public partial class WindowImageProperty : Window, INotifyPropertyChanged
         InitializeComponent();
     }
 
-    public WindowImageProperty(SettingsUnitObject settingsUnitObject) : this()
+    public WindowImageProperty(ClassWidget classWidget) : this()
     {
-        _widthUnit = settingsUnitObject.WidthUnit;
-        _heightUnit = settingsUnitObject.HeightUnit;
+        _widthUnit = classWidget.WidthUnit;
+        _heightUnit = classWidget.HeightUnit;
         DataContext = this;
     }
 

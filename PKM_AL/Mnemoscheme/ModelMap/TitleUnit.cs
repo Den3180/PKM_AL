@@ -2,39 +2,33 @@
 using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Controls.Templates;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Markup.Xaml.Converters;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
-using Avalonia.Media.Immutable;
-using Avalonia.Skia;
-using Avalonia.Styling;
-using PKM_AL;
-using TestGrathic.ServiceClasses;
+using Avalonia.VisualTree;
+using PKM_AL.Mnemoscheme.Enums;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
 
-namespace TestGrathic.ModelMap;
+namespace PKM_AL.Mnemoscheme.ModelMap;
 
 public class TitleUnit : TextBlock
 {
    
    private Point  _pos;
    private bool _isPressed;
-   private readonly SettingsUnitObject? _settings;
+   private ClassWidget _settings;
    private bool _isBlocked;
 
    public TitleUnit()
    {
-      _settings = new SettingsUnitObject();
+      _settings = new ClassWidget();
+      MainWindow.Widgets.Add(_settings);
       CreateTitle();
    }
 
-   public TitleUnit(SettingsUnitObject? settings, Rect bounds): this()
+   public TitleUnit(ClassWidget? settings, Rect bounds): this()
    {
        Canvas.SetLeft(this, bounds.X+50);
        Canvas.SetTop(this, bounds.Y+50);
@@ -52,18 +46,24 @@ public class TitleUnit : TextBlock
       FontWeight = FontWeight.Bold;
       Foreground = Brushes.ForestGreen;
       Text = "Текст";
+      //Настройка класса настроек(ClassWiget).
       _settings.FontStyleUnit = FontFamily;
       _settings.FontSizeUnit = FontSize;
       _settings.FontWeightUnit = FontWeight;
       _settings.TextUnit = Text;
+      _settings.PositionX = Bounds.X;
+      _settings.PositionY = Bounds.Y;
+      _settings.UnitType = EnumUnit.Title;
+      _settings.Id = CanvasViewModel.Map.GuidID;
       try
       {
-         _settings.FontBrushUnit = Color.Parse(Foreground.ToString());
+         _settings.FontBrushUnit = Color.Parse(Foreground.ToString() ?? string.Empty);
       }
       catch (FormatException e)
       {
          _settings.FontBrushUnit=Colors.Black;
       }
+      //Создание контекстного меню.
       ContextMenu=CreateContextMenu();
       PointerPressed += PointerPressed_TitleUnit;
       PointerMoved += PointerMoved_TitleUnit;
@@ -134,9 +134,6 @@ public class TitleUnit : TextBlock
    {
       if(sender is not MenuItem menuItem) return;
       var tt = Parent as ItemsControl;
-      // var grid = tt?.Parent as Grid;
-      // var wnd=grid?.Parent as Window;
-      // if (wnd == null) return;
       switch (menuItem.Header)
       {
          case "Копировать" :
@@ -152,13 +149,13 @@ public class TitleUnit : TextBlock
          case "Изменить":
             WindowPropertyTitle propertyMap=new WindowPropertyTitle(_settings);
             await propertyMap.ShowDialog(MainWindow.currentMainWindow);
-            if(propertyMap.Tag is not null) RefreshTitle((SettingsUnitObject)propertyMap.Tag);
+            if(propertyMap.Tag is not null) RefreshTitle((ClassWidget)propertyMap.Tag);
             //TODO Поворот надписи.
             break;
       }
    }
 
-   private void RefreshTitle(SettingsUnitObject? settings)
+   private void RefreshTitle(ClassWidget settings)
    {
       FontFamily=settings.FontStyleUnit == null ? FontFamily : settings.FontStyleUnit;
       FontSize=double.IsNaN(settings.FontSizeUnit) ? FontSize : settings.FontSizeUnit;
@@ -166,7 +163,7 @@ public class TitleUnit : TextBlock
       Text = settings.TextUnit;
       Foreground = Brush.Parse(settings.FontBrushUnit.ToString());
    }
-
+   
    /// <summary>
    /// Отпускаем кнопку мыши.
    /// </summary>
@@ -193,6 +190,8 @@ public class TitleUnit : TextBlock
       var topPosPanel = Bounds.Y; 
       Canvas.SetLeft(title, leftPosPanel+ deltaPos.X);
       Canvas.SetTop(title, topPosPanel+deltaPos.Y);
+      _settings.PositionX = Bounds.X;
+      _settings.PositionY = Bounds.Y;
    }
 
    /// <summary>

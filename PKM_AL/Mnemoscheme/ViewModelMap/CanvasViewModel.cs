@@ -8,8 +8,10 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using PKM_AL;
 using PKM_AL.Mnemoscheme;
 using PKM_AL.Mnemoscheme.Enums;
+using PKM_AL.Mnemoscheme.ModelMap;
 using TestGrathic.ModelMap;
 
 namespace TestGrathic.ViewModelMap;
@@ -19,10 +21,11 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     public static ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
     public static List<object> BufferСopiedUnits { get; set; } = new();
     public static object? BufferCopiedOneUnit { get; set; }
-    public ClassMap Map { get; set; } = new ClassMap();
+    public static ClassMap Map { get; set; } = new ClassMap();
     
     public CanvasViewModel()
     {
+        MainWindow.Maps.Add(Map);
     }
     public void InsertUnit(object obj)
     {
@@ -44,8 +47,8 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             EnumUnit.ImageKip=>new ImageUnit(enumUnit),
             EnumUnit.ImagePipe=>new ImageUnit(enumUnit),
             EnumUnit.Panel=>new PanelUnit(),
-            EnumUnit.IndicatorDigital=> new IndicatorSmall(),
-            EnumUnit.IndicatorAnalog=> new IndicatorBig(),
+            EnumUnit.IndicatorSmall=> new IndicatorSmall(),
+            EnumUnit.IndicatorBig=> new IndicatorBig(),
             _=>new ButtonUnit()
         };
         GraphicUnitObjects.Add(newUnit);
@@ -61,10 +64,18 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         GraphicUnitObjects.Clear();
     }
 
+    /// <summary>
+    /// Сохранить мнемосхему.
+    /// </summary>
     public void SaveMnemoScheme()
     {
-        Map.Widgets.Add(GraphicUnitObjects);
+    //     foreach (var unit in GraphicUnitObjects)
+    //     {
+    //         var yy=unit.GetType();
+    //     }
+        Map.Widgets.AddRange(MainWindow.Widgets);
         var ss = Map.GetJson();
+        //MainWindow.DB.MapAdd(Map);
     }
 
     /// <summary>

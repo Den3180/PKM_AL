@@ -13,22 +13,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows;
-using Avalonia.Platform.Storage;
-using Microsoft.Extensions.Logging;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Base;
-using Avalonia;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Google.Protobuf.Compiler;
 using PKM_AL.Classes;
 using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
 using PKM_AL.Mnemoscheme;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Windows;
 
 namespace PKM_AL
@@ -64,6 +58,7 @@ namespace PKM_AL
         public static ObservableCollection<ClassMessage> Messages;
         public static ObservableCollection<ClassReportData> Reports;
         public static ObservableCollection<ClassMap> Maps;
+        public static ObservableCollection<ClassWidget> Widgets;
 
         public static ClassSettings settings;
 
@@ -239,6 +234,7 @@ namespace PKM_AL
             Links = new ObservableCollection<ClassLink>(DB.LinksLoad());
             serverClass = new ServerClass();
             Maps = new ObservableCollection<ClassMap>(DB.MapsLoad());
+            Widgets = new ObservableCollection<ClassWidget>();
             
             //Отображение IP сервера и порта приема сообщений от ММСД.
             StatusIP.Text = serverClass.GetIPHost();

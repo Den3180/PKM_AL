@@ -993,6 +993,12 @@ namespace PKM
                 if (!Update7()) return false;
                 InfoEdit(7);
             }
+
+            // if (Version < 8)
+            // {
+            //     if (!Update8()) return false;
+            //     InfoEdit(8);
+            // }
             return true;
         }
 
@@ -1171,6 +1177,24 @@ namespace PKM
                 cmd.CommandText = "CREATE TABLE vei(daterec TEXT, namelpu TEXT, typeobj TEXT, location TEXT, km TEXT, typeflange TEXT, " +
                     "placement TEXT, datebegin TEXT, manufactory TEXT, datemade TEXT, serial TEXT, dnar INTEGER, pmax INTEGER, " +
                     "status TEXT, kip TEXT, spark TEXT, bsz TEXT)";
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
+            transaction.Commit();
+            return true;
+        }
+
+        private bool Update8()
+        {
+            var transaction = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            try
+            {
+                cmd.CommandText = "ALTER TABLE map ADD guidID TEXT";
                 cmd.ExecuteNonQuery();
             }
             catch

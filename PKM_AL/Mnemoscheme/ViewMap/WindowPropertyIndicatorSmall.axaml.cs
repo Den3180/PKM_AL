@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 
 namespace TestGrathic.ViewMap;
@@ -23,10 +24,10 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
         InitializeComponent();
     }
     
-    public WindowPropertyIndicatorSmall(SettingsUnitObject settingsUnitObject):this()
+    public WindowPropertyIndicatorSmall(ClassWidget classWidget):this()
     {
         //TODO Привязать объект привязки, когда будет интеграция в СОТКУ.
-        _currentSize = settingsUnitObject.FontSizeUnit;
+        _currentSize = classWidget.FontSizeUnit;
         DataContext = this;
     }
     
@@ -46,7 +47,7 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
         Button button = sender as Button ?? throw new InvalidOperationException();
         if (button.Name is "SaveBtn")
         {
-            var settingsUnitObject = new SettingsUnitObject
+            var settingsUnitObject = new ClassWidget
             {
                 FontSizeUnit = _currentSize,
                 BindingObjectUnit = new BindingObject()

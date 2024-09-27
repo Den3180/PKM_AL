@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Layout;
-using Avalonia.Media;
-using Avalonia.Threading;
-using PKM_AL;
 using PKM_AL.Mnemoscheme.AbstractUnit;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
 
-namespace TestGrathic.ModelMap;
+namespace PKM_AL.Mnemoscheme.ModelMap;
 
 public class IndicatorBig : AbstractControl
 {
     private decimal _paramValue;
     private string _paramName = "Параметр, ед.изм.";
+    private ClassWidget _settings;
     public BindingObject? BindingObject { get; set; }
 
     public IndicatorBig()
@@ -32,6 +24,7 @@ public class IndicatorBig : AbstractControl
 
     private void CreateIndicatorBig()
     {
+        _settings = new ClassWidget();
         ContextMenu=CreateContextMenu(); 
     }
 
@@ -81,13 +74,13 @@ public class IndicatorBig : AbstractControl
                 WindowPopertyIndicatorBig windowPropertyIndicatorBig = new WindowPopertyIndicatorBig();
                 await windowPropertyIndicatorBig.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyIndicatorBig.Tag is not null) 
-                    RefreshIndicatorSmall((SettingsUnitObject)windowPropertyIndicatorBig.Tag);
+                    RefreshIndicatorSmall((ClassWidget)windowPropertyIndicatorBig.Tag);
                 //TODO Поворот надписи.
                 break;
         }
     }
 
-    private void RefreshIndicatorSmall(SettingsUnitObject tag)
+    private void RefreshIndicatorSmall(ClassWidget tag)
     {
         if (tag.BindingObjectUnit != null)
         {

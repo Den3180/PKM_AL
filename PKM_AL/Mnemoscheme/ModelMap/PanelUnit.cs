@@ -9,6 +9,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using PKM_AL;
 using PKM_AL.Mnemoscheme.Enums;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -24,7 +25,8 @@ public class PanelUnit : Rectangle
     private EnumTypeTransform _typeTransform;
     private double _startwidth;
     private double _startheight;
-    private readonly Lazy<SettingsUnitObject> _settingsUnitObject = new Lazy<SettingsUnitObject>();
+    private ClassWidget _settings;
+    private readonly Lazy<ClassWidget> _settingsUnitObject = new Lazy<ClassWidget>();
    
     public PanelUnit()
     {
@@ -46,6 +48,7 @@ public class PanelUnit : Rectangle
     /// <param name="height"></param>
     private void CreateRectangle(double widht = 200, double height = 300D)
     {
+        _settings = new ClassWidget();
         _startwidth=widht;
         _startheight = height;
         Width = widht;
@@ -142,9 +145,6 @@ public class PanelUnit : Rectangle
     {
         if(sender is not MenuItem menuItem) return;
         var tt = Parent as ItemsControl;
-        // var grid = tt?.Parent as Grid;
-        // var wnd=grid?.Parent as Window;
-        // if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать" :
@@ -164,12 +164,12 @@ public class PanelUnit : Rectangle
                     _settingsUnitObject.Value.FontBrushUnit = Avalonia.Media.Color.Parse(Fill.ToString() ?? throw new InvalidOperationException());
                 WindowPropertyPanel propertyPanel = new WindowPropertyPanel(_settingsUnitObject.Value);
                 await propertyPanel.ShowDialog(MainWindow.currentMainWindow);
-                if(propertyPanel.Tag is not null) RefreshTitle((SettingsUnitObject)propertyPanel.Tag);
+                if(propertyPanel.Tag is not null) RefreshTitle((ClassWidget)propertyPanel.Tag);
                 break;
         }
     }
 
-    private void RefreshTitle(SettingsUnitObject propertyPanelTag)
+    private void RefreshTitle(ClassWidget propertyPanelTag)
     {
         Width = propertyPanelTag.WidthUnit;
         Height = propertyPanelTag.HeightUnit;

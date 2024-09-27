@@ -5,7 +5,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using Avalonia.Media;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM;
+using TestGrathic.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme;
 
@@ -14,35 +16,39 @@ public class ClassMap
     [XmlIgnore] 
     public int ID { get; set; }
     
+    public Guid GuidID { get; set; }
+    
     public string Name { get; set; }
  
     public Color ForeColor { get; set; }
+    
+    public string ForeColorString { get; set; }
 
    // [JsonIgnore]
-    public List<object> Widgets { get; set; }
+    public List<ClassWidget> Widgets { get; set; }
+    private int count = 0;
 
     public ClassMap()
     {
         ID = 0;
+        GuidID=Guid.NewGuid();
         Name = "";
         ForeColor = Colors.Blue;
-        Widgets = new List<object>();
+        ForeColorString = ForeColor.ToString();
+        Widgets = new List<ClassWidget>();
+        count++;
     }
 
     public string GetJson()
     {
-        JsonSerializerOptions options = new JsonSerializerOptions()
+        JsonSerializerOptions options = new JsonSerializerOptions
         {
-            //DefaultIgnoreCondition=JsonIgnoreCondition.WhenWritingNull
+            IgnoreReadOnlyProperties = true
         };
-        options.IgnoreReadOnlyProperties = true;
-        options.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
-        options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-        
+        //options.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+        //options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         string s = JsonSerializer.Serialize<ClassMap>(this, options);
-        
         ClassMap obj = JsonSerializer.Deserialize<ClassMap>(s);
-        
         return s;
     }
 

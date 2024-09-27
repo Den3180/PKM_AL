@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 
 namespace TestGrathic.ViewMap;
@@ -54,7 +55,7 @@ public partial class WindowPropertyPanel : Window, INotifyPropertyChanged
         InitializeComponent();
     }
 
-    public WindowPropertyPanel(SettingsUnitObject? settingsUnitObject) : this()
+    public WindowPropertyPanel(ClassWidget? settingsUnitObject) : this()
     {
         if (settingsUnitObject != null)
         {
@@ -70,7 +71,7 @@ public partial class WindowPropertyPanel : Window, INotifyPropertyChanged
         Button button = sender as Button ?? throw new InvalidOperationException();
         if (button.Name is "SaveBtn")
         {
-            Tag = new SettingsUnitObject()
+            Tag = new ClassWidget()
             {
                 WidthUnit = _widthPan,
                 HeightUnit = _heightPan,

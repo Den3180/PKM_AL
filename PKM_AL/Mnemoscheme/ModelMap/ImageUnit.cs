@@ -14,6 +14,7 @@ using Avalonia.Platform;
 using Avalonia.VisualTree;
 using PKM_AL;
 using PKM_AL.Mnemoscheme.Enums;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
@@ -33,7 +34,8 @@ public class ImageUnit : Image
     private double _koef;
     private EnumUnit _enumUnit;
     private bool _isBlocked;
-    private readonly Lazy<SettingsUnitObject> _settingsUnitObject = new Lazy<SettingsUnitObject>();
+    private ClassWidget _settings;
+    private readonly Lazy<ClassWidget> _settingsUnitObject = new Lazy<ClassWidget>();
     private readonly Dictionary<EnumUnit,string> _unitsPath = new Dictionary<EnumUnit, string>
     {
         { EnumUnit.ImageKip ,"kip3.png"},
@@ -57,6 +59,7 @@ public class ImageUnit : Image
 
     private void CreateImageUnit()
     {
+        _settings = new ClassWidget();
         Stretch = Stretch.Uniform;
         VerticalAlignment = VerticalAlignment.Stretch;
         HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -212,12 +215,12 @@ public class ImageUnit : Image
                 WindowImageProperty windowImageProperty = new WindowImageProperty(_settingsUnitObject.Value);
                 await windowImageProperty.ShowDialog(MainWindow.currentMainWindow);
                 if(windowImageProperty.Tag is not null) 
-                    RefreshImage((SettingsUnitObject)windowImageProperty.Tag);
+                    RefreshImage((ClassWidget)windowImageProperty.Tag);
                 break;
         }
     }
 
-    private void RefreshImage(SettingsUnitObject tag)
+    private void RefreshImage(ClassWidget tag)
     {
         if (!tag.ScaleUnit.Equals(1))
         {

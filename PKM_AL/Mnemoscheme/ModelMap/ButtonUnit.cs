@@ -5,24 +5,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
-using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Styling;
-using PKM_AL;
 using PKM_AL.Mnemoscheme.Enums;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using TestGrathic.ViewModelMap;
 
-namespace TestGrathic.ModelMap;
+namespace PKM_AL.Mnemoscheme.ModelMap;
 
 public class ButtonUnit : Button
 {
@@ -31,7 +25,8 @@ public class ButtonUnit : Button
      private bool _isFlag;
      private EnumTypeTransform _typeTransform = EnumTypeTransform.None;
      private Point _pos;
-     private readonly Lazy<SettingsUnitObject> _settingsUnitObject = new Lazy<SettingsUnitObject>();
+     private ClassWidget _settings;
+     private readonly Lazy<ClassWidget> _settingsUnitObject = new Lazy<ClassWidget>();
      
      private Image _image=new Image()
      {
@@ -41,6 +36,7 @@ public class ButtonUnit : Button
      
     public ButtonUnit()
     {
+        _settings = new ClassWidget();
         HorizontalContentAlignment = HorizontalAlignment.Center;
         VerticalContentAlignment = VerticalAlignment.Center;
         Height = 35;
@@ -173,9 +169,6 @@ public class ButtonUnit : Button
     {
         if(sender is not MenuItem menuItem) return;
          var tt = Parent as ItemsControl;
-        // var grid = tt?.Parent as Grid;
-        // var wnd=grid?.Parent as Window;
-        //if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать":
@@ -192,13 +185,13 @@ public class ButtonUnit : Button
                 WindowPropertyButton windowPropertyButton = new WindowPropertyButton(_settingsUnitObject.Value);
                 await windowPropertyButton.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyButton.Tag is not null) 
-                    RefreshButton((SettingsUnitObject)windowPropertyButton.Tag);
+                    RefreshButton((ClassWidget)windowPropertyButton.Tag);
                 //TODO Поворот надписи.
                 break;
         }
     }
 
-    private void RefreshButton(SettingsUnitObject tag)
+    private void RefreshButton(ClassWidget tag)
     {
         Width *= tag.ScaleUnit;
         Height *= tag.ScaleUnit;
