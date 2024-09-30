@@ -3,9 +3,9 @@ using Avalonia;
 using Avalonia.Controls;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
-using TestGrathic.ViewModelMap;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 

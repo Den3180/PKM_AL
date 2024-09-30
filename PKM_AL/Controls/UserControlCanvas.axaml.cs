@@ -1,8 +1,10 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-using TestGrathic.ViewModelMap;
+using PKM_AL.Mnemoscheme;
+using PKM_AL.Mnemoscheme.ViewModelMap;
 
 namespace PKM_AL.Controls;
 
@@ -11,13 +13,12 @@ public partial class UserControlCanvas : UserControl
     public UserControlCanvas()
     {
         InitializeComponent();
-        DataContext = Dispatcher.UIThread.Invoke(()=> new CanvasViewModel());
-        DetachedFromVisualTree += UserControl_Detached;
+        DataContext = new CanvasViewModel();
     }
 
-    private void UserControl_Detached(object sender, VisualTreeAttachmentEventArgs e)
+    public UserControlCanvas(ClassMap map)
     {
-       CanvasViewModel.GraphicUnitObjects.Clear();
-       var tt= CanvasViewModel.Map;
+        InitializeComponent();
+        DataContext = new CanvasViewModel(map);
     }
 }

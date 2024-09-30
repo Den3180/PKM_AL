@@ -47,7 +47,7 @@ public partial class WindowPropertyTitle : Window, INotifyPropertyChanged
         //Входящий размер шрифта.
         _fontSizeTitle = _settingsUnitObject.FontSizeUnit;
         //Входящий цвет шрифта.
-        _fontColor = _settingsUnitObject.FontBrushUnit;
+        _fontColor = Color.Parse(_settingsUnitObject.FontBrushUnit);
         //Входящий текст.
         _textTitle= string.IsNullOrEmpty(_settingsUnitObject.TextUnit) ? "Текст" : _settingsUnitObject.TextUnit;
         //Входящий стиль шрифта.
@@ -116,9 +116,9 @@ public partial class WindowPropertyTitle : Window, INotifyPropertyChanged
         if (button.Name is "SaveBtn")
         {
          _settingsUnitObject.TextUnit = _textTitle;
-         _settingsUnitObject.FontBrushUnit = _fontColor;
+         _settingsUnitObject.FontBrushUnit = _fontColor.ToString();
          _settingsUnitObject.FontSizeUnit = _fontSizeTitle;
-         _settingsUnitObject.FontStyleUnit = _fontStyle;
+         _settingsUnitObject.FontStyleUnit = _fontStyle?.ToString();
          _settingsUnitObject.FontWeightUnit = _fontWeight;
          Tag=_settingsUnitObject;
         }

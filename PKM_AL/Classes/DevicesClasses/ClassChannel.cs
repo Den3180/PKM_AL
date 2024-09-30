@@ -6,6 +6,8 @@ using System.Xml.Serialization;
 using Avalonia.Media;
 using Avalonia.Threading;
 using PKM_AL.Classes;
+using PKM_AL.Mnemoscheme.Enums;
+using PKM_AL.Mnemoscheme.ModelMap;
 
 namespace PKM_AL
 {
@@ -197,6 +199,17 @@ namespace PKM_AL
                 {
                     if (State != EnumState.Unknown) State = EnumState.Unknown;
                     OnPropertyChanged(nameof(ColorLineChannel));
+                }
+
+                if (MainWindow.MnemoUnit.Count > 0)
+                {
+                    foreach (var widget in MainWindow.MnemoUnit )
+                    {
+                        if (Address == 24 && widget.GetTypeUnit()==EnumUnit.Title)
+                        {
+                            Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value));
+                        } 
+                    }
                 }
             }
         }

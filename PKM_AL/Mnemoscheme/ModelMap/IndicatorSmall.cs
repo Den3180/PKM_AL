@@ -14,9 +14,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PKM_AL;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
-using TestGrathic.ViewModelMap;
 
 namespace TestGrathic.ModelMap;
 

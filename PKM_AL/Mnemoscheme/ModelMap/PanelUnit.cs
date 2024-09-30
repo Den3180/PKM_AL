@@ -10,9 +10,9 @@ using Avalonia.Media;
 using PKM_AL;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
-using TestGrathic.ViewModelMap;
 using Color = System.Drawing.Color;
 
 namespace TestGrathic.ModelMap;
@@ -161,7 +161,7 @@ public class PanelUnit : Rectangle
                 _settingsUnitObject.Value.HeightUnit = Height;
                 _settingsUnitObject.Value.WidthUnit = Width;
                 if (Fill != null) 
-                    _settingsUnitObject.Value.FontBrushUnit = Avalonia.Media.Color.Parse(Fill.ToString() ?? throw new InvalidOperationException());
+                    _settingsUnitObject.Value.FontBrushUnit = Fill.ToString() ?? Brushes.Black.ToString();
                 WindowPropertyPanel propertyPanel = new WindowPropertyPanel(_settingsUnitObject.Value);
                 await propertyPanel.ShowDialog(MainWindow.currentMainWindow);
                 if(propertyPanel.Tag is not null) RefreshTitle((ClassWidget)propertyPanel.Tag);

@@ -23,9 +23,9 @@ public class ClassMap
     public Color ForeColor { get; set; }
     
     public string ForeColorString { get; set; }
-
-   // [JsonIgnore]
+   
     public List<ClassWidget> Widgets { get; set; }
+    
     private int count = 0;
 
     public ClassMap()
@@ -60,17 +60,24 @@ public class ClassMap
 
     public bool SaveProfile(string FileName)
     {
-        TextWriter writer = new StreamWriter(FileName);
-        XmlSerializer serializer = new XmlSerializer(typeof(ClassMap));
-        serializer.Serialize(writer, this);
-        writer.Close();
+        try
+        {
+            using TextWriter writer = new StreamWriter(FileName);
+            XmlSerializer serializer = new XmlSerializer(typeof(ClassMap));
+            serializer.Serialize(writer, this);
+        }
+        catch (Exception e)
+        {
+            //TODO Окно ошибки.
+            return false;
+        }
         return true;
     }
 
     public static ClassMap Load(string FileName)
     {
         ClassMap map = null;
-        TextReader reader = new StreamReader(FileName);
+        using TextReader reader = new StreamReader(FileName);
         XmlSerializer serializer = new XmlSerializer(typeof(ClassMap));
         try
         {
@@ -78,6 +85,7 @@ public class ClassMap
         }
         catch (Exception Ex)
         {
+            //TODO Окно ошибки.
             ClassLog.Write(Ex.Message);
         }
         return map;

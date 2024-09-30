@@ -2,31 +2,50 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Reflection;
+using System.IO;
 using System.Runtime.CompilerServices;
-using Avalonia.Controls;
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
-using PKM_AL;
-using PKM_AL.Mnemoscheme;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ModelMap;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 using TestGrathic.ModelMap;
 
-namespace TestGrathic.ViewModelMap;
+namespace PKM_AL.Mnemoscheme.ViewModelMap;
 
 public sealed class CanvasViewModel :INotifyPropertyChanged
 {
-    public static ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
+    public ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
+    // public static ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
     public static List<object> BufferСopiedUnits { get; set; } = new();
     public static object? BufferCopiedOneUnit { get; set; }
-    public static ClassMap Map { get; set; } = new ClassMap();
-    
+    private ClassMap Map { get; set; } = new ClassMap();
+
     public CanvasViewModel()
     {
-        MainWindow.Maps.Add(Map);
+        //В конструкторе все сущности проверять на null
+        //необходимо для работы графического предварительного просмотра.
+        if (MainWindow.MnemoUnit != null)
+        {
+             if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
+             if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
+             if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
+        }
     }
+
+    public CanvasViewModel(ClassMap map):this()
+    {
+        Map = map;
+        MainWindow.Maps.Add(map);
+        foreach (var widget in Map.Widgets)
+        {
+            AddLoadShape(widget);
+        }
+    }
+    
+    /// <summary>
+    /// Вставить юнит.
+    /// </summary>
+    /// <param name="obj"></param>
     public void InsertUnit(object obj)
     {
         if(BufferCopiedOneUnit == null) return;
@@ -43,7 +62,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         EnumUnit enumUnit = (EnumUnit)Convert.ToInt32(obj);
         object newUnit = enumUnit switch
         {
-            EnumUnit.Title=>new TitleUnit(),
+            EnumUnit.Title=>new TitleUnit(Map),
             EnumUnit.ImageKip=>new ImageUnit(enumUnit),
             EnumUnit.ImagePipe=>new ImageUnit(enumUnit),
             EnumUnit.Panel=>new PanelUnit(),
@@ -52,7 +71,25 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             _=>new ButtonUnit()
         };
         GraphicUnitObjects.Add(newUnit);
+        MainWindow.MnemoUnit.Add((IUnitService)newUnit);
     }
+    
+    public void AddLoadShape(ClassWidget widget){
+        EnumUnit enumUnit = widget.UnitType;
+        object newUnit = enumUnit switch
+        {
+            EnumUnit.Title=>new TitleUnit(Map,widget),
+            EnumUnit.ImageKip=>new ImageUnit(enumUnit),
+            EnumUnit.ImagePipe=>new ImageUnit(enumUnit),
+            EnumUnit.Panel=>new PanelUnit(),
+            EnumUnit.IndicatorSmall=> new IndicatorSmall(),
+            EnumUnit.IndicatorBig=> new IndicatorBig(),
+            _=>new ButtonUnit()
+        };
+        GraphicUnitObjects.Add(newUnit);
+        MainWindow.MnemoUnit.Add((IUnitService)newUnit);
+    }
+    
 
     /// <summary>
     /// Очистить форму. 
@@ -69,12 +106,10 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     /// </summary>
     public void SaveMnemoScheme()
     {
-    //     foreach (var unit in GraphicUnitObjects)
-    //     {
-    //         var yy=unit.GetType();
-    //     }
-        Map.Widgets.AddRange(MainWindow.Widgets);
-        var ss = Map.GetJson();
+         //TODO на наличие директории мнемосхем,сохранять по имени мнемосхемы
+        //var ss = Map.GetJson();
+        Map.SaveProfile("MNEMO_SCHEME.sch");
+        
         //MainWindow.DB.MapAdd(Map);
     }
 

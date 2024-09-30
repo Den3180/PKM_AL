@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vmodel="clr-namespace:TestGrathic.ViewModelMap"
              xmlns:model="using:TestGrathic.ModelMap"
              xmlns:modelMap="clr-namespace:PKM_AL.Mnemoscheme.ModelMap"
+             xmlns:vmodel="clr-namespace:PKM_AL.Mnemoscheme.ViewModelMap"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.UserControlCanvas"
              x:DataType="vmodel:CanvasViewModel" 
@@ -125,7 +125,7 @@
         </UserControl.Styles>
          <!--Основное поле мнемосхемы-->
         <Grid RowDefinitions="*,Auto">
-                <ItemsControl Grid.Row="0" Name="ItesControl" ItemsSource="{Binding GraphicUnitObjects}">
+                <ItemsControl Grid.Row="0" Name="ItemsControl" ItemsSource="{Binding GraphicUnitObjects}">
                         <ItemsControl.ItemsPanel>
                                 <!--Шаблон поля мнемосхемы-->
                                 <ItemsPanelTemplate>

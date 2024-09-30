@@ -22,6 +22,7 @@ using PKM_AL.Classes;
 using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
 using PKM_AL.Mnemoscheme;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Windows;
 
@@ -47,6 +48,7 @@ namespace PKM_AL
         public static ClassUser User;
         public static ServerClass serverClass;
 
+        public static ObservableCollection<IUnitService> MnemoUnit;
         public static ObservableCollection<ClassGroup> Groups;
         public static ObservableCollection<ClassDevice> Devices;
         public static ObservableCollection<ClassChannel> Channels;
@@ -235,6 +237,7 @@ namespace PKM_AL
             serverClass = new ServerClass();
             Maps = new ObservableCollection<ClassMap>(DB.MapsLoad());
             Widgets = new ObservableCollection<ClassWidget>();
+            MnemoUnit = new ObservableCollection<IUnitService>();
             
             //Отображение IP сервера и порта приема сообщений от ММСД.
             StatusIP.Text = serverClass.GetIPHost();
@@ -638,6 +641,9 @@ namespace PKM_AL
                     };
                     mi.Click += (s, e) =>
                     {
+                        var map= ClassMap.Load("MNEMO_SCHEME.sch");
+                        ContentArea.Content = new UserControlCanvas(map);
+                        StatusMode.Text = "Мнемосхема";
                     };
                     item.ContextMenu.Items.Add(mi);
                     

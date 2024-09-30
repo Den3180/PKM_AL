@@ -1,73 +1,101 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.VisualTree;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ViewMap;
-using TestGrathic.ViewModelMap;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 
-public class TitleUnit : TextBlock
+public class TitleUnit : TextBlock, IUnitService
 {
    
    private Point  _pos;
    private bool _isPressed;
-   private ClassWidget _settings;
+   private ClassWidget _stateWidget;
    private bool _isBlocked;
+   private ClassMap _map;
+   private EnumUnit _enumUnit = EnumUnit.Title;
 
-   public TitleUnit()
+   public TitleUnit(ClassMap map, ClassWidget stateWidget=null)
    {
-      _settings = new ClassWidget();
-      MainWindow.Widgets.Add(_settings);
-      CreateTitle();
+      _map = map;
+      if (stateWidget != null)
+      {
+         _stateWidget = stateWidget;
+         CreateTitleLoad();
+      }
+      else
+      {
+         _stateWidget = new ClassWidget()
+         {
+            GuidId = _map.GuidID
+         };
+         _map.Widgets.Add(_stateWidget);
+         CreateTitleNew();
+      }
+      ContextMenu=CreateContextMenu();
+      PointerPressed += PointerPressed_TitleUnit;
+      PointerMoved += PointerMoved_TitleUnit;
+      PointerReleased += PointerReleased_TitleUnit;
+      MainWindow.Widgets.Add(_stateWidget);
    }
 
-   public TitleUnit(ClassWidget? settings, Rect bounds): this()
+   public TitleUnit(ClassWidget? stateWidget, Rect bounds, ClassMap map): this(map)
    {
        Canvas.SetLeft(this, bounds.X+50);
        Canvas.SetTop(this, bounds.Y+50);
-      _settings = settings;
-      RefreshTitle(settings);
+      _stateWidget = stateWidget;
+      RefreshTitle(stateWidget);
    }
 
    /// <summary>
    /// Создание надписи с настройками по умолчанию.
    /// </summary>
-   private void CreateTitle()
+   private void CreateTitleNew()
    {
       FontFamily = new FontFamily("Arial");
       FontSize = 36;
       FontWeight = FontWeight.Bold;
-      Foreground = Brushes.ForestGreen;
+      Foreground = Brushes.Black;
       Text = "Текст";
       //Настройка класса настроек(ClassWiget).
-      _settings.FontStyleUnit = FontFamily;
-      _settings.FontSizeUnit = FontSize;
-      _settings.FontWeightUnit = FontWeight;
-      _settings.TextUnit = Text;
-      _settings.PositionX = Bounds.X;
-      _settings.PositionY = Bounds.Y;
-      _settings.UnitType = EnumUnit.Title;
-      _settings.Id = CanvasViewModel.Map.GuidID;
-      try
-      {
-         _settings.FontBrushUnit = Color.Parse(Foreground.ToString() ?? string.Empty);
-      }
-      catch (FormatException e)
-      {
-         _settings.FontBrushUnit=Colors.Black;
-      }
-      //Создание контекстного меню.
-      ContextMenu=CreateContextMenu();
-      PointerPressed += PointerPressed_TitleUnit;
-      PointerMoved += PointerMoved_TitleUnit;
-      PointerReleased += PointerReleased_TitleUnit;
+      CreateWidgetObject();
+   }
+
+   /// <summary>
+   /// Создать надпись при загрузке из файла.
+   /// </summary>
+   private void CreateTitleLoad()
+   {
+      FontFamily = new FontFamily(_stateWidget.FontStyleUnit);
+      FontSize = _stateWidget.FontSizeUnit;
+      FontWeight = _stateWidget.FontWeightUnit; 
+      Text = _stateWidget.TextUnit ;
+      _stateWidget.UnitType = _enumUnit;
+      Foreground = Brush.Parse(_stateWidget.FontBrushUnit);
+      Canvas.SetLeft(this, _stateWidget.PositionX);
+      Canvas.SetTop(this, _stateWidget.PositionY);
+   }
+
+   private void CreateWidgetObject()
+   {
+      _stateWidget.FontStyleUnit = FontFamily.ToString();
+      _stateWidget.FontSizeUnit = FontSize;
+      _stateWidget.FontWeightUnit = FontWeight;
+      _stateWidget.TextUnit = Text;
+      _stateWidget.PositionX = Bounds.X;
+      _stateWidget.PositionY =Bounds.Y;
+      _stateWidget.UnitType = _enumUnit;
+      _stateWidget.FontBrushUnit = Foreground != null ? Foreground.ToString(): Brushes.Black.ToString();
    }
 
    /// <summary>
@@ -137,17 +165,19 @@ public class TitleUnit : TextBlock
       switch (menuItem.Header)
       {
          case "Копировать" :
-            CanvasViewModel.BufferCopiedOneUnit = new TitleUnit(_settings, Bounds);
+            CanvasViewModel.BufferCopiedOneUnit = new TitleUnit(_stateWidget, Bounds,_map);
             break;
          case "Удалить":
             (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
+            MainWindow.MnemoUnit.Remove(this);
+            _map.Widgets.Remove(_stateWidget);
             break;
          case "Закрепить":
             _isBlocked = !_isBlocked;
             ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
             break;
          case "Изменить":
-            WindowPropertyTitle propertyMap=new WindowPropertyTitle(_settings);
+            WindowPropertyTitle propertyMap=new WindowPropertyTitle(_stateWidget);
             await propertyMap.ShowDialog(MainWindow.currentMainWindow);
             if(propertyMap.Tag is not null) RefreshTitle((ClassWidget)propertyMap.Tag);
             //TODO Поворот надписи.
@@ -157,11 +187,12 @@ public class TitleUnit : TextBlock
 
    private void RefreshTitle(ClassWidget settings)
    {
-      FontFamily=settings.FontStyleUnit == null ? FontFamily : settings.FontStyleUnit;
+      FontFamily= new FontFamily(settings.FontStyleUnit);
       FontSize=double.IsNaN(settings.FontSizeUnit) ? FontSize : settings.FontSizeUnit;
       FontWeight = settings.FontWeightUnit;
       Text = settings.TextUnit;
       Foreground = Brush.Parse(settings.FontBrushUnit.ToString());
+      CreateWidgetObject();
    }
    
    /// <summary>
@@ -190,8 +221,9 @@ public class TitleUnit : TextBlock
       var topPosPanel = Bounds.Y; 
       Canvas.SetLeft(title, leftPosPanel+ deltaPos.X);
       Canvas.SetTop(title, topPosPanel+deltaPos.Y);
-      _settings.PositionX = Bounds.X;
-      _settings.PositionY = Bounds.Y;
+      //Запись текущего положения.
+      _stateWidget.PositionX = Bounds.X;
+      _stateWidget.PositionY = Bounds.Y;
    }
 
    /// <summary>
@@ -228,4 +260,13 @@ public class TitleUnit : TextBlock
       }
    }
 
+   public EnumUnit GetTypeUnit()
+   {
+      return _enumUnit;
+   }
+
+   public void SetValue(decimal value)
+   {
+      Text = value.ToString(CultureInfo.InvariantCulture);
+   }
 }

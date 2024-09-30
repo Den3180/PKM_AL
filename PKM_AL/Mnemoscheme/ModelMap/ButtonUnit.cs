@@ -12,9 +12,9 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
-using TestGrathic.ViewModelMap;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 

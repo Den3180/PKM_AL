@@ -61,7 +61,7 @@ public partial class WindowPropertyPanel : Window, INotifyPropertyChanged
         {
             _widthPan = settingsUnitObject.WidthUnit;
             _heightPan = settingsUnitObject.HeightUnit;
-            _colorPan = settingsUnitObject.FontBrushUnit;
+            _colorPan = Color.Parse(settingsUnitObject.FontBrushUnit);
         }
         DataContext = this;
     }
@@ -75,7 +75,7 @@ public partial class WindowPropertyPanel : Window, INotifyPropertyChanged
             {
                 WidthUnit = _widthPan,
                 HeightUnit = _heightPan,
-                FontBrushUnit = _colorPan
+                FontBrushUnit = _colorPan.ToString()
             };
         }
         Close();

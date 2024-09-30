@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TestGrathic.ServiceClasses;
+﻿namespace PKM_AL.Mnemoscheme.ServiceClasses;
 
 public class BindingObject
 {
