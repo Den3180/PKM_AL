@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -122,12 +123,14 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     /// <summary>
     /// Сохранить мнемосхему.
     /// </summary>
-    public void SaveMnemoScheme()
+    public async void SaveMnemoScheme()
     {
         //TODO на наличие директории мнемосхем,сохранять по имени мнемосхемы
         //var ss = Map.GetJson();
-        Map.SaveProfile(@"SaveMaps/MNEMO_SCHEME.sch");
-        //MainWindow.DB.MapAdd(Map);
+        if(MainWindow.currentMainWindow==null) return;
+         var path= await ClassDialogWindows.SaveDialogSampleAsync
+             (MainWindow.currentMainWindow, MainWindow.MapsPath,"MNEMO_SCHEME","sch" );
+         if(!string.IsNullOrEmpty(path))  Map.SaveProfile(path);
     }
 
     /// <summary>

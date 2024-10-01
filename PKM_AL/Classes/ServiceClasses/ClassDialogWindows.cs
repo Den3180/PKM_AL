@@ -169,34 +169,34 @@ namespace PKM_AL.Classes.ServiceClasses
         }
         
         
-        public static string SaveDialogSampleAsync(Window owner)
+        public static async Task<string> SaveDialogSampleAsync(Window owner, string startLocation="", 
+            string fileName="file", string ext="xml")
         {
-            Task<IStorageFile> files;
-            using (var source = new CancellationTokenSource())
+            var topLevel = TopLevel.GetTopLevel(owner);
+            if (topLevel == null) return string.Empty;
+            var res= await topLevel.StorageProvider.TryGetFolderFromPathAsync(startLocation);
+            try
             {
-                var topLevel = TopLevel.GetTopLevel(owner);
-                
-                files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-                {
-                    Title = "Сохранить",
-                    DefaultExtension = "xml",
-                    ShowOverwritePrompt = true,
-                    SuggestedFileName = "device",
-                    FileTypeChoices = new List<FilePickerFileType>()
+                var file = await topLevel.StorageProvider.SaveFilePickerAsync(
+                    new FilePickerSaveOptions
                     {
-                        new FilePickerFileType("XML") { Patterns=new[] { "*.xml" } },
-                        new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
-                    }
-                });
-                files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-                Dispatcher.UIThread.MainLoop(source.Token);
+                        Title = "Сохранить",
+                        DefaultExtension = ext,
+                        ShowOverwritePrompt = true,
+                        SuggestedFileName = fileName,
+                        FileTypeChoices = new List<FilePickerFileType>()
+                        {
+                            new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } },
+                            new FilePickerFileType("XML") { Patterns=new[] { "*.xml" } }
+                        },
+                        SuggestedStartLocation = res
+                    }); 
+                return file?.Path.LocalPath;
             }
-            var dialogResult = files.Result;
-            if (!string.IsNullOrEmpty(dialogResult?.Name))
+            catch(Exception e)
             {
-                return dialogResult?.Path.LocalPath;
+                return string.Empty;
             }
-            return string.Empty;
         }
     }
 }
