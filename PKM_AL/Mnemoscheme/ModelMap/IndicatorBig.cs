@@ -6,6 +6,7 @@ using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
+using WindowPopertyIndicatorBig = PKM_AL.Mnemoscheme.ViewMap.WindowPopertyIndicatorBig;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 

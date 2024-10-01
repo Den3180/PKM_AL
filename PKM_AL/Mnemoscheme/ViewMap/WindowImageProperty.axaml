@@ -4,11 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vmodel="using:TestGrathic.ViewMap"
         xmlns:service="clr-namespace:TestGrathic.ServiceClasses"
+        xmlns:viewMap="clr-namespace:PKM_AL.Mnemoscheme.ViewMap"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="TestGrathic.ViewMap.WindowImageProperty"
+        x:Class="PKM_AL.Mnemoscheme.ViewMap.WindowImageProperty"
         Title="WindowImageProperty"  WindowStartupLocation="CenterOwner" SystemDecorations="None"
         SizeToContent="WidthAndHeight" CanResize="False"
-        x:DataType="vmodel:WindowImageProperty"
+        x:DataType="viewMap:WindowImageProperty"
         x:CompileBindings="True">
         <Window.Styles>
                 <StyleInclude Source="/Styles/StylesWindowProperty.axaml" />

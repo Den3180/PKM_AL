@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="240"
-        x:Class="PKM_AL.WindowDB"
+        x:Class="PKM_AL.Windows.WindowDB"
         Title="База данных" SizeToContent="Height" Width="380" WindowStartupLocation="CenterScreen" 
 		CanResize="False" ShowInTaskbar="False" SystemDecorations="None">
 	<Border BorderBrush="Gray" BorderThickness="1">

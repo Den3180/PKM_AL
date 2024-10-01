@@ -1,19 +1,13 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using MsBox.Avalonia.Enums;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using PKM;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using MsBox.Avalonia.Enums;
 using PKM_AL.Classes.ServiceClasses;
+using PKM;
 
-namespace PKM_AL;
+namespace PKM_AL.Windows;
 
 public partial class WindowDB : ClassWindowPKM
 {

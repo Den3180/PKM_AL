@@ -3,11 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vmodel="using:TestGrathic.ViewMap"
+        xmlns:viewMap="clr-namespace:PKM_AL.Mnemoscheme.ViewMap"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="TestGrathic.ViewMap.WindowPopertyIndicatorBig"
+        x:Class="PKM_AL.Mnemoscheme.ViewMap.WindowPopertyIndicatorBig"
         Title="WindowPopertyIndicatorBig"  WindowStartupLocation="CenterOwner" SystemDecorations="None"
         SizeToContent="WidthAndHeight" CanResize="False"
-        x:DataType="vmodel:WindowPopertyIndicatorBig"
+        x:DataType="viewMap:WindowPopertyIndicatorBig"
         x:CompileBindings="True">
         <Window.Styles>
                 <StyleInclude Source="/Styles/StylesWindowProperty.axaml" />

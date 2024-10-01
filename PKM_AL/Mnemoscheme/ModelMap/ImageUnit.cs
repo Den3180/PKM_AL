@@ -21,6 +21,7 @@ using TestGrathic.ViewMap;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 using Image = Avalonia.Controls.Image;
 using Rectangle = Avalonia.Controls.Shapes.Rectangle;
+using WindowImageProperty = PKM_AL.Mnemoscheme.ViewMap.WindowImageProperty;
 
 namespace TestGrathic.ModelMap;
 

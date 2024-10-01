@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Mysqlx.Datatypes;
 
 namespace PKM_AL.Classes.ServiceClasses
 {
@@ -94,7 +95,6 @@ namespace PKM_AL.Classes.ServiceClasses
                     SuggestedFileName = "device",
                     FileTypeChoices = new List<FilePickerFileType>()
                     {
-                        
                         new FilePickerFileType("XML") { Patterns=new[] { "*.xml" } },
                         new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
                     }
@@ -137,6 +137,64 @@ namespace PKM_AL.Classes.ServiceClasses
             if (files.Result.Count > 0)
             {
                 return files.Result[0].Path.LocalPath;
+            }
+            return string.Empty;
+        }
+
+        public static async Task<string> ChooseDialogSampleAsync(Window owner, string startLocation="")
+        {
+            var topLevel = TopLevel.GetTopLevel(owner);
+            if (topLevel == null) return string.Empty;
+            var res= await topLevel.StorageProvider.TryGetFolderFromPathAsync(startLocation);
+            var file = Task.FromResult
+            (await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Выбор файла",
+                AllowMultiple = false,
+                FileTypeFilter = new List<FilePickerFileType>()
+                {
+                    new FilePickerFileType("Все файлы") { Patterns = new[] { "*.*" } },
+                    new FilePickerFileType("База данных") { Patterns = new[] { "*.xml" } }
+                },
+                SuggestedStartLocation = res
+            }));
+            try
+            {
+                return file.Result[0].Path.LocalPath;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+        
+        
+        public static string SaveDialogSampleAsync(Window owner)
+        {
+            Task<IStorageFile> files;
+            using (var source = new CancellationTokenSource())
+            {
+                var topLevel = TopLevel.GetTopLevel(owner);
+                
+                files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                {
+                    Title = "Сохранить",
+                    DefaultExtension = "xml",
+                    ShowOverwritePrompt = true,
+                    SuggestedFileName = "device",
+                    FileTypeChoices = new List<FilePickerFileType>()
+                    {
+                        new FilePickerFileType("XML") { Patterns=new[] { "*.xml" } },
+                        new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
+                    }
+                });
+                files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+            }
+            var dialogResult = files.Result;
+            if (!string.IsNullOrEmpty(dialogResult?.Name))
+            {
+                return dialogResult?.Path.LocalPath;
             }
             return string.Empty;
         }

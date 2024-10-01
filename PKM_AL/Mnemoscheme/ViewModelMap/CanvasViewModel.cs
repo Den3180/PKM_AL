@@ -4,10 +4,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Avalonia.Media;
+using PKM_AL.Classes.ServiceClasses;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ModelMap;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewMap;
 using TestGrathic.ModelMap;
 
 namespace PKM_AL.Mnemoscheme.ViewModelMap;
@@ -18,7 +22,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     // public static ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
     public static List<object> BufferСopiedUnits { get; set; } = new();
     public static object? BufferCopiedOneUnit { get; set; }
-    private ClassMap Map { get; set; } = new ClassMap();
+    public ClassMap Map { get; set; }
 
     public CanvasViewModel()
     {
@@ -30,10 +34,18 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
              if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
              if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
         }
+        Map = new ClassMap();
+        NewMnemoScheme();
     }
 
-    public CanvasViewModel(ClassMap map):this()
+    public CanvasViewModel(ClassMap map)
     {
+        if (MainWindow.MnemoUnit != null)
+        {
+            if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
+            if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
+            if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
+        }
         Map = map;
         MainWindow.Maps.Add(map);
         foreach (var widget in Map.Widgets)
@@ -74,6 +86,10 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         MainWindow.MnemoUnit.Add((IUnitService)newUnit);
     }
     
+    /// <summary>
+    /// Добавить юнит в немосхему, используя настройки виджета.
+    /// </summary>
+    /// <param name="widget"></param>
     public void AddLoadShape(ClassWidget widget){
         EnumUnit enumUnit = widget.UnitType;
         object newUnit = enumUnit switch
@@ -99,6 +115,8 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     public void DeleteAllShape(object obj)
     {
         GraphicUnitObjects.Clear();
+        if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
+        if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
     }
 
     /// <summary>
@@ -106,11 +124,74 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     /// </summary>
     public void SaveMnemoScheme()
     {
-         //TODO на наличие директории мнемосхем,сохранять по имени мнемосхемы
+        //TODO на наличие директории мнемосхем,сохранять по имени мнемосхемы
         //var ss = Map.GetJson();
-        Map.SaveProfile("MNEMO_SCHEME.sch");
-        
+        Map.SaveProfile(@"SaveMaps/MNEMO_SCHEME.sch");
         //MainWindow.DB.MapAdd(Map);
+    }
+
+    /// <summary>
+    /// Создает новую мнемосхему.
+    /// </summary>
+    public async void NewMnemoScheme()
+    {
+        if(MainWindow.currentMainWindow==null) return;
+        WindowMapProperty windowMapProperty = new WindowMapProperty(Map.Name,Map.MapColorString);
+        (string,string)? res= await windowMapProperty.ShowDialog<(string,string)?>(MainWindow.currentMainWindow);
+        if (!res.HasValue) return;
+        Map.Name = res.Value.Item1;
+        Map.BackgroundColor = Brush.Parse(res.Value.Item2);
+        Map.Widgets.Clear();
+        Map.GuidID=Guid.NewGuid();
+        DeleteAllShape(null);
+        if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
+        MainWindow.Maps.Add(Map);
+    }
+
+    /// <summary>
+    /// Загружает мнемосхему из файла.
+    /// </summary>
+    /// <param name="obj"></param>
+    public async void LoadMapXML(object obj)
+    {
+        if(MainWindow.currentMainWindow==null) return;
+        var path= await ClassDialogWindows.ChooseDialogSampleAsync(MainWindow.currentMainWindow, MainWindow.MapsPath);
+        if(string.IsNullOrEmpty(path)) return;
+        var map = ClassMap.Load(path);
+        DeleteAllShape(null);
+        if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
+        Map.MapClone(map);
+        MainWindow.Maps.Add(map);
+        foreach (var widget in Map.Widgets)
+        {
+            AddLoadShape(widget);
+        }
+    }
+
+    /// <summary>
+    /// Свойства мнемосхемы.
+    /// </summary>
+    public async void SetPropertiesMaps()
+    {
+        if(MainWindow.currentMainWindow==null) return;
+        WindowMapProperty windowMapProperty = new WindowMapProperty(Map.Name,Map.MapColorString);
+        (string,string)? res= await windowMapProperty.ShowDialog<(string,string)?>(MainWindow.currentMainWindow);
+        if (!res.HasValue) return;
+        Map.Name = res.Value.Item1;
+        Map.BackgroundColor = Brush.Parse(res.Value.Item2);
+    }
+
+
+    #region [Методы доступности команд]
+
+    /// <summary>
+    /// Доступность команды загрузки мнемосхемы из файла.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public bool CanLoadMapXML(object obj)
+    {
+        return true;
     }
 
     /// <summary>
@@ -143,13 +224,15 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         return true;
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    #endregion
 
+    #region [PropertyChanged]
+
+    public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;
@@ -157,4 +240,6 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         OnPropertyChanged(propertyName);
         return true;
     }
+
+    #endregion
 }

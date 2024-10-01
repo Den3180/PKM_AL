@@ -1,18 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using Avalonia.Media;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewMap;
 using PKM;
 using TestGrathic.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme;
 
-public class ClassMap
+public class ClassMap :INotifyPropertyChanged
 {
+    
+    private IBrush _backgroundColor;
+    private string _mapColorString;
+    
     [XmlIgnore] 
     public int ID { get; set; }
     
@@ -20,23 +27,42 @@ public class ClassMap
     
     public string Name { get; set; }
  
+    [XmlIgnore] 
     public Color ForeColor { get; set; }
-    
-    public string ForeColorString { get; set; }
-   
     public List<ClassWidget> Widgets { get; set; }
     
-    private int count = 0;
-
     public ClassMap()
     {
         ID = 0;
         GuidID=Guid.NewGuid();
-        Name = "";
-        ForeColor = Colors.Blue;
-        ForeColorString = ForeColor.ToString();
+        Name = "Мнемосхема";
+        _backgroundColor = Brush.Parse("#ff10aee2");
+        MapColorString = _backgroundColor.ToString();
         Widgets = new List<ClassWidget>();
-        count++;
+       
+    }
+
+    [XmlIgnore] 
+    public IBrush BackgroundColor
+    {
+        get => _backgroundColor;
+        set
+        {
+            if (value.Equals(_backgroundColor)) return;
+            _backgroundColor = value;
+            MapColorString = _backgroundColor.ToString();
+            OnPropertyChanged();
+        }
+    }
+
+    public string MapColorString
+    {
+        get=>_mapColorString;
+        set
+        {
+            _mapColorString = value;
+            BackgroundColor = Brush.Parse(value);
+        }
     }
 
     public string GetJson()
@@ -90,4 +116,22 @@ public class ClassMap
         }
         return map;
     }
+
+    public void MapClone(ClassMap map)
+    {
+        GuidID = map.GuidID;
+        ID = map.ID;
+        MapColorString = map.MapColorString;
+        Widgets.Clear();
+        Widgets.AddRange(map.Widgets);
+        Name = map.Name;
+    }
+
+    #region [PropertyChanged]
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    #endregion
 }

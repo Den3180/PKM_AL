@@ -31,6 +31,7 @@ namespace PKM_AL
     public partial class MainWindow : Window
     {
         private DispatcherTimer TimerSec;
+        public const string MapsPath = "SaveMaps";
 
         public static ClassDB DB;
         public static MainWindow currentMainWindow;
@@ -178,7 +179,7 @@ namespace PKM_AL
                 }
                 else
                 { 
-                    WindowDB windowDb = new WindowDB();
+                    Windows.WindowDB windowDb = new Windows.WindowDB();
                     windowDb.WindowShow(this);
                 }
             }
@@ -186,7 +187,7 @@ namespace PKM_AL
             {
                 ClassMessage.ShowMessageCustom(this, "База данных не доступна.\nПроверьте конфигурацию!"
                                          , "", ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
-                WindowDB windowDb = new WindowDB();
+                Windows.WindowDB windowDb = new Windows.WindowDB();
                 windowDb.WindowShow(this);
                 Environment.Exit(0);
             }
@@ -222,8 +223,11 @@ namespace PKM_AL
                     }
                 }
             }
-            
-            
+            //Саздаем папку для хранения мнемосхем.
+            if (!Directory.Exists(MapsPath))
+            {
+                Directory.CreateDirectory(MapsPath);
+            }
 
             Events = new ObservableCollection<ClassEvent>();
             EventsAlarm = new ObservableCollection<ClassEvent>();
@@ -578,7 +582,7 @@ namespace PKM_AL
                 Groups.Add(d);
             }
 
-                #endregion
+            #endregion
 
             #region [Узел архив]
 
@@ -619,8 +623,10 @@ namespace PKM_AL
         {
             foreach (var group in Groups)
             {
-                TreeViewItem item = new TreeViewItem();
-                item.Header =ClassBuildControl.MakeContentTreeViewItem(group);
+                TreeViewItem item = new TreeViewItem
+                {
+                    Header = ClassBuildControl.MakeContentTreeViewItem(group)
+                };
                 if (group.Name.Equals("Мнемосхемы"))
                 {
                     item.ContextMenu = new ContextMenu();
@@ -639,9 +645,11 @@ namespace PKM_AL
                     {
                         Header = "Загрузить..."
                     };
-                    mi.Click += (s, e) =>
+                    mi.Click += async (s, e) =>
                     {
-                        var map= ClassMap.Load("MNEMO_SCHEME.sch");
+                        var pathMap = await ClassDialogWindows.ChooseDialogSampleAsync(this, MapsPath);
+                        if(string.IsNullOrEmpty(pathMap)) return;
+                        var map= ClassMap.Load(pathMap);
                         ContentArea.Content = new UserControlCanvas(map);
                         StatusMode.Text = "Мнемосхема";
                     };
@@ -740,7 +748,7 @@ namespace PKM_AL
             case "Карта...":
             break;
             case "База данных...":
-            WindowDB windowDb = new WindowDB();
+            Windows.WindowDB windowDb = new Windows.WindowDB();
             windowDb.WindowShow(this);
             break;
             case "Проверка целостности...":

@@ -129,19 +129,21 @@
                         <ItemsControl.ItemsPanel>
                                 <!--Шаблон поля мнемосхемы-->
                                 <ItemsPanelTemplate>
-                                        <Canvas Name="Canvas" Background="LightBlue">
+                                        <Canvas Name="Canvas" Background="{Binding Map.BackgroundColor}">
                                                 <Canvas.ContextMenu>
                                                         <ContextMenu>
-                                                                <MenuItem Header="Новая мнемосхема"/>
-                                                                <MenuItem Header="Загрузить мнемосхему"/>
-                                                                <MenuItem Header="Сохранить мнемосхему"
+                                                                <MenuItem Header="Новая мнемосхема.."
+                                                                          Command="{Binding NewMnemoScheme}"/>
+                                                                <MenuItem Header="Загрузить мнемосхему.."
+                                                                          Command="{Binding LoadMapXML}"/>
+                                                                <MenuItem Header="Сохранить мнемосхему.."
                                                                           Command="{Binding SaveMnemoScheme}"/>
                                                                 <MenuItem Header="Вставить" 
                                                                           Command="{Binding  InsertUnit}"/>
                                                                 <MenuItem Header="Удалить все" 
                                                                           Command="{Binding DeleteAllShape}"/>
                                                                 <Separator Foreground="Black"/>
-                                                                <MenuItem Header="Объекты">
+                                                                <MenuItem Header="Объекты..">
                                                                         <MenuItem Header="Надпись" 
                                                                                   Command="{Binding AddShape}"
                                                                                   CommandParameter="0"/>
@@ -169,6 +171,9 @@
                                                                         <MenuItem Header="Кнопка" Command="{Binding AddShape}"
                                                                                   CommandParameter="6"/>
                                                                 </MenuItem>
+                                                                <Separator Foreground="Black"/>
+                                                                <MenuItem Header="Свойства мнемосхемы.." 
+                                                                          Command="{Binding SetPropertiesMaps}"/>
                                                         </ContextMenu>
                                                 </Canvas.ContextMenu>
                                         </Canvas>
