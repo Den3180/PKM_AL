@@ -7,7 +7,8 @@
         Title="PKM_AL" WindowStartupLocation="CenterScreen" WindowState="Maximized"
 		Icon="/Assets/iconfinder_inventory_categories_44826.ico">
 	<DockPanel>
-		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="LightGray">
+		<Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="LightGray" 
+		      BorderBrush="DarkGray" BorderThickness="2">
 			<MenuItem Header="Файл">
 				<MenuItem Header="Смена пользователя..." Click="MenuItem_Click"></MenuItem>
 				<Separator/>
@@ -80,7 +81,8 @@
 				<MenuItem Header="О программе..." Click="MenuItem_Click"></MenuItem>
 			</MenuItem>
 		</Menu>
-			<Grid DockPanel.Dock="Bottom" 
+		<Border DockPanel.Dock="Bottom" BorderBrush="DarkGray" BorderThickness="2">
+			<Grid 
 			      ColumnDefinitions="200,auto,40,40,auto,auto,auto,*,auto,80,auto,24,24,Auto,200" 
 				  Background="LightGray" Height="30">
 			<Grid.Styles>
@@ -114,12 +116,15 @@
 			<Border Grid.Column="13"/>
 			<TextBlock Grid.Column="14" Name="StatusTime" Text="01.01.2020 00:00:00.000"
                            Margin="5 0 10 0" HorizontalAlignment="Left"/>
-		</Grid>		
+		</Grid>	
+		</Border>	
 		<Grid ColumnDefinitions="200,auto,*">
 			<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
 						  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="LightGray" />
-			<ContentControl Grid.Column="2" Name="ContentArea"/>
-			<TreeView Grid.Column="0" Name="treeView" SelectionChanged="TreeView_SelectedItemChanged" Tapped="TreeView_OnTapped"/>
+			<ContentControl Grid.Column="2" Name="ContentArea" BorderBrush="DarkGray" BorderThickness="2 0 2 0"/>
+			<TreeView Grid.Column="0" Name="treeView" BorderBrush="DarkGray" BorderThickness="2 0 2 0"
+			          SelectionChanged="TreeView_SelectedItemChanged" 
+			          Tapped="TreeView_OnTapped"/>
 		</Grid>
 	</DockPanel> 
 </Window>
