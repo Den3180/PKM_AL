@@ -72,6 +72,7 @@ namespace PKM_AL
             Closing += MainWindow_Closing;
             _assembly=Assembly.GetEntryAssembly()?.GetName().Name;
             InitializeComponent();
+            DataContext = this;
         }
 
         /// <summary>

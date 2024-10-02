@@ -10,7 +10,6 @@ using Avalonia.Media;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewMap;
 using PKM;
-using TestGrathic.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme;
 

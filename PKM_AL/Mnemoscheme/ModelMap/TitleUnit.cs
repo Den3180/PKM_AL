@@ -18,12 +18,12 @@ namespace PKM_AL.Mnemoscheme.ModelMap;
 public class TitleUnit : TextBlock, IUnitService
 {
    
+   private const EnumUnit _enumUnit = EnumUnit.Title;
    private Point  _pos;
    private bool _isPressed;
    private ClassWidget _stateWidget;
    private bool _isBlocked;
    private ClassMap _map;
-   private EnumUnit _enumUnit = EnumUnit.Title;
 
    public TitleUnit(ClassMap map, ClassWidget stateWidget=null)
    {
@@ -169,6 +169,8 @@ public class TitleUnit : TextBlock, IUnitService
             break;
          case "Удалить":
             (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
+            _map.Widgets.Remove(_stateWidget);
+            MainWindow.Widgets.Remove(_stateWidget);
             MainWindow.MnemoUnit.Remove(this);
             _map.Widgets.Remove(_stateWidget);
             break;
@@ -185,6 +187,10 @@ public class TitleUnit : TextBlock, IUnitService
       }
    }
 
+   /// <summary>
+   /// Обновление параметров надписи.
+   /// </summary>
+   /// <param name="settings"></param>
    private void RefreshTitle(ClassWidget settings)
    {
       FontFamily= new FontFamily(settings.FontStyleUnit);
@@ -268,5 +274,6 @@ public class TitleUnit : TextBlock, IUnitService
    public void SetValue(decimal value)
    {
       Text = value.ToString(CultureInfo.InvariantCulture);
+      _stateWidget.TextUnit = Text;
    }
 }

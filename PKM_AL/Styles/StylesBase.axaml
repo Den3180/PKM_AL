@@ -3,7 +3,7 @@
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
-            <Button Content="Button"/>
+            <Button Content="ButtonOffOn"/>
             </StackPanel>
         </Border>
     </Design.PreviewWith>

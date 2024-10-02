@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vmodel="using:TestGrathic.ViewMap"
-        xmlns:converter="using:TestGrathic.ServiceClasses"
+        xmlns:serviceClasses="clr-namespace:PKM_AL.Mnemoscheme.ServiceClasses"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
         x:Class="TestGrathic.ViewMap.WindowPropertyTitle"
         Title="Свойства" WindowStartupLocation="CenterOwner" SystemDecorations="None"
@@ -14,7 +14,7 @@
                 <StyleInclude Source="/Styles/StylesWindowProperty.axaml" />
         </Window.Styles>
         <Window.Resources>
-                <converter:ConverterTitleText x:Key="ConverterTitleText"/>
+                <serviceClasses:ConverterTitleText x:Key="ConverterTitleText"/>
         </Window.Resources>
         <Border BorderBrush="Gray" BorderThickness="1">
                 <Grid RowDefinitions="Auto,*">

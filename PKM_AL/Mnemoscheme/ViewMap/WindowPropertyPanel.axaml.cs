@@ -7,7 +7,6 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using PKM_AL.Mnemoscheme.ServiceClasses;
-using TestGrathic.ServiceClasses;
 
 namespace TestGrathic.ViewMap;
 

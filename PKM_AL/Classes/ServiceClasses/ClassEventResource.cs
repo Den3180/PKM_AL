@@ -23,7 +23,7 @@ public class ClassEventResource
         public ClassEventResource()
         {
             listTemplData = new ObservableCollection<DataListUserControl>();
-            //buttons = new List<Button>();
+            //buttons = new List<ButtonOffOn>();
         } 
 
         /// <summary>

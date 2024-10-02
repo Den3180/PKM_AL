@@ -73,6 +73,7 @@
         <entry key="PKM_AL/Mnemoscheme/ViewMap/WindowImageProperty.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Mnemoscheme/ViewMap/WindowMapProperty.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Mnemoscheme/ViewMap/WindowPopertyIndicatorBig.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Mnemoscheme/ViewMap/WindowPropertyButton.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Mnemoscheme/ViewMap/WindowPropertyIndicatorSmall.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Mnemoscheme/ViewMap/WindowPropertyTitle.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Styles/StyleTextblocks.axaml" value="PKM_AL/PKM_AL.csproj" />

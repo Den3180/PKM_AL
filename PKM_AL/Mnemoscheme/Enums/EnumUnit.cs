@@ -8,7 +8,7 @@ public enum EnumUnit
     ImagePipe,              //Труба
     IndicatorSmall,         //Индикатор простой
     IndicatorBig,           //Индикатор составной
-    Button,                 //Кнопка        
+    ButtonOffOn,                 //Кнопка        
     PipeBend,               //Отвод
     Lamp,                   //Лампа
     Shell,                  //Кожух

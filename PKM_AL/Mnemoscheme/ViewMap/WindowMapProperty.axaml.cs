@@ -12,7 +12,7 @@ namespace PKM_AL.Mnemoscheme.ViewMap;
 
 public partial class WindowMapProperty : Window, INotifyPropertyChanged
 {
-    private Color _backGroundColor = Colors.LightBlue;
+    private Color _backGroundColor = Color.Parse("#ff10aee2");
     private string nameMap = "Мнемосхема";
 
     public WindowMapProperty()

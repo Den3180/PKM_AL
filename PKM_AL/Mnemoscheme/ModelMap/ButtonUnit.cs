@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Avalonia;
@@ -10,44 +11,80 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
-using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
+using WindowPropertyButton = PKM_AL.Mnemoscheme.ViewMap.WindowPropertyButton;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 
-public class ButtonUnit : Button
+public class ButtonUnit : Button, IUnitService
 {
+     private readonly EnumUnit _enumUnit;
      private bool _isBlocked;
      private double _buttonSize = 35D;
      private bool _isFlag;
      private EnumTypeTransform _typeTransform = EnumTypeTransform.None;
      private Point _pos;
-     private ClassWidget _settings;
-     private readonly Lazy<ClassWidget> _settingsUnitObject = new Lazy<ClassWidget>();
+     private ClassWidget _stateWidget;
+     private ClassMap _map;
+     private Image _image;
      
-     private Image _image=new Image()
-     {
-         Source = new Bitmap(AssetLoader.Open(
-             new Uri($"avares://{Assembly.GetEntryAssembly()?.GetName().Name}/Assets/knopka_vklyucheniya_65rwem2h45ul_64.png")))
-     };
-     
-    public ButtonUnit()
+    public ButtonUnit(ClassMap map,EnumUnit enumUnit, ClassWidget stateWidget=null)
     {
-        _settings = new ClassWidget();
-        HorizontalContentAlignment = HorizontalAlignment.Center;
-        VerticalContentAlignment = VerticalAlignment.Center;
+        _map = map;
+        _enumUnit=enumUnit;
         Height = 35;
         Width = 35;
+        _image=new Image()
+        {
+            Source = new Bitmap(AssetLoader.Open(
+                new Uri($"avares://{Assembly.GetEntryAssembly()?.GetName().Name}/Assets/" +
+                        $"{HelperSourceImage.ListSourceImages[_enumUnit].Item1}")))
+        };
+        if (stateWidget != null)
+        {
+            _stateWidget = stateWidget;
+            CreateButtonLoad();
+        }
+        else
+        {
+            _stateWidget = new ClassWidget()
+            {
+                GuidId = _map.GuidID,
+                UnitType=_enumUnit,
+                HeightUnit = Height,
+                WidthUnit = Width,
+                PositionX = Bounds.X,
+                PositionY =Bounds.Y
+            };
+            _map.Widgets.Add(_stateWidget);
+        }
+        
+        HorizontalContentAlignment = HorizontalAlignment.Center;
+        VerticalContentAlignment = VerticalAlignment.Center;
         Click += Click_Button;
         ContextMenu=CreateContextMenu(); 
         PointerMoved += ButtonUnit_PointerMoved;
         DataContext = this;
+        MainWindow.Widgets.Add(_stateWidget);
     }
 
-    public ButtonUnit(Rect bounds):this()
+    /// <summary>
+    /// Настрйка параметров загружаемой кнопки.
+    /// </summary>
+    private void CreateButtonLoad()
+    {
+        Width = _stateWidget.WidthUnit;
+        Height = _stateWidget.HeightUnit;
+        IsFlag = _stateWidget.IsDevicePoll;
+        Canvas.SetLeft(this, _stateWidget.PositionX);
+        Canvas.SetTop(this, _stateWidget.PositionY);
+    }
+
+    public ButtonUnit(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map, enumUnit)
     {
         Canvas.SetLeft(this, bounds.X+50);
         Canvas.SetTop(this, bounds.Y+50);
@@ -61,7 +98,6 @@ public class ButtonUnit : Button
         {
             _pos=e.GetPosition(this);
             ZIndex = 10;
-            
         }
     }
     
@@ -69,6 +105,9 @@ public class ButtonUnit : Button
     {
         Canvas.SetLeft(this, leftPosPanel+ deltaPos.X);
         Canvas.SetTop(this, topPosPanel+deltaPos.Y);
+        //Запись текущего положения.
+        _stateWidget.PositionX = Bounds.X;
+        _stateWidget.PositionY = Bounds.Y;
     }
     
     private void SetCursor(object? sender, bool pressed=false)
@@ -172,9 +211,12 @@ public class ButtonUnit : Button
         switch (menuItem.Header)
         {
             case "Копировать":
-                CanvasViewModel.BufferCopiedOneUnit = new ButtonUnit(Bounds);
+                CanvasViewModel.BufferCopiedOneUnit = new ButtonUnit(_stateWidget,Bounds,_map, _enumUnit);
                 break;
             case "Удалить":
+                _map.Widgets.Remove(_stateWidget);
+                MainWindow.Widgets.Remove(_stateWidget);
+                MainWindow.MnemoUnit.Remove(this);
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
@@ -182,7 +224,7 @@ public class ButtonUnit : Button
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":
-                WindowPropertyButton windowPropertyButton = new WindowPropertyButton(_settingsUnitObject.Value);
+                WindowPropertyButton windowPropertyButton = new WindowPropertyButton(_stateWidget);
                 await windowPropertyButton.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyButton.Tag is not null) 
                     RefreshButton((ClassWidget)windowPropertyButton.Tag);
@@ -195,9 +237,19 @@ public class ButtonUnit : Button
     {
         Width *= tag.ScaleUnit;
         Height *= tag.ScaleUnit;
+        _stateWidget.WidthUnit = Width;
+        _stateWidget.HeightUnit = Height;
+        _stateWidget.BindingObjectUnit = tag.BindingObjectUnit;
+        _stateWidget.IsDevicePoll=tag.IsDevicePoll;
+        IsFlag=tag.IsDevicePoll;
     }
 
 
+    /// <summary>
+    /// Обработчик кнопки.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Click_Button(object? sender, RoutedEventArgs e)
     {
         if (_typeTransform == EnumTypeTransform.Move)
@@ -206,20 +258,57 @@ public class ButtonUnit : Button
             SetCursor(sender,IsPressed);
             return;
         }
-        if (!_isFlag)
+        IsFlag = !IsFlag;
+        ButtonStatusHandler(_enumUnit);
+    }
+
+    /// <summary>
+    /// Обработчик статуса кнопки.
+    /// </summary>
+    /// <param name="enumUnit"></param>
+    private void ButtonStatusHandler(EnumUnit enumUnit)
+    {
+        if (enumUnit == EnumUnit.ButtonOffOn)
+        {
+            if(_stateWidget.BindingObjectUnit is { IdDevice: 0 }) return;
+            var device=MainWindow.Devices.FirstOrDefault(dev=>dev.ID==_stateWidget.BindingObjectUnit?.IdDevice);
+            if (device != null) device.IsPoll = _isFlag;
+        }
+    }
+
+    /// <summary>
+    /// Настройка источника изображения кнопки.
+    /// </summary>
+    /// <param name="flag"></param>
+    private void SetImageRecource(bool flag)
+    {
+        if (flag)
         {
             Image.Source=new Bitmap(AssetLoader.Open(
-                new Uri($"avares://{Assembly.GetEntryAssembly()?.GetName().Name}/Assets/knopka_vklyucheniya_green.png")));
+                new Uri($"avares://{Assembly.GetEntryAssembly()?.GetName().Name}" +
+                        $"/Assets/{HelperSourceImage.ListSourceImages[_enumUnit].Item2}")));
         }
         else
         {
             Image.Source = new Bitmap(AssetLoader.Open(new Uri(
-                $"avares://{Assembly.GetEntryAssembly()?.GetName().Name}/Assets/knopka_vklyucheniya_65rwem2h45ul_64.png")));
+                $"avares://{Assembly.GetEntryAssembly()?.GetName().Name}" +
+                $"/Assets/{HelperSourceImage.ListSourceImages[_enumUnit].Item1}")));
         }
-        _isFlag = !_isFlag;
     }
-   
-     public double ButtonSize
+
+    public bool IsFlag
+    {
+        get => _isFlag;
+        set
+        {
+           _isFlag = value;
+           SetImageRecource(_isFlag);
+           ButtonStatusHandler(_enumUnit);
+           _stateWidget.IsDevicePoll = _isFlag;
+        }
+    }
+
+    public double ButtonSize
     {
         get=> _buttonSize;
         set
@@ -238,10 +327,23 @@ public class ButtonUnit : Button
              OnPropertyChanged();
          }
      } 
+
+    public EnumUnit GetTypeUnit()
+    {
+        return _enumUnit;
+    }
+
+    public void SetValue(decimal value)
+    {
+        throw new NotImplementedException();
+    }
+
+    #region [PropertyChanged]
     public new event PropertyChangedEventHandler? PropertyChanged;
     
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+    #endregion
 }

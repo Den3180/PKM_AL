@@ -6,7 +6,6 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using PKM_AL.Mnemoscheme.Enums;
-using TestGrathic.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme.AbstractUnit;
 public abstract class AbstractControl : ContentControl, INotifyPropertyChanged

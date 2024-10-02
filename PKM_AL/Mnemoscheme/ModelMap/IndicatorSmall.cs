@@ -15,7 +15,6 @@ using PKM_AL;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
-using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 
 namespace TestGrathic.ModelMap;

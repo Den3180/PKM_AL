@@ -81,7 +81,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             EnumUnit.Panel=>new PanelUnit(),
             EnumUnit.IndicatorSmall=> new IndicatorSmall(),
             EnumUnit.IndicatorBig=> new IndicatorBig(),
-            _=>new ButtonUnit()
+            _=>new ButtonUnit(Map,enumUnit)
         };
         GraphicUnitObjects.Add(newUnit);
         MainWindow.MnemoUnit.Add((IUnitService)newUnit);
@@ -101,7 +101,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             EnumUnit.Panel=>new PanelUnit(),
             EnumUnit.IndicatorSmall=> new IndicatorSmall(),
             EnumUnit.IndicatorBig=> new IndicatorBig(),
-            _=>new ButtonUnit()
+            _=>new ButtonUnit(Map,enumUnit,widget)
         };
         GraphicUnitObjects.Add(newUnit);
         MainWindow.MnemoUnit.Add((IUnitService)newUnit);
@@ -129,7 +129,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         //var ss = Map.GetJson();
         if(MainWindow.currentMainWindow==null) return;
          var path= await ClassDialogWindows.SaveDialogSampleAsync
-             (MainWindow.currentMainWindow, MainWindow.MapsPath,"MNEMO_SCHEME","sch" );
+             (MainWindow.currentMainWindow, MainWindow.MapsPath,Map.Name,"sch" );
          if(!string.IsNullOrEmpty(path))  Map.SaveProfile(path);
     }
 

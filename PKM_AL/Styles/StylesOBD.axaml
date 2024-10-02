@@ -8,7 +8,7 @@
                 <TextBox></TextBox>
                 <CalendarDatePicker/>
                 <ListBox/>
-                <Button Content="Button"></Button>
+                <Button Content="ButtonOffOn"></Button>
             </StackPanel>
         </Border>
     </Design.PreviewWith>

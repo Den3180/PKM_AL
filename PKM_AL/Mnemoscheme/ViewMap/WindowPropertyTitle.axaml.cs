@@ -13,7 +13,6 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
 using PKM_AL.Mnemoscheme.ServiceClasses;
-using TestGrathic.ServiceClasses;
 
 
 namespace TestGrathic.ViewMap;

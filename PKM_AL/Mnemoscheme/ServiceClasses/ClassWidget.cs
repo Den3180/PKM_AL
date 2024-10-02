@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using Avalonia.Media;
 using PKM_AL.Mnemoscheme.Enums;
-using TestGrathic.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme.ServiceClasses;
 
@@ -13,14 +12,14 @@ public class ClassWidget
 
     public EnumUnit UnitType { get; set; } = EnumUnit.NoneUnit;
     
-    public string ImageUnitPath { get; set; }=string.Empty;
+    public bool IsDevicePoll { get; set; }=false;
     
     public double PositionX { get; set; } = 0;
     
     public double PositionY { get; set; } = 0;
 
     public string FontStyleUnit { get; set; } = new FontFamily("Arial").Name;
-    public FontWeight FontWeightUnit { get; set; }
+    public FontWeight FontWeightUnit { get; set; }= FontWeight.Normal;
     public double FontSizeUnit { get; set; }
     public string TextUnit { get; set; } = string.Empty;
     public BindingObject? BindingObjectUnit { get; set; }

@@ -1,19 +1,50 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using PKM_AL.Mnemoscheme.ServiceClasses;
-using TestGrathic.ServiceClasses;
 
-namespace TestGrathic.ViewMap;
+namespace PKM_AL.Mnemoscheme.ViewMap;
 
 public partial class WindowPropertyButton : Window, INotifyPropertyChanged
 {
     private double _scaleUnitUnit;
+    private ClassDevice _selectedDevice;
+    public ObservableCollection<ClassDevice> DeviceList { get; set; }
+    
+    public WindowPropertyButton()
+    {
+        InitializeComponent();
+        if (MainWindow.currentMainWindow != null)
+        {
+            DeviceList=new ObservableCollection<ClassDevice>(MainWindow.Devices);
+            _selectedDevice = DeviceList.Count>0 ? DeviceList[0] : null;
+            _scaleUnitUnit = 1.0;
+        }
+    } 
+    
+    public WindowPropertyButton(ClassWidget classWidget):this()
+    {
+        if (classWidget.BindingObjectUnit != null)
+        {
+            SelectedDevice = DeviceList.FirstOrDefault(dev=>dev.ID==classWidget.BindingObjectUnit.IdDevice);
+        }
+        DataContext = this;
+    }
 
+
+    public ClassDevice SelectedDevice
+    {
+        get => _selectedDevice;
+        set
+        {
+            if (Equals(value, _selectedDevice)) return;
+            _selectedDevice = value;
+            OnPropertyChanged();
+        }
+    }
     public double ScaleUnit
     {
         get => _scaleUnitUnit;
@@ -25,17 +56,6 @@ public partial class WindowPropertyButton : Window, INotifyPropertyChanged
         }
     }
 
-    public WindowPropertyButton()
-    {
-        InitializeComponent();
-    } 
-    
-    public WindowPropertyButton(ClassWidget classWidget):this()
-    {
-        //TODO Привязать объект привязки, когда будет интеграция в СОТКУ.
-        DataContext = this;
-    }
-
     private void Button_Click(object? sender, RoutedEventArgs e)
     {
         Button button = sender as Button ?? throw new InvalidOperationException();
@@ -45,7 +65,10 @@ public partial class WindowPropertyButton : Window, INotifyPropertyChanged
             {
                 ScaleUnit = this.ScaleUnit,
                 BindingObjectUnit = new BindingObject()
-                //TODO Добавить код привязки.
+                {
+                    IdDevice = SelectedDevice.ID,
+                },
+                IsDevicePoll = SelectedDevice.IsPoll
             };
             Tag=settingsUnitObject;
         }

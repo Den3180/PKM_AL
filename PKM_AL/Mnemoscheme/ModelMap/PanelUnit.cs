@@ -11,7 +11,6 @@ using PKM_AL;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
-using TestGrathic.ServiceClasses;
 using TestGrathic.ViewMap;
 using Color = System.Drawing.Color;
 

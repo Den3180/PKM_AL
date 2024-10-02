@@ -508,6 +508,9 @@ namespace PKM_AL
             } 
         }
 
-
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
