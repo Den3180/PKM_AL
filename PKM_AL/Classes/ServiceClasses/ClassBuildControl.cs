@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace PKM_AL.Classes.ServiceClasses
 {
-    public class ClassBuildControl
+    public abstract class ClassBuildControl
     {
         /// <summary>
         /// Формирование содержимого TreeViewItem.

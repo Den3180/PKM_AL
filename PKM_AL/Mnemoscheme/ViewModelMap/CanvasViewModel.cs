@@ -27,32 +27,24 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
 
     public CanvasViewModel()
     {
-        //В конструкторе все сущности проверять на null
-        //необходимо для работы графического предварительного просмотра.
-        if (MainWindow.MnemoUnit != null)
-        {
-             if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
-             if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
-             if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
-        }
-        Map = new ClassMap();
-        NewMnemoScheme();
-        //MainWindow.Maps.Add(Map);
     }
 
     public CanvasViewModel(ClassMap map)
     {
         if (MainWindow.MnemoUnit != null)
         {
-            if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
-            if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
-            if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
+            //if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
+            // if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
+            // if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
         }
         Map = map;
         MainWindow.Maps.Add(map);
-        foreach (var widget in Map.Widgets)
+        if (Map.Widgets.Count > 0)
         {
-            AddLoadShape(widget);
+            foreach (var widget in Map.Widgets)
+            {
+                AddLoadShape(widget);
+            }
         }
     }
     
@@ -119,7 +111,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         GraphicUnitObjects.Clear();
         if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
         if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
-        if(Map.Widgets.Count>0) Map.Widgets.Clear();
+        if(obj!=null && Map.Widgets.Count>0) Map.Widgets.Clear();
     }
 
     /// <summary>
@@ -149,7 +141,6 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         Map.Widgets.Clear();
         Map.GuidID=Guid.NewGuid();
         DeleteAllShape(null);
-        if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
         MainWindow.Maps.Add(Map);
     }
 
@@ -164,7 +155,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         if(string.IsNullOrEmpty(path)) return;
         var map = ClassMap.Load(path);
         DeleteAllShape(null);
-        if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
+        //if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
         Map.MapClone(map);
         MainWindow.Maps.Add(map);
         foreach (var widget in Map.Widgets)

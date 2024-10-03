@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
+using Avalonia.Media;
 using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -24,6 +25,7 @@ using PKM_AL.Controls;
 using PKM_AL.Mnemoscheme;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewMap;
 using PKM_AL.Windows;
 
 namespace PKM_AL
@@ -635,9 +637,12 @@ namespace PKM_AL
                     {
                         Header = "Новая мнемосхема..."
                     };
-                    mi.Click += (s, e) =>
+                    mi.Click += async (s, e) =>
                     {
-                        ContentArea.Content = new UserControlCanvas();
+                        if(MnemoUnit.Count>0) MnemoUnit.Clear();
+                        if(Widgets.Count>0) Widgets.Clear();
+                        var map = await NewMnemoScheme();
+                        ContentArea.Content = new UserControlCanvas(map);
                         //    var tt = new ClassItem()
                         // {
                         //     GUID = Maps[^1].GuidID,
@@ -650,7 +655,7 @@ namespace PKM_AL
                         // item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(tt));
                         // StatusMode.Text = $"Мнемосхема: {Maps[^1].Name}";
                         StatusMode.Text = $"Мнемосхема";
-                        
+                        Maps.Add(map);
                     };
                     item.ContextMenu.Items.Add(mi);
                     
@@ -685,6 +690,24 @@ namespace PKM_AL
                 treeView.Items.Add(item);
             }
         }
+        
+        
+        /// <summary>
+        /// Создает новую мнемосхему.
+        /// </summary>
+        public async Task<ClassMap> NewMnemoScheme()
+        {
+            if(MainWindow.currentMainWindow==null) return null;
+            ClassMap map = new ClassMap();
+            WindowMapProperty windowMapProperty = new WindowMapProperty(map.Name,map.MapColorString);
+            (string,string)? res= await windowMapProperty.ShowDialog<(string,string)?>(MainWindow.currentMainWindow);
+            if (!res.HasValue) return null;
+            map.Name = res.Value.Item1;
+            map.BackgroundColor = Brush.Parse(res.Value.Item2);
+            map.GuidID=Guid.NewGuid();
+            return map;
+        }
+        
         
         /// <summary>
         /// Происходит в момент закрытия основного окна приложения.
@@ -912,9 +935,10 @@ namespace PKM_AL
                     StatusMode.Text = "Графики трендов";
                     break;
                 case ClassItem.eType.Map:
-                    if (currentContent is UserControlCanvas) break;
-                    ContentArea.Content=new UserControlCanvas();
-                    StatusMode.Text = "Мнемосхема";
+                    //TODO Сделать открытие  мнемосхем по клику дерева.
+                    //if (currentContent is UserControlCanvas) break;
+                    //ContentArea.Content=new UserControlCanvas();
+                    //StatusMode.Text = "Мнемосхема";
                     break;
             }
         }
