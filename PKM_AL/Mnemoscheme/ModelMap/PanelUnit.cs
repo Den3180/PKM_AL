@@ -8,6 +8,8 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using PKM_AL;
+using PKM_AL.Mnemoscheme;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
@@ -16,7 +18,7 @@ using Color = System.Drawing.Color;
 
 namespace TestGrathic.ModelMap;
 
-public class PanelUnit : Rectangle
+public class PanelUnit : Rectangle, IUnitService
 {
     private Point  _pos;
     private bool _isPressed;
@@ -24,38 +26,27 @@ public class PanelUnit : Rectangle
     private EnumTypeTransform _typeTransform;
     private double _startwidth;
     private double _startheight;
-    private ClassWidget _settings;
-    private readonly Lazy<ClassWidget> _settingsUnitObject = new Lazy<ClassWidget>();
-   
-    public PanelUnit()
+    private ClassWidget _stateWidget;
+    private ClassMap _map;
+    private EnumUnit _enumUnit;
+
+
+    public PanelUnit(ClassMap map,EnumUnit enumUnit, ClassWidget stateWidget=null)
     {
-        CreateRectangle();
-    }
-    
-    public PanelUnit(Rect bounds):this()
-    {
-        Width = bounds.Width;
-        Height = bounds.Height;
-        Canvas.SetLeft(this, bounds.X+50);
-        Canvas.SetTop(this, bounds.Y+50);
-    }
-    
-    /// <summary>
-    /// Создать панель.
-    /// </summary>
-    /// <param name="widht"></param>
-    /// <param name="height"></param>
-    private void CreateRectangle(double widht = 200, double height = 300D)
-    {
-        _settings = new ClassWidget();
-        _startwidth=widht;
-        _startheight = height;
-        Width = widht;
-        Height = height;
-        Fill = Brushes.Azure;
+        _map = map;
+        _enumUnit=enumUnit;
+        _typeTransform = EnumTypeTransform.None;
+        if (stateWidget != null)
+        {
+            _stateWidget = stateWidget;
+            LoadRectangle();
+        }
+        else
+        {
+            CreateRectangle();
+        }
         StrokeThickness = 3D;
         Stroke= Brushes.Black;
-        _typeTransform = EnumTypeTransform.None;
         ContextMenu=CreateContextMenu();
         PointerPressed += rectangle_OnPointerPressed;
         PointerMoved += rectangle_OnPointerMove;
@@ -66,8 +57,55 @@ public class PanelUnit : Rectangle
             BlurRadius = 2
         };
         ZIndex = -1;
+        MainWindow.Widgets.Add(_stateWidget);
+    }
+
+    public PanelUnit(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map, enumUnit, stateWidge)
+    {
+        Width = bounds.Width;
+        Height = bounds.Height;
+        Canvas.SetLeft(this, bounds.X+50);
+        Canvas.SetTop(this, bounds.Y+50);
+        _map.Widgets.Add(stateWidge);
+    }
+    
+    private void LoadRectangle()
+    {
+        //Установка размеров.
+        Width = _stateWidget.WidthUnit;
+        Height = _stateWidget.HeightUnit;
+        //Установка цвета.
+        Fill = Brush.Parse(_stateWidget.BackgroundUnit);
+        //Установка позиции.
+        Canvas.SetLeft(this, _stateWidget.PositionX);
+        Canvas.SetTop(this, _stateWidget.PositionY);
+    }
+    
+    /// <summary>
+    /// Создать панель.
+    /// </summary>
+    /// <param name="widht"></param>
+    /// <param name="height"></param>
+    private void CreateRectangle(double widht = 200, double height = 300D)
+    {
+        _startwidth=widht; 
+        _startheight = height; 
+        Width = widht;
+        Height = height;
+        Fill = Brushes.Azure; //change
+        _stateWidget = new ClassWidget()
+        {
+            GuidId = _map.GuidID,
+            UnitType=_enumUnit,
+            HeightUnit = Height,
+            WidthUnit = Width,
+            PositionX = Bounds.X,
+            PositionY =Bounds.Y,
+            BackgroundUnit = Fill.ToString()
+        };
         Canvas.SetLeft(this, 0);
         Canvas.SetTop(this, 0);
+        _map.Widgets.Add(_stateWidget);
     }
 
     /// <summary>
@@ -147,9 +185,12 @@ public class PanelUnit : Rectangle
         switch (menuItem.Header)
         {
             case "Копировать" :
-                CanvasViewModel.BufferCopiedOneUnit = new PanelUnit(Bounds);
+                CanvasViewModel.BufferCopiedOneUnit = new PanelUnit(_stateWidget.Clone(),Bounds,_map, _enumUnit);
                 break;
             case "Удалить":
+                _map.Widgets.Remove(_stateWidget);
+                MainWindow.Widgets.Remove(_stateWidget);
+                MainWindow.MnemoUnit.Remove(this);
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
@@ -157,11 +198,11 @@ public class PanelUnit : Rectangle
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":
-                _settingsUnitObject.Value.HeightUnit = Height;
-                _settingsUnitObject.Value.WidthUnit = Width;
+                _stateWidget.HeightUnit = Height;
+                _stateWidget.WidthUnit = Width;
                 if (Fill != null) 
-                    _settingsUnitObject.Value.FontBrushUnit = Fill.ToString() ?? Brushes.Black.ToString();
-                WindowPropertyPanel propertyPanel = new WindowPropertyPanel(_settingsUnitObject.Value);
+                    _stateWidget.FontBrushUnit = Fill.ToString() ?? Brushes.Black.ToString();
+                WindowPropertyPanel propertyPanel = new WindowPropertyPanel(_stateWidget);
                 await propertyPanel.ShowDialog(MainWindow.currentMainWindow);
                 if(propertyPanel.Tag is not null) RefreshTitle((ClassWidget)propertyPanel.Tag);
                 break;
@@ -173,6 +214,9 @@ public class PanelUnit : Rectangle
         Width = propertyPanelTag.WidthUnit;
         Height = propertyPanelTag.HeightUnit;
         Fill = Brush.Parse(propertyPanelTag.FontBrushUnit.ToString());
+        _stateWidget.HeightUnit = Height;
+        _stateWidget.WidthUnit = Width;
+        _stateWidget.BackgroundUnit = Fill.ToString() ?? Brushes.Azure.ToString();
     }
 
     /// <summary>
@@ -249,6 +293,7 @@ public class PanelUnit : Rectangle
         {
             _isPressed = false;
         }
+        _stateWidget.WidthUnit = Width;
     }
 
     /// <summary>
@@ -277,6 +322,8 @@ public class PanelUnit : Rectangle
         {
             _isPressed = false;
         }
+
+        _stateWidget.HeightUnit = Height;
     }
 
     /// <summary>
@@ -290,6 +337,8 @@ public class PanelUnit : Rectangle
     {
         Canvas.SetLeft(panel, leftPosPanel+ deltaPos.X);
         Canvas.SetTop(panel, topPosPanel+deltaPos.Y);
+        _stateWidget.PositionX = Bounds.X;
+        _stateWidget.PositionY = Bounds.Y;
     }
     
     /// <summary>
@@ -336,5 +385,15 @@ public class PanelUnit : Rectangle
             if(Cursor != null && Cursor.Equals(Cursor.Default))
                 Cursor = new Cursor(StandardCursorType.SizeAll);
         }
+    }
+
+    public EnumUnit GetTypeUnit()
+    {
+        return _enumUnit;
+    }
+
+    public void SetValue(decimal value)
+    {
+        throw new NotImplementedException();
     }
 }

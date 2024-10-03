@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
@@ -87,7 +88,7 @@ public class ClassMap :INotifyPropertyChanged
     {
         try
         {
-            using TextWriter writer = new StreamWriter(FileName);
+            using TextWriter writer = new StreamWriter(FileName, false);
             XmlSerializer serializer = new XmlSerializer(typeof(ClassMap));
             serializer.Serialize(writer, this);
         }

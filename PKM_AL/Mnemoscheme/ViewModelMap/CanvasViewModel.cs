@@ -37,6 +37,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         }
         Map = new ClassMap();
         NewMnemoScheme();
+        //MainWindow.Maps.Add(Map);
     }
 
     public CanvasViewModel(ClassMap map)
@@ -76,11 +77,11 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         object newUnit = enumUnit switch
         {
             EnumUnit.Title=>new TitleUnit(Map),
-            EnumUnit.ImageKip=>new ImageUnit(enumUnit),
-            EnumUnit.ImagePipe=>new ImageUnit(enumUnit),
-            EnumUnit.Panel=>new PanelUnit(),
-            EnumUnit.IndicatorSmall=> new IndicatorSmall(),
-            EnumUnit.IndicatorBig=> new IndicatorBig(),
+            EnumUnit.ImageKip=>new ImageUnit(Map,enumUnit),
+            EnumUnit.ImagePipe=>new ImageUnit(Map,enumUnit),
+            EnumUnit.Panel=>new PanelUnit(Map,enumUnit),
+            EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit),
+            EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit),
             _=>new ButtonUnit(Map,enumUnit)
         };
         GraphicUnitObjects.Add(newUnit);
@@ -96,11 +97,11 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         object newUnit = enumUnit switch
         {
             EnumUnit.Title=>new TitleUnit(Map,widget),
-            EnumUnit.ImageKip=>new ImageUnit(enumUnit),
-            EnumUnit.ImagePipe=>new ImageUnit(enumUnit),
-            EnumUnit.Panel=>new PanelUnit(),
-            EnumUnit.IndicatorSmall=> new IndicatorSmall(),
-            EnumUnit.IndicatorBig=> new IndicatorBig(),
+            EnumUnit.ImageKip=>new ImageUnit(Map,enumUnit, widget),
+            EnumUnit.ImagePipe=>new ImageUnit(Map,enumUnit, widget),
+            EnumUnit.Panel=>new PanelUnit(Map,enumUnit,widget),
+            EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit,widget),
+            EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit,widget),
             _=>new ButtonUnit(Map,enumUnit,widget)
         };
         GraphicUnitObjects.Add(newUnit);
@@ -118,6 +119,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         GraphicUnitObjects.Clear();
         if(MainWindow.MnemoUnit.Count>0) MainWindow.MnemoUnit.Clear();
         if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
+        if(Map.Widgets.Count>0) Map.Widgets.Clear();
     }
 
     /// <summary>

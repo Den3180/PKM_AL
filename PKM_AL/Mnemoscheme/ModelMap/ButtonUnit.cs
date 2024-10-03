@@ -14,9 +14,9 @@ using Avalonia.Platform;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
+using PKM_AL.Mnemoscheme.ViewMap;
 using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ViewMap;
-using WindowPropertyButton = PKM_AL.Mnemoscheme.ViewMap.WindowPropertyButton;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 
@@ -71,7 +71,13 @@ public class ButtonUnit : Button, IUnitService
         DataContext = this;
         MainWindow.Widgets.Add(_stateWidget);
     }
-
+    public ButtonUnit(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map, enumUnit, stateWidge)
+    {
+        Canvas.SetLeft(this, bounds.X+50);
+        Canvas.SetTop(this, bounds.Y+50);
+        _map.Widgets.Add(stateWidge);
+    }
+    
     /// <summary>
     /// Настрйка параметров загружаемой кнопки.
     /// </summary>
@@ -82,12 +88,6 @@ public class ButtonUnit : Button, IUnitService
         IsFlag = _stateWidget.IsDevicePoll;
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
-    }
-
-    public ButtonUnit(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map, enumUnit)
-    {
-        Canvas.SetLeft(this, bounds.X+50);
-        Canvas.SetTop(this, bounds.Y+50);
     }
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -211,7 +211,7 @@ public class ButtonUnit : Button, IUnitService
         switch (menuItem.Header)
         {
             case "Копировать":
-                CanvasViewModel.BufferCopiedOneUnit = new ButtonUnit(_stateWidget,Bounds,_map, _enumUnit);
+                CanvasViewModel.BufferCopiedOneUnit = new ButtonUnit(_stateWidget.Clone(),Bounds,_map, _enumUnit);
                 break;
             case "Удалить":
                 _map.Widgets.Remove(_stateWidget);

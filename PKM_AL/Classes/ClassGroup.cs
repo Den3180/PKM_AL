@@ -63,9 +63,12 @@ namespace PKM_AL
             Links = 9
         }
         public int ID { get; set; }
+        
+        public Guid GUID { get; set; }=Guid.Empty;
         public string IconUri { get; set; }
         public ClassGroup Group { get; set; }
         public eType ItemType { get; set; }
+        
         public int Param { get; set; }
 
         private string _NameCh;

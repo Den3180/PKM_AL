@@ -49,12 +49,12 @@ public class TitleUnit : TextBlock, IUnitService
       MainWindow.Widgets.Add(_stateWidget);
    }
 
-   public TitleUnit(ClassWidget? stateWidget, Rect bounds, ClassMap map): this(map)
+   public TitleUnit(ClassWidget? stateWidget, Rect bounds, ClassMap map): this(map,stateWidget)
    {
        Canvas.SetLeft(this, bounds.X+50);
        Canvas.SetTop(this, bounds.Y+50);
-      _stateWidget = stateWidget;
       RefreshTitle(stateWidget);
+      _map.Widgets.Add(stateWidget);
    }
 
    /// <summary>
@@ -165,7 +165,7 @@ public class TitleUnit : TextBlock, IUnitService
       switch (menuItem.Header)
       {
          case "Копировать" :
-            CanvasViewModel.BufferCopiedOneUnit = new TitleUnit(_stateWidget, Bounds,_map);
+            CanvasViewModel.BufferCopiedOneUnit = new TitleUnit(_stateWidget.Clone(), Bounds,_map);
             break;
          case "Удалить":
             (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);

@@ -1,30 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Reflection;
-using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Avalonia.VisualTree;
-using PKM_AL;
+using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
-using TestGrathic.ViewMap;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 using Image = Avalonia.Controls.Image;
-using Rectangle = Avalonia.Controls.Shapes.Rectangle;
 using WindowImageProperty = PKM_AL.Mnemoscheme.ViewMap.WindowImageProperty;
 
-namespace TestGrathic.ModelMap;
+namespace PKM_AL.Mnemoscheme.ModelMap;
 
-public class ImageUnit : Image
+public class ImageUnit : Image,IUnitService
 {
     private Point  _pos;
     private bool _isPressed;
@@ -34,32 +28,29 @@ public class ImageUnit : Image
     private double _koef;
     private EnumUnit _enumUnit;
     private bool _isBlocked;
-    private ClassWidget _settings;
-    private readonly Lazy<ClassWidget> _settingsUnitObject = new Lazy<ClassWidget>();
+    private ClassWidget _stateWidget;
+    private ClassMap _map;
     private readonly Dictionary<EnumUnit,string> _unitsPath = new Dictionary<EnumUnit, string>
     {
         { EnumUnit.ImageKip ,"kip3.png"},
         { EnumUnit.ImagePipe ,"Pipe Yellow Horz.png"}
     };
-    public ImageUnit(EnumUnit enumUnit)
+    public ImageUnit(ClassMap map,EnumUnit enumUnit, ClassWidget stateWidget=null)
     {
         _enumUnit = enumUnit;
+        _map = map;
         Source = new Bitmap(AssetLoader.Open
             (new Uri($"avares://{Assembly.GetEntryAssembly()?.GetName().Name}/Assets/{_unitsPath[enumUnit]}")));
-        CreateImageUnit();
-    }
-
-    public ImageUnit(Rect bounds, EnumUnit enumUnit): this(enumUnit)
-    {
-        Width = bounds.Width;
-        Height = bounds.Height;
-        Canvas.SetLeft(this, bounds.X+50);
-        Canvas.SetTop(this, bounds.Y+50);
-    }
-
-    private void CreateImageUnit()
-    {
-        _settings = new ClassWidget();
+        if (stateWidget != null)
+        {
+            _stateWidget = stateWidget;
+            CreateLoadImageUnit();
+        }
+        else
+        {
+            CreateImageUnit();
+            _map.Widgets.Add(_stateWidget);
+        }
         Stretch = Stretch.Uniform;
         VerticalAlignment = VerticalAlignment.Stretch;
         HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -74,8 +65,47 @@ public class ImageUnit : Image
         PointerMoved += ImageUnit_OnPointerMove;
         PointerReleased += ImageUnit_PointerReleased;
         Loaded += ImageUnit_Loaded;
-        Canvas.SetLeft(this, 0);
-        Canvas.SetTop(this, 0);
+        MainWindow.Widgets.Add(_stateWidget);
+    }
+
+    /// <summary>
+    /// Создание юнита из файла.
+    /// </summary>
+    private void CreateLoadImageUnit()
+    {
+        //Установка размеров.
+        Width = _stateWidget.WidthUnit;
+        Height = _stateWidget.HeightUnit;
+        //Установка позиции.
+        Canvas.SetLeft(this, _stateWidget.PositionX);
+        Canvas.SetTop(this, _stateWidget.PositionY);
+    }
+
+    public ImageUnit(Rect bounds, EnumUnit enumUnit, ClassMap map, ClassWidget stateWidge): this(map,enumUnit,stateWidge)
+    {
+        Width = bounds.Width;
+        Height = bounds.Height;
+        Canvas.SetLeft(this, bounds.X+50);
+        Canvas.SetTop(this, bounds.Y+50);
+        _map.Widgets.Add(stateWidge);
+    }
+
+    /// <summary>
+    /// Создание юнита. 
+    /// </summary>
+    private void CreateImageUnit()
+    {
+        _stateWidget = new ClassWidget()
+        {
+            GuidId = _map.GuidID,
+            UnitType=_enumUnit,
+            HeightUnit = Height,
+            WidthUnit = Width,
+            PositionX = Bounds.X,
+            PositionY =Bounds.Y
+        };
+         Canvas.SetLeft(this, 0);
+         Canvas.SetTop(this, 0);
     }
 
     private void ImageUnit_Loaded(object? sender, RoutedEventArgs e)
@@ -194,15 +224,15 @@ public class ImageUnit : Image
     {
         if(sender is not MenuItem menuItem) return;
         var tt = Parent as ItemsControl;
-        //var grid = tt?.Parent as Grid;
-        //var wnd=grid?.Parent as Window;
-        //if (wnd == null) return;
         switch (menuItem.Header)
         {
             case "Копировать" :
-                CanvasViewModel.BufferCopiedOneUnit=new ImageUnit(Bounds,_enumUnit);
+                CanvasViewModel.BufferCopiedOneUnit=new ImageUnit(Bounds,_enumUnit,_map,_stateWidget.Clone());
                 break;
             case "Удалить":
+                _map.Widgets.Remove(_stateWidget);
+                MainWindow.Widgets.Remove(_stateWidget);
+                MainWindow.MnemoUnit.Remove(this);
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
@@ -210,9 +240,9 @@ public class ImageUnit : Image
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":
-                _settingsUnitObject.Value.WidthUnit = Width;
-                _settingsUnitObject.Value.HeightUnit = Height;
-                WindowImageProperty windowImageProperty = new WindowImageProperty(_settingsUnitObject.Value);
+                _stateWidget.WidthUnit = Width;
+                _stateWidget.HeightUnit = Height;
+                WindowImageProperty windowImageProperty = new WindowImageProperty(_stateWidget);
                 await windowImageProperty.ShowDialog(MainWindow.currentMainWindow);
                 if(windowImageProperty.Tag is not null) 
                     RefreshImage((ClassWidget)windowImageProperty.Tag);
@@ -232,6 +262,8 @@ public class ImageUnit : Image
             Width = tag.WidthUnit;
             Height = tag.HeightUnit;
         }
+        _stateWidget.WidthUnit = Width;
+        _stateWidget.HeightUnit = Height;
     }
 
     private void ImageUnit_PointerReleased(object? sender, PointerReleasedEventArgs e)
@@ -270,6 +302,7 @@ public class ImageUnit : Image
         _koef = (_startheight+deltaPos.Y) / Height;
         Height =_startheight + deltaPos.Y;
         Width*=_koef;
+        _stateWidget.HeightUnit = Height;
     }
 
     private void PanelResizeX(Point deltaPos)
@@ -277,12 +310,15 @@ public class ImageUnit : Image
         _koef = (_startwidth+deltaPos.X) / Width;
         Width =_startwidth + deltaPos.X;
         Height *= _koef;
+        _stateWidget.WidthUnit = Width;
     }
 
     private void MovePanel(Point deltaPos, double leftPosPanel, double topPosPanel)
     {
         Canvas.SetLeft(this, leftPosPanel+ deltaPos.X);
         Canvas.SetTop(this, topPosPanel+deltaPos.Y);
+        _stateWidget.PositionX = Bounds.X;
+        _stateWidget.PositionY = Bounds.Y;
     }
 
     private void ImageUnit_OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -296,5 +332,15 @@ public class ImageUnit : Image
             if(Cursor != null && Cursor.Equals(Cursor.Default))
                 Cursor = new Cursor(StandardCursorType.SizeAll);
         }
+    }
+
+    public EnumUnit GetTypeUnit()
+    {
+        return _enumUnit;
+    }
+
+    public void SetValue(decimal value)
+    {
+        throw new NotImplementedException();
     }
 }

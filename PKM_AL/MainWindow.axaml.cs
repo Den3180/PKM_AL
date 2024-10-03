@@ -513,17 +513,17 @@ namespace PKM_AL
             d.GroupType = ClassGroup.eType.Map;
             //Добавить подузел мнемосхем.
             //Если в коллекции мнемосхем есть хоть одна мнемосхема.
-            foreach (ClassMap item in Maps)
-            {
-                d.SubGroups.Add(new ClassItem()
-                {
-                    ID = item.ID,
-                    NameCh = item.Name,
-                    IconUri = "design.png",
-                    Group = d,
-                    ItemType = ClassItem.eType.Map
-                });
-            }
+            // foreach (ClassMap item in Maps)
+            // {
+            //     d.SubGroups.Add(new ClassItem()
+            //     {
+            //         ID = item.ID,
+            //         NameCh = item.Name,
+            //         IconUri = "design.png",
+            //         Group = d,
+            //         ItemType = ClassItem.eType.Map
+            //     });
+            // }
             Groups.Add(d);
 
             #endregion
@@ -638,7 +638,19 @@ namespace PKM_AL
                     mi.Click += (s, e) =>
                     {
                         ContentArea.Content = new UserControlCanvas();
-                        StatusMode.Text = "Мнемосхема";
+                        //    var tt = new ClassItem()
+                        // {
+                        //     GUID = Maps[^1].GuidID,
+                        //     NameCh = Maps[^1].Name,
+                        //     IconUri = "design.png",
+                        //     Group = group,
+                        //     ItemType = ClassItem.eType.Map
+                        // };
+                        // group.SubGroups.Add(tt);
+                        // item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(tt));
+                        // StatusMode.Text = $"Мнемосхема: {Maps[^1].Name}";
+                        StatusMode.Text = $"Мнемосхема";
+                        
                     };
                     item.ContextMenu.Items.Add(mi);
                     

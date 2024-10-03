@@ -6,14 +6,16 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using PKM_AL.Mnemoscheme.Enums;
+using PKM_AL.Mnemoscheme.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme.AbstractUnit;
-public abstract class AbstractControl : ContentControl, INotifyPropertyChanged
+public abstract class AbstractControl : ContentControl, INotifyPropertyChanged,IUnitService
 {
     protected bool IsBlocked;
     private bool _isPressed;
     private Point _pos=new Point();
     private EnumTypeTransform _typeTransform = EnumTypeTransform.None;
+    protected ClassWidget _stateWidget;
 
     protected AbstractControl()
     {
@@ -131,6 +133,8 @@ public abstract class AbstractControl : ContentControl, INotifyPropertyChanged
     {
         Canvas.SetLeft(this, leftPosPanel+ deltaPos.X);
         Canvas.SetTop(this, topPosPanel+deltaPos.Y);
+        _stateWidget.PositionX = Canvas.GetLeft(this);
+        _stateWidget.PositionY = Canvas.GetTop(this);
     }
     
     protected virtual void ContentControl_SetCursor(object? sender, PointerEventArgs e, bool pressed=false)
@@ -146,5 +150,15 @@ public abstract class AbstractControl : ContentControl, INotifyPropertyChanged
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public virtual EnumUnit GetTypeUnit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void SetValue(decimal value)
+    {
+        throw new System.NotImplementedException();
     }
 }

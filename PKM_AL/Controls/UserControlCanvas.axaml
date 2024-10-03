@@ -104,7 +104,7 @@
                                                         VerticalAlignment="Center"
                                                         HorizontalAlignment="Center"
                                                         FontWeight="Bold"
-                                                        Text="0.00"
+                                                        Text="{Binding ParamValue}"
                                                         FontSize="{Binding SizeUnit}"
                                                         Padding="2"
                                                         Foreground="Gainsboro">
