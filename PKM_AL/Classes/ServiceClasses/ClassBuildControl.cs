@@ -33,6 +33,7 @@ namespace PKM_AL.Classes.ServiceClasses
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
                 Tag = obj
             };
+            stackPanel.Tag = obj;
 
             Image image = new Image()
             {

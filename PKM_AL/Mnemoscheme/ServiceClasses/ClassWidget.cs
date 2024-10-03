@@ -22,7 +22,6 @@ public class ClassWidget
     public double HeightUnit { get; set; } = 1D;
     public double WidthUnit { get; set; } = 1D;
     public string FontBrushUnit { get; set; } = Colors.Black.ToString();
-    
     public string BackgroundUnit { get; set; } = Colors.Azure.ToString();
     public ClassWidget Clone()
     {

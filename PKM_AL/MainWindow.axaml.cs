@@ -630,6 +630,7 @@ namespace PKM_AL
                 {
                     Header = ClassBuildControl.MakeContentTreeViewItem(group)
                 };
+                //Настройка мнемосхем(контекстное меню)
                 if (group.Name.Equals("Мнемосхемы"))
                 {
                     item.ContextMenu = new ContextMenu();
@@ -643,18 +644,18 @@ namespace PKM_AL
                         if(Widgets.Count>0) Widgets.Clear();
                         var map = await NewMnemoScheme();
                         ContentArea.Content = new UserControlCanvas(map);
-                        //    var tt = new ClassItem()
-                        // {
-                        //     GUID = Maps[^1].GuidID,
-                        //     NameCh = Maps[^1].Name,
-                        //     IconUri = "design.png",
-                        //     Group = group,
-                        //     ItemType = ClassItem.eType.Map
-                        // };
-                        // group.SubGroups.Add(tt);
-                        // item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(tt));
-                        // StatusMode.Text = $"Мнемосхема: {Maps[^1].Name}";
-                        StatusMode.Text = $"Мнемосхема";
+                           var mnemoSubNode = new ClassItem()
+                        {
+                            GUID = map.GuidID,
+                            NameCh = map.Name,
+                            IconUri = "design.png",
+                            Group = group,
+                            ItemType = ClassItem.eType.Map
+                        };
+                        group.SubGroups.Add(mnemoSubNode);
+                        item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(mnemoSubNode));
+                        item.IsExpanded = true;
+                        StatusMode.Text = $"Схема: {map.Name}";
                         Maps.Add(map);
                     };
                     item.ContextMenu.Items.Add(mi);
@@ -669,7 +670,18 @@ namespace PKM_AL
                         if(string.IsNullOrEmpty(pathMap)) return;
                         var map= ClassMap.Load(pathMap);
                         ContentArea.Content = new UserControlCanvas(map);
-                        StatusMode.Text = "Мнемосхема";
+                        var mnemoSubNode = new ClassItem()
+                        {
+                            GUID = map.GuidID,
+                            NameCh = map.Name,
+                            IconUri = "design.png",
+                            Group = group,
+                            ItemType = ClassItem.eType.Map
+                        };
+                        group.SubGroups.Add(mnemoSubNode);
+                        item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(mnemoSubNode));
+                        item.IsExpanded = true;
+                        StatusMode.Text = $"Схема: {map.Name}";
                     };
                     item.ContextMenu.Items.Add(mi);
                     
@@ -679,6 +691,18 @@ namespace PKM_AL
                     };
                     mi.Click += (s, e) =>
                     {
+                        var selected = treeView.SelectedItem;
+                        StackPanel contentItem = treeView.SelectedItem as StackPanel;
+                        if(contentItem==null) return;
+                        var tt = ((ClassItem)contentItem.Tag)!.GUID;
+                        ClassMap map = Maps.FirstOrDefault(m => m.GuidID.Equals(tt));
+                        if(map==null) return;
+                        Maps.Remove(map);
+                        Widgets.Clear();
+                        MnemoUnit.Clear();
+                        //treeView.Items.Remove(selected);
+                        ContentArea.Content = null;
+                        ContentArea.Content = new UserControlDevices();
                     };
                     item.ContextMenu.Items.Add(mi);
                     
