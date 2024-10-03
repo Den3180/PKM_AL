@@ -691,16 +691,22 @@ namespace PKM_AL
                     };
                     mi.Click += (s, e) =>
                     {
-                        var selected = treeView.SelectedItem;
                         StackPanel contentItem = treeView.SelectedItem as StackPanel;
                         if(contentItem==null) return;
                         var tt = ((ClassItem)contentItem.Tag)!.GUID;
                         ClassMap map = Maps.FirstOrDefault(m => m.GuidID.Equals(tt));
                         if(map==null) return;
+                        for (int i = Groups[1].SubGroups.Count - 1; i >= 0; i--)
+                        {
+                            if (Groups[1].SubGroups[i].GUID.Equals(map.GuidID))
+                            {
+                                Groups[1].SubGroups.RemoveAt(i);
+                                (treeView.Items[1] as TreeViewItem)?.Items.RemoveAt(i);
+                            }
+                        }
                         Maps.Remove(map);
                         Widgets.Clear();
                         MnemoUnit.Clear();
-                        //treeView.Items.Remove(selected);
                         ContentArea.Content = null;
                         ContentArea.Content = new UserControlDevices();
                     };
