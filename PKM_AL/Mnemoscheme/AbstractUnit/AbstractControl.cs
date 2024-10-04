@@ -158,6 +158,11 @@ public abstract class AbstractControl : ContentControl, INotifyPropertyChanged,I
         throw new System.NotImplementedException();
     }
 
+    public BindingObject GetBindingObject()
+    {
+        return _stateWidget.BindingObjectUnit;
+    }
+
     public virtual void SetValue(decimal value)
     {
         throw new System.NotImplementedException();

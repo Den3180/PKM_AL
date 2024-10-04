@@ -35,11 +35,12 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
         if (MainWindow.currentMainWindow != null)
         {
             DeviceList=new ObservableCollection<ClassDevice>(MainWindow.Devices);
-            _selectedDevice = DeviceList.Count>0 ? DeviceList[0] : null;
+            _selectedDevice = DeviceList.Count>0 ? DeviceList.FirstOrDefault(dev=>dev.ID==classWidget.BindingObjectUnit?.IdDevice) : DeviceList[0];
             if (_selectedDevice != null)
             {
                 _channelList = new ObservableCollection<ClassChannel>(_selectedDevice.Channels);
-                _selectedChannel = _channelList.Count>0 ? _channelList[0] : null;
+                _selectedChannel = _channelList.Count>0 ? _channelList.FirstOrDefault(ch=>
+                    ch.ID==classWidget.BindingObjectUnit?.IdParam) : _channelList[0];
             }
         }
         DataContext = this;

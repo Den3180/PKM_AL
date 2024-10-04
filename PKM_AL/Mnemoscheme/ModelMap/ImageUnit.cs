@@ -340,6 +340,11 @@ public class ImageUnit : Image,IUnitService
         return _enumUnit;
     }
 
+    public BindingObject GetBindingObject()
+    {
+        return _stateWidget.BindingObjectUnit;
+    }
+
     public void SetValue(decimal value)
     {
         throw new NotImplementedException();

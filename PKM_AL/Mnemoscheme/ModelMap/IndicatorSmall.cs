@@ -63,6 +63,10 @@ public class IndicatorSmall : AbstractControl
     private void LoadIndicatorSmall()
     {
         SizeUnit = _stateWidget.FontSizeUnit;
+        // Width=Bounds.Width;
+        // Height=Bounds.Height;
+        Width=100;
+        Height=50;
         //Установка позиции.
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
@@ -80,6 +84,8 @@ public class IndicatorSmall : AbstractControl
             PositionX = Bounds.X,
             PositionY =Bounds.Y
         };
+        Width=100;
+        Height=50;
         ContextMenu=CreateContextMenu();
         _map.Widgets.Add(_stateWidget);
     }

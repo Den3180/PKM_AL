@@ -204,10 +204,11 @@ namespace PKM_AL
                 {
                     foreach (var widget in MainWindow.MnemoUnit )
                     {
-                        // if (widget.)
-                        // {
-                        //     Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value));
-                        // } 
+                        var bindObj = widget.GetBindingObject();
+                        if (bindObj != null && bindObj.IdParam==ID && bindObj.IdDevice==Device.ID )
+                        {
+                            Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value));
+                        } 
                     }
                 }
             }
