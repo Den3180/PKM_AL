@@ -242,7 +242,8 @@ namespace PKM_AL
             QueueCommands = new Queue<ClassCommand>();
             Links = new ObservableCollection<ClassLink>(DB.LinksLoad());
             serverClass = new ServerClass();
-            Maps = new ObservableCollection<ClassMap>(DB.MapsLoad());
+            // Maps = new ObservableCollection<ClassMap>(DB.MapsLoad());
+            Maps = new ObservableCollection<ClassMap>(ClassMap.LoadMapsFromFile(MapsPath));
             Widgets = new ObservableCollection<ClassWidget>();
             MnemoUnit = new ObservableCollection<IUnitService>();
             
@@ -515,17 +516,17 @@ namespace PKM_AL
             d.GroupType = ClassGroup.eType.Map;
             //Добавить подузел мнемосхем.
             //Если в коллекции мнемосхем есть хоть одна мнемосхема.
-            // foreach (ClassMap item in Maps)
-            // {
-            //     d.SubGroups.Add(new ClassItem()
-            //     {
-            //         ID = item.ID,
-            //         NameCh = item.Name,
-            //         IconUri = "design.png",
-            //         Group = d,
-            //         ItemType = ClassItem.eType.Map
-            //     });
-            // }
+            foreach (ClassMap item in Maps)
+            {
+                d.SubGroups.Add(new ClassItem()
+                {
+                    GUID = item.GuidID,
+                    NameCh = item.Name,
+                    IconUri = "design.png",
+                    Group = d,
+                    ItemType = ClassItem.eType.Map
+                });
+            }
             Groups.Add(d);
 
             #endregion
@@ -634,6 +635,7 @@ namespace PKM_AL
                 if (group.Name.Equals("Мнемосхемы"))
                 {
                     item.ContextMenu = new ContextMenu();
+                    //Кнопка "Новая мнемосхема...".
                     MenuItem mi = new MenuItem()
                     {
                         Header = "Новая мнемосхема..."
@@ -659,10 +661,10 @@ namespace PKM_AL
                         Maps.Add(map);
                     };
                     item.ContextMenu.Items.Add(mi);
-                    
+                    //Кнопка "Згрузить".
                     mi = new MenuItem()
                     {
-                        Header = "Загрузить..."
+                        Header = "Загрузить мнемосхему..."
                     };
                     mi.Click += async (s, e) =>
                     {
@@ -684,10 +686,10 @@ namespace PKM_AL
                         StatusMode.Text = $"Схема: {map.Name}";
                     };
                     item.ContextMenu.Items.Add(mi);
-                    
+                    //Кнопка "Удалить".
                     mi = new MenuItem()
                     {
-                        Header = "Удалить..."
+                        Header = "Удалить мнемосхему..."
                     };
                     mi.Click += (s, e) =>
                     {
@@ -704,6 +706,7 @@ namespace PKM_AL
                                 (treeView.Items[1] as TreeViewItem)?.Items.RemoveAt(i);
                             }
                         }
+                        map.DeleteFileMap();
                         Maps.Remove(map);
                         Widgets.Clear();
                         MnemoUnit.Clear();
@@ -711,7 +714,6 @@ namespace PKM_AL
                         ContentArea.Content = new UserControlDevices();
                     };
                     item.ContextMenu.Items.Add(mi);
-                    
                 }
                 foreach (var subGr in group.SubGroups)
                 {
@@ -967,8 +969,12 @@ namespace PKM_AL
                 case ClassItem.eType.Map:
                     //TODO Сделать открытие  мнемосхем по клику дерева.
                     //if (currentContent is UserControlCanvas) break;
-                    //ContentArea.Content=new UserControlCanvas();
-                    //StatusMode.Text = "Мнемосхема";
+                    ClassMap map=Maps.FirstOrDefault(x => x.GuidID.Equals(subGroup.GUID));
+                    if(map==null) break;
+                    Widgets.Clear();
+                    MnemoUnit.Clear();
+                    ContentArea.Content=new UserControlCanvas(map);
+                    StatusMode.Text = $"Схема: {map.Name}";
                     break;
             }
         }

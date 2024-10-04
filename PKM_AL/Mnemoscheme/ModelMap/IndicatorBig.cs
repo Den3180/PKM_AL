@@ -106,8 +106,8 @@ public class IndicatorBig : AbstractControl
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
-                IsBlocked = !IsBlocked;
-                ((CheckBox)menuItem.Icon).IsChecked = IsBlocked;
+                _isBlocked = !_isBlocked;
+                ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":
                 WindowPopertyIndicatorBig windowPropertyIndicatorBig = new WindowPopertyIndicatorBig();

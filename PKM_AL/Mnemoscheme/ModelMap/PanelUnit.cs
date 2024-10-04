@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -395,5 +396,13 @@ public class PanelUnit : Rectangle, IUnitService
     public void SetValue(decimal value)
     {
         throw new NotImplementedException();
+    }
+
+    public void SetFixUnit(bool fix)
+    {
+        _isBlocked = fix;
+        var mItem= ContextMenu?.Items.FirstOrDefault(t => ((MenuItem)t).Header!.ToString()!.Equals("Закрепить"));
+        if(mItem==null) return;
+        (((mItem as MenuItem)?.Icon as CheckBox)!).IsChecked = fix;
     }
 }

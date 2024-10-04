@@ -110,7 +110,6 @@ namespace PKM_AL
             }
         }
 
-
         [XmlIgnore]
         public decimal Value
         {
@@ -200,15 +199,15 @@ namespace PKM_AL
                     if (State != EnumState.Unknown) State = EnumState.Unknown;
                     OnPropertyChanged(nameof(ColorLineChannel));
                 }
-
+                
                 if (MainWindow.MnemoUnit.Count > 0)
                 {
                     foreach (var widget in MainWindow.MnemoUnit )
                     {
-                        if (Address == 24 && widget.GetTypeUnit()==EnumUnit.Title)
-                        {
-                            Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value));
-                        } 
+                        // if (widget.)
+                        // {
+                        //     Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value));
+                        // } 
                     }
                 }
             }

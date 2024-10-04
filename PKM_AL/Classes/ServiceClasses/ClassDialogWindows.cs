@@ -154,7 +154,8 @@ namespace PKM_AL.Classes.ServiceClasses
                 FileTypeFilter = new List<FilePickerFileType>()
                 {
                     new FilePickerFileType("Все файлы") { Patterns = new[] { "*.*" } },
-                    new FilePickerFileType("База данных") { Patterns = new[] { "*.xml" } }
+                    new FilePickerFileType("XML") { Patterns = new[] { "*.xml" } },
+                    new FilePickerFileType("Схема") { Patterns=new[] { "*.sch" } }
                 },
                 SuggestedStartLocation = res
             }));
@@ -187,7 +188,8 @@ namespace PKM_AL.Classes.ServiceClasses
                         FileTypeChoices = new List<FilePickerFileType>()
                         {
                             new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } },
-                            new FilePickerFileType("XML") { Patterns=new[] { "*.xml" } }
+                            new FilePickerFileType("XML") { Patterns=new[] { "*.xml" } },
+                            new FilePickerFileType("Схема") { Patterns=new[] { "*.sch" } }
                         },
                         SuggestedStartLocation = res
                     }); 

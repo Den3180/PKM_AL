@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
@@ -342,5 +343,13 @@ public class ImageUnit : Image,IUnitService
     public void SetValue(decimal value)
     {
         throw new NotImplementedException();
+    }
+
+    public void SetFixUnit(bool fix)
+    {
+        _isBlocked = fix;
+        var mItem= ContextMenu?.Items.FirstOrDefault(t => ((MenuItem)t).Header!.ToString()!.Equals("Закрепить"));
+        if(mItem==null) return;
+        (((mItem as MenuItem)?.Icon as CheckBox)!).IsChecked = fix;
     }
 }

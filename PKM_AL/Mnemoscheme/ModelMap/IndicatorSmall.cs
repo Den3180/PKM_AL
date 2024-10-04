@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Layout;
-using Avalonia.Markup.Xaml.MarkupExtensions;
-using Avalonia.Markup.Xaml.MarkupExtensions.CompiledBindings;
-using Avalonia.Media;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using PKM_AL;
-using PKM_AL.Mnemoscheme;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ViewMap;
+using WindowPropertyIndicatorSmall = PKM_AL.Mnemoscheme.ViewMap.WindowPropertyIndicatorSmall;
 
-namespace TestGrathic.ModelMap;
+namespace PKM_AL.Mnemoscheme.ModelMap;
 
 public class IndicatorSmall : AbstractControl
 {
@@ -110,8 +100,8 @@ public class IndicatorSmall : AbstractControl
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
-                IsBlocked = !IsBlocked;
-                ((CheckBox)menuItem.Icon).IsChecked = IsBlocked;
+                _isBlocked = !_isBlocked;
+                ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":
                 WindowPropertyIndicatorSmall windowPropertyIndicatorSmall = new WindowPropertyIndicatorSmall(_stateWidget);

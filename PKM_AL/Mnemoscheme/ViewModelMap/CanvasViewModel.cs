@@ -19,6 +19,7 @@ namespace PKM_AL.Mnemoscheme.ViewModelMap;
 
 public sealed class CanvasViewModel :INotifyPropertyChanged
 {
+    private bool _isBlocked;
     public ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
     // public static ObservableCollection<object> GraphicUnitObjects { get; set; } = new();
     public static List<object> BufferСopiedUnits { get; set; } = new();
@@ -27,6 +28,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
 
     public CanvasViewModel()
     {
+        Map = new ClassMap();
     }
 
     public CanvasViewModel(ClassMap map)
@@ -47,7 +49,9 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             }
         }
     }
-    
+
+    #region [Команды]
+
     /// <summary>
     /// Вставить юнит.
     /// </summary>
@@ -79,27 +83,19 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         GraphicUnitObjects.Add(newUnit);
         MainWindow.MnemoUnit.Add((IUnitService)newUnit);
     }
-    
+
     /// <summary>
-    /// Добавить юнит в немосхему, используя настройки виджета.
+    /// Зафиксировать все элементы.
     /// </summary>
-    /// <param name="widget"></param>
-    public void AddLoadShape(ClassWidget widget){
-        EnumUnit enumUnit = widget.UnitType;
-        object newUnit = enumUnit switch
+    /// <param name="obj"></param>
+    public void FixAll(object obj)
+    {
+        IsBlocked = !IsBlocked;
+        foreach (IUnitService unit in GraphicUnitObjects)
         {
-            EnumUnit.Title=>new TitleUnit(Map,widget),
-            EnumUnit.ImageKip=>new ImageUnit(Map,enumUnit, widget),
-            EnumUnit.ImagePipe=>new ImageUnit(Map,enumUnit, widget),
-            EnumUnit.Panel=>new PanelUnit(Map,enumUnit,widget),
-            EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit,widget),
-            EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit,widget),
-            _=>new ButtonUnit(Map,enumUnit,widget)
-        };
-        GraphicUnitObjects.Add(newUnit);
-        MainWindow.MnemoUnit.Add((IUnitService)newUnit);
+                unit.SetFixUnit(IsBlocked);
+        }
     }
-    
 
     /// <summary>
     /// Очистить форму. 
@@ -122,26 +118,9 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         //TODO на наличие директории мнемосхем,сохранять по имени мнемосхемы
         //var ss = Map.GetJson();
         if(MainWindow.currentMainWindow==null) return;
-         var path= await ClassDialogWindows.SaveDialogSampleAsync
-             (MainWindow.currentMainWindow, MainWindow.MapsPath,Map.Name,"sch" );
-         if(!string.IsNullOrEmpty(path))  Map.SaveProfile(path);
-    }
-
-    /// <summary>
-    /// Создает новую мнемосхему.
-    /// </summary>
-    public async void NewMnemoScheme()
-    {
-        if(MainWindow.currentMainWindow==null) return;
-        WindowMapProperty windowMapProperty = new WindowMapProperty(Map.Name,Map.MapColorString);
-        (string,string)? res= await windowMapProperty.ShowDialog<(string,string)?>(MainWindow.currentMainWindow);
-        if (!res.HasValue) return;
-        Map.Name = res.Value.Item1;
-        Map.BackgroundColor = Brush.Parse(res.Value.Item2);
-        Map.Widgets.Clear();
-        Map.GuidID=Guid.NewGuid();
-        DeleteAllShape(null);
-        MainWindow.Maps.Add(Map);
+        var path= await ClassDialogWindows.SaveDialogSampleAsync
+            (MainWindow.currentMainWindow, MainWindow.MapsPath,Map.Name,"sch" );
+        if(!string.IsNullOrEmpty(path))  Map.SaveProfile(path);
     }
 
     /// <summary>
@@ -177,6 +156,56 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         Map.BackgroundColor = Brush.Parse(res.Value.Item2);
     }
 
+    #endregion
+
+    /// <summary>
+    /// Создает новую мнемосхему.
+    /// </summary>
+    public async void NewMnemoScheme()
+    {
+        if(MainWindow.currentMainWindow==null) return;
+        WindowMapProperty windowMapProperty = new WindowMapProperty(Map.Name,Map.MapColorString);
+        (string,string)? res= await windowMapProperty.ShowDialog<(string,string)?>(MainWindow.currentMainWindow);
+        if (!res.HasValue) return;
+        Map.Name = res.Value.Item1;
+        Map.BackgroundColor = Brush.Parse(res.Value.Item2);
+        Map.Widgets.Clear();
+        Map.GuidID=Guid.NewGuid();
+        DeleteAllShape(null);
+        MainWindow.Maps.Add(Map);
+    }
+    
+    /// <summary>
+    /// Добавить юнит в немосхему, используя настройки виджета.
+    /// </summary>
+    /// <param name="widget"></param>
+    public void AddLoadShape(ClassWidget widget)
+    {
+        EnumUnit enumUnit = widget.UnitType;
+        object newUnit = enumUnit switch
+        {
+            EnumUnit.Title=>new TitleUnit(Map,widget),
+            EnumUnit.ImageKip=>new ImageUnit(Map,enumUnit, widget),
+            EnumUnit.ImagePipe=>new ImageUnit(Map,enumUnit, widget),
+            EnumUnit.Panel=>new PanelUnit(Map,enumUnit,widget),
+            EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit,widget),
+            EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit,widget),
+            _=>new ButtonUnit(Map,enumUnit,widget)
+        };
+        GraphicUnitObjects.Add(newUnit);
+        MainWindow.MnemoUnit.Add((IUnitService)newUnit);
+    }
+
+    public bool IsBlocked
+    {
+        get => _isBlocked;
+        set
+        {
+            if (value == _isBlocked) return;
+            _isBlocked = value;
+            OnPropertyChanged();
+        }
+    }
 
     #region [Методы доступности команд]
 
@@ -218,6 +247,11 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     public bool CanAddShape(object obj)
     {
         return true;
+    }
+
+    public bool CanFixAll()
+    {
+        return GraphicUnitObjects.Count>0;
     }
 
     #endregion

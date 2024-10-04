@@ -29,18 +29,11 @@ public class ClassMap :INotifyPropertyChanged
  
     [XmlIgnore] 
     public Color ForeColor { get; set; }
+
+    [XmlIgnore] 
+    public string CurrentPathFile { get; set; } = string.Empty;
     public List<ClassWidget> Widgets { get; set; }
     
-    public ClassMap()
-    {
-        ID = 0;
-        GuidID=Guid.NewGuid();
-        Name = "Мнемосхема";
-        _backgroundColor = Brush.Parse("#ff10aee2");
-        MapColorString = _backgroundColor.ToString();
-        Widgets = new List<ClassWidget>();
-       
-    }
 
     [XmlIgnore] 
     public IBrush BackgroundColor
@@ -63,6 +56,20 @@ public class ClassMap :INotifyPropertyChanged
             _mapColorString = value;
             BackgroundColor = Brush.Parse(value);
         }
+    }
+    
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    public ClassMap()
+    {
+        ID = 0;
+        GuidID=Guid.NewGuid();
+        Name = "Мнемосхема";
+        _backgroundColor = Brush.Parse("#ff10aee2");
+        MapColorString = _backgroundColor.ToString();
+        Widgets = new List<ClassWidget>();
+       
     }
 
     public string GetJson()
@@ -114,7 +121,30 @@ public class ClassMap :INotifyPropertyChanged
             //TODO Окно ошибки.
             ClassLog.Write(Ex.Message);
         }
+        if(map!=null) map.CurrentPathFile = FileName;
         return map;
+    }
+
+    public static List<ClassMap> LoadMapsFromFile(string dirName)
+    {
+        List<ClassMap> maps = new List<ClassMap>();
+        if (Directory.Exists(dirName))
+        {
+            var files = Directory.GetFiles(dirName);
+            if (files.Length == 0) return maps;
+            foreach (var file in files)
+            {
+                maps.Add(Load(file));
+            }
+        }
+        return maps;
+    }
+
+    public bool DeleteFileMap()
+    {
+        if (string.IsNullOrEmpty(CurrentPathFile)) return false;
+        File.Delete(CurrentPathFile);
+        return true;
     }
 
     public void MapClone(ClassMap map)

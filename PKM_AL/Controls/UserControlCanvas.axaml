@@ -86,11 +86,11 @@
                         </Setter>
                 </Style>
                 <!--Шаблон малого индикатора-->
-                <Style Selector=":is(model|IndicatorSmall)">
+                <Style Selector=":is(modelMap|IndicatorSmall)">
                         <Setter Property="Template">
                                 <Setter.Value>
-                                        <ControlTemplate TargetType="model:IndicatorSmall">
-                                              <Border x:DataType="model:IndicatorSmall"
+                                        <ControlTemplate TargetType="modelMap:IndicatorSmall">
+                                              <Border x:DataType="modelMap:IndicatorSmall"
                                                                 BorderBrush="Black" 
                                                                 BorderThickness="1.5">
                                                         <Border.Background>
@@ -138,9 +138,16 @@
                                                                           Command="{Binding LoadMapXML}"/>
                                                                 <MenuItem Header="Сохранить мнемосхему.."
                                                                           Command="{Binding SaveMnemoScheme}"/>
-                                                                <MenuItem Header="Вставить" 
+                                                                <MenuItem Header="Вставить.." 
                                                                           Command="{Binding  InsertUnit}"/>
-                                                                <MenuItem Header="Удалить все" 
+                                                                <MenuItem Header="Закрепить все.."
+                                                                          Command="{Binding  FixAll}"
+                                                                          >
+                                                                        <MenuItem.Icon>
+                                                                                <CheckBox IsChecked="{Binding IsBlocked}" />
+                                                                        </MenuItem.Icon>
+                                                                </MenuItem>
+                                                                <MenuItem Header="Удалить все.." 
                                                                           Command="{Binding DeleteAllShape}"/>
                                                                 <Separator Foreground="Black"/>
                                                                 <MenuItem Header="Объекты..">

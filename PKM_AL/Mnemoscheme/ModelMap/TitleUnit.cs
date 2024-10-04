@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -275,5 +276,13 @@ public class TitleUnit : TextBlock, IUnitService
    {
       Text = value.ToString(CultureInfo.InvariantCulture);
       _stateWidget.TextUnit = Text;
+   }
+
+   public void SetFixUnit(bool fix)
+   {
+      _isBlocked = fix;
+      var mItem= ContextMenu?.Items.FirstOrDefault(t => ((MenuItem)t).Header!.ToString()!.Equals("Закрепить"));
+      if(mItem==null) return;
+      (((mItem as MenuItem)?.Icon as CheckBox)!).IsChecked = fix;
    }
 }

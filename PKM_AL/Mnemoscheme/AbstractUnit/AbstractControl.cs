@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
@@ -11,7 +12,7 @@ using PKM_AL.Mnemoscheme.ServiceClasses;
 namespace PKM_AL.Mnemoscheme.AbstractUnit;
 public abstract class AbstractControl : ContentControl, INotifyPropertyChanged,IUnitService
 {
-    protected bool IsBlocked;
+    protected bool _isBlocked;
     private bool _isPressed;
     private Point _pos=new Point();
     private EnumTypeTransform _typeTransform = EnumTypeTransform.None;
@@ -56,7 +57,7 @@ public abstract class AbstractControl : ContentControl, INotifyPropertyChanged,I
         };
         menuItem.Icon = new CheckBox()
         {
-            IsChecked = IsBlocked,
+            IsChecked = _isBlocked,
         }; 
         var item=menuItem;
         ((CheckBox)menuItem.Icon).Click+= (s, e) =>
@@ -118,7 +119,7 @@ public abstract class AbstractControl : ContentControl, INotifyPropertyChanged,I
     protected virtual void ContentControl_PointerMoved(object? sender, PointerEventArgs e)
     {
         ContentControl_SetCursor(sender,e,_isPressed);
-        if(!_isPressed || IsBlocked) return;
+        if(!_isPressed || _isBlocked) return;
         var curPointPos = e.GetPosition(this);
         var deltaPos = curPointPos -_pos;
         var leftPosPanel= Bounds.X;
@@ -160,5 +161,13 @@ public abstract class AbstractControl : ContentControl, INotifyPropertyChanged,I
     public virtual void SetValue(decimal value)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void SetFixUnit(bool fix)
+    {
+        _isBlocked = fix;
+        var mItem= ContextMenu?.Items.FirstOrDefault(t => ((MenuItem)t).Header!.ToString()!.Equals("Закрепить"));
+        if(mItem==null) return;
+        (((mItem as MenuItem)?.Icon as CheckBox)!).IsChecked = fix;
     }
 }

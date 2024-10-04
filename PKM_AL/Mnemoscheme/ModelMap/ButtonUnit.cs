@@ -176,7 +176,7 @@ public class ButtonUnit : Button, IUnitService
             menuItem.Click += MenuItem_Click;
             contextMenu.Items.Add(menuItem);
 
-                #endregion
+        #endregion
 
         #region Сепаратор
 
@@ -337,6 +337,15 @@ public class ButtonUnit : Button, IUnitService
     {
         throw new NotImplementedException();
     }
+
+    public void SetFixUnit(bool fix)
+    {
+        _isBlocked = fix;
+        var mItem= ContextMenu?.Items.FirstOrDefault(t => ((MenuItem)t).Header!.ToString()!.Equals("Закрепить"));
+        if(mItem==null) return;
+        (((mItem as MenuItem)?.Icon as CheckBox)!).IsChecked = fix;
+    }
+
 
     #region [PropertyChanged]
     public new event PropertyChangedEventHandler? PropertyChanged;

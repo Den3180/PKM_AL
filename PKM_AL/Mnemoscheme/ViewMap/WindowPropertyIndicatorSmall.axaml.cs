@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 
-namespace TestGrathic.ViewMap;
+namespace PKM_AL.Mnemoscheme.ViewMap;
 
 public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChanged
 {
     private double _currentSize;
+    private ClassDevice _selectedDevice;
+    private ClassChannel _selectedChannel;
+    public ObservableCollection<ClassDevice> DeviceList { get; set; }
+    private ObservableCollection<ClassChannel> _channelList;
+
 
 
     public List<double> FontSizeList { get; set; } = new List<double>() { 
@@ -27,6 +32,16 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
     {
         //TODO Привязать объект привязки, когда будет интеграция в СОТКУ.
         _currentSize = classWidget.FontSizeUnit;
+        if (MainWindow.currentMainWindow != null)
+        {
+            DeviceList=new ObservableCollection<ClassDevice>(MainWindow.Devices);
+            _selectedDevice = DeviceList.Count>0 ? DeviceList[0] : null;
+            if (_selectedDevice != null)
+            {
+                _channelList = new ObservableCollection<ClassChannel>(_selectedDevice.Channels);
+                _selectedChannel = _channelList.Count>0 ? _channelList[0] : null;
+            }
+        }
         DataContext = this;
     }
     
@@ -40,7 +55,41 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
             OnPropertyChanged();
         }
     }
+    
+    public ClassDevice SelectedDevice
+    {
+        get => _selectedDevice;
+        set
+        {
+            if (Equals(value, _selectedDevice)) return;
+            _selectedDevice = value;
+            ChannelList = new ObservableCollection<ClassChannel>(_selectedDevice.Channels);
+            SelectedChannel = ChannelList.Count>0 ? ChannelList[0] : null;
+            OnPropertyChanged();
+        }
+    }
 
+    public ClassChannel SelectedChannel
+    {
+        get => _selectedChannel;
+        set
+        {
+            if (Equals(value, _selectedChannel)) return;
+            _selectedChannel = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<ClassChannel> ChannelList
+    {
+        get => _channelList;
+        set
+        {
+            if (Equals(value, _channelList)) return;
+            _channelList = value;
+            OnPropertyChanged();
+        }
+    }
     private void Button_Click(object? sender, RoutedEventArgs e)
     {
         Button button = sender as Button ?? throw new InvalidOperationException();
@@ -50,7 +99,12 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
             {
                 FontSizeUnit = _currentSize,
                 BindingObjectUnit = new BindingObject()
-                //TODO Добавить код привязки.
+                {
+                    IdDevice = SelectedDevice.ID,
+                    IdParam = SelectedChannel.ID,
+                    NameParam = SelectedChannel.Name
+                }
+                
             };
             Tag=settingsUnitObject;
         }
