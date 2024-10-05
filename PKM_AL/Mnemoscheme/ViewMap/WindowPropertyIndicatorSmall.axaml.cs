@@ -17,9 +17,6 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
     private ClassChannel _selectedChannel;
     public ObservableCollection<ClassDevice> DeviceList { get; set; }
     private ObservableCollection<ClassChannel> _channelList;
-
-
-
     public List<double> FontSizeList { get; set; } = new List<double>() { 
        8,9,10,11,12,13,14,15,16,18,20,24,26,28,36,48,72 };
     
@@ -35,12 +32,13 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
         if (MainWindow.currentMainWindow != null)
         {
             DeviceList=new ObservableCollection<ClassDevice>(MainWindow.Devices);
-            _selectedDevice = DeviceList.Count>0 ? DeviceList.FirstOrDefault(dev=>dev.ID==classWidget.BindingObjectUnit?.IdDevice) : DeviceList[0];
+            var dev = DeviceList.FirstOrDefault(dev => dev.ID == classWidget.BindingObjectUnit?.IdDevice);
+            _selectedDevice = dev ?? DeviceList[0];
             if (_selectedDevice != null)
             {
                 _channelList = new ObservableCollection<ClassChannel>(_selectedDevice.Channels);
-                _selectedChannel = _channelList.Count>0 ? _channelList.FirstOrDefault(ch=>
-                    ch.ID==classWidget.BindingObjectUnit?.IdParam) : _channelList[0];
+                var channel = _channelList.FirstOrDefault(ch => ch.ID == classWidget.BindingObjectUnit?.IdParam);
+                _selectedChannel = channel ?? _channelList[0];
             }
         }
         DataContext = this;
@@ -105,7 +103,6 @@ public partial class WindowPropertyIndicatorSmall : Window, INotifyPropertyChang
                     IdParam = SelectedChannel.ID,
                     NameParam = SelectedChannel.Name
                 }
-                
             };
             Tag=settingsUnitObject;
         }

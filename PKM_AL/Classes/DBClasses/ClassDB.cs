@@ -615,7 +615,6 @@ namespace PKM
             try { cmd.ExecuteNonQuery(); }
             catch (Exception ex)
             {
-
                 return false;
             }
             return true;

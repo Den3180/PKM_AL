@@ -42,6 +42,7 @@ public partial class WindowConfig : ClassWindowPKM
         else Inter.SelectedIndex = 0;
         Interface.IsChecked = settings.Interface;
         ModbusSlave.IsChecked = settings.ModbusSlave;
+        Demo.IsChecked = settings.Demo;
         txtPeriodUSIKP.Text = settings.PeriodUSIKP.ToString();
     }
 
@@ -66,6 +67,7 @@ public partial class WindowConfig : ClassWindowPKM
         settings.Interface = Interface.IsChecked.Value;
         settings.ModbusSlave = ModbusSlave.IsChecked.Value;
         settings.PeriodUSIKP = Convert.ToInt32(txtPeriodUSIKP.Text);
+        settings.Demo = Demo.IsChecked.Value;
         settings.Save();
         MainWindow.settings = settings;
         foreach (var dev in MainWindow.Devices)

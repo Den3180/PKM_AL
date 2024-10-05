@@ -77,7 +77,7 @@
                 </Grid>
           </TabItem>
           <TabItem Header="Дополнительные параметры">
-                              <Grid Margin="10" RowDefinitions="30,30,30,30,30,30,30,*" ColumnDefinitions="205,Auto">
+                              <Grid Margin="10" RowDefinitions="30,30,30,30,30,30,30,30,*" ColumnDefinitions="205,Auto">
                                   <Label Grid.Row="0" Grid.Column="0" Content="Открывать при старте:"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"
                               Margin="5" Name ="lstStartWindow" SelectedIndex="0" Width="120">
@@ -101,6 +101,8 @@
                     <CheckBox Grid.Row="5" Grid.Column="1" Margin="5" Name="RecordLog"/>
                     <Label Grid.Row="6" Grid.Column="0" Content="Шлюз в Modbus TCP Slave:"/>
                     <CheckBox Grid.Row="6" Grid.Column="1" Margin="5" Name="ModbusSlave"/>
+                    <Label Grid.Row="7" Grid.Column="0" Content="Режим демонстрации:"/>
+                    <CheckBox Grid.Row="7" Grid.Column="1" Margin="5" Name="Demo"/>
                 </Grid>
           </TabItem>
       </TabControl>

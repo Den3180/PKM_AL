@@ -137,7 +137,7 @@ namespace PKM_AL
                 OnPropertyChanged("DTAct");
                 OnPropertyChanged("StrDTAct");
                 //Сохранение нового значение в таблицу регистров(только в том случае если у регистра есть имя и оно не "Резерв").
-                if (Name != "" && Name != "Резерв")
+                if (Name != "" && Name != "Резерв" && !MainWindow.settings.Demo)
                 {
                     Task.Run(() => MainWindow.DB.RegistrySaveValue(this));
                 }
@@ -199,7 +199,7 @@ namespace PKM_AL
                     if (State != EnumState.Unknown) State = EnumState.Unknown;
                     OnPropertyChanged(nameof(ColorLineChannel));
                 }
-                
+                //Передача данных в мнемосхему.
                 if (MainWindow.MnemoUnit.Count > 0)
                 {
                     foreach (var widget in MainWindow.MnemoUnit )

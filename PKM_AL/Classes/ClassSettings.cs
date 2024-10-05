@@ -45,6 +45,10 @@ namespace PKM
         public int PeriodUSIKP { get; set; }
         //Первый старт.
         public bool FirstStart { get; set; }
+        
+        //Флаг режима демонстрации.
+        
+        public bool Demo { get; set; }
 
         public ClassSettings()
         {

@@ -20,6 +20,7 @@ using PKM_AL.Classes.ServiceClasses;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using PKM_AL.Classes;
+using PKM_AL.Classes.Demo;
 using PKM_AL.Classes.TransferClasses;
 using PKM_AL.Controls;
 using PKM_AL.Mnemoscheme;
@@ -66,6 +67,7 @@ namespace PKM_AL
         public static ObservableCollection<ClassWidget> Widgets;
 
         public static ClassSettings settings;
+        private ClassDemo _demo;
 
         public MainWindow()
         {
@@ -143,6 +145,8 @@ namespace PKM_AL
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            #region [Запуск приложения]
+
             ClassLog.Write("Запуск приложения");
             settings = ClassSettings.Load();
             if (settings.FirstStart)
@@ -154,7 +158,7 @@ namespace PKM_AL
             {
                 case ClassSettings.EnumTypeDB.SQLite: DB = new ClassDB(); break;
                 default:
-                break;
+                    break;
             }
             
             WindowIntro frmIntro = new WindowIntro();
@@ -163,7 +167,7 @@ namespace PKM_AL
             if (!File.Exists(settings.DB))
             {
                 Task<string> buttonResult = ClassMessage.ShowMessageCustom(this, "База данных не доступна.\nСоздать базу данных?"
-                      , "", ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
+                    , "", ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
                 if (buttonResult.Result == "Да")
                 {
                     string path = ClassDialogWindows.CreateDbDialog(this);
@@ -176,39 +180,39 @@ namespace PKM_AL
                     else
                     {
                         ClassMessage.ShowMessageCustom(this, "База данных не создана.\nПриложение будет закрыто.",
-                                                icon: MsBox.Avalonia.Enums.Icon.Stop);
+                            icon: MsBox.Avalonia.Enums.Icon.Stop);
                         Environment.Exit(0);
                     }
                 }
                 else
                 { 
-                    Windows.WindowDB windowDb = new Windows.WindowDB();
+                    WindowDB windowDb = new WindowDB();
                     windowDb.WindowShow(this);
                 }
             }
             if (!DB.Open(settings))
             {
                 ClassMessage.ShowMessageCustom(this, "База данных не доступна.\nПроверьте конфигурацию!"
-                                         , "", ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
-                Windows.WindowDB windowDb = new Windows.WindowDB();
+                    , "", ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
+                WindowDB windowDb = new WindowDB();
                 windowDb.WindowShow(this);
                 Environment.Exit(0);
             }
             else
             {
-               ClassMessage.ShowMessageCustom(this, "База данных подключена.", "", ButtonEnum.Ok,
-                                         icon: MsBox.Avalonia.Enums.Icon.Success);
+                ClassMessage.ShowMessageCustom(this, "База данных подключена.", "", ButtonEnum.Ok,
+                    icon: MsBox.Avalonia.Enums.Icon.Success);
             }
             int VersionDB = DB.InfoLoad();
             if (VersionDB != ClassDB.Version)
             {
                 var buttonResault = ClassMessage.ShowMessageCustom(this, "Версия базы данных не поддерживается." +
-                                                                   "\nВыполнить обновление?", "", ButtonEnum.YesNo, 
-                                                                    icon: MsBox.Avalonia.Enums.Icon.Error);
+                                                                         "\nВыполнить обновление?", "", ButtonEnum.YesNo, 
+                    icon: MsBox.Avalonia.Enums.Icon.Error);
                 if (buttonResault.Result == "Нет")
                 {
                     ClassMessage.ShowMessageCustom(this, "База данных не обновлена.\nПриложение будет закрыто.",
-                         icon: MsBox.Avalonia.Enums.Icon.Stop);
+                        icon: MsBox.Avalonia.Enums.Icon.Stop);
                     Environment.Exit(0);
                 }
                 else
@@ -216,16 +220,20 @@ namespace PKM_AL
                     if (!DB.Update(VersionDB))
                     {
                         ClassMessage.ShowMessageCustom(this, "Ошибка обновления базы данных.\nПриложение будет закрыто.", "",
-                                                 ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
+                            ButtonEnum.Ok, icon: MsBox.Avalonia.Enums.Icon.Error);
                         Environment.Exit(0);
                     }
                     else
                     {
                         ClassMessage.ShowMessageCustom(this, "База данных обновлена!", "", ButtonEnum.Ok,
-                                        icon: MsBox.Avalonia.Enums.Icon.Success);
+                            icon: MsBox.Avalonia.Enums.Icon.Success);
                     }
                 }
             }
+            
+
+            #endregion  
+            
             //Саздаем папку для хранения мнемосхем.
             if (!Directory.Exists(MapsPath))
             {
@@ -304,6 +312,10 @@ namespace PKM_AL
                 //}
                 //break;
             }
+            //Создание класса демонстрации. 
+            _demo = new ClassDemo();
+            _demo.SendRequestEvent += Modbus_SendRequestEvent;
+            _demo.ReceivedAnswerEvent += Modbus_ReceivedAnswerEvent;
         }
 
         /// <summary>
@@ -315,6 +327,12 @@ namespace PKM_AL
         {
             //Запись времени в статусбар.
             StatusTime.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss.fff");
+
+            if (settings.Demo)
+            {
+                _demo.ActionDemo();
+                return;
+            }
             
             //Если в настройках стоит запрос пользователя.
             if (settings.RequestLogin && (User == null))

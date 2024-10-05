@@ -242,6 +242,7 @@ public class ClassModbus
     /// <returns></returns>
     public async Task Poll(long t)
     {
+        //Открывает порт, если он не открыт.
         if (!port.IsOpen)
         {
             PortOpen(MainWindow.settings.PortModbus, MainWindow.settings.BaudRate, MainWindow.settings.DataBits,
@@ -462,7 +463,7 @@ public class ClassModbus
         // }
         
         if (MainWindow.cts == newCTS) MainWindow.cts = null;
-        await Task.Yield();
+        await Task.Yield();//TODO Протестировать сотку без этого метода.
     }
 
     /// <summary>
@@ -640,7 +641,8 @@ public class ClassModbus
             ClassLog.Write(Ex.Message); 
         }
         ClassChannel channel = device.Channels.FirstOrDefault(x => x.Address == Address);
-        if (channel != null) MainWindow.DB.RegistrySaveNewValue(channel.ID, null);//Сбрасывем значение для запси в null.
+        //Сбрасывем значение для записи базе данных в null.
+        if (channel != null) MainWindow.DB.RegistrySaveNewValue(channel.ID, null);
     }
 
     public async void WriteRegistries(ClassDevice device, ushort Address, ushort Value,
