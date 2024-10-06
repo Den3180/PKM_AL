@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using PKM_AL.Mnemoscheme.AbstractUnit;
@@ -15,7 +16,6 @@ public class IndicatorBig : AbstractControl
 {
     private decimal _paramValue;
     private string _paramName = "Параметр, ед.изм.";
-   // private ClassWidget _stateWidget;
     private EnumUnit _enumUnit;
     private ClassMap _map;
     public BindingObject? BindingObject { get; set; }
@@ -45,7 +45,9 @@ public class IndicatorBig : AbstractControl
         //Установка позиции.
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
-        ContextMenu=CreateContextMenu(); 
+        ContextMenu=CreateContextMenu();
+        if (_stateWidget.BindingObjectUnit != null) 
+            ParamName = _stateWidget.BindingObjectUnit.NameParam;
     }
 
     private void CreateIndicatorBig()
@@ -76,6 +78,7 @@ public class IndicatorBig : AbstractControl
         set
         {
             if (value == _paramName) return;
+            _paramName = value;
             OnPropertyChanged();
         }
     }
@@ -110,7 +113,7 @@ public class IndicatorBig : AbstractControl
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":
-                WindowPopertyIndicatorBig windowPropertyIndicatorBig = new WindowPopertyIndicatorBig();
+                WindowPopertyIndicatorBig windowPropertyIndicatorBig = new WindowPopertyIndicatorBig(_stateWidget);
                 await windowPropertyIndicatorBig.ShowDialog(MainWindow.currentMainWindow);
                 if(windowPropertyIndicatorBig.Tag is not null) 
                     RefreshIndicatorSmall((ClassWidget)windowPropertyIndicatorBig.Tag);
@@ -128,6 +131,7 @@ public class IndicatorBig : AbstractControl
             BindingObject.IdParam = tag.BindingObjectUnit.IdParam;
             BindingObject.NameParam = tag.BindingObjectUnit.NameParam;
             _stateWidget.BindingObjectUnit = BindingObject;
+            ParamName = BindingObject.NameParam;
         }
     }
 

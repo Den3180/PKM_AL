@@ -147,6 +147,10 @@ public class ClassMap :INotifyPropertyChanged
         return true;
     }
 
+    /// <summary>
+    /// Клонировать карту.
+    /// </summary>
+    /// <param name="map"></param>
     public void MapClone(ClassMap map)
     {
         GuidID = map.GuidID;

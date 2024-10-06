@@ -28,13 +28,13 @@
                                                 <UniformGrid Columns="2">
                                                                 <TextBlock Classes="T1" Text="Устройство:" />
                                                                 <ComboBox 
-                                                                          ItemsSource=""
-                                                                          SelectedItem=""
+                                                                          ItemsSource="{Binding DeviceList}"
+                                                                          SelectedItem="{Binding SelectedDevice}"
                                                                           Width="180"/>
                                                                 <TextBlock Classes="T1" Text="Канал:" />
                                                                 <ComboBox 
-                                                                        ItemsSource=""
-                                                                        SelectedItem=""
+                                                                        ItemsSource="{Binding ChannelList}"
+                                                                        SelectedItem="{Binding SelectedChannel}"
                                                                         Width="180"/>
                                                 </UniformGrid>
                                         </Border>
