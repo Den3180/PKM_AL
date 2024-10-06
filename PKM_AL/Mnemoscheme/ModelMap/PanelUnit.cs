@@ -5,19 +5,15 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using PKM_AL;
-using PKM_AL.Mnemoscheme;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewModelMap;
 using TestGrathic.ViewMap;
-using Color = System.Drawing.Color;
 
-namespace TestGrathic.ModelMap;
+namespace PKM_AL.Mnemoscheme.ModelMap;
 
 public class PanelUnit : Rectangle, IUnitService
 {
@@ -47,7 +43,6 @@ public class PanelUnit : Rectangle, IUnitService
             CreateRectangle();
         }
         StrokeThickness = 3D;
-        Stroke= Brushes.Black;
         ContextMenu=CreateContextMenu();
         PointerPressed += rectangle_OnPointerPressed;
         PointerMoved += rectangle_OnPointerMove;
@@ -77,6 +72,7 @@ public class PanelUnit : Rectangle, IUnitService
         Height = _stateWidget.HeightUnit;
         //Установка цвета.
         Fill = Brush.Parse(_stateWidget.BackgroundUnit);
+        Stroke=Brush.Parse(_stateWidget.FontBrushUnit);
         //Установка позиции.
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
@@ -94,6 +90,7 @@ public class PanelUnit : Rectangle, IUnitService
         Width = widht;
         Height = height;
         Fill = Brushes.Azure; //change
+        Stroke= Brushes.Black;
         _stateWidget = new ClassWidget()
         {
             GuidId = _map.GuidID,
@@ -102,7 +99,8 @@ public class PanelUnit : Rectangle, IUnitService
             WidthUnit = Width,
             PositionX = Bounds.X,
             PositionY =Bounds.Y,
-            BackgroundUnit = Fill.ToString()
+            BackgroundUnit = Fill.ToString(),
+            FontBrushUnit = Stroke.ToString()
         };
         Canvas.SetLeft(this, 0);
         Canvas.SetTop(this, 0);
@@ -151,6 +149,28 @@ public class PanelUnit : Rectangle, IUnitService
         contextMenu.Items.Add(menuItem);
 
         #endregion
+
+        #region [Передний план..]
+
+        menuItem = new MenuItem()
+        {
+            Header = "Передний план"
+        };
+        menuItem.Click += MenuItem_Click;
+        contextMenu.Items.Add(menuItem);
+
+        #endregion
+        
+        #region [Задний план..]
+
+        menuItem = new MenuItem()
+        {
+            Header = "Задний план"
+        };
+        menuItem.Click += MenuItem_Click;
+        contextMenu.Items.Add(menuItem);
+
+        #endregion
         
         #region Сепаратор
 
@@ -163,7 +183,8 @@ public class PanelUnit : Rectangle, IUnitService
 
         #endregion
         
-        
+        #region [Свойства]
+
         menuItem = new MenuItem
         {
             Header = "Свойства"
@@ -171,6 +192,9 @@ public class PanelUnit : Rectangle, IUnitService
         };
         menuItem.Click += MenuItem_Click;
         contextMenu.Items.Add(menuItem);
+
+        #endregion
+        
         return contextMenu;
     }
 
@@ -198,11 +222,17 @@ public class PanelUnit : Rectangle, IUnitService
                 _isBlocked = !_isBlocked;
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
+            case "Передний план":
+                ZIndex = 10;
+                break; 
+            case "Задний план":
+                ZIndex = -1;
+                break;
             case "Свойства":
                 _stateWidget.HeightUnit = Height;
                 _stateWidget.WidthUnit = Width;
-                if (Fill != null) 
-                    _stateWidget.FontBrushUnit = Fill.ToString() ?? Brushes.Black.ToString();
+                //if (Fill != null) 
+                    //_stateWidget.FontBrushUnit = Fill.ToString() ?? Brushes.Black.ToString();
                 WindowPropertyPanel propertyPanel = new WindowPropertyPanel(_stateWidget);
                 await propertyPanel.ShowDialog(MainWindow.currentMainWindow);
                 if(propertyPanel.Tag is not null) RefreshTitle((ClassWidget)propertyPanel.Tag);
@@ -214,10 +244,12 @@ public class PanelUnit : Rectangle, IUnitService
     {
         Width = propertyPanelTag.WidthUnit;
         Height = propertyPanelTag.HeightUnit;
-        Fill = Brush.Parse(propertyPanelTag.FontBrushUnit.ToString());
+        Fill = Brush.Parse(propertyPanelTag.BackgroundUnit);
+        Stroke = Brush.Parse(propertyPanelTag.FontBrushUnit);
         _stateWidget.HeightUnit = Height;
         _stateWidget.WidthUnit = Width;
         _stateWidget.BackgroundUnit = Fill.ToString() ?? Brushes.Azure.ToString();
+        _stateWidget.FontBrushUnit = Stroke.ToString() ?? Brushes.Black.ToString();
     }
 
     /// <summary>
@@ -307,16 +339,16 @@ public class PanelUnit : Rectangle, IUnitService
     private void PanelResizeY(PanelUnit panel, double topPosPanel, Point deltaPos, PointerEventArgs e)
     {
         
-        if (e.GetPosition(panel).Y >= 0-20 && e.GetPosition(panel).Y <= 0+20)
+        if (e.GetPosition(panel).Y >= 0-2 && e.GetPosition(panel).Y <= 0+2)
         {
             if(Height-deltaPos.Y<50) return; 
             topPosPanel= Canvas.GetTop(panel);
             Canvas.SetTop(panel, topPosPanel+ deltaPos.Y);
             panel.Height = Height-deltaPos.Y;
         }
-        else if(e.GetPosition(panel).Y >= panel.Height-20 && e.GetPosition(panel).Y <= panel.Height+20)
+        else if(e.GetPosition(panel).Y >= panel.Height-2 && e.GetPosition(panel).Y <= panel.Height+2)
         {
-            if(Height + deltaPos.Y<50) return;
+            if(Height + deltaPos.Y<1) return;
             panel.Height =_startheight + deltaPos.Y;
         }
         else

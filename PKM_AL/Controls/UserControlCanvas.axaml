@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:model="using:TestGrathic.ModelMap"
              xmlns:modelMap="clr-namespace:PKM_AL.Mnemoscheme.ModelMap"
              xmlns:vmodel="clr-namespace:PKM_AL.Mnemoscheme.ViewModelMap"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -31,8 +30,9 @@
                 </Style>
                 <!--Шаблон большого индикатора с названием параметра-->
                 <Style Selector=":is(modelMap|IndicatorBig)">
-                        <Setter Property="MaxWidth" Value="200"/>
-                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="Width" Value="150"/>
+                        <Setter Property="MaxWidth" Value="150"/>
+                        <Setter Property="MinWidth" Value="150"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                 <ControlTemplate TargetType="modelMap:IndicatorBig">
@@ -53,7 +53,7 @@
                                                                                 BorderThickness="1"
                                                                                 Background="DarkSlateBlue"
                                                                                 Width="65" Height="30">
-                                                                                <Border Background="CornflowerBlue" Margin="2" VerticalAlignment="Center">
+                                                                                <Border Background="DarkBlue" Margin="2" VerticalAlignment="Center">
                                                                                 <TextBlock 
                                                                                         VerticalAlignment="Center"
                                                                                         HorizontalAlignment="Center"
@@ -64,15 +64,18 @@
                                                                                         Foreground="Beige"/>
                                                                                 </Border>
                                                                         </Border>
+                                                                        <ScrollViewer Height="50">
                                                                         <TextBlock 
                                                                                 VerticalAlignment="Center"
                                                                                 HorizontalAlignment="Center"
                                                                                 FontSize="14"
+                                                                                FontWeight="SemiBold"
                                                                                 TextWrapping="Wrap"
                                                                                 Margin="3" 
                                                                                 TextAlignment="Center"
                                                                                 Text="{CompiledBinding ParamName}">
                                                                         </TextBlock>
+                                                                                </ScrollViewer>
                                                                 </StackPanel>
                                                 </Border>
                                         </ControlTemplate.Content>
@@ -165,6 +168,18 @@
                                                                                         CommandParameter="3">
                                                                                         <MenuItem.Icon>
                                                                                                 <Image Width="32" Height="32" Source="/Assets/Pipe Blue Horz.png" />
+                                                                                        </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Header="ЭСМС" Command="{Binding AddShape}"
+                                                                                        CommandParameter="10">
+                                                                                        <MenuItem.Icon>
+                                                                                                <Image Width="32" Height="32" Source="/Assets/Electrod.png" />
+                                                                                        </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Header="Кожух" Command="{Binding AddShape}"
+                                                                                        CommandParameter="9">
+                                                                                        <MenuItem.Icon>
+                                                                                                <Image Width="32" Height="32" Source="/Assets/Shell.png" />
                                                                                         </MenuItem.Icon>
                                                                                 </MenuItem>
                                                                         </MenuItem>

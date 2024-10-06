@@ -33,8 +33,10 @@ public class ImageUnit : Image,IUnitService
     private ClassMap _map;
     private readonly Dictionary<EnumUnit,string> _unitsPath = new Dictionary<EnumUnit, string>
     {
-        { EnumUnit.ImageKip ,"kip3.png"},
-        { EnumUnit.ImagePipe ,"Pipe Yellow Horz.png"}
+        { EnumUnit.ImageKip ,"kip4.png"},
+        { EnumUnit.ImagePipe ,"Pipe Yellow Horz.png"},
+        { EnumUnit.Electrod ,"Electrod.png"},
+        { EnumUnit.Shell ,"Shell.png"}
     };
     public ImageUnit(ClassMap map,EnumUnit enumUnit, ClassWidget stateWidget=null)
     {
@@ -59,7 +61,7 @@ public class ImageUnit : Image,IUnitService
         {
             BlurRadius = 10,
             Color = Colors.DimGray,
-            OffsetY=10
+            OffsetY=0,
         };
         ContextMenu=CreateContextMenu();
         PointerPressed += ImageUnit_OnPointerPressed;

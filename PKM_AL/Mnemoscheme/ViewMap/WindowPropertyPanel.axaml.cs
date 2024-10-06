@@ -14,7 +14,19 @@ public partial class WindowPropertyPanel : Window, INotifyPropertyChanged
 {
     private double _widthPan=200D;
     private double _heightPan=300D;
-    private Color _colorPan=Colors.Beige; 
+    private Color _colorPan=Colors.Beige;
+    private Color _colorBorderPanel = Colors.Black;
+
+    public Color ColorBorderPanel
+    {
+        get => _colorBorderPanel;
+        set
+        {
+            if (value.Equals(_colorBorderPanel)) return;
+            _colorBorderPanel = value;
+            OnPropertyChanged();
+        }
+    }
 
     public double WidthPan
     {
@@ -60,7 +72,8 @@ public partial class WindowPropertyPanel : Window, INotifyPropertyChanged
         {
             _widthPan = settingsUnitObject.WidthUnit;
             _heightPan = settingsUnitObject.HeightUnit;
-            _colorPan = Color.Parse(settingsUnitObject.FontBrushUnit);
+            _colorPan = Color.Parse(settingsUnitObject.BackgroundUnit);
+            _colorBorderPanel=Color.Parse(settingsUnitObject.FontBrushUnit);
         }
         DataContext = this;
     }
@@ -74,7 +87,8 @@ public partial class WindowPropertyPanel : Window, INotifyPropertyChanged
             {
                 WidthUnit = _widthPan,
                 HeightUnit = _heightPan,
-                FontBrushUnit = _colorPan.ToString()
+                BackgroundUnit = _colorPan.ToString(),
+                FontBrushUnit = _colorBorderPanel.ToString()
             };
         }
         Close();

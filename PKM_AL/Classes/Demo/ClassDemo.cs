@@ -121,6 +121,7 @@ public class ClassDemo
                 26 => (decimal)new Random().Next((int)(PolPotMin * 100), (int)(PolPotMax * 100)) / 100,
                 28 => (decimal)new Random().Next((int)(0.03 * 100), (int)(0.05 * 100)) / 100,
                 328 => (decimal)new Random().Next(15, 25),
+                102 => 0.01M,
                 1025 => (decimal)new Random().Next((int)(SumPotMin * 100), (int)(SumPotMax * 100)) / 100,
                 _ => channel.Value,
             };

@@ -13,7 +13,6 @@ using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ModelMap;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 using PKM_AL.Mnemoscheme.ViewMap;
-using TestGrathic.ModelMap;
 
 namespace PKM_AL.Mnemoscheme.ViewModelMap;
 
@@ -75,6 +74,8 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             EnumUnit.Title=>new TitleUnit(Map),
             EnumUnit.ImageKip=>new ImageUnit(Map,enumUnit),
             EnumUnit.ImagePipe=>new ImageUnit(Map,enumUnit),
+            EnumUnit.Electrod => new ImageUnit(Map,enumUnit),
+            EnumUnit.Shell => new ImageUnit(Map,enumUnit),
             EnumUnit.Panel=>new PanelUnit(Map,enumUnit),
             EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit),
             EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit),
@@ -187,6 +188,8 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             EnumUnit.Title=>new TitleUnit(Map,widget),
             EnumUnit.ImageKip=>new ImageUnit(Map,enumUnit, widget),
             EnumUnit.ImagePipe=>new ImageUnit(Map,enumUnit, widget),
+            EnumUnit.Electrod => new ImageUnit(Map,enumUnit,widget),
+            EnumUnit.Shell => new ImageUnit(Map,enumUnit,widget),
             EnumUnit.Panel=>new PanelUnit(Map,enumUnit,widget),
             EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit,widget),
             EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit,widget),

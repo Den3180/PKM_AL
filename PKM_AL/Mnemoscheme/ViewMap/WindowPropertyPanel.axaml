@@ -23,7 +23,7 @@
                                 <TextBlock Text="Панель" FontSize="15" FontWeight="Regular" Margin="5 0 0 0"/>
                         </StackPanel>
                         <Border Grid.Row="1" Margin="5 5 5 5" BorderBrush="LightGray" BorderThickness="1">
-                                 <Grid Margin="10" RowDefinitions="35,35,35,35" ColumnDefinitions="100,*">
+                                 <Grid Margin="10" RowDefinitions="35,35,35,35,35" ColumnDefinitions="100,*">
                                        <TextBlock Grid.Row="0" Grid.Column="0" Classes="T1" Text="Цвет:" FontSize="14"/>
                                        <ColorPicker Name="Dicker" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"
                                                     ColorSpectrumComponents="SaturationValue" Margin="5"
@@ -39,7 +39,12 @@
                                                 Width="{Binding ElementName=Text,Path=Width}"
                                                 Text="{Binding HeightPan, 
                                                 Converter={StaticResource ConverterTitleText}}"/>
-                                       <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+                                       <TextBlock Classes="T1" Grid.Row="3" Grid.Column="0" Text="Цвет рамки:"/>
+                                       <ColorPicker Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"
+                                                    ColorSpectrumComponents="SaturationValue" Margin="5"
+                                                    Color="{Binding ColorBorderPanel}"
+                                                    Width="80"/>
+                                       <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
                                                    Margin="0 20 0 0" HorizontalAlignment="Center">
                                                <Button Name="SaveBtn" Content="Принять" Height="30" Width="100"
                                                        HorizontalAlignment="Right" VerticalAlignment="Bottom"

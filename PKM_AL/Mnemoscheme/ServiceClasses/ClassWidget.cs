@@ -41,6 +41,7 @@ public class ClassWidget
             HeightUnit = this.HeightUnit,
             WidthUnit = this.WidthUnit,
             FontBrushUnit = this.FontBrushUnit,
+            BackgroundUnit = this.BackgroundUnit
         };
         
     }
