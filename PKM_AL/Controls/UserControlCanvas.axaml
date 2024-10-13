@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.UserControlCanvas"
              x:DataType="vmodel:CanvasViewModel" 
-             x:CompileBindings="True">
+             x:CompileBindings="True" Name="UControl">
      <UserControl.Styles>
                 <!--Шаблон для кнопки-->
                 <Style Selector=":is(modelMap|ButtonUnit)">
@@ -130,14 +130,16 @@
         <Grid RowDefinitions="*,Auto">
                 <LayoutTransformControl>
                         <LayoutTransformControl.LayoutTransform>
-                                <ScaleTransform ScaleX="0.8" ScaleY="0.8"></ScaleTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"></ScaleTransform>
                         </LayoutTransformControl.LayoutTransform> 
                         <ItemsControl Name="ItemsControl" 
                                       ItemsSource="{Binding GraphicUnitObjects}">
                         <ItemsControl.ItemsPanel>
                                 <!--Шаблон поля мнемосхемы-->
                                 <ItemsPanelTemplate>
-                                        <Canvas Name="Canvas" Background="{Binding Map.BackgroundColor}">
+                                        <Canvas Name="Canvas" Background="{Binding Map.BackgroundColor}"
+                                                MaxWidth="{Binding #UControl.Bounds.Width }"
+                                                MaxHeight="{Binding #UControl.Bounds.Height}">
                                                 <Canvas.ContextMenu>
                                                         <ContextMenu>
                                                                 <MenuItem Header="Новая мнемосхема.."
