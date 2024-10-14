@@ -27,6 +27,13 @@
                                         <DropShadowEffect Color="DimGray" BlurRadius="2"/>
                                 </Setter.Value>
                         </Setter>
+                        <Style Selector="^:pressed">
+                                <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                                <ScaleTransform ScaleX="0.95" ScaleY="0.95"></ScaleTransform>
+                                        </Setter.Value>
+                                </Setter>
+                        </Style>
                 </Style>
                 <!--Шаблон большого индикатора с названием параметра-->
                 <Style Selector=":is(modelMap|IndicatorBig)">
