@@ -80,6 +80,7 @@ public class TitleUnit : TextBlock, IUnitService
       FontFamily = new FontFamily(_stateWidget.FontStyleUnit);
       FontSize = _stateWidget.FontSizeUnit;
       FontWeight = _stateWidget.FontWeightUnit; 
+      _isBlocked = _stateWidget.IsBlocked;
       Text = _stateWidget.TextUnit ;
       _stateWidget.UnitType = _enumUnit;
       Foreground = Brush.Parse(_stateWidget.FontBrushUnit);
@@ -176,7 +177,7 @@ public class TitleUnit : TextBlock, IUnitService
             _map.Widgets.Remove(_stateWidget);
             break;
          case "Закрепить":
-            _isBlocked = !_isBlocked;
+            _stateWidget.IsBlocked=_isBlocked = !_isBlocked;
             ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
             break;
          case "Изменить":

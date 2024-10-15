@@ -86,6 +86,7 @@ public class ButtonUnit : Button, IUnitService
         Width = _stateWidget.WidthUnit;
         Height = _stateWidget.HeightUnit;
         IsFlag = _stateWidget.IsDevicePoll;
+        _isBlocked=_stateWidget.IsBlocked;
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
     }
@@ -220,7 +221,7 @@ public class ButtonUnit : Button, IUnitService
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
-                _isBlocked = !_isBlocked;
+                _stateWidget.IsBlocked=_isBlocked = !_isBlocked;
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":

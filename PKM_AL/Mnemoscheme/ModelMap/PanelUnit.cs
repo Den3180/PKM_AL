@@ -70,6 +70,7 @@ public class PanelUnit : Rectangle, IUnitService
         //Установка размеров.
         Width = _stateWidget.WidthUnit;
         Height = _stateWidget.HeightUnit;
+        _isBlocked = _stateWidget.IsBlocked;
         //Установка цвета.
         Fill = Brush.Parse(_stateWidget.BackgroundUnit);
         Stroke=Brush.Parse(_stateWidget.FontBrushUnit);
@@ -219,7 +220,7 @@ public class PanelUnit : Rectangle, IUnitService
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
-                _isBlocked = !_isBlocked;
+                _stateWidget.IsBlocked=_isBlocked = !_isBlocked;
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Передний план":

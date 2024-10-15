@@ -23,6 +23,7 @@ public class ClassWidget
     public double WidthUnit { get; set; } = 1D;
     public string FontBrushUnit { get; set; } = Colors.Black.ToString();
     public string BackgroundUnit { get; set; } = Colors.Azure.ToString();
+    public bool IsBlocked { get; set; } = false;
     public ClassWidget Clone()
     {
         return new ClassWidget
@@ -41,7 +42,8 @@ public class ClassWidget
             HeightUnit = this.HeightUnit,
             WidthUnit = this.WidthUnit,
             FontBrushUnit = this.FontBrushUnit,
-            BackgroundUnit = this.BackgroundUnit
+            BackgroundUnit = this.BackgroundUnit,
+            IsBlocked = this.IsBlocked,
         };
         
     }

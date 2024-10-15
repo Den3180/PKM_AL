@@ -79,6 +79,7 @@ public class ImageUnit : Image,IUnitService
         //Установка размеров.
         Width = _stateWidget.WidthUnit;
         Height = _stateWidget.HeightUnit;
+        _isBlocked=_stateWidget.IsBlocked;
         //Установка позиции.
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
@@ -239,7 +240,7 @@ public class ImageUnit : Image,IUnitService
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
-                _isBlocked = !_isBlocked;
+                _stateWidget.IsBlocked=_isBlocked = !_isBlocked;
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":

@@ -19,7 +19,6 @@ public class IndicatorSmall : AbstractControl
     private decimal _paramValue = 0.00M;
     public BindingObject BindingObject { get; set; }
 
-
     /// <summary>
     /// Конструктор создания.
     /// </summary>
@@ -63,10 +62,11 @@ public class IndicatorSmall : AbstractControl
     private void LoadIndicatorSmall()
     {
         SizeUnit = _stateWidget.FontSizeUnit;
-         Width=Bounds.Width;
-         Height=Bounds.Height;
+        Width=Bounds.Width;
+        Height=Bounds.Height;
         Width=80;
         Height=40;
+        _isBlocked=_stateWidget.IsBlocked;
         //Установка позиции.
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
@@ -106,7 +106,7 @@ public class IndicatorSmall : AbstractControl
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
-                _isBlocked = !_isBlocked;
+                _stateWidget.IsBlocked=_isBlocked = !_isBlocked;
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":

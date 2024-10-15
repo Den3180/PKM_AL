@@ -37,11 +37,22 @@ public class IndicatorBig : AbstractControl
         MainWindow.Widgets.Add(_stateWidget);
     }
 
+    public IndicatorBig(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map,enumUnit,stateWidge)
+    {
+        Canvas.SetLeft(this, bounds.X+50);
+        Canvas.SetTop(this, bounds.Y+50);
+        _map.Widgets.Add(stateWidge);
+    }
+    
+    /// <summary>
+    /// Построение индикатора по сущ. параметрам(вторичная загрузка или загрузка из файла).
+    /// </summary>
     private void LoadIndicatorBig()
     {
         //Установка размеров.
         Width = _stateWidget.WidthUnit;
         Height = _stateWidget.HeightUnit;
+        _isBlocked=_stateWidget.IsBlocked;
         //Установка позиции.
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
@@ -50,6 +61,9 @@ public class IndicatorBig : AbstractControl
             ParamName = _stateWidget.BindingObjectUnit.NameParam;
     }
 
+    /// <summary>
+    /// Первичное создание индикатора.
+    /// </summary>
     private void CreateIndicatorBig()
     {
         _stateWidget = new ClassWidget()
@@ -65,12 +79,6 @@ public class IndicatorBig : AbstractControl
         _map.Widgets.Add(_stateWidget);
     }
 
-    public IndicatorBig(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map,enumUnit,stateWidge)
-    {
-        Canvas.SetLeft(this, bounds.X+50);
-        Canvas.SetTop(this, bounds.Y+50);
-        _map.Widgets.Add(stateWidge);
-    }
     
     public string ParamName
     {
@@ -109,7 +117,7 @@ public class IndicatorBig : AbstractControl
                 (tt?.ItemsSource as ObservableCollection<object>)?.Remove(this);
                 break;
             case "Закрепить":
-                _isBlocked = !_isBlocked;
+                _stateWidget.IsBlocked=_isBlocked = !_isBlocked;
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":

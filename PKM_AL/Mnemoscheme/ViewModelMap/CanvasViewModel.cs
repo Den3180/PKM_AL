@@ -94,7 +94,9 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         IsBlocked = !IsBlocked;
         foreach (IUnitService unit in GraphicUnitObjects)
         {
+                int index=GraphicUnitObjects.IndexOf(unit);
                 unit.SetFixUnit(IsBlocked);
+                Map.Widgets[index].IsBlocked = IsBlocked;
         }
     }
 
