@@ -44,22 +44,9 @@ public partial class UserControlDevices : UserControl
     private void DataGrid_LoadingRow(object sender, Avalonia.Controls.DataGridRowEventArgs e)
     {
         DataGridRow gridRow = e.Row;
-        gridRow.Tag = (e.Row.GetIndex() + 1).ToString();
+        gridRow.Tag = (gridRow.GetIndex() + 1).ToString();
         var tempDev = gridRow.DataContext as ClassDevice;
         if(tempDev==null) return;
-        // foreach (ClassDevice dev in MainWindow.Devices)
-        // {
-        //     if (dev.ID == tempDev.ID)
-        //     {
-        //         tempDev.IsPoll=dev.IsPoll;
-        //     }
-        // }
-        var binding = new Binding()
-        {
-            Source = tempDev,
-            Path = nameof(ClassDevice.ColorLineDevice)
-        };
-        gridRow.Bind(DataGridRow.BackgroundProperty, binding);
         gridRow.DoubleTapped += DataGridRow_DoubleTapped;
         gridRow.Tapped += DataGridRow_Tapped;
     }

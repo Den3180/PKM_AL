@@ -34,6 +34,16 @@
 			<Style Selector="Label">
 				<Setter Property="HorizontalAlignment" Value="Center"></Setter>
 			</Style>
+			<Style Selector="DataGridRow">
+				<Setter Property="Background" Value="{Binding ColorLineDevice}"/>
+				<Style Selector="^:nth-child(even)">
+					<Setter Property="Background" Value="#20808080"/>
+				</Style>
+				<Style Selector="^:pointerover">
+					<Setter Property="Background" Value="LightYellow"/>
+				</Style>
+			</Style>
+			
 			<Style Selector="DataGridColumnHeader">
 				<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 				<Setter Property="HorizontalAlignment" Value="Stretch"/>
