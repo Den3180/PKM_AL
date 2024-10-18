@@ -391,7 +391,7 @@ namespace PKM_AL
             set
             {
                 _bColorLine = value;
-                OnPropertyChanged(prop:nameof(ColorLineDevice));
+                OnPropertyChanged();
             } 
         }
 
