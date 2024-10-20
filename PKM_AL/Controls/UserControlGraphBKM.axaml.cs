@@ -18,6 +18,7 @@ using Avalonia.Threading;
 using CsvHelper;
 using MsBox.Avalonia.Enums;
 using PKM;
+using PKM_AL.Classes.DBClasses;
 using PKM_AL.Classes.ServiceClasses;
 using ScottPlot;
 using ScottPlot.AutoScalers;

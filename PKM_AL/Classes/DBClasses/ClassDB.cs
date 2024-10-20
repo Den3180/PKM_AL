@@ -6,12 +6,10 @@ using System.IO;
 using System.Linq;
 using Microsoft.Data.Sqlite;
 using MsBox.Avalonia.Enums;
-using PKM_AL;
-using PKM_AL.Classes;
+using PKM;
 using PKM_AL.Mnemoscheme;
 
-
-namespace PKM
+namespace PKM_AL.Classes.DBClasses
 {
     public class ClassDB
     {

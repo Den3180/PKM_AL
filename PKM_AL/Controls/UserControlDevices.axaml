@@ -36,14 +36,13 @@
 			</Style>
 			<Style Selector="DataGridRow">
 				<Style Selector="^:nth-child(even)">
-					<Setter Property="Background" Value="#20808080"/>
+					<Setter Property="Background" Value="{Binding ColorLineDevice}"/>
 				</Style>
 				<Style Selector="^:pointerover">
-					<Setter Property="Background" Value="LightYellow"/>
+					<Setter Property="Background" Value="LightSteelBlue"/>
 				</Style>
 				<Setter Property="Background" Value="{Binding ColorLineDevice}"/>
 			</Style>
-			
 			<Style Selector="DataGridColumnHeader">
 				<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 				<Setter Property="HorizontalAlignment" Value="Stretch"/>

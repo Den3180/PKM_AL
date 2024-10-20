@@ -384,7 +384,7 @@ namespace PKM_AL
                 {
                     EnumLink.LinkNo => Brushes.Red,
                     EnumLink.LinkYes => Brushes.Chartreuse,
-                    _ => Brushes.Transparent
+                    _ => MainWindow.Devices.IndexOf(this)%2==0 ? Brushes.Transparent: Brush.Parse("#20808080") 
                 };
                 return _bColorLine;
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Avalonia.Media;
@@ -497,7 +498,8 @@ namespace PKM_AL
                     EnumState.Less => Brushes.Red,
                     EnumState.Over => Brushes.Red,
                     EnumState.Norma => Brushes.Chartreuse,
-                    _ => Brushes.Transparent
+                    _ =>  MainWindow.Devices.FirstOrDefault(dev=>dev.ID==Device.ID)
+                        !.Channels.IndexOf(this)%2==0 ? Brushes.Transparent: Brush.Parse("#20808080")
                 };
                 return _bColorLine;
             }

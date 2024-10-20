@@ -9,6 +9,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using MsBox.Avalonia.Enums;
 using PKM;
+using PKM_AL.Classes.DBClasses;
 using PKM_AL.Classes.ServiceClasses;
 
 namespace PKM_AL.Controls;
