@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using Avalonia.Media;
@@ -18,6 +19,7 @@ public class ClassWidget
     public double FontSizeUnit { get; set; }
     public string TextUnit { get; set; } = string.Empty;
     public BindingObject? BindingObjectUnit { get; set; }
+    public ObservableCollection<BindingObject> BindingObjects { get; set; } = new ObservableCollection<BindingObject>();
     public double ScaleUnit { get; set; } = 1D;
     public double HeightUnit { get; set; } = 1D;
     public double WidthUnit { get; set; } = 1D;
@@ -44,6 +46,7 @@ public class ClassWidget
             FontBrushUnit = this.FontBrushUnit,
             BackgroundUnit = this.BackgroundUnit,
             IsBlocked = this.IsBlocked,
+            BindingObjects = this.BindingObjects
         };
         
     }

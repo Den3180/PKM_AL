@@ -298,7 +298,7 @@ namespace PKM_AL
             switch (settings.StartWindow)
             {
                 case 0:
-                ContentArea.Content = new UserControlDevices();
+                ContentArea.Content = new Controls.UserControlDevices();
                 StatusMode.Text = "Устройства";
                 break;
                 case 1:
@@ -730,7 +730,7 @@ namespace PKM_AL
                         Widgets.Clear();
                         MnemoUnit.Clear();
                         ContentArea.Content = null;
-                        ContentArea.Content = new UserControlDevices();
+                        ContentArea.Content = new Controls.UserControlDevices();
                     };
                     item.ContextMenu.Items.Add(mi);
                 }
@@ -803,8 +803,8 @@ namespace PKM_AL
                 UserLogin();
             break;
             case "Устройства...":
-                if (currentContent is UserControlDevices) break; 
-                ContentArea.Content = new UserControlDevices();
+                if (currentContent is Controls.UserControlDevices) break; 
+                ContentArea.Content = new Controls.UserControlDevices();
                 StatusMode.Text = "Устройства";
             break;
             case "Каналы данных...":
@@ -1011,8 +1011,8 @@ namespace PKM_AL
                 switch (group?.GroupType)
                 {
                     case ClassGroup.eType.Devices:
-                        if (currentContent is UserControlDevices) break; 
-                        ContentArea.Content = new UserControlDevices();
+                        if (currentContent is Controls.UserControlDevices) break; 
+                        ContentArea.Content = new Controls.UserControlDevices();
                         StatusMode.Text = "Устройства";
                         break;
                 }

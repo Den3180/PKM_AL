@@ -12,6 +12,7 @@ public enum EnumUnit
     PipeBend=7,               //Отвод                         7
     Lamp=8,                   //Лампа                         8
     Shell=9,                  //Кожух                         9
-    Electrod=10,               //Электрод сравнения          10
+    Electrod=10,              //Электрод сравнения            10
+    ListParamDevice=11,       //Список параметров устройства  11
     NoneUnit  
 }

@@ -1,20 +1,13 @@
 using System;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using MsBox.Avalonia.Enums;
-using PKM;
-using PKM_AL.Classes.ServiceClasses;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Data;
+using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
-using PKM_AL.Controls;
+using MsBox.Avalonia.Enums;
+using PKM_AL.Classes.ServiceClasses;
+using PKM;
 
-namespace PKM_AL;
+namespace PKM_AL.Controls;
 
 public partial class UserControlDevices : UserControl
 {

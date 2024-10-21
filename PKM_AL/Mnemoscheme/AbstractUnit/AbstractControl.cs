@@ -153,6 +153,7 @@ public abstract class AbstractControl : ContentControl, INotifyPropertyChanged,I
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    
     public virtual EnumUnit GetTypeUnit()
     {
         throw new System.NotImplementedException();

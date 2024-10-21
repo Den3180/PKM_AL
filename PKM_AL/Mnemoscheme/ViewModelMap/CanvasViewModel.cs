@@ -79,6 +79,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             EnumUnit.Panel=>new PanelUnit(Map,enumUnit),
             EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit),
             EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit),
+            EnumUnit.ListParamDevice => new ListParamDevice(Map,enumUnit),
             _=>new ButtonUnit(Map,enumUnit)
         };
         GraphicUnitObjects.Add(newUnit);
@@ -195,6 +196,7 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             EnumUnit.Panel=>new PanelUnit(Map,enumUnit,widget),
             EnumUnit.IndicatorSmall=> new IndicatorSmall(Map,enumUnit,widget),
             EnumUnit.IndicatorBig=> new IndicatorBig(Map,enumUnit,widget),
+            EnumUnit.ListParamDevice => new ListParamDevice(Map,enumUnit,widget),
             _=>new ButtonUnit(Map,enumUnit,widget)
         };
         GraphicUnitObjects.Add(newUnit);
