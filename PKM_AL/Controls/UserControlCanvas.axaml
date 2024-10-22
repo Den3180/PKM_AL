@@ -132,6 +132,97 @@
                                 </Setter.Value>
                         </Setter>
                 </Style>
+                <!--Шаблон списка-->
+                <Style Selector=":is(modelMap|ListParamDevice)">
+                                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="modelMap:ListParamDevice">
+                                                <ControlTemplate.Content>
+                                                                <TreeDataGrid x:DataType="modelMap:ListParamDevice" 
+                                                                              BorderBrush="Black" BorderThickness="2"
+                                                                              BackgroundSizing="OuterBorderEdge" 
+                                                                              Background="Lavender"
+                                                                              CornerRadius="10"
+                                                                              CanUserSortColumns="False"
+                                                                              CanUserResizeColumns="False"
+                                                                              FontWeight="DemiBold"
+                                                                              Source="{Binding }">
+                                                                        <TreeDataGrid.Resources>
+                                                                                <DataTemplate x:Key="CheckBoxCell">
+                                                                                        <Border Width="30" Height="30"
+                                                                                                BorderThickness="2"
+                                                                                                BorderBrush="Black" Background="DarkGray"
+                                                                                                CornerRadius="15"
+                                                                                                Margin="2">
+                                                                                                        <Ellipse x:DataType="modelMap:ListParamDevice" Stroke="Black" StrokeThickness="2" Margin="1.5">
+                                                                                                                <Ellipse.Styles>
+                                                                                                                        <Style  Selector="Ellipse">
+                                                                                                                             <Setter Property="Fill" Value="Red"/>
+                                                                                                                             <Style.Animations >
+                                                                                                                                <Animation
+                                                                                                                                   Duration="0:0:1"
+                                                                                                                                   IterationCount="Infinite"
+                                                                                                                                   Easing="QuadraticEaseInOut">
+                                                                                                                                <KeyFrame Cue="50%">
+                                                                                                                                        <Setter Property="Fill" Value="Brown"/>
+                                                                                                                                </KeyFrame>
+                                                                                                                                <KeyFrame Cue="100%">
+                                                                                                                                        <Setter Property="Fill" Value="Red"/>
+                                                                                                                                </KeyFrame>
+                                                                                                                        </Animation>
+                                                                                                                </Style.Animations>
+                                                                                                                </Style>
+                                                                                                        </Ellipse.Styles>
+                                                                                                </Ellipse>
+                                                                                        </Border>
+                                                                                </DataTemplate>
+                                                                        </TreeDataGrid.Resources>
+                                                                        <TreeDataGrid.Styles>
+                                                                                <!-- Разметка строк нечетных -->
+                                                                                <Style Selector="TreeDataGrid TreeDataGridRow:nth-child(odd)">
+                                                                                        <Setter Property="BorderBrush" Value="Black" />
+                                                                                        <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                                                                </Style>
+                                                                                <!-- Разметка строк четных -->
+                                                                                <Style Selector="TreeDataGrid TreeDataGridRow:nth-child(even)">
+                                                                                        <Setter Property="Background" Value="#20808080"/>
+                                                                                        <Setter Property="BorderBrush" Value="Black" />
+                                                                                        <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                                                                </Style>
+                                                                                <!-- Убирает наслоение на границе для строк -->
+                                                                                <Style Selector="TreeDataGrid TreeDataGridRow:nth-last-child(1)">
+                                                                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                                                                        <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                                                                </Style>
+                                                                                <!-- Разметка ячеек вертикальных -->
+                                                                                <Style Selector="TreeDataGrid :is(TreeDataGridCell):nth-child(even)">
+                                                                                        <Setter Property="BorderBrush" Value="Black" />
+                                                                                        <Setter Property="BorderThickness" Value="1 0 1 0" />
+                                                                                </Style>
+                                                                                <!-- Убирает наслоение на границе для ячеек -->
+                                                                                <Style Selector="TreeDataGrid :is(TreeDataGridCell):nth-last-child(1)">
+                                                                                        <Setter Property="BorderBrush" Value="Black" />
+                                                                                        <Setter Property="BorderThickness" Value="1 0 0 0" />
+                                                                                </Style>
+                                                                                <!-- Стилизация заголовка -->
+                                                                                <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-child(n)">
+                                                                                        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                                                                                        <Setter Property="TextBlock.Foreground" Value="Blue"/>
+                                                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                                                </Style>
+                                                                        </TreeDataGrid.Styles>
+                                                                </TreeDataGrid>
+                                                </ControlTemplate.Content>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+    
+                </Style>
         </UserControl.Styles>
          <!--Основное поле мнемосхемы-->
         <Grid RowDefinitions="*,Auto">
@@ -205,7 +296,9 @@
                                                                         <MenuItem Header="Составной индикатор" Command="{Binding AddShape}"
                                                                                   CommandParameter="5"/>
                                                                         <MenuItem Header="Кнопка" Command="{Binding AddShape}"
-                                                                                  CommandParameter="6"/>
+                                                                                  CommandParameter="6"/> 
+                                                                        <MenuItem Header="Список" Command="{Binding AddShape}"
+                                                                                  CommandParameter="11"/>
                                                                 </MenuItem>
                                                                 <Separator Foreground="Black"/>
                                                                 <MenuItem Header="Свойства мнемосхемы.." 

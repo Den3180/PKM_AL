@@ -1,6 +1,13 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Media;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ServiceClasses;
@@ -9,12 +16,61 @@ using PKM_AL.Mnemoscheme.ViewModelMap;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 
+public class ClassParamForListDevice:INotifyPropertyChanged
+{
+    private decimal? _paramValue;
+    private decimal? _max;
+    private decimal? _min;
+    public string Nameparam{get;set;}=String.Empty;
+
+    public decimal? ParamValue
+    {
+        get => _paramValue;
+        set
+        {
+            if (value == _paramValue) return;
+            _paramValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public decimal? Max
+    {
+        get => _max;
+        set
+        {
+            if (value == _max) return;
+            _max = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public decimal? Min
+    {
+        get => _min;
+        set
+        {
+            if (value == _min) return;
+            _min = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}
+
 public class ListParamDevice : AbstractControl
 {
     private EnumUnit _enumUnit;
     private ClassMap _map;
 
-    public ObservableCollection<BindingObject> BindingObjects { get; set; } = new ObservableCollection<BindingObject>();
+    public ObservableCollection<ClassParamForListDevice> ParamListDev { get; set; } = new ObservableCollection<ClassParamForListDevice>();
+    public FlatTreeDataGridSource<ClassParamForListDevice> ParamDataSource { get; }
 
     /// <summary>
     /// Конструктор первичного создания.
@@ -24,6 +80,7 @@ public class ListParamDevice : AbstractControl
     /// <param name="stateWidget"></param>
     public ListParamDevice(ClassMap map,EnumUnit enumUnit, ClassWidget stateWidget=null)
     {
+        ParamDataSource = new FlatTreeDataGridSource<ClassParamForListDevice>(ParamListDev);
         _map = map;
         _enumUnit = enumUnit;
         if (stateWidget != null)
@@ -42,7 +99,7 @@ public class ListParamDevice : AbstractControl
     /// <summary>
     /// Создание юнита первичное.
     /// </summary>
-    private void CreateListParamDevice()
+    private async void CreateListParamDevice()
     {
         _stateWidget = new ClassWidget()
         {
@@ -53,7 +110,42 @@ public class ListParamDevice : AbstractControl
             PositionX = Bounds.X,
             PositionY =Bounds.Y
         };
-        ContextMenu=CreateContextMenu(); 
+        WindowPropertyListParam listParam = new WindowPropertyListParam(_stateWidget);
+        await listParam.ShowDialog(MainWindow.currentMainWindow);
+        ContextMenu=CreateContextMenu();
+        var options = new TextColumnOptions<ClassParamForListDevice>()
+        {
+            TextAlignment = TextAlignment.Center,
+            TextWrapping = TextWrapping.Wrap
+        };
+        
+        ParamDataSource.Columns.AddRange(new ColumnList<ClassParamForListDevice>()
+        {
+            new TextColumn<ClassParamForListDevice, string>
+                ("Параметр", x => x.Nameparam,options: options),
+            new TextColumn<ClassParamForListDevice, decimal?>
+                ("Значение", x => x.ParamValue),
+            new TextColumn<ClassParamForListDevice, decimal?>
+                ("Min", x => x.Min),
+            new TextColumn<ClassParamForListDevice, decimal?>
+                ("Max", x => x.Max)
+        });
+        
+        // ParamDataSource = new FlatTreeDataGridSource<ClassParamForListDevice>(ParamListDev)
+        // {
+        //     Columns =
+        //     {
+        //         new TextColumn<ClassParamForListDevice, string>
+        //             ("Параметр", x => x.Nameparam,options: options),
+        //         new TextColumn<ClassParamForListDevice, decimal?>
+        //             ("Значение", x => x.ParamValue),
+        //         new TextColumn<ClassParamForListDevice, decimal?>
+        //             ("Min", x => x.Min),
+        //         new TextColumn<ClassParamForListDevice, decimal?>
+        //             ("Max", x => x.Max)
+        //     },
+        // };
+        ParamDataSource.Columns.Add(new TemplateColumn<ClassParamForListDevice>("Статус", "CheckBoxCell"));
         _map.Widgets.Add(_stateWidget);
     }
 
