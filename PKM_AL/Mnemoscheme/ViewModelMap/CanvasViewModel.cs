@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Media;
 using PKM_AL.Classes.ServiceClasses;
 using PKM_AL.Mnemoscheme.AbstractUnit;
@@ -120,11 +121,11 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
     public async void SaveMnemoScheme()
     {
         //TODO на наличие директории мнемосхем,сохранять по имени мнемосхемы
-        //var ss = Map.GetJson();
         if(MainWindow.currentMainWindow==null) return;
         var path= await ClassDialogWindows.SaveDialogSampleAsync
             (MainWindow.currentMainWindow, MainWindow.MapsPath,Map.Name,"sch" );
-        if(!string.IsNullOrEmpty(path))  Map.SaveProfile(path);
+        if (path == null) return;
+        Map.SaveProfile(path.LocalPath);
     }
 
     /// <summary>
@@ -138,7 +139,6 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         if(string.IsNullOrEmpty(path)) return;
         var map = ClassMap.Load(path);
         DeleteAllShape(null);
-        //if(MainWindow.Maps.Count>0) MainWindow.Maps.Clear();
         Map.MapClone(map);
         MainWindow.Maps.Add(map);
         foreach (var widget in Map.Widgets)

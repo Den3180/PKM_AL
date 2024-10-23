@@ -170,11 +170,11 @@ namespace PKM_AL.Classes.ServiceClasses
         }
         
         
-        public static async Task<string> SaveDialogSampleAsync(Window owner, string startLocation="", 
+        public static async Task<Uri> SaveDialogSampleAsync(Window owner, string startLocation="", 
             string fileName="file", string ext="xml")
         {
             var topLevel = TopLevel.GetTopLevel(owner);
-            if (topLevel == null) return string.Empty;
+            if (topLevel == null) return null;//string.Empty;
             var res= await topLevel.StorageProvider.TryGetFolderFromPathAsync(startLocation);
             try
             {
@@ -193,11 +193,12 @@ namespace PKM_AL.Classes.ServiceClasses
                         },
                         SuggestedStartLocation = res
                     }); 
-                return file?.Path.LocalPath;
+                return file?.Path;
+                // return file?.Path.LocalPath;
             }
             catch(Exception e)
             {
-                return string.Empty;
+                return null; //string.Empty;
             }
         }
     }

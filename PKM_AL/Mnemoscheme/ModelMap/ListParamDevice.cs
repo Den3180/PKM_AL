@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
@@ -16,12 +17,12 @@ using PKM_AL.Mnemoscheme.ViewModelMap;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 
-public class ClassParamForListDevice:INotifyPropertyChanged
+public sealed class ClassParamForListDevice:INotifyPropertyChanged
 {
-    private decimal? _paramValue;
+    private decimal? _paramValue=0;
     private decimal? _max;
     private decimal? _min;
-    public string Nameparam{get;set;}=String.Empty;
+    public string Nameparam{get; init; }=String.Empty;
 
     public decimal? ParamValue
     {
@@ -56,9 +57,9 @@ public class ClassParamForListDevice:INotifyPropertyChanged
         }
     }
 
-
     public event PropertyChangedEventHandler PropertyChanged;
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
@@ -68,9 +69,10 @@ public class ListParamDevice : AbstractControl
 {
     private EnumUnit _enumUnit;
     private ClassMap _map;
+    
 
     public ObservableCollection<ClassParamForListDevice> ParamListDev { get; set; } = new ObservableCollection<ClassParamForListDevice>();
-    public FlatTreeDataGridSource<ClassParamForListDevice> ParamDataSource { get; }
+    public FlatTreeDataGridSource<ClassParamForListDevice> ParamDataSource { get; set; }
 
     /// <summary>
     /// Конструктор первичного создания.
@@ -80,7 +82,6 @@ public class ListParamDevice : AbstractControl
     /// <param name="stateWidget"></param>
     public ListParamDevice(ClassMap map,EnumUnit enumUnit, ClassWidget stateWidget=null)
     {
-        ParamDataSource = new FlatTreeDataGridSource<ClassParamForListDevice>(ParamListDev);
         _map = map;
         _enumUnit = enumUnit;
         if (stateWidget != null)
@@ -99,7 +100,7 @@ public class ListParamDevice : AbstractControl
     /// <summary>
     /// Создание юнита первичное.
     /// </summary>
-    private async void CreateListParamDevice()
+    private void CreateListParamDevice()
     {
         _stateWidget = new ClassWidget()
         {
@@ -111,42 +112,59 @@ public class ListParamDevice : AbstractControl
             PositionY =Bounds.Y
         };
         WindowPropertyListParam listParam = new WindowPropertyListParam(_stateWidget);
-        await listParam.ShowDialog(MainWindow.currentMainWindow);
+        listParam.WindowShow(MainWindow.currentMainWindow);
+        if (listParam.Tag is null) return;
+        _stateWidget.BindingObjectUnit = (listParam.Tag as ClassWidget)?.BindingObjectUnit;
+        _stateWidget.BindingObjects = (listParam.Tag as ClassWidget)?.BindingObjects;
+        if(_stateWidget.BindingObjects==null) return;
+        CreateTableParam();
         ContextMenu=CreateContextMenu();
-        var options = new TextColumnOptions<ClassParamForListDevice>()
-        {
-            TextAlignment = TextAlignment.Center,
-            TextWrapping = TextWrapping.Wrap
-        };
-        
-        ParamDataSource.Columns.AddRange(new ColumnList<ClassParamForListDevice>()
-        {
-            new TextColumn<ClassParamForListDevice, string>
-                ("Параметр", x => x.Nameparam,options: options),
-            new TextColumn<ClassParamForListDevice, decimal?>
-                ("Значение", x => x.ParamValue),
-            new TextColumn<ClassParamForListDevice, decimal?>
-                ("Min", x => x.Min),
-            new TextColumn<ClassParamForListDevice, decimal?>
-                ("Max", x => x.Max)
-        });
-        
-        // ParamDataSource = new FlatTreeDataGridSource<ClassParamForListDevice>(ParamListDev)
-        // {
-        //     Columns =
-        //     {
-        //         new TextColumn<ClassParamForListDevice, string>
-        //             ("Параметр", x => x.Nameparam,options: options),
-        //         new TextColumn<ClassParamForListDevice, decimal?>
-        //             ("Значение", x => x.ParamValue),
-        //         new TextColumn<ClassParamForListDevice, decimal?>
-        //             ("Min", x => x.Min),
-        //         new TextColumn<ClassParamForListDevice, decimal?>
-        //             ("Max", x => x.Max)
-        //     },
-        // };
-        ParamDataSource.Columns.Add(new TemplateColumn<ClassParamForListDevice>("Статус", "CheckBoxCell"));
         _map.Widgets.Add(_stateWidget);
+    }
+
+    /// <summary>
+    /// Посторение тоблицы спичка параметров.
+    /// </summary>
+    private void CreateTableParam()
+    {
+        foreach (var bind in _stateWidget.BindingObjects)
+        {
+            ParamListDev.Add(new ClassParamForListDevice
+            {
+                Nameparam = bind.NameParam,
+            });
+        }
+        ParamDataSource = new FlatTreeDataGridSource<ClassParamForListDevice>(ParamListDev)
+        {
+            Columns =
+            {
+                new TextColumn<ClassParamForListDevice, string>
+                ("Параметр", x => x.Nameparam,
+                    options:new TextColumnOptions<ClassParamForListDevice>()
+                    {
+                        TextAlignment = TextAlignment.Left,
+                        TextWrapping = TextWrapping.Wrap,
+                    },
+                    width:GridLength.Parse("150")),
+                new TextColumn<ClassParamForListDevice, decimal?>
+                ("Значение", x => x.ParamValue,
+                    options:new TextColumnOptions<ClassParamForListDevice>
+                    {
+                        TextAlignment = TextAlignment.Center
+                    }),
+                new TextColumn<ClassParamForListDevice, decimal?>
+                ("Min", x => x.Min,  options:new TextColumnOptions<ClassParamForListDevice>
+                {
+                    TextAlignment = TextAlignment.Center
+                }),
+                new TextColumn<ClassParamForListDevice, decimal?>
+                ("Max", x => x.Max,  options:new TextColumnOptions<ClassParamForListDevice>
+                {
+                    TextAlignment = TextAlignment.Center
+                })
+            },
+        };
+        ParamDataSource.Columns.Add(new TemplateColumn<ClassParamForListDevice>("Статус", "CheckBoxCell"));
     }
 
     /// <summary>
@@ -164,7 +182,7 @@ public class ListParamDevice : AbstractControl
         ContextMenu=CreateContextMenu();
         if (_stateWidget.BindingObjects.Count>0)
         {
-            //TODO Объект привязки юнита сделать.
+            CreateTableParam();
         }
     }
 
@@ -207,17 +225,20 @@ public class ListParamDevice : AbstractControl
                 ((CheckBox)menuItem.Icon).IsChecked = _isBlocked;
                 break;
             case "Свойства":
-                // WindowPopertyIndicatorBig windowPropertyIndicatorBig = new WindowPopertyIndicatorBig(_stateWidget);
-                // await windowPropertyIndicatorBig.ShowDialog(MainWindow.currentMainWindow);
-                // if(windowPropertyIndicatorBig.Tag is not null) 
-                //     RefreshListParamDevice((ClassWidget)windowPropertyIndicatorBig.Tag);
+                WindowPropertyListParam listParam = new WindowPropertyListParam(_stateWidget);
+                await listParam.ShowDialog(MainWindow.currentMainWindow);
+                if(listParam.Tag is not null) 
+                    RefreshListParamDevice((ClassWidget)listParam.Tag);
                 break;
         }
     }
 
     private void RefreshListParamDevice(ClassWidget tag)
     {
-        throw new System.NotImplementedException();
+        ParamListDev.Clear();
+        _stateWidget.BindingObjectUnit = tag.BindingObjectUnit;
+        _stateWidget.BindingObjects = tag.BindingObjects;
+        CreateTableParam();
     }
     
     public override EnumUnit GetTypeUnit()

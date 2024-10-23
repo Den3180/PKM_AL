@@ -655,6 +655,9 @@ namespace PKM_AL
                 {
                     item.ContextMenu = new ContextMenu();
                     //Кнопка "Новая мнемосхема...".
+
+                    #region [Новая мнемосхема]
+
                     MenuItem mi = new MenuItem()
                     {
                         Header = "Новая мнемосхема..."
@@ -665,7 +668,7 @@ namespace PKM_AL
                         if(Widgets.Count>0) Widgets.Clear();
                         var map = await NewMnemoScheme();
                         ContentArea.Content = new UserControlCanvas(map);
-                           var mnemoSubNode = new ClassItem()
+                        var mnemoSubNode = new ClassItem()
                         {
                             GUID = map.GuidID,
                             NameCh = map.Name,
@@ -680,7 +683,11 @@ namespace PKM_AL
                         Maps.Add(map);
                     };
                     item.ContextMenu.Items.Add(mi);
-                    //Кнопка "Згрузить".
+
+                        #endregion
+
+                    #region [Загрузить мнемосхему]
+                    
                     mi = new MenuItem()
                     {
                         Header = "Загрузить мнемосхему..."
@@ -690,7 +697,13 @@ namespace PKM_AL
                         var pathMap = await ClassDialogWindows.ChooseDialogSampleAsync(this, MapsPath);
                         if(string.IsNullOrEmpty(pathMap)) return;
                         var map= ClassMap.Load(pathMap);
+                        //Если в коллекции карт есть карты с таким же ID, то присваиваем новый ID загружаемой карте.
+                        if (Maps.FirstOrDefault(m => m.GuidID.Equals(map.GuidID)) != null)
+                        {
+                            map.GuidID = Guid.NewGuid();
+                        }
                         ContentArea.Content = new UserControlCanvas(map);
+                        //Создаем новый подузел в главном дереве.
                         var mnemoSubNode = new ClassItem()
                         {
                             GUID = map.GuidID,
@@ -699,13 +712,20 @@ namespace PKM_AL
                             Group = group,
                             ItemType = ClassItem.eType.Map
                         };
+                        //Добавляем новый подузел к дереву.
                         group.SubGroups.Add(mnemoSubNode);
                         item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(mnemoSubNode));
                         item.IsExpanded = true;
                         StatusMode.Text = $"Схема: {map.Name}";
+                        //Добавляем новую карту к коллекции карт.
+                        Maps.Add(map);
                     };
                     item.ContextMenu.Items.Add(mi);
-                    //Кнопка "Удалить".
+
+                        #endregion
+
+                    #region [Удалить мнемосхему]
+
                     mi = new MenuItem()
                     {
                         Header = "Удалить мнемосхему..."
@@ -730,9 +750,11 @@ namespace PKM_AL
                         Widgets.Clear();
                         MnemoUnit.Clear();
                         ContentArea.Content = null;
-                        ContentArea.Content = new Controls.UserControlDevices();
+                        ContentArea.Content = new UserControlDevices();
                     };
                     item.ContextMenu.Items.Add(mi);
+
+                    #endregion
                 }
                 foreach (var subGr in group.SubGroups)
                 {
@@ -741,7 +763,6 @@ namespace PKM_AL
                 treeView.Items.Add(item);
             }
         }
-        
         
         /// <summary>
         /// Создает новую мнемосхему.

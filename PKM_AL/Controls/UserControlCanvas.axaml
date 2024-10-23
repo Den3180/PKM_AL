@@ -134,9 +134,14 @@
                 </Style>
                 <!--Шаблон списка-->
                 <Style Selector=":is(modelMap|ListParamDevice)">
-                                            <Setter Property="RenderTransform">
+                        <Setter Property="RenderTransform">
                                 <Setter.Value>
                                         <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect Color="DimGray" BlurRadius="2"/>
                                 </Setter.Value>
                         </Setter>
                         <Setter Property="Template">
@@ -147,11 +152,10 @@
                                                                               BorderBrush="Black" BorderThickness="2"
                                                                               BackgroundSizing="OuterBorderEdge" 
                                                                               Background="Lavender"
-                                                                              CornerRadius="10"
                                                                               CanUserSortColumns="False"
                                                                               CanUserResizeColumns="False"
                                                                               FontWeight="DemiBold"
-                                                                              Source="{Binding }">
+                                                                              Source="{Binding ParamDataSource}">
                                                                         <TreeDataGrid.Resources>
                                                                                 <DataTemplate x:Key="CheckBoxCell">
                                                                                         <Border Width="30" Height="30"
@@ -187,12 +191,14 @@
                                                                                 <Style Selector="TreeDataGrid TreeDataGridRow:nth-child(odd)">
                                                                                         <Setter Property="BorderBrush" Value="Black" />
                                                                                         <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                                                                        <Setter Property="IsEnabled" Value="False"/>
                                                                                 </Style>
                                                                                 <!-- Разметка строк четных -->
                                                                                 <Style Selector="TreeDataGrid TreeDataGridRow:nth-child(even)">
                                                                                         <Setter Property="Background" Value="#20808080"/>
                                                                                         <Setter Property="BorderBrush" Value="Black" />
                                                                                         <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                                                                        <Setter Property="IsEnabled" Value="False"/>
                                                                                 </Style>
                                                                                 <!-- Убирает наслоение на границе для строк -->
                                                                                 <Style Selector="TreeDataGrid TreeDataGridRow:nth-last-child(1)">
@@ -210,18 +216,24 @@
                                                                                         <Setter Property="BorderThickness" Value="1 0 0 0" />
                                                                                 </Style>
                                                                                 <!-- Стилизация заголовка -->
-                                                                                <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-child(n)">
+                                                                                <Style Selector="TreeDataGrid TreeDataGridColumnHeader">
                                                                                         <Setter Property="TextBlock.FontWeight" Value="Bold"/>
                                                                                         <Setter Property="TextBlock.Foreground" Value="Blue"/>
                                                                                         <Setter Property="IsEnabled" Value="False"/>
+                                                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
                                                                                 </Style>
+                                                                                <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-child(1)">
+                                                                                        <Setter Property="Width" Value="150"></Setter>
+                                                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                                                        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                                                                                </Style>
+                                                                                
                                                                         </TreeDataGrid.Styles>
                                                                 </TreeDataGrid>
                                                 </ControlTemplate.Content>
                                         </ControlTemplate>
                                 </Setter.Value>
                         </Setter>
-    
                 </Style>
         </UserControl.Styles>
          <!--Основное поле мнемосхемы-->

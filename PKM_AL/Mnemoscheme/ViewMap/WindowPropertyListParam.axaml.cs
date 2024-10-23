@@ -10,12 +10,16 @@ using PKM_AL.Mnemoscheme.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme.ViewMap;
 
-public partial class WindowPropertyListParam : Window
+public partial class WindowPropertyListParam : ClassWindowPKM, INotifyPropertyChanged
 {
     private ClassDevice _selectedDevice;
     private ClassChannel _selectedChannel;
+    private ClassChannel _selectedChannelFromList;
     private ObservableCollection<ClassChannel> _channelList;
     public ObservableCollection<ClassDevice> DeviceList { get; set; }
+
+    public ObservableCollection<ClassChannel> SelectedChannelList { get; set; } =
+        new ObservableCollection<ClassChannel>();
     
     public WindowPropertyListParam()
     {
@@ -39,6 +43,25 @@ public partial class WindowPropertyListParam : Window
         DataContext = this;
     }
 
+    #region [Привязки свойств]
+
+    /// <summary>
+    /// Привязка к выбранному параметру в ListBox выбранных параметров.
+    /// </summary>
+    public ClassChannel SelectedChannelFromList
+    {
+        get => _selectedChannelFromList;
+        set
+        {
+            if (Equals(value, _selectedChannelFromList)) return;
+            _selectedChannelFromList = value;
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Выбранное устройство.
+    /// </summary>
     public ClassDevice SelectedDevice
     {
         get => _selectedDevice;
@@ -46,10 +69,15 @@ public partial class WindowPropertyListParam : Window
         {
             if (Equals(value, _selectedDevice)) return;
             _selectedDevice = value;
+            ChannelList = new ObservableCollection<ClassChannel>(_selectedDevice.Channels);
+            SelectedChannel = ChannelList.Count>0 ? ChannelList[0] : null;
             OnPropertyChanged();
         }
     }
 
+    /// <summary>
+    /// Выбранный параметр.
+    /// </summary>
     public ClassChannel SelectedChannel
     {
         get => _selectedChannel;
@@ -61,6 +89,9 @@ public partial class WindowPropertyListParam : Window
         }
     }
 
+    /// <summary>
+    /// Список каналов выбранного устройства.
+    /// </summary>
     public ObservableCollection<ClassChannel> ChannelList
     {
         get => _channelList;
@@ -69,23 +100,58 @@ public partial class WindowPropertyListParam : Window
             if (Equals(value, _channelList)) return;
             _channelList = value;
             OnPropertyChanged();
+            DellAllParam();
         }
     }
+    
+
+    #endregion
+    
+    #region [Commands]
+
+    public void AddParam()
+    {
+        SelectedChannelList?.Add(SelectedChannel);
+    }
+
+    public void DellParam()
+    {
+        if(SelectedChannelList.Count>0)
+            SelectedChannelList.Remove(SelectedChannelFromList);
+    }
+
+    public void DellAllParam()
+    {
+        if(SelectedChannelList.Count>0)
+            SelectedChannelList.Clear();
+    }
+
+    #endregion
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         Button button = sender as Button ?? throw new InvalidOperationException();
-        if (button.Name is "SaveBtn")
+        if (button.Name is "SaveBtn" && SelectedChannelList?.Count > 0)
         {
             var settingsObject = new ClassWidget
             {
-                BindingObjectUnit = new BindingObject()
+                BindingObjectUnit = new BindingObject
                 {
                     IdDevice = SelectedDevice.ID,
-                    IdParam = SelectedChannel.ID,
-                    NameParam = SelectedChannel.Name
                 }
             };
+            foreach (var channel in SelectedChannelList)
+            {
+                settingsObject.BindingObjects.Add
+                (
+                    new BindingObject
+                    {
+                        IdDevice = SelectedDevice.ID,
+                        IdParam = channel.ID,
+                        NameParam = channel.Name
+                    }
+                );
+            }
             Tag = settingsObject;
         }
         Close();    
