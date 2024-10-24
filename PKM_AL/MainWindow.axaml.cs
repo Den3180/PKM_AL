@@ -745,7 +745,13 @@ namespace PKM_AL
                                 (treeView.Items[1] as TreeViewItem)?.Items.RemoveAt(i);
                             }
                         }
-                        map.DeleteFileMap();
+
+                        if (!string.IsNullOrEmpty(map.CurrentPathFile))
+                        {
+                            Task<string> buttonResult = ClassMessage.ShowMessageCustom(this, "Удалить карту с устройства?"
+                                , "", ButtonEnum.YesNo, icon: MsBox.Avalonia.Enums.Icon.Question);
+                            if(buttonResult.Result=="Да") map.DeleteFileMap();
+                        }
                         Maps.Remove(map);
                         Widgets.Clear();
                         MnemoUnit.Clear();

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using AvaloniaEdit.Utils;
 using PKM_AL.Mnemoscheme.ServiceClasses;
 
 namespace PKM_AL.Mnemoscheme.ViewMap;
@@ -38,6 +39,14 @@ public partial class WindowPropertyListParam : ClassWindowPKM, INotifyPropertyCh
                 _channelList = new ObservableCollection<ClassChannel>(_selectedDevice.Channels);
                 var channel = _channelList.FirstOrDefault(ch => ch.ID == classWidget.BindingObjectUnit?.IdParam);
                 _selectedChannel = channel ?? _channelList[0];
+            }
+            if (classWidget.BindingObjects.Count > 0)
+            {
+                foreach (var bind in classWidget.BindingObjects)
+                {
+                    ClassChannel cc = _channelList.FirstOrDefault(c => c.ID == bind.IdParam);
+                   if(cc!=null) SelectedChannelList.Add(cc);                    
+                }
             }
         }
         DataContext = this;

@@ -158,7 +158,7 @@ public class IndicatorSmall : AbstractControl
         return _enumUnit;
     }
 
-    public override void SetValue(decimal value)
+    public override void SetValue(decimal value, object spare)
     {
         ParamValue = value;
     }

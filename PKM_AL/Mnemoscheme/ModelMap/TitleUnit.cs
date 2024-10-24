@@ -278,7 +278,7 @@ public class TitleUnit : TextBlock, IUnitService
       return _stateWidget.BindingObjectUnit;
    }
 
-   public void SetValue(decimal value)
+   public void SetValue(decimal value, object spare)
    {
       Text = value.ToString(CultureInfo.InvariantCulture);
       _stateWidget.TextUnit = Text;

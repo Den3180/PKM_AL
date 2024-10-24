@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using Avalonia.Media;
 using Avalonia.Threading;
 using PKM_AL.Classes;
+using PKM_AL.Controls;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ModelMap;
 
@@ -201,12 +202,20 @@ namespace PKM_AL
                     OnPropertyChanged(nameof(ColorLineChannel));
                 }
                 //Передача данных в мнемосхему.
-                if (MainWindow.MnemoUnit.Count > 0)
+                if (MainWindow.MnemoUnit.Count <= 0 ||
+                    MainWindow.currentMainWindow.ContentArea.Content is not UserControlCanvas) return;
+                foreach (var widget in MainWindow.MnemoUnit )
                 {
-                    foreach (var widget in MainWindow.MnemoUnit )
+                    var bindObj = widget.GetBindingObject();
+                    if(bindObj==null) continue;
+                    if (widget.GetTypeUnit().Equals(EnumUnit.ListParamDevice))
                     {
-                        var bindObj = widget.GetBindingObject();
-                        if (bindObj != null && bindObj.IdParam==ID && bindObj.IdDevice==Device.ID )
+                        
+                        Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value,this));
+                    }
+                    else
+                    {
+                        if (bindObj.IdParam==ID && bindObj.IdDevice==Device.ID )
                         {
                             Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value));
                         } 
@@ -252,9 +261,9 @@ namespace PKM_AL
             {
                 _TypeRegistry = value;
                 OnPropertyChanged();
-                OnPropertyChanged("TypeRegistryName");
-                OnPropertyChanged("TypeRegistryShortName");
-                OnPropertyChanged("TypeRegistryFullName");
+                OnPropertyChanged(nameof(TypeRegistryName));
+                OnPropertyChanged(nameof(TypeRegistryShortName));
+                OnPropertyChanged(nameof(TypeRegistryFullName));
             }
         }
 

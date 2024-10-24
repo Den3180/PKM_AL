@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
 using PKM_AL.Classes.ServiceClasses;
+using PKM_AL.Controls;
 using PKM_AL.Mnemoscheme.AbstractUnit;
 using PKM_AL.Mnemoscheme.Enums;
 using PKM_AL.Mnemoscheme.ModelMap;
@@ -40,7 +42,6 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
             // if(MainWindow.Widgets.Count>0) MainWindow.Widgets.Clear();
         }
         Map = map;
-        MainWindow.Maps.Add(map);
         if (Map.Widgets.Count > 0)
         {
             foreach (var widget in Map.Widgets)
@@ -171,12 +172,30 @@ public sealed class CanvasViewModel :INotifyPropertyChanged
         WindowMapProperty windowMapProperty = new WindowMapProperty(Map.Name,Map.MapColorString);
         (string,string)? res= await windowMapProperty.ShowDialog<(string,string)?>(MainWindow.currentMainWindow);
         if (!res.HasValue) return;
-        Map.Name = res.Value.Item1;
-        Map.BackgroundColor = Brush.Parse(res.Value.Item2);
-        Map.Widgets.Clear();
-        Map.GuidID=Guid.NewGuid();
-        DeleteAllShape(null);
-        MainWindow.Maps.Add(Map);
+        ClassMap newMap = new ClassMap
+        {
+            Name = res.Value.Item1,
+            BackgroundColor = Brush.Parse(res.Value.Item2)
+        };
+        newMap.GuidID=Guid.NewGuid();
+        var group = MainWindow.Groups.FirstOrDefault(gr => gr.Name.Equals("Мнемосхемы"));
+        if (group == null) return;
+        var mnemoSubNode = new ClassItem()
+        {
+            GUID = newMap.GuidID,
+            NameCh = newMap.Name,
+            IconUri = "design.png",
+            Group = group,
+            ItemType = ClassItem.eType.Map
+        };
+        group.SubGroups.Add(mnemoSubNode);
+        TreeViewItem item=MainWindow.currentMainWindow.treeView.Items[MainWindow.Groups.IndexOf(group)] as TreeViewItem;
+        if (item == null) return;
+        item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(mnemoSubNode));
+        item.IsExpanded = true;
+        MainWindow.currentMainWindow.ContentArea.Content = new UserControlCanvas(newMap);
+        MainWindow.currentMainWindow.StatusMode.Text = $"Схема: {newMap.Name}";
+        MainWindow.Maps.Add(newMap);
     }
     
     /// <summary>

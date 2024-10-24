@@ -431,7 +431,7 @@ public class PanelUnit : Rectangle, IUnitService
         return _stateWidget.BindingObjectUnit;
     }
 
-    public void SetValue(decimal value)
+    public void SetValue(decimal value, object spare)
     {
         throw new NotImplementedException();
     }

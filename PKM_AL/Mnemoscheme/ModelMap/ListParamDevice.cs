@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
@@ -19,12 +20,25 @@ namespace PKM_AL.Mnemoscheme.ModelMap;
 
 public sealed class ClassParamForListDevice:INotifyPropertyChanged
 {
-    private decimal? _paramValue=0;
+    private int _id;
+    private decimal _paramValue;
     private decimal? _max;
     private decimal? _min;
-    public string Nameparam{get; init; }=String.Empty;
 
-    public decimal? ParamValue
+    public string Nameparam{get; init; }=String.Empty;
+    public int Id
+    {
+        get => _id;
+        set
+        {
+            if (value == _id) return;
+            _id = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    public decimal ParamValue
     {
         get => _paramValue;
         set
@@ -131,6 +145,7 @@ public class ListParamDevice : AbstractControl
         {
             ParamListDev.Add(new ClassParamForListDevice
             {
+                Id=bind.IdParam,
                 Nameparam = bind.NameParam,
             });
         }
@@ -146,19 +161,19 @@ public class ListParamDevice : AbstractControl
                         TextWrapping = TextWrapping.Wrap,
                     },
                     width:GridLength.Parse("150")),
-                new TextColumn<ClassParamForListDevice, decimal?>
+                new TextColumn<ClassParamForListDevice, decimal>
                 ("Значение", x => x.ParamValue,
                     options:new TextColumnOptions<ClassParamForListDevice>
                     {
                         TextAlignment = TextAlignment.Center
                     }),
                 new TextColumn<ClassParamForListDevice, decimal?>
-                ("Min", x => x.Min,  options:new TextColumnOptions<ClassParamForListDevice>
+                ("Min", x => x.Min.Value,  options:new TextColumnOptions<ClassParamForListDevice>
                 {
                     TextAlignment = TextAlignment.Center
                 }),
                 new TextColumn<ClassParamForListDevice, decimal?>
-                ("Max", x => x.Max,  options:new TextColumnOptions<ClassParamForListDevice>
+                ("Max", x => x.Max.Value,  options:new TextColumnOptions<ClassParamForListDevice>
                 {
                     TextAlignment = TextAlignment.Center
                 })
@@ -240,14 +255,24 @@ public class ListParamDevice : AbstractControl
         _stateWidget.BindingObjects = tag.BindingObjects;
         CreateTableParam();
     }
+
+    public ObservableCollection<BindingObject> GetBindingObjects()
+    {
+        return _stateWidget.BindingObjects;
+    }
     
     public override EnumUnit GetTypeUnit()
     {
         return _enumUnit;
     }
     
-    public override void SetValue(decimal value)
+    public override void SetValue(decimal value, object spare)
     {
-        //TODO Закончить с изменением величины.
+        if (spare is not ClassChannel ch) return;
+        var param = ParamListDev.FirstOrDefault(x => x.Id == ch.ID);
+        if (param == null) return;
+        param.ParamValue = value;
+        if(ch.Max.HasValue) param.Max = ch.Max;
+        if(ch.Min.HasValue) param.Min = ch.Min;
     }
 }

@@ -7,6 +7,6 @@ public interface IUnitService
 {
     public EnumUnit GetTypeUnit();
     public BindingObject GetBindingObject();
-    public void SetValue(decimal value);
+    public void SetValue(decimal value, object spare=null);
     public void SetFixUnit(bool fix);
 }
