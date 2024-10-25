@@ -210,7 +210,8 @@ namespace PKM_AL
                     if(bindObj==null) continue;
                     if (widget.GetTypeUnit().Equals(EnumUnit.ListParamDevice))
                     {
-                        
+                        //var obj = new object[] { ID,Max,Min};
+                        //Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value,obj));
                         Dispatcher.UIThread.Invoke(()=> widget.SetValue(Value,this));
                     }
                     else

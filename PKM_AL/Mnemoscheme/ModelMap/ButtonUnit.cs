@@ -77,7 +77,7 @@ public class ButtonUnit : Button, IUnitService
         Canvas.SetTop(this, bounds.Y+50);
         _map.Widgets.Add(stateWidge);
     }
-    
+
     /// <summary>
     /// Настрйка параметров загружаемой кнопки.
     /// </summary>

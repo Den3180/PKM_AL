@@ -18,12 +18,26 @@ using PKM_AL.Mnemoscheme.ViewModelMap;
 
 namespace PKM_AL.Mnemoscheme.ModelMap;
 
-public sealed class ClassParamForListDevice:INotifyPropertyChanged
+public class ClassParamForListDevice:INotifyPropertyChanged
 {
     private int _id;
     private decimal _paramValue;
-    private decimal? _max;
-    private decimal? _min;
+    private string _max = "-";
+    private string _min = "-";
+    private IBrush _brush1 = Brushes.LightGray;
+    private IBrush _brush2 = Brushes.LightGray;
+    private bool _isFlag;
+
+    public bool IsFlag
+    {
+        get => _isFlag;
+        set
+        {
+            if (value == _isFlag) return;
+            _isFlag = value;
+            OnPropertyChanged();
+        }
+    }
 
     public string Nameparam{get; init; }=String.Empty;
     public int Id
@@ -49,7 +63,7 @@ public sealed class ClassParamForListDevice:INotifyPropertyChanged
         }
     }
 
-    public decimal? Max
+    public string Max
     {
         get => _max;
         set
@@ -60,13 +74,35 @@ public sealed class ClassParamForListDevice:INotifyPropertyChanged
         }
     }
 
-    public decimal? Min
+    public string Min
     {
         get => _min;
         set
         {
             if (value == _min) return;
             _min = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public IBrush Brush1
+    {
+        get => _brush1;
+        set
+        {
+            if (Equals(value, _brush1)) return;
+            _brush1 = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public IBrush Brush2
+    {
+        get => _brush2;
+        set
+        {
+            if (Equals(value, _brush2)) return;
+            _brush2 = value;
             OnPropertyChanged();
         }
     }
@@ -83,6 +119,36 @@ public class ListParamDevice : AbstractControl
 {
     private EnumUnit _enumUnit;
     private ClassMap _map;
+
+    #region [temp]
+
+    // private IBrush _brush1 = Brushes.LightGray;
+    // private IBrush _brush2 = Brushes.LightGray;
+    
+    // public IBrush Brush1
+    // {
+    //     get => _brush1;
+    //     set
+    //     {
+    //         if (Equals(value, _brush1)) return;
+    //         _brush1 = value;
+    //         OnPropertyChanged();
+    //     }
+    // }
+    //
+    // public IBrush Brush2
+    // {
+    //     get => _brush2;
+    //     set
+    //     {
+    //         if (Equals(value, _brush2)) return;
+    //         _brush2 = value;
+    //         OnPropertyChanged();
+    //     }
+    // }
+
+    #endregion
+    
     
 
     public ObservableCollection<ClassParamForListDevice> ParamListDev { get; set; } = new ObservableCollection<ClassParamForListDevice>();
@@ -98,6 +164,7 @@ public class ListParamDevice : AbstractControl
     {
         _map = map;
         _enumUnit = enumUnit;
+        DataContext = this;
         if (stateWidget != null)
         {
             _stateWidget = stateWidget;
@@ -107,8 +174,21 @@ public class ListParamDevice : AbstractControl
         {
             CreateListParamDevice();
         }
-        DataContext = this;
         MainWindow.Widgets.Add(_stateWidget);
+    }
+
+    /// <summary>
+    /// Конструктор копирования.
+    /// </summary>
+    /// <param name="stateWidge"></param>
+    /// <param name="bounds"></param>
+    /// <param name="map"></param>
+    /// <param name="enumUnit"></param>
+    public ListParamDevice(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map,enumUnit,stateWidge)
+    {
+        Canvas.SetLeft(this, bounds.X+50);
+        Canvas.SetTop(this, bounds.Y+50);
+        _map.Widgets.Add(stateWidge);
     }
 
     /// <summary>
@@ -137,7 +217,7 @@ public class ListParamDevice : AbstractControl
     }
 
     /// <summary>
-    /// Посторение тоблицы спичка параметров.
+    /// Посторение таблицы списка параметров.
     /// </summary>
     private void CreateTableParam()
     {
@@ -167,13 +247,13 @@ public class ListParamDevice : AbstractControl
                     {
                         TextAlignment = TextAlignment.Center
                     }),
-                new TextColumn<ClassParamForListDevice, decimal?>
-                ("Min", x => x.Min.Value,  options:new TextColumnOptions<ClassParamForListDevice>
+                new TextColumn<ClassParamForListDevice, string>
+                ("Min", x => x.Min,  options:new TextColumnOptions<ClassParamForListDevice>
                 {
                     TextAlignment = TextAlignment.Center
                 }),
-                new TextColumn<ClassParamForListDevice, decimal?>
-                ("Max", x => x.Max.Value,  options:new TextColumnOptions<ClassParamForListDevice>
+                new TextColumn<ClassParamForListDevice, string>
+                ("Max", x => x.Max,  options:new TextColumnOptions<ClassParamForListDevice>
                 {
                     TextAlignment = TextAlignment.Center
                 })
@@ -201,19 +281,6 @@ public class ListParamDevice : AbstractControl
         }
     }
 
-    /// <summary>
-    /// Конструктор копирования.
-    /// </summary>
-    /// <param name="stateWidge"></param>
-    /// <param name="bounds"></param>
-    /// <param name="map"></param>
-    /// <param name="enumUnit"></param>
-    public ListParamDevice(ClassWidget? stateWidge,Rect bounds, ClassMap map, EnumUnit enumUnit):this(map,enumUnit,stateWidge)
-    {
-        Canvas.SetLeft(this, bounds.X+50);
-        Canvas.SetTop(this, bounds.Y+50);
-        _map.Widgets.Add(stateWidge);
-    }
 
     /// <summary>
     /// Меню юнита.
@@ -248,6 +315,10 @@ public class ListParamDevice : AbstractControl
         }
     }
 
+    /// <summary>
+    /// Обновление юнита.
+    /// </summary>
+    /// <param name="tag"></param>
     private void RefreshListParamDevice(ClassWidget tag)
     {
         ParamListDev.Clear();
@@ -255,24 +326,45 @@ public class ListParamDevice : AbstractControl
         _stateWidget.BindingObjects = tag.BindingObjects;
         CreateTableParam();
     }
-
-    public ObservableCollection<BindingObject> GetBindingObjects()
-    {
-        return _stateWidget.BindingObjects;
-    }
-    
+   
+    /// <summary>
+    /// Получить тип юнита.
+    /// </summary>
+    /// <returns></returns>
     public override EnumUnit GetTypeUnit()
     {
         return _enumUnit;
     }
-    
+ 
+    /// <summary>
+    /// Обновление значений списка.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="spare"></param>
     public override void SetValue(decimal value, object spare)
     {
         if (spare is not ClassChannel ch) return;
         var param = ParamListDev.FirstOrDefault(x => x.Id == ch.ID);
         if (param == null) return;
         param.ParamValue = value;
-        if(ch.Max.HasValue) param.Max = ch.Max;
-        if(ch.Min.HasValue) param.Min = ch.Min;
+        param.Min = ch.Min.HasValue ? ch.Min.Value.ToString(CultureInfo.InvariantCulture) : "-";
+        param.Max = ch.Max.HasValue ? ch.Max.Value.ToString(CultureInfo.InvariantCulture) : "-";
+        if (ch.State == ClassChannel.EnumState.Norma)
+        {
+            param.IsFlag=false;
+            param.Brush1 = Brushes.LawnGreen;
+            param.Brush2 = Brushes.LawnGreen;
+        }
+        else if (ch.State == ClassChannel.EnumState.Over)
+        {
+            param.IsFlag=true;
+            param.Brush1 = Brushes.Red;
+            param.Brush2 = Brushes.Brown;
+        }
+        else
+        {
+            param.IsFlag=false;
+            param.Brush1 =  param.Brush2 = Brushes.LightGray;
+        }
     }
-}
+}//Конец класса ListParamDevice

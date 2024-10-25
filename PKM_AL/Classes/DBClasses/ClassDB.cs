@@ -48,8 +48,8 @@ namespace PKM_AL.Classes.DBClasses
             cmd.CommandText = "CREATE TABLE info(version INTEGER, lpu TEXT)";
             //Выполнить команду.
             cmd.ExecuteNonQuery();            
-            //Всавить в таблицу info версию БД.
-            cmd.CommandText = "INSERT INTO info (version) VALUES(" + Version.ToString() + ")";
+            //Вставить в таблицу info версию БД.
+            cmd.CommandText = $"INSERT INTO info (version) VALUES({Version})";
             cmd.ExecuteNonQuery();
             //Создать таблицу dev.
             cmd.CommandText = "CREATE TABLE dev(name TEXT, prot INTEGER, ip_adr TEXT, ip_port INTEGER,"

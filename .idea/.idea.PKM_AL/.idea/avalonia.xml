@@ -82,6 +82,7 @@
         <entry key="PKM_AL/Styles/StylesBase.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Styles/StylesButtons.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Styles/StylesOBD.axaml" value="PKM_AL/PKM_AL.csproj" />
+        <entry key="PKM_AL/Styles/StylesUnitMnemo.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Styles/StylesWindowProperty.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/TestWindow.axaml" value="PKM_AL/PKM_AL.csproj" />
         <entry key="PKM_AL/Windows/Window1.axaml" value="PKM_AL/PKM_AL.csproj" />
