@@ -164,7 +164,7 @@
                                                                                                                 Stroke="Black" 
                                                                                                                 StrokeThickness="2" 
                                                                                                                 Margin="1.5"
-                                                                                                                Fill="{CompiledBinding Brush1}"
+                                                                                                                Fill="{CompiledBinding ColorIndicate}"
                                                                                                                 IsTabStop="{CompiledBinding IsFlag}">
                                                                                                                 <Ellipse.Styles>
                                                                                                                                 <Style  Selector="Ellipse[IsTabStop=True]">

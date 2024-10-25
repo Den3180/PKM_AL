@@ -24,10 +24,10 @@ public class ClassParamForListDevice:INotifyPropertyChanged
     private decimal _paramValue;
     private string _max = "-";
     private string _min = "-";
-    private IBrush _brush1 = Brushes.LightGray;
-    private IBrush _brush2 = Brushes.LightGray;
+    private IBrush _colorIndicate = Brushes.LightGray;
     private bool _isFlag;
 
+    
     public bool IsFlag
     {
         get => _isFlag;
@@ -85,24 +85,13 @@ public class ClassParamForListDevice:INotifyPropertyChanged
         }
     }
     
-    public IBrush Brush1
+    public IBrush ColorIndicate
     {
-        get => _brush1;
+        get => _colorIndicate;
         set
         {
-            if (Equals(value, _brush1)) return;
-            _brush1 = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public IBrush Brush2
-    {
-        get => _brush2;
-        set
-        {
-            if (Equals(value, _brush2)) return;
-            _brush2 = value;
+            if (Equals(value, _colorIndicate)) return;
+            _colorIndicate = value;
             OnPropertyChanged();
         }
     }
@@ -119,37 +108,6 @@ public class ListParamDevice : AbstractControl
 {
     private EnumUnit _enumUnit;
     private ClassMap _map;
-
-    #region [temp]
-
-    // private IBrush _brush1 = Brushes.LightGray;
-    // private IBrush _brush2 = Brushes.LightGray;
-    
-    // public IBrush Brush1
-    // {
-    //     get => _brush1;
-    //     set
-    //     {
-    //         if (Equals(value, _brush1)) return;
-    //         _brush1 = value;
-    //         OnPropertyChanged();
-    //     }
-    // }
-    //
-    // public IBrush Brush2
-    // {
-    //     get => _brush2;
-    //     set
-    //     {
-    //         if (Equals(value, _brush2)) return;
-    //         _brush2 = value;
-    //         OnPropertyChanged();
-    //     }
-    // }
-
-    #endregion
-    
-    
 
     public ObservableCollection<ClassParamForListDevice> ParamListDev { get; set; } = new ObservableCollection<ClassParamForListDevice>();
     public FlatTreeDataGridSource<ClassParamForListDevice> ParamDataSource { get; set; }
@@ -352,19 +310,17 @@ public class ListParamDevice : AbstractControl
         if (ch.State == ClassChannel.EnumState.Norma)
         {
             param.IsFlag=false;
-            param.Brush1 = Brushes.LawnGreen;
-            param.Brush2 = Brushes.LawnGreen;
+            param.ColorIndicate = Brushes.LawnGreen;
         }
         else if (ch.State == ClassChannel.EnumState.Over)
         {
             param.IsFlag=true;
-            param.Brush1 = Brushes.Red;
-            param.Brush2 = Brushes.Brown;
+            param.ColorIndicate = Brushes.Red;
         }
         else
         {
             param.IsFlag=false;
-            param.Brush1 =  param.Brush2 = Brushes.LightGray;
+            param.ColorIndicate = Brushes.LightGray;
         }
     }
 }//Конец класса ListParamDevice
