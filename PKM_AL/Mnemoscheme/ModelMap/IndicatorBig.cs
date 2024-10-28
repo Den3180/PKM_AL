@@ -78,7 +78,6 @@ public class IndicatorBig : AbstractControl
         ContextMenu=CreateContextMenu(); 
         _map.Widgets.Add(_stateWidget);
     }
-
     
     public string ParamName
     {
