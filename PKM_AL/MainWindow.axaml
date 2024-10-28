@@ -122,9 +122,13 @@
 			<GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
 						  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="LightGray" />
 			<ContentControl Grid.Column="2" Name="ContentArea" BorderBrush="DarkGray" BorderThickness="2 0 2 0"/>
-			<TreeView Grid.Column="0" Name="treeView" BorderBrush="DarkGray" BorderThickness="2 0 2 0"
+			<Border Grid.Column="0"  BorderBrush="DarkGray" BorderThickness="2 0 2 0">
+			<TreeView  Name="treeView"  BorderThickness="1"
+			           BorderBrush="Black"
+			           Foreground="Black"
 			          SelectionChanged="TreeView_SelectedItemChanged" 
 			          Tapped="TreeView_OnTapped"/>
+			</Border>
 		</Grid>
 	</DockPanel> 
 </Window>
