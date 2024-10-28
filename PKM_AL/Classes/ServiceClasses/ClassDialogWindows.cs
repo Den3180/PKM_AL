@@ -24,9 +24,9 @@ namespace PKM_AL.Classes.ServiceClasses
             using (var source = new CancellationTokenSource())
             {
                 var topLevel = TopLevel.GetTopLevel(owner);
-                files = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                files = topLevel?.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
                 {
-                    Title = "Выбор БД",
+                    Title = "База данных",
                     DefaultExtension = "db",
                     ShowOverwritePrompt = true,
                     SuggestedFileName = "pkm.db",
@@ -36,13 +36,13 @@ namespace PKM_AL.Classes.ServiceClasses
                                 new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
                             }
                 });
-                files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                files?.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);
             }
-            var dialogResult = files.Result;
+            var dialogResult = files?.Result;
             if (!string.IsNullOrEmpty(dialogResult?.Name))
             {
-                return dialogResult?.Path.LocalPath;
+                return dialogResult.Path.LocalPath;
             }
             return string.Empty;
         }
