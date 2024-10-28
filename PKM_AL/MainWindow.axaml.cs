@@ -654,10 +654,10 @@ namespace PKM_AL
                 if (group.Name.Equals("Мнемосхемы"))
                 {
                     item.ContextMenu = new ContextMenu();
-                    //Кнопка "Новая мнемосхема...".
-
+                    
                     #region [Новая мнемосхема]
-
+                    
+                    //Кнопка "Новая мнемосхема...".
                     MenuItem mi = new MenuItem()
                     {
                         Header = "Новая мнемосхема..."
@@ -737,15 +737,6 @@ namespace PKM_AL
                         var tt = ((ClassItem)contentItem.Tag)!.GUID;
                         ClassMap map = Maps.FirstOrDefault(m => m.GuidID.Equals(tt));
                         if(map==null) return;
-                        for (int i = Groups[1].SubGroups.Count - 1; i >= 0; i--)
-                        {
-                            if (Groups[1].SubGroups[i].GUID.Equals(map.GuidID))
-                            {
-                                Groups[1].SubGroups.RemoveAt(i);
-                                (treeView.Items[1] as TreeViewItem)?.Items.RemoveAt(i);
-                            }
-                        }
-
                         if (!string.IsNullOrEmpty(map.CurrentPathFile))
                         {
                             Task<string> buttonResult = ClassMessage.ShowMessageCustom(this, "Удалить карту с устройства?"
@@ -755,17 +746,61 @@ namespace PKM_AL
                         Maps.Remove(map);
                         Widgets.Clear();
                         MnemoUnit.Clear();
+                        //Удаление карты из списка карт в дереве.
+                        for (int i = Groups[1].SubGroups.Count - 1; i >= 0; i--)
+                        {
+                            if (Groups[1].SubGroups[i].GUID.Equals(map.GuidID))
+                            {
+                                Groups[1].SubGroups.RemoveAt(i);
+                                (treeView.Items[1] as TreeViewItem)?.Items.RemoveAt(i);
+                            }
+                        }
                         ContentArea.Content = null;
                         ContentArea.Content = new UserControlDevices();
                     };
                     item.ContextMenu.Items.Add(mi);
 
                     #endregion
+
+                    #region [Удалить из списка]
+
+                    mi = new MenuItem()
+                    {
+                        Header = "Удалить из списка..."
+                    };
+                    
+                    mi.Click += (s, e) =>
+                    {
+                        StackPanel contentItem = treeView.SelectedItem as StackPanel;
+                        if(contentItem==null) return;
+                        var tt = ((ClassItem)contentItem.Tag)!.GUID;
+                        ClassMap map = Maps.FirstOrDefault(m => m.GuidID.Equals(tt));
+                        if(map==null) return;
+                        Maps.Remove(map);
+                        Widgets.Clear();
+                        MnemoUnit.Clear();
+                        //Удаление карты из списка карт в дереве.
+                        for (int i = Groups[1].SubGroups.Count - 1; i >= 0; i--)
+                        {
+                            if (Groups[1].SubGroups[i].GUID.Equals(map.GuidID))
+                            {
+                                Groups[1].SubGroups.RemoveAt(i);
+                                (treeView.Items[1] as TreeViewItem)?.Items.RemoveAt(i);
+                            }
+                        }
+                        ContentArea.Content = null;
+                        ContentArea.Content = new UserControlDevices();
+                    };
+                    item.ContextMenu.Items.Add(mi);
+
+                    #endregion
+                    
                 }
                 foreach (var subGr in group.SubGroups)
                 {
                     item.Items.Add(ClassBuildControl.MakeContentTreeViewItem(subGr));
                 }
+                item.IsExpanded = true;
                 treeView.Items.Add(item);
             }
         }
