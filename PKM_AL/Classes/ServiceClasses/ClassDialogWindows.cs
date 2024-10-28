@@ -185,7 +185,7 @@ namespace PKM_AL.Classes.ServiceClasses
                         Title = "Сохранить",
                         DefaultExtension = ext,
                         ShowOverwritePrompt = true,
-                        SuggestedFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileName : fileName+ext,
+                        SuggestedFileName = fileName+"."+ext,
                         FileTypeChoices = new List<FilePickerFileType>()
                         {
                             new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } },
