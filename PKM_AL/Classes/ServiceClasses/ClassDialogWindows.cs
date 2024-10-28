@@ -176,7 +176,7 @@ namespace PKM_AL.Classes.ServiceClasses
             string fileName="file", string ext="xml")
         {
             var topLevel = TopLevel.GetTopLevel(owner);
-            if (topLevel == null) return null;//string.Empty;
+            if (topLevel == null) return null;
             var res= await topLevel.StorageProvider.TryGetFolderFromPathAsync(startLocation);
             try
             {
