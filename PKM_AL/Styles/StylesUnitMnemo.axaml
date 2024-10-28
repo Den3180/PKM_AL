@@ -144,14 +144,21 @@
                                 <Setter.Value>
                                         <ControlTemplate TargetType="modelMap:ListParamDevice">
                                                 <ControlTemplate.Content>
-                                                                <TreeDataGrid x:DataType="modelMap:ListParamDevice" 
-                                                                              BorderBrush="Black" BorderThickness="2"
-                                                                              BackgroundSizing="OuterBorderEdge" 
-                                                                              Background="Lavender"
-                                                                              CanUserSortColumns="False"
-                                                                              CanUserResizeColumns="False"
-                                                                              FontWeight="DemiBold"
-                                                                              Source="{Binding ParamDataSource}">
+                                                        <Grid RowDefinitions="Auto, Auto" Background="Lavender">
+                                                                <Border Grid.Row="0"  x:DataType="modelMap:ListParamDevice"
+                                                                        BorderBrush="Black" 
+                                                                        BorderThickness="2 2 2 0">
+                                                                <TextBlock Text="{CompiledBinding DeviceName }" 
+                                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                           FontSize="14" FontWeight="Bold"/>
+                                                                </Border>
+                                                        <TreeDataGrid Grid.Row="1" x:DataType="modelMap:ListParamDevice" 
+                                                                      BorderBrush="Black" BorderThickness="2"
+                                                                      BackgroundSizing="OuterBorderEdge" 
+                                                                      CanUserSortColumns="False"
+                                                                      CanUserResizeColumns="False"
+                                                                      FontWeight="DemiBold"
+                                                                      Source="{Binding ParamDataSource}">
                                                                         <TreeDataGrid.Resources>
                                                                                 <DataTemplate x:Key="CheckBoxCell">
                                                                                         <Border Width="30" Height="30"
@@ -168,7 +175,8 @@
                                                                                                                 IsTabStop="{CompiledBinding IsFlag}">
                                                                                                                 <Ellipse.Styles>
                                                                                                                                 <Style  Selector="Ellipse[IsTabStop=True]">
-                                                                                                                                     <Setter Property="Fill" Value="Red"/>
+                                                                                                                                     <Setter Property="Fill" 
+                                                                                                                                             Value="Red"/>
                                                                                                                                      <Style.Animations >
                                                                                                                                         <Animation Duration="0:0:1"
                                                                                                                                                    IterationCount="Infinite"
@@ -183,7 +191,7 @@
                                                                                                                                         </Animation>
                                                                                                                                      </Style.Animations>
                                                                                                                                 </Style>
-                                                                                                                        </Ellipse.Styles>
+                                                                                                                </Ellipse.Styles>
                                                                                                 </Ellipse>
                                                                                         </Border>
                                                                                 </DataTemplate>
@@ -216,6 +224,7 @@
                                                                                 <Style Selector="TreeDataGrid :is(TreeDataGridCell):nth-last-child(1)">
                                                                                         <Setter Property="BorderBrush" Value="Black" />
                                                                                         <Setter Property="BorderThickness" Value="1 0 0 0" />
+                                                                                        <Setter Property="Background" Value="LightSteelBlue"/>
                                                                                 </Style>
                                                                                 <!-- Стилизация заголовка -->
                                                                                 <Style Selector="TreeDataGrid TreeDataGridColumnHeader">
@@ -223,15 +232,23 @@
                                                                                         <Setter Property="TextBlock.Foreground" Value="Blue"/>
                                                                                         <Setter Property="IsEnabled" Value="False"/>
                                                                                         <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                                                        <Setter Property="BorderBrush" Value="Black"></Setter>
+                                                                                        <Setter Property="BorderThickness" Value="0 0 2 2"></Setter>
                                                                                 </Style>
+                                                                                <!-- Стилизация заголовка первого столбца -->
                                                                                 <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-child(1)">
                                                                                         <Setter Property="Width" Value="150"></Setter>
                                                                                         <Setter Property="HorizontalAlignment" Value="Center"/>
                                                                                         <Setter Property="TextBlock.TextAlignment" Value="Center"/>
                                                                                 </Style>
-                                                                                
+                                                                                <!-- Стилизация заголовка последнего столбца -->
+                                                                                <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-last-child(1)">
+                                                                                        <Setter Property="BorderBrush" Value="Black"></Setter>
+                                                                                        <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
+                                                                                </Style>
                                                                         </TreeDataGrid.Styles>
                                                                 </TreeDataGrid>
+                                                        </Grid>
                                                 </ControlTemplate.Content>
                                         </ControlTemplate>
                                 </Setter.Value>
