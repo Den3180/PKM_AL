@@ -36,10 +36,10 @@
                                                                 <MenuItem Header="Вставить.." 
                                                                           Command="{Binding  InsertUnit}"/>
                                                                 <MenuItem Header="Закрепить все.."
-                                                                          Command="{Binding  FixAll}"
-                                                                          >
+                                                                          Command="{Binding  FixAll}">
                                                                         <MenuItem.Icon>
-                                                                                <CheckBox IsChecked="{Binding IsBlocked}" />
+                                                                                <CheckBox IsChecked="{Binding IsBlocked}"
+                                                                                         IsEnabled="False"/>
                                                                         </MenuItem.Icon>
                                                                 </MenuItem>
                                                                 <MenuItem Header="Удалить все.." 
