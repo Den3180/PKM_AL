@@ -85,7 +85,10 @@ public class ButtonUnit : Button, IUnitService
     {
         Width = _stateWidget.WidthUnit;
         Height = _stateWidget.HeightUnit;
-        IsFlag = _stateWidget.IsDevicePoll;
+        var dev = MainWindow.Devices.FirstOrDefault(
+            d => _stateWidget.BindingObjectUnit != null && d.ID == _stateWidget.BindingObjectUnit.IdDevice
+            );
+        IsFlag = dev?.IsPoll ?? false;
         _isBlocked=_stateWidget.IsBlocked;
         Canvas.SetLeft(this, _stateWidget.PositionX);
         Canvas.SetTop(this, _stateWidget.PositionY);
