@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -184,7 +185,7 @@ namespace PKM_AL.Classes.ServiceClasses
                         Title = "Сохранить",
                         DefaultExtension = ext,
                         ShowOverwritePrompt = true,
-                        SuggestedFileName = fileName,
+                        SuggestedFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileName : fileName+ext,
                         FileTypeChoices = new List<FilePickerFileType>()
                         {
                             new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } },

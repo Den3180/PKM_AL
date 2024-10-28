@@ -667,6 +667,7 @@ namespace PKM_AL
                         if(MnemoUnit.Count>0) MnemoUnit.Clear();
                         if(Widgets.Count>0) Widgets.Clear();
                         var map = await NewMnemoScheme();
+                        if(map==null) return;
                         ContentArea.Content = new UserControlCanvas(map);
                         var mnemoSubNode = new ClassItem()
                         {
