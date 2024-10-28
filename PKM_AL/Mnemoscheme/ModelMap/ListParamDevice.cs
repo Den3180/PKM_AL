@@ -108,6 +108,7 @@ public class ListParamDevice : AbstractControl
 {
     private EnumUnit _enumUnit;
     private ClassMap _map;
+    private string _deviceName;
 
     public ObservableCollection<ClassParamForListDevice> ParamListDev { get; set; } = new ObservableCollection<ClassParamForListDevice>();
     public FlatTreeDataGridSource<ClassParamForListDevice> ParamDataSource { get; set; }
@@ -169,10 +170,27 @@ public class ListParamDevice : AbstractControl
         _stateWidget.BindingObjectUnit = (listParam.Tag as ClassWidget)?.BindingObjectUnit;
         _stateWidget.BindingObjects = (listParam.Tag as ClassWidget)?.BindingObjects;
         if(_stateWidget.BindingObjects==null) return;
+        _deviceName = _stateWidget.BindingObjectUnit == null ? "Устройство" : 
+            MainWindow.Devices.FirstOrDefault(d=>d.ID==_stateWidget.BindingObjectUnit.IdDevice)?.ToString();
         CreateTableParam();
         ContextMenu=CreateContextMenu();
         _map.Widgets.Add(_stateWidget);
     }
+
+    #region [Property]
+
+    public string DeviceName
+    {
+        get => _deviceName;
+        set
+        {
+            if (value == _deviceName) return;
+            _deviceName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
 
     /// <summary>
     /// Посторение таблицы списка параметров.
@@ -237,6 +255,8 @@ public class ListParamDevice : AbstractControl
         {
             CreateTableParam();
         }
+        _deviceName = _stateWidget.BindingObjectUnit == null ? "Устройство" :
+            MainWindow.Devices.FirstOrDefault(d=>d.ID==_stateWidget.BindingObjectUnit.IdDevice)?.ToString();
     }
 
 
@@ -282,6 +302,8 @@ public class ListParamDevice : AbstractControl
         ParamListDev.Clear();
         _stateWidget.BindingObjectUnit = tag.BindingObjectUnit;
         _stateWidget.BindingObjects = tag.BindingObjects;
+        DeviceName = _stateWidget.BindingObjectUnit == null ? "Устройство" :
+            MainWindow.Devices.FirstOrDefault(d=>d.ID==_stateWidget.BindingObjectUnit.IdDevice)?.ToString();
         CreateTableParam();
     }
    
@@ -312,7 +334,7 @@ public class ListParamDevice : AbstractControl
             param.IsFlag=false;
             param.ColorIndicate = Brushes.LawnGreen;
         }
-        else if (ch.State == ClassChannel.EnumState.Over)
+        else if (ch.State is ClassChannel.EnumState.Over or ClassChannel.EnumState.Less)
         {
             param.IsFlag=true;
             param.ColorIndicate = Brushes.Red;
