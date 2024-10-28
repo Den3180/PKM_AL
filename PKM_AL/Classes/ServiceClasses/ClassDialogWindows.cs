@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -93,7 +94,7 @@ namespace PKM_AL.Classes.ServiceClasses
                     Title = "Сохранить",
                     DefaultExtension = "xml",
                     ShowOverwritePrompt = true,
-                    SuggestedFileName = "device",
+                    SuggestedFileName = "device"+".xml",
                     FileTypeChoices = new List<FilePickerFileType>()
                     {
                         new FilePickerFileType("XML") { Patterns=new[] { "*.xml" } },
@@ -122,7 +123,7 @@ namespace PKM_AL.Classes.ServiceClasses
             using (var source = new CancellationTokenSource())
             {
                 var topLevel = TopLevel.GetTopLevel(owner);
-                files = topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+                files = topLevel?.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
                     Title = "Выбор файла",
                     AllowMultiple=false,
@@ -132,7 +133,7 @@ namespace PKM_AL.Classes.ServiceClasses
                         new FilePickerFileType("Все файлы") { Patterns=new[] { "*.*" } }
                     }
                 });
-                files.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                files?.ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
                 Dispatcher.UIThread.MainLoop(source.Token);
             }
             if (files.Result.Count > 0)
@@ -195,11 +196,10 @@ namespace PKM_AL.Classes.ServiceClasses
                         SuggestedStartLocation = res
                     }); 
                 return file?.Path;
-                // return file?.Path.LocalPath;
             }
             catch(Exception e)
             {
-                return null; //string.Empty;
+                return null;
             }
         }
     }
