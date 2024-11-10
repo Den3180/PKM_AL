@@ -202,8 +202,9 @@ namespace PKM_AL
                     OnPropertyChanged(nameof(ColorLineChannel));
                 }
                 //Передача данных в мнемосхему.
-                if (MainWindow.MnemoUnit.Count <= 0 ||
-                    MainWindow.currentMainWindow.ContentArea.Content is not UserControlCanvas) return;
+                var content = Dispatcher.UIThread.Invoke(() => MainWindow.currentMainWindow.ContentArea.Content);
+                if (MainWindow.MnemoUnit.Count <= 0 || content is not UserControlCanvas) return;
+                
                 foreach (var widget in MainWindow.MnemoUnit )
                 {
                     var bindObj = widget.GetBindingObject();

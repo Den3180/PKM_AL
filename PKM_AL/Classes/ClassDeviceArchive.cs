@@ -30,7 +30,9 @@ public class ClassDeviceArchive
      {
          foreach (var note in archive)
          {
+             //Определить век.
              int centuryNow = (DateTime.Now.Year / 100) * 100;
+             //Распарсить дату.
              DateTime date = new DateTime(centuryNow + note[58], note[59], note[60], note[61], note[62], note[63]);
              string dateTime = date.ToString("yyyy-MM-dd HH:mm:ss");
              //количество записей ячеек в записи.

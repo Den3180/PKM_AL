@@ -62,16 +62,22 @@ public class ServerClass
         {
             try
             {
+                //Запуск сервера.
                 tcpListener.Start();
+                //Получение объекта слиента.
                 using TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
                 Thread.Sleep(100);
+                //Получение потока клиента(ожидание).
                 NetworkStream stream = tcpClient.GetStream();
+                //Очистка буфера.
                 bytesArray.Clear();
                 Thread.Sleep(50);
+                //Цикл загрузки информации.
                 while (stream.DataAvailable)
                 {
                     bytesArray.Add((byte)stream.ReadByte());
                 }
+                //Остановка сервера.
                 tcpListener.Stop();
                 try
                 {
