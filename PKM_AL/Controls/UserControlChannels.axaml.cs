@@ -40,7 +40,6 @@ public partial class UserControlChannels : UserControl
     
     public UserControlChannels(ClassDevice newDevice):this()
     {
-        //InitializeComponent();
         _Device = newDevice;
         ClassSettings settings = ClassSettings.Load();
         //GridChannels- объявлен в XAML.

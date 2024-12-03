@@ -7,8 +7,8 @@
              xmlns:pkmAl="clr-namespace:PKM_AL"
              mc:Ignorable="d" d:DesignWidth="1500" d:DesignHeight="450"
              x:Class="PKM_AL.Controls.UserControlDevices"
-             Background="Azure"
-             x:DataType="pkmAl:ClassDevice">
+             x:DataType="pkmAl:ClassDevice"
+             Loaded="Control_OnLoaded">
 	<UserControl.Resources>
 		<cres:ClassStaticResoursUserControlDevice x:Key="ResKey"/>
 	</UserControl.Resources>
@@ -17,6 +17,7 @@
 	</Design.DataContext>
 	<Grid>
 		<DataGrid Name="GridDevices" 
+		          Background="Azure"
 		          x:DataType="vm:ClassDevice" 
 		          AutoGenerateColumns="False"
 		          IsReadOnly="True"
@@ -29,7 +30,9 @@
 		          ColumnHeaderHeight="50"
 		          HorizontalGridLinesBrush="Black"
 		          VerticalGridLinesBrush="Black"
-		          LoadingRow="DataGrid_LoadingRow" SelectionMode="Single" Loaded="GridDevices_OnLoaded">
+		          SelectionMode="Single" 
+		          LoadingRow="DataGrid_LoadingRow" 
+		          Loaded="GridDevices_OnLoaded">
 		<DataGrid.Styles>
 			<Style Selector="Label">
 				<Setter Property="HorizontalAlignment" Value="Center"></Setter>

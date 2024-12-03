@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 using MsBox.Avalonia.Enums;
 using PKM_AL.Classes.ServiceClasses;
 using PKM;
@@ -20,7 +21,7 @@ public partial class UserControlDevices : UserControl
             if (settings.DevicesColumns.FirstOrDefault(x => x == col.Header?.ToString()) != null)
                 col.IsVisible = false;
         }
-        this.Loaded += Loaded_UserControlDevices;
+        //this.Loaded += Loaded_UserControlDevices;
         GridDevices.ItemsSource = MainWindow.Devices;
     }
 
@@ -73,7 +74,6 @@ public partial class UserControlDevices : UserControl
             }
         }
     }
-    
     private void DataGridRow_DoubleTapped(object sender, TappedEventArgs e)
     {
         if(sender is not DataGridRow row) return;
@@ -257,5 +257,19 @@ public partial class UserControlDevices : UserControl
     {
         var found2 = this.TryFindResource("ResKey", this.ActualThemeVariant, out var result2);
         if (result2!=null) resourseCheckBox = result2 as ClassStaticResoursUserControlDevice;
+    }
+
+    private double _actualHeightUserControl; //Актуальная высота UserControl.
+    private void Control_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            _actualHeightUserControl = this.GetTransformedBounds().Value.Bounds.Height;
+            GridDevices.Height = _actualHeightUserControl;
+        }
+        catch
+        {
+            _actualHeightUserControl=double.NaN;  
+        }
     }
 }
