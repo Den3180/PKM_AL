@@ -35,7 +35,8 @@ public partial class UserControlChannels : UserControl
     public UserControlChannels()
     {
         InitializeComponent();
-        // GridChannels.ItemsSource=MainWindow.Channels;
+        //Показывет все каналы всех устройств.
+        GridChannels.ItemsSource=new ObservableCollection<ClassChannel>(MainWindow.Channels);
     }
     
     public UserControlChannels(ClassDevice newDevice):this()
