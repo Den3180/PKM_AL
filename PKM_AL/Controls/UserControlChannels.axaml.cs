@@ -38,9 +38,9 @@ public partial class UserControlChannels : UserControl
         // GridChannels.ItemsSource=MainWindow.Channels;
     }
     
-    public UserControlChannels(ClassDevice newDevice)
+    public UserControlChannels(ClassDevice newDevice):this()
     {
-        InitializeComponent();
+        //InitializeComponent();
         _Device = newDevice;
         ClassSettings settings = ClassSettings.Load();
         //GridChannels- объявлен в XAML.

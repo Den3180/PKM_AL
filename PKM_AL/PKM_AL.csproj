@@ -108,4 +108,11 @@
   <ItemGroup>
     <AdditionalFiles Remove="bin\**" />
   </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="Avalonia.Controls.ColorPicker">
+      <HintPath>C:\Users\lebed\.nuget\packages\avalonia.controls.colorpicker\11.1.4\lib\net6.0\Avalonia.Controls.ColorPicker.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
