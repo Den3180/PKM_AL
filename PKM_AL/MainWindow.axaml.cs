@@ -201,8 +201,10 @@ namespace PKM_AL
             }
             else
             {
-                ClassMessage.ShowMessageCustom(this, "База данных подключена.", "", ButtonEnum.Ok,
-                    icon: MsBox.Avalonia.Enums.Icon.Success);
+                WindowIntro frmIntroDb = new WindowIntro("База данных подключена.");
+                frmIntroDb.WindowShow(this);
+                //ClassMessage.ShowMessageCustom(this, "База данных подключена.", "", ButtonEnum.Ok,
+                   // icon: MsBox.Avalonia.Enums.Icon.Success);
             }
             int VersionDB = DB.InfoLoad();
             if (VersionDB != ClassDB.Version)
@@ -871,7 +873,6 @@ namespace PKM_AL
                 StatusMode.Text = "Устройства";
             break;
             case "Каналы данных...":
-                if (currentContent is UserControlChannels) break; 
                 ContentArea.Content = new UserControlChannels();
                 StatusMode.Text = "Каналы данных";
             break;
